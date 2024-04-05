@@ -28,9 +28,9 @@ const Responsive = {
 export default function Packages() {
 
   const packagesData = [
-    { id: 1, heading: 'Package 1', description: 'Description of package 1', image: "../images/Package.jpg" },
-    { id: 2, heading: 'Package 2', description: 'Description of package 2', image: "../images/Package.jpg" },
-    { id: 3, heading: 'Package 3', description: 'Description of package 3', image: "../images/Package.jpg" },
+    { id: 1, heading: 'Package 1', description: 'Description of package 1', image: "../images/package.jpg" },
+    { id: 2, heading: 'Package 2', description: 'Description of package 2', image: "../images/package.jpg" },
+    { id: 3, heading: 'Package 3', description: 'Description of package 3', image: "../images/package.jpg" },
   ];
 
   if (typeof window !== "undefined" && !window.$) {
