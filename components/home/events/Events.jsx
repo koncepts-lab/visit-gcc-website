@@ -27,9 +27,9 @@ const Responsive = {
 }
 export default function Events() {
   const packagesData = [
-    { id: 1, heading: 'Package 1',  description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', image :"../images/events/01.JPG", date: 'March 8' },
-    { id: 2, heading: 'Package 2', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.' ,image : "../images/events/02.JPG", date: '09 April'},
-    { id: 3, heading: 'Package 3', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', image : "../images/events/03.JPG", date: '13 April' },
+    { id: 1, heading: 'Package 1',  description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', image :"../images/events/01.jpg", date: 'March 8' },
+    { id: 2, heading: 'Package 2', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.' ,image : "../images/events/02.jpg", date: '09 April'},
+    { id: 3, heading: 'Package 3', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', image : "../images/events/03.jpg", date: '13 April' },
   ];
 
   if (typeof window !== "undefined" && !window.$) {

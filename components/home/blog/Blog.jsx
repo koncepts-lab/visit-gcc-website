@@ -27,10 +27,10 @@ const Responsive = {
 }
 export default function Events() {
   const packagesData = [
-    { id: 1, heading: 'Catch live horse-powered action', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', image: "../images/blog/01.JPG", },
-    { id: 2, heading: 'Taste delicacies at Karamas hidden gems', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', image: "../images/blog/02.JPG", },
-    { id: 3, heading: 'Dine at magnificent Ramadan tents', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', image: "../images/blog/03.JPG", },
-    { id: 4, heading: 'Explore top cultural spots in the city', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', image: "../images/blog/04.JPG", },
+    { id: 1, heading: 'Catch live horse-powered action', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', image: "../images/blog/01.jpg", },
+    { id: 2, heading: 'Taste delicacies at Karamas hidden gems', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', image: "../images/blog/02.jpg", },
+    { id: 3, heading: 'Dine at magnificent Ramadan tents', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', image: "../images/blog/03.jpg", },
+    { id: 4, heading: 'Explore top cultural spots in the city', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', image: "../images/blog/04.jpg", },
   ];
 
   if (typeof window !== "undefined" && !window.$) {
