@@ -27,10 +27,10 @@ const Responsive = {
 }
 export default function Events() {
   const packagesData = [
-    { id: 1, heading: 'Lorem Ipsum is simply dummy text',  image :"../images/experience/01.JPG",},
-    { id: 2, heading: 'Lorem Ipsum is simply dummy text', image : "../images/experience/02.JPG",},
-    { id: 3, heading: 'Lorem Ipsum is simply dummy text', image : "../images/experience/03.JPG",},
-    { id: 4, heading: 'Lorem Ipsum is simply dummy text', image : "../images/experience/04.JPG",},
+    { id: 1, heading: 'Lorem Ipsum is simply dummy text',  image :"../images/experience/01.jpg",},
+    { id: 2, heading: 'Lorem Ipsum is simply dummy text', image : "../images/experience/02.jpg",},
+    { id: 3, heading: 'Lorem Ipsum is simply dummy text', image : "../images/experience/03.jpg",},
+    { id: 4, heading: 'Lorem Ipsum is simply dummy text', image : "../images/experience/04.jpg",},
   ];
 
   if (typeof window !== "undefined" && !window.$) {
