@@ -1,0 +1,82 @@
+.service-section{
+	background-color: #131720;
+	padding: 110px 0;
+}
+
+.service-section .service-tab{
+	padding: 0;
+	margin:  0;
+	display: flex;
+	width: 100%;
+	border: none;
+	height:300px;
+	overflow: hidden;
+}
+.service-section .service-tab li{
+	display: table;
+	float:  none;
+	width:  25%;
+	text-align: center;
+}
+.service-section .service-tab li a{
+	background-color: #1f242f;
+	padding: 50px 30px 58px;
+	border-radius: 0;
+	margin-right: 0;
+	border-width: 5px 0 0 0;
+	border-style: solid;
+	border-color: transparent;
+}
+.service-section .service-tab li.active a, .service-section .service-tab li a:hover{
+	background-color: transparent;
+	border-width: 5px 0 0 0;
+	border-style: solid;
+	border-color: #ed145b;
+}
+.service-section .service-tab li a i{
+	width: 67px;
+	height: 67px;
+	line-height: 67px;
+	background-color: #131720;
+	color: #1f242f;
+	text-align: center;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	-ms-border-radius: 50%;
+	-o-border-radius: 50%;
+	border-radius: 50%;
+}
+.service-section .service-tab li.active a i, .service-section .service-tab li a:hover i{
+	background-color: #fff200;
+	color: #131720;
+}
+.service-section .service-tab li a h5{
+	color: #b4bccf;
+	line-height: 20px;
+	font-weight: 700;
+}
+.service-section .service-tab li.active a h5, .service-section .service-tab li a:hover h5{
+	color: #fff200;
+}
+.service-section .service-tab li a p{
+	line-height: 20px;
+	color: #b4bccf;
+}
+.service-section .service-tab li.active a p, .service-section .service-tab li a:hover p{
+	color: #fff;
+}
+.service-section .service-tab-content{
+	padding-top: 60px;
+}
+.service-section .service-tab-content h3{
+	margin-top: 0;
+	color: #fff200;
+}
+.service-section .service-tab-content p{
+	color: #b4bccf;
+	font-size: 16px;
+	line-height: 26px;
+}
+.service-section .tab-image-ex-gap{
+	padding-top: 50px;
+}
