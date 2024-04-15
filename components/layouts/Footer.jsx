@@ -23,7 +23,7 @@ function Footer() {
               <li><a href="/">GCC Event Schedule</a></li>             
             </ul>
             <ul>
-              <li>© 2024 Cleartrip Pvt. Ltd.</li>
+              <li>© 2024 Visit GCC.</li>
               <li><a href="/">Privacy</a></li>
               <li><a href="/">Security</a></li>
               <li><a href="/">Terms of Use</a></li>

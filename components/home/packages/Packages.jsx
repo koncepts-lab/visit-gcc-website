@@ -29,8 +29,8 @@ export default function Packages() {
 
   const packagesData = [
     { id: 1, heading: 'Package 1', description: 'Description of package 1', image: "../images/package.jpg" },
-    { id: 2, heading: 'Package 2', description: 'Description of package 2', image: "../images/package.jpg" },
-    { id: 3, heading: 'Package 3', description: 'Description of package 3', image: "../images/package.jpg" },
+    { id: 2, heading: 'Package 2', description: 'Description of package 2', image: "../images/package-2.jpg" },
+    { id: 3, heading: 'Package 3', description: 'Description of package 3', image: "../images/package-3.jpg" },
   ];
 
   if (typeof window !== "undefined" && !window.$) {
@@ -52,7 +52,7 @@ export default function Packages() {
 
             <OwlCarousel
       responsive={Responsive}
-      autoplay={true} 
+      // autoplay={true} 
       autoplayTimeout={3000}  // Change autoplay timeout to 3000 milliseconds (3 seconds)
       loop={true} // Enable carousel loop
       slideSpeed={500} // Adjust slide speed (milliseconds)
