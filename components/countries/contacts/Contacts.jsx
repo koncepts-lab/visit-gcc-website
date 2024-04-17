@@ -4,7 +4,7 @@ import './contacts.css';
 const Contacts = () => {
   return (
     <div className='container'>
-        <div className='table'>
+        {/* <div className='table'>
       <div className="table-title"><h3>Useful Contacts</h3></div>
       <table className="table-fill">
         <thead></thead>
@@ -31,7 +31,7 @@ const Contacts = () => {
           </tr>
         </tbody>
       </table>
-      </div>
+      </div> */}
     </div>
   );
 }
