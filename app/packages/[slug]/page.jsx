@@ -1,20 +1,20 @@
 import React from 'react'
-import './pakage-details.css'
+import styles from './pakage-details.module.css' 
 
 const page = ({ params }) => {
   const { slug } = params;
   return (
     <>
-      <section className='pakage-details-container'>
-        <div className='breadcrumb'>
-          <div className="container">
-            <div className="row">
-              <div className="col-md-12">
+      <section className={styles['pakage-details-container']}>
+        <div className={styles['breadcrumb']}>
+          <div className={'container'}>
+            <div className={'row'}>
+              <div className={'col-md-12'}>
                 <nav aria-label="breadcrumb">
-                  <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item"><a href="#">Library</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">{slug}</li>
+                  <ol className={'breadcrumb'} >
+                    <li className={'breadcrumb-item'}><a href="#">Home</a></li>
+                    <li className={'breadcrumb-item'}><a href="#">Library</a></li>
+                    <li className={'breadcrumb-item active'} aria-current="page">{slug}</li>
                   </ol>
                 </nav>
               </div>

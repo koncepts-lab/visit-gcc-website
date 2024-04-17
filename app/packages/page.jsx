@@ -1,6 +1,6 @@
 import React from 'react';
 import InnerPageBanner from '@/components/layouts/InnerPageBanner';
-import './packages.css';
+import styles from './packages.module.css';
 import PackageCategory from '@/components/home/package/PackageCategory';
 import SliderOne from '@/components/slider/SliderOne';
 function Page() {
@@ -20,9 +20,9 @@ function Page() {
   return (
     <>
       <InnerPageBanner />
-      <section className='inner-page-container'>
-        <div className='container'>
-          <div className="row">
+      <section className={styles['inner-page-container']}>
+        <div className={'container'}>
+          <div className={'row'}>
             <div className="col-md-2">
               <a href="#0" className="box">
                 <img src="../images/countries/01.jpg" alt="Bahrain" />
