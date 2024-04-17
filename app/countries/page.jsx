@@ -4,7 +4,7 @@ import Requirments from '@/components/countries/requirments/Requirments'
 import About from '@/components/countries/about/About'
 import Events from "@/components/home/events/Events"
 import Destination from '@/components/countries/destination/Destination'
-import Contacts from '@/components/countries/contacts/contacts'
+import Contacts from '@/components/countries/contacts/Contacts'
 
 
 
