@@ -7,7 +7,7 @@ body{
 }
 a {
   font-size: 15px;
-  color: #8A8A8A !important;
+  color: #000 !important;
   text-decoration: none !important;
 }
 nav .nav-link{
@@ -74,3 +74,14 @@ footer {
   font-size: 14px;
 }
 a{ color: #000; text-decoration: none;}
+.navbar{
+  float: left;
+  width: 100%;
+  border-bottom: solid 1px #ccc;
+}
+h1{
+  color: #000;
+  font-size: 30px !important;
+  margin-right: 10px;
+  line-height: 36px;
+}

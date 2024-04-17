@@ -54,3 +54,94 @@ position: relative;
 .home-packages .item:hover .bg-black-shade{
     background: #005e72;
     opacity: .8; }
+    .package-category .item img {
+        /* border-radius: 15px 15px 0 0; */
+        border-radius: 15px;
+    }
+.package-category .owl-item{
+    background-color: #f8f8f8;
+    padding: 15px;
+    border-radius: 25px;
+}
+.package-category .item h4 {
+    text-align: center;
+    border-radius:0 0 15px 15px;
+    padding: 10px 10px 10px 10px;
+    float: left;
+    width: 100%;
+    margin-top: -41px;
+    position: relative;
+    backdrop-filter: blur(10px);
+    color: #fff;
+}
+.package-category{
+    float: left;
+    width: 100%;
+    padding-bottom: 50px;
+}
+.ratings {
+    float: left;
+    background: #ffdf84cf;
+    padding: 5px 12px;
+    margin-top: -34px;
+    position: relative;
+}
+.ratings span {
+    font-size: 13px;
+    margin-left: 5px;
+}
+.star-icon{    
+    position: absolute;
+    top: 20px;
+    left: 25px;
+    background: rgb(255 255 255 / 76%);
+    border-radius: 20px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.package-category-01 .item img {
+    border-radius: 15px 15px 0 0;
+}
+.package-category-01 .owl-item {
+    /* background-color: #f8f8f8; */
+    /* padding: 15px; */
+    border-radius: 25px;
+    box-shadow: 0px 4px 10px 0px rgba(131, 131, 131, 0.1);
+}
+.package-category-01 .item h4 {
+    text-align: left;
+    padding: 0;
+    float: left;
+    width: 100%;
+    padding: 0 10px;
+}
+.package-category-01{
+float: left;
+width: 100%;
+padding-bottom: 50px;
+}
+/* .package-category-01 .owl-item{ margin: 10px 2px;} */
+.details-btn {
+    color: #fff !important;
+    background-color: #d86000 !important;
+    border: 1px solid #ff790d !important;
+    border-radius: 20px;
+    padding: 5px 10px;
+    float: right;
+    text-align: center;
+}
+.full-box {
+    float: left;
+    width: 100%;
+    display: flex;
+    padding: 0 10px;
+    padding-bottom: 10px;
+}
+.half-box{}
+.half-box:nth-child(2) {
+    width: 125px;
+}
+.pakage-item h4{ padding-top: 15px !important;}
