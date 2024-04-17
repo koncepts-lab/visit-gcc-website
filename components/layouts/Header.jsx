@@ -15,13 +15,13 @@ function Header() {
     <div className="collapse navbar-collapse justify-content-end" id="collapsibleNavbar">
       <ul className="navbar-nav">
         <li className="nav-item">
-        <Link className="nav-link active" href='/about'>Visit GCC</Link>
+        <Link className="nav-link active" href='/'>Visit GCC</Link>
         </li>
         <li className="nav-item">
-        <Link className="nav-link" href='/about'>Organize Your Trip</Link>
+        <Link className="nav-link" href='/packages'>Organize Your Trip</Link>
         </li>
         <li className="nav-item">
-        <Link className="nav-link" href='/about'>Your Visa Guide</Link>
+        <Link className="nav-link" href='/packages'>Your Visa Guide</Link>
         </li>
         <li className="nav-item">
         <Link className="nav-link" href='/about'>GCC Event Schedule</Link>

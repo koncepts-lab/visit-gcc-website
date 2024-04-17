@@ -1,5 +1,6 @@
 import React from 'react'
 
+
 const SingleBlog = ({value}) => {
   return (
     <div className="item">

@@ -1,0 +1,50 @@
+.pakage-details-container {
+    float: left;
+    width: 100%;
+}
+.breadcrumb{
+    float: left;
+    width: 100%;
+    background: #fbfbfb;
+    margin-bottom: 0;
+}
+.breadcrumb nav {
+    float: left;
+    width: 100%;
+    margin-bottom: 0;
+    padding: 5px 0;
+}
+h6{color: #6d7278;}
+.book-btn{
+    float: left;
+    border: 0;
+    cursor: pointer;
+    padding: 10px 20px;
+    box-sizing: border-box;
+    background: #d86000;
+    color: #fff !important;
+    width: 139px;
+    text-align: center;
+    margin-right: 15px;
+}
+.query-btn{
+    color: #fff !important;
+    float: left;
+    border: 0;
+    cursor: pointer;
+    padding: 10px 20px;
+    box-sizing: border-box;
+    width: auto !important;
+    background: #000;
+    text-align: center;
+}
+.title-section{
+    float: left;
+    width: 100%;
+    padding: 25px 0;
+}
+.pakage-banner{
+    float: left;
+    width: 100%;
+    padding-bottom: 25px;
+}
