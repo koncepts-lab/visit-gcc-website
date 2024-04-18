@@ -1,0 +1,38 @@
+.home-packages {
+    float: left;
+    width: 100%;
+    padding:0 0 50px 0;
+}
+.home-packages img{ border-radius: 15px;} 
+.home-packages .item div {
+    float: left;
+    width: 100%;
+    padding: 0 160px;
+    /* margin-top: -165px; */
+    z-index: 10;
+    position: absolute;
+    color: #fff;
+    bottom: 0;
+}
+
+
+.Event-des {
+
+	margin-top: 50px;
+}
+
+.Event-des h3 {
+
+	margin-top: 10px;
+
+}
+
+.home-packages h4 {
+
+	background:#7FD2BA;
+	color: #000;
+	text-align: center;
+	border-radius: 20px;
+	padding: 5px;
+	
+}

@@ -1,0 +1,55 @@
+.destination h3 {
+
+    margin-bottom: 
+    50px;
+
+}
+
+.destination .link {
+
+    margin-bottom: 50px;
+
+}
+
+.link  {
+
+    display: flex;
+}
+
+.link h4 {
+
+    background: #7fd2ba;
+    font-weight: 500;
+    text-decoration: none;
+    color: #fff ;
+    
+    padding: 10px 20px 10px 20px;
+    margin-right: 20px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    cursor: pointer;
+    
+    
+}
+
+.destination-des {
+
+    margin-bottom: 50px;
+}
+
+.destination-des img {
+
+    border-radius: 10px;
+    width: 600px;
+}
+
+.destination-des h3 {
+
+    margin-bottom: 20px;
+}
+
+.destination .active {
+
+    background: #d86000;
+}
+

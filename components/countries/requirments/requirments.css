@@ -1,5 +1,48 @@
-.requirments {
-
-    margin-top: 50px;
+.accordin {
+  position: relative;
+  border: 1px solid #7fd2ba;
+  margin-bottom: 15px;
+  border-radius: 6px;
 }
+  
+  input[type="checkbox"] {
+    display: none;
+  }
+  
+  label {
+    position: relative;
+    display: block;
+    cursor: pointer;
+  }
+  
+  label:after {
+    content: "+";
+    position: absolute;
+    display: inline-block;
+    right: 20px;
+  }
+  
+  input:checked + label:after {
+    content: "-";
+  }
+  
+  .accordin_title {
+    background: #7fd2ba69;
+    color: #000;
+    padding: 10px;
+}
+  
+  .accordin_detail {
+    display: block;
+    overflow: hidden;
+    max-height: 0;
+    padding: 0 1em;
+    height: 100%;
+    transition: all 0.3s ease;
+  }
+  
+  input[type="checkbox"]:checked ~ .accordin_detail {
+    max-height: 100px;
+    padding: 1em;
+  }
 
