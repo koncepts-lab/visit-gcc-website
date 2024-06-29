@@ -1,0 +1,31 @@
+.event-box {
+    box-shadow: -1px 0px 5px 0px rgba(0,0,0,0.04);
+    float: left;
+    width: 100%;
+    padding: 15px;
+    border-radius: 15px;
+    position: relative;
+}
+.event-box .date {
+    position: absolute;
+    top: 25px;
+    background: #7FD2BA;
+    padding: 3px 10px;
+    border-radius: 5px;
+    left: 25px;
+}
+.event-box img{}
+.event-box h4 {
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    margin-top: 10px;
+}
+.event-box p {
+    font-size: 15px;
+    color: #8A8A8A;
+}
+
+
+.owl-stage-outer {
+    padding: 5px 0;
+}

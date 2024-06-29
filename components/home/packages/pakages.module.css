@@ -1,0 +1,25 @@
+.home-packages {
+    float: left;
+    width: 100%;
+    padding:0 0 50px 0;
+}
+.home-packages img{ border-radius: 15px;} 
+.home-packages-text {
+    float: left;
+    width: 100%;
+    padding: 0 30px;
+    margin-top: -165px;
+    z-index: 10;
+
+    position: relative;
+    color: #fff;
+}
+.bg-black-shade{
+    background-color: #1560746e;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    border-radius: 15px;
+}
+.home-packages .item{cursor: pointer;}

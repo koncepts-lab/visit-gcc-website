@@ -1,0 +1,23 @@
+
+  .banner-search{
+    max-width: 500px;
+    margin: 0 auto;
+  
+  }
+  .banner-search input{
+    height: 60px;
+    background: #f8f8f8;
+    border-radius: 0px;
+  }
+  .banner-search button{
+    background: #fff;
+    border: none;
+    color: #000;
+    font-size: 20px;
+    padding: 0 30px;
+    border-radius: 0px;
+  }
+  .banner-search button:hover{
+    background: #135f74;
+    color: #fff;
+  }

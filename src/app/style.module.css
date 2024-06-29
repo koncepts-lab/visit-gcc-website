@@ -1,0 +1,39 @@
+.home-packages {
+    float: left;
+    width: 100%;
+    padding:0 0 50px 0;
+}
+.home-packages img{ border-radius: 15px;} 
+.home-packages .item div {
+    float: left;
+    width: 100%;
+    padding: 0 30px;
+    margin-top: -165px;
+    z-index: 10;
+    position: relative;
+    color: #fff;
+}
+.bg-black-shade{ background-color: #000;}
+.home-packages .item{cursor: pointer;}
+.home-event {
+    float: left;
+    width: 100%;
+    padding: 50px 0;
+}
+.home-event img{ border-radius: 15px;} 
+.home-experience {
+    float: left;
+    width: 100%;
+    padding: 0px 0;
+    margin-bottom: 68px;
+  }
+  .home-experience img{ border-radius: 15px;} 
+  
+.home-blog {
+    float: left;
+    width: 100%;
+    padding: 50px 0;
+}
+.home-blog img{ border-radius: 15px;} 
+
+  
