@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Link from 'next/link';
 import style from './style.module.css';
+import ReactFlagsSelect from 'react-flags-select';
 
 function Header() {
+  const [selected, setSelected] = useState("US");
+
   return (
     <>
       <nav className="navbar navbar-expand-sm navbar-light" id="navbar">
@@ -28,25 +31,23 @@ function Header() {
                 <Link className={`nav-link ${style['login-link']}`} href='/about'>Login/Signup</Link>
               </li>
 
-
-              <li className={'nav-item dropdown'}>
-                <a className={'nav-link dropdown-toggle'} href="#" role="button" data-bs-toggle="dropdown">Dropdown</a>
-                <ul className={'dropdown-menu'}>
-                  <li><a className={'dropdown-item'} href="#">Link</a></li>
-                  <li><a className={'dropdown-item'} href="#">Another link</a></li>
-                  <li><a className={'dropdown-item'} href="#">A third link</a></li>
-                </ul>
+              <li className="nav-item dropdown">
+                <ReactFlagsSelect
+                  countries={["US", "GB", "FR", "DE", "IT"]}
+                  customLabels={{ US: "", GB: "", FR: "", DE: "", IT: "" }} // Empty labels to show only flags
+                  selected={selected}
+                  onSelect={code => setSelected(code)}
+                  placeholder="US"
+                  showSelectedLabel={false} // Hide selected label
+                  showOptionLabel={false} // Hide option labels
+                />
               </li>
-
-
-
             </ul>
           </div>
         </div>
       </nav>
     </>
-
-  )
+  );
 }
 
-export default Header
+export default Header;
