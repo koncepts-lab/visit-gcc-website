@@ -1,0 +1,51 @@
+.tour-package-page{
+    float: left;
+    width: 100%;
+}
+
+.tour-package-page-container{
+    max-width: 100%;
+    margin: 0 auto;
+}
+.tour-package-page h4{
+    float: left;
+    width: 100%;
+    text-transform: uppercase;
+    font-size: 15px !important;
+}
+.package-filter{
+    float: left;
+    width: 100%;
+    margin-bottom: 15px;
+    padding:0 50px;
+    
+}
+.package-filter{
+    float: left;
+    width: 100%;
+    margin-bottom: 15px;
+    padding:0 50px;
+    
+}
+.price-range{
+    float: left;
+    width: 100%;
+    margin-bottom: 15px;
+    margin-top: 5px;
+}
+.package-filter p{
+    float: left;
+    width: 100%;
+    margin-top: 15px;
+}
+.duration-range{
+    float: left;
+    width: 100%;
+    margin-bottom: 5px;
+    margin-top: 15px;
+}
+.accordion-range{
+    float: left;
+    width: 100%;
+}
+.pr-0{ padding-right: 0 !important;}

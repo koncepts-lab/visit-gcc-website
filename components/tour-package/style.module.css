@@ -86,9 +86,8 @@
 .documentation-container{
     float: left;
     width: 100%;
-    border:solid 1px #ccc;
     padding: 15px;
-    border-radius:10px;
+    /* background: #cccccc17; */
     margin-top: 15px;
 }
 
@@ -271,3 +270,55 @@ border-radius:15px 15px 0 0;
       .tag p{ padding-left: 10px;}
       .tag span{ margin-right:10px;}
     
+.provider-date{
+    float: left;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+.star-section {
+    float: left;
+    width: 100%;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+.star{
+
+}
+.pakages-ul{
+    float: left;
+    width: 100%;
+    list-style: none;
+    margin-left: 0;
+    padding-left: 0;
+    display: flex;
+    font-size: 14px;
+    text-align: center;
+}
+.r-button {
+    background: #009496;
+    color: #fff !important;
+    padding: 5px 15px;
+    border-radius: 25px;
+    margin: 0 auto;
+    position: relative;
+    text-align: center;
+    display: table;
+}
+.pakages-ul li svg{    font-size: 23px;}
+.btn-one{
+    background-color: #a0daca;
+    border: none;
+    padding: 7px 25px;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .countries-explore-container {
+    background: #ecf1f7;
+    padding: 50px 0;
+    float: left;
+    width: 100%;
+}

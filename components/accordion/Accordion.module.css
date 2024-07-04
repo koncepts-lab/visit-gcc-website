@@ -1,0 +1,42 @@
+.accordion {
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 15px;
+}
+
+.accordionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.title {
+    margin: 0;
+    flex: 1;
+}
+
+.sign {
+    margin-left: 10px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.accordionContent {
+    padding: 10px 0;
+}
+.accordion ul { padding-left: 0; list-style: none;}
+.accordion ul li  {
+    font-size: 15px;
+    padding: 4px 0;
+    display: flex;
+    align-items: center;
+}
+.package-filter p{
+    font-size: 12px; 
+}
+.accordionContent h6{
+    padding: 15px 0;
+}
+.accordionContent  input {
+    height: auto;
+    margin-right: 5px;
+}
