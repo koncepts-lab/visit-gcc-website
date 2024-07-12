@@ -12,12 +12,13 @@ import SingleHomeBlog from '../home/blog/blog';
 import TabSlider from '../countries/tab-slider';
 import CountryExperiance from '../countries/country-experiance';
 import CountryExplore from '../countries/countries-explore';
+import SingleBestPicked from '../tour-package/best-picked';
 
 const OwlCarousel = dynamic(() => import("react-owl-carousel"), {
     ssr: false,
 });
 
-function Carousal({ packages, events, country, experiences, blog, countryExplore, count, type }) {
+function Carousal({ packages, events, country, experiences, blog, countryExplore, count, type, bestPicked }) {
     const Responsive = {
         0: {
             items: 1,
@@ -136,6 +137,22 @@ function Carousal({ packages, events, country, experiences, blog, countryExplore
                     />
                 ))
             )}
+
+
+            {type === 'tour-bestPicked' && (
+                bestPicked.map((bestPicke) => (
+                    <SingleBestPicked
+                        key={bestPicke.id}
+                        image={bestPicke.image}
+                        heading={bestPicke.heading}
+                        description={bestPicke.description}
+                        date={bestPicke.date}
+                    />
+                ))
+            )}
+
+
+
         </OwlCarousel>
     );
 }

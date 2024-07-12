@@ -89,7 +89,14 @@
     padding: 15px;
     /* background: #cccccc17; */
     margin-top: 15px;
+    max-width: 1108px;
+    
 }
+.country-explore .container-fluid{
+    max-width: 100px;
+}
+
+
 
 .documentation-container .col-md-4{ margin-bottom: 15px;}
 .check-cotainer{ margin-bottom: 15px;}
@@ -318,7 +325,48 @@ border-radius:15px 15px 0 0;
   }
   .countries-explore-container {
     background: #ecf1f7;
-    padding: 50px 0;
+    padding: 50px 15px;
     float: left;
     width: 100%;
+}
+.countries-explore{
+    max-width: 1108px;
+}
+
+.best-picked-box {
+    float: left;
+    width: 100%;
+    position: relative;
+}
+.best-picked-box span {
+    float: left;
+    width: 100%;
+    position: relative;
+    margin-top: -110px;
+    padding: 0 10px;
+    background: rgb(2,0,36);
+background: linear-gradient(0deg, rgba(2,0,36,1) 54%, rgba(0,0,0,0) 100%);
+}
+.best-picked-box .date {
+    position: absolute;
+    top: 25px;
+    background: #7FD2BA;
+    padding: 3px 10px;
+    border-radius: 5px;
+    left: 25px;
+}
+.best-picked-box h4 {
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    margin-top: 10px;
+    padding-top: 32px;
+    color: #fff;
+    text-transform: unset;
+}
+.best-picked-box p {
+    font-size: 15px;
+    color: #fff;
+}
+.owl-stage-outer {
+    padding: 5px 0;
 }

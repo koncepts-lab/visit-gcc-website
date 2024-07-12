@@ -202,7 +202,7 @@ const TourPackageTab = () => {
 
 
                 <div className='row'>
-                    <div className='col-md-12'>
+                    <div className='col-md-12 p-0'>
                         <section className={style['countries-explore-container']}>
                             <div className={style['countries-explore']}>
                                 <div className='container-fluid'>
@@ -214,8 +214,8 @@ const TourPackageTab = () => {
                                 </div>
 
                                 {/* CountryExplore */}
-                                <div className={style['country-explore']}>
-                                    <div className='container-fluid'>
+                                <div className={style['country-explore2']}>
+                                    <div className='container'>
                                         <div className='row'>
                                             <Carousal countryExplore={countryExplore} count={3} type="country-explore" />
                                         </div>
@@ -234,6 +234,11 @@ const TourPackageTab = () => {
 
             </div>
         </section>
+
+
+
+
+
     );
 };
 

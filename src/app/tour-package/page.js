@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState } from 'react';
 import style from './style.module.css';
 import Banner from '../../../components/banner/banner';
@@ -7,6 +6,8 @@ import Countries from '../../../components/countries/countries';
 import { Range } from 'react-range';
 import Accordion from '../../../components/accordion/Accordion';
 import TourPackageTab from '../../../components/tour-package/tour-package-tab';
+import { CiMobile3 } from "react-icons/ci";
+import Carousal from '../../../components/carousel/Carousal';
 
 
 const Country = () => {
@@ -46,6 +47,12 @@ const Country = () => {
             title: 'GEOGRAPHY',
             items: ['Coastal', 'Desert', 'Mountain', 'Nature', 'Sea', 'Forest']
         }
+    ];
+
+    const bestPickedData = [
+        { id: 1, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/best-picked/01.jpg" },
+        { id: 2, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/best-picked/02.jpg" },
+        { id: 3, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/best-picked/03.jpg", },
     ];
 
     return (
@@ -152,11 +159,97 @@ const Country = () => {
                         <div className={`col-md-9 ${style['pr-0']}`}>
                             <h3>GCC Countries</h3>
                             <TourPackageTab />
+
+                            <section className={style['cta-section']}>
+                                <div className={style['cta-section-container']}>
+                                    <div className='container'>
+                                        <div className='row'>
+                                            <div className={`col-md-6 ${style['cta-half-left']}`}>
+
+                                                <div className={`container ${style['cta-half-container']}`}>
+                                                    <div className='row'>
+                                                        <div className='col-md-6'>
+                                                            <div className={style['cta-section-left']}>
+                                                                <span><CiMobile3 /></span>
+                                                                <span><h5>CALL NOW</h5><p>for free consultation</p></span>
+                                                            </div>
+                                                        </div>
+                                                        <div className='col-md-6'>
+                                                            <div className={style['cta-section-right']}>
+                                                                <a href='tel:+5866 958 5545'>: +5866 958 5545</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className='col-md-6'>
+                                                <div className='container'>
+                                                    <div className='row'>
+                                                        <div className='col-md-6 '>
+                                                            <div className={style['cta-section-left']}>
+                                                                <span><CiMobile3 /></span>
+                                                                <span><h5>MAIL US NOW</h5><p>for free consultation</p></span>
+                                                            </div>
+                                                        </div>
+                                                        <div className='col-md-6'>
+                                                            <div className={style['cta-section-right']}>
+                                                                <a href='mailto:info@consultaid.com'>:info@consultaid.com</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            {/* bes picked for you */}
+                            <section className={style['pakage-bes-picked']}>
+                                <div className='container'>
+                                    <div className='row'>
+                                        <div className='col-md-12'>
+                                            <h3 className='pb-3'>Best picked for you</h3>
+                                        </div>
+                                        <div className='col-md-12'>
+                                            <Carousal bestPicked={bestPickedData} count={4} type="tour-bestPicked" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            {/* bes picked for you END*/}
+
+
+                            {/* bes picked for you */}
+                            <section className={style['pakage-bes-picked']}>
+                                <div className='container'>
+                                    <div className='row'>
+                                        <div className='col-md-12'>
+                                            <h3 className='pb-3'>Lesser-Known Wonders</h3>
+                                            <p className='text-center'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. <br />Lorem Ipsum has been the industry's standard dummy text</p>
+                                        </div>
+                                        <div className='col-md-12'>
+                                            <Carousal bestPicked={bestPickedData} count={3} type="tour-bestPicked" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            {/* bes picked for you END*/}
+
+
+
+
+
                         </div>
                         {/* right end */}
+
                     </div>
                 </div>
             </section>
+
+
         </>
     );
 }
