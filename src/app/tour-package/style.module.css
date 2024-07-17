@@ -107,6 +107,15 @@
     max-width: 1108px;
     padding: 30px 30px 60px 30px;
 }
+
 .pakage-bes-picked h3 {
     text-align: center;
 }
+.btn-one{
+    background-color: #a0daca;
+    border: none;
+    padding: 7px 25px;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: 600;
+  }

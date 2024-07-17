@@ -13,12 +13,13 @@ import TabSlider from '../countries/tab-slider';
 import CountryExperiance from '../countries/country-experiance';
 import CountryExplore from '../countries/countries-explore';
 import SingleBestPicked from '../tour-package/best-picked';
+import Singlewonders from '../tour-package/wonders';
 
 const OwlCarousel = dynamic(() => import("react-owl-carousel"), {
     ssr: false,
 });
 
-function Carousal({ packages, events, country, experiences, blog, countryExplore, count, type, bestPicked }) {
+function Carousal({ packages, events, country, experiences, blog, countryExplore, count, type, bestPicked, wonders }) {
     const Responsive = {
         0: {
             items: 1,
@@ -54,7 +55,8 @@ function Carousal({ packages, events, country, experiences, blog, countryExplore
             loop={true}
             slideSpeed={500}
             smartSpeed={1000}
-            nav={false} // Disable navigation
+            nav={false} // Enable navigation
+            dots={type === 'tour-bestPicked' || type === 'tour-wonders'}
         >
             {type === 'home-package' && (
                 packages.map((pkg) => (
@@ -138,7 +140,6 @@ function Carousal({ packages, events, country, experiences, blog, countryExplore
                 ))
             )}
 
-
             {type === 'tour-bestPicked' && (
                 bestPicked.map((bestPicke) => (
                     <SingleBestPicked
@@ -151,8 +152,17 @@ function Carousal({ packages, events, country, experiences, blog, countryExplore
                 ))
             )}
 
-
-
+            {type === 'tour-wonders' && (
+                wonders.map((wonders) => (
+                    <Singlewonders
+                        key={wonders.id}
+                        image={wonders.image}
+                        heading={wonders.heading}
+                        description={wonders.description}
+                        date={wonders.date}
+                    />
+                ))
+            )}
         </OwlCarousel>
     );
 }

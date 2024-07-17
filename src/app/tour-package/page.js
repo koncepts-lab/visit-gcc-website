@@ -8,6 +8,7 @@ import Accordion from '../../../components/accordion/Accordion';
 import TourPackageTab from '../../../components/tour-package/tour-package-tab';
 import { CiMobile3 } from "react-icons/ci";
 import Carousal from '../../../components/carousel/Carousal';
+import HolidaysTab from '../../../components/tour-package/holidays-tab';
 
 
 const Country = () => {
@@ -53,6 +54,17 @@ const Country = () => {
         { id: 1, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/best-picked/01.jpg" },
         { id: 2, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/best-picked/02.jpg" },
         { id: 3, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/best-picked/03.jpg", },
+        { id: 4, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/best-picked/01.jpg" },
+        { id: 5, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/best-picked/02.jpg" },
+        { id: 6, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/best-picked/03.jpg", },
+    ];
+    const wondersData = [
+        { id: 1, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/wonders/01.jpg" },
+        { id: 2, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/wonders/02.jpg" },
+        { id: 3, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/wonders/03.jpg", },
+        { id: 4, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/wonders/01.jpg" },
+        { id: 5, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/wonders/02.jpg" },
+        { id: 6, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/wonders/03.jpg", },
     ];
 
     return (
@@ -231,7 +243,28 @@ const Country = () => {
                                             <p className='text-center'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. <br />Lorem Ipsum has been the industry's standard dummy text</p>
                                         </div>
                                         <div className='col-md-12'>
-                                            <Carousal bestPicked={bestPickedData} count={3} type="tour-bestPicked" />
+                                            <Carousal wonders={wondersData} count={3} type="tour-wonders" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            {/* bes picked for you END*/}
+
+
+                            {/* bes picked for you */}
+                            <section className={style['pakage-bes-picked']}>
+                                <div className='container'>
+                                    <div className='row'>
+                                        <div className='col-md-12'>
+                                            <h3 className='pb-3'>Holidays by theme</h3>
+                                            <HolidaysTab />
+                                        </div>
+
+                                    </div>
+
+                                    <div className='row'>
+                                        <div className='col-md-12 text-center mt-4'>
+                                            <button className={style['btn-one']}>Full List</button>
                                         </div>
                                     </div>
                                 </div>
@@ -244,6 +277,8 @@ const Country = () => {
 
                         </div>
                         {/* right end */}
+
+
 
                     </div>
                 </div>

@@ -370,3 +370,79 @@ background: linear-gradient(0deg, rgba(2,0,36,1) 54%, rgba(0,0,0,0) 100%);
 .owl-stage-outer {
     padding: 5px 0;
 }
+.pakage-bes-picked .item {
+    border-radius:15px !important;
+}
+.best-picked-box {
+    border-radius: 15px;
+}
+.best-picked-box img {
+    border-radius: 15px;
+}
+.best-picked-box span {
+    border-radius:0 0 15px 15px;
+}
+
+.tour-holidays-text{
+    padding: 60px 20px;
+}
+.tour-holidays-text p{
+    float: left;
+    width: 100%;
+    margin-top: 10px;
+}
+.tour-holidays-text .line{
+    float: left;
+    width: 40px;
+    height: 2px;
+    background-color: red;
+    clear: both;
+}
+.tour-holidays-text h6{}
+.tour-holidays-text ul{    list-style: none; padding-left: 0;}
+.tour-holidays-text li{
+    display: inline;
+    margin-right: 10px;
+}
+.tour-holidays-text li a{}
+
+
+.tour-holidays-box{
+    margin-bottom: 30px;
+    float: left;
+    width: 100%;
+}
+.tour-holidays-box img{
+    float: left;
+    width: 100%;
+    border-radius: 15px;
+}
+.tour-holidays-box span{
+    float: left;
+    width: 100%;
+    background: #f9555573;
+    border-radius: 15px;
+    margin-top: -67px;
+    padding: 12px 15px;
+    background:linear-gradient(0deg, rgba(2,0,36,1) 54%, rgba(0,0,0,0) 100%);
+    
+}
+.tour-holidays-box p {
+    padding-bottom: 0;
+    margin-bottom: 0;
+    color: #fff;
+}
+.tour-holidays-box h6 {
+    padding-bottom: 0;
+    margin-bottom: 0;
+    color: #fff;
+}
+.img-Holidays {
+    height: 100%;
+    object-fit: cover;
+}
+
+.vertical-center{
+    display: flex;
+    align-items: center;
+}
