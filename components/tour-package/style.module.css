@@ -86,11 +86,17 @@
 .documentation-container{
     float: left;
     width: 100%;
-    border:solid 1px #ccc;
     padding: 15px;
-    border-radius:10px;
+    /* background: #cccccc17; */
     margin-top: 15px;
+    max-width: 1108px;
+    
 }
+.country-explore .container-fluid{
+    max-width: 100px;
+}
+
+
 
 .documentation-container .col-md-4{ margin-bottom: 15px;}
 .check-cotainer{ margin-bottom: 15px;}
@@ -271,3 +277,176 @@ border-radius:15px 15px 0 0;
       .tag p{ padding-left: 10px;}
       .tag span{ margin-right:10px;}
     
+.provider-date{
+    float: left;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+.star-section {
+    float: left;
+    width: 100%;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+.star{
+
+}
+.pakages-ul{
+    float: left;
+    width: 100%;
+    list-style: none;
+    margin-left: 0;
+    padding-left: 0;
+    display: flex;
+    font-size: 14px;
+    text-align: center;
+}
+.r-button {
+    background: #009496;
+    color: #fff !important;
+    padding: 5px 15px;
+    border-radius: 25px;
+    margin: 0 auto;
+    position: relative;
+    text-align: center;
+    display: table;
+}
+.pakages-ul li svg{    font-size: 23px;}
+.btn-one{
+    background-color: #a0daca;
+    border: none;
+    padding: 7px 25px;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .countries-explore-container {
+    background: #ecf1f7;
+    padding: 50px 15px;
+    float: left;
+    width: 100%;
+}
+.countries-explore{
+    max-width: 1108px;
+}
+
+.best-picked-box {
+    float: left;
+    width: 100%;
+    position: relative;
+}
+.best-picked-box span {
+    float: left;
+    width: 100%;
+    position: relative;
+    margin-top: -110px;
+    padding: 0 10px;
+    background: rgb(2,0,36);
+background: linear-gradient(0deg, rgba(2,0,36,1) 54%, rgba(0,0,0,0) 100%);
+}
+.best-picked-box .date {
+    position: absolute;
+    top: 25px;
+    background: #7FD2BA;
+    padding: 3px 10px;
+    border-radius: 5px;
+    left: 25px;
+}
+.best-picked-box h4 {
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    margin-top: 10px;
+    padding-top: 32px;
+    color: #fff;
+    text-transform: unset;
+}
+.best-picked-box p {
+    font-size: 15px;
+    color: #fff;
+}
+.owl-stage-outer {
+    padding: 5px 0;
+}
+.pakage-bes-picked .item {
+    border-radius:15px !important;
+}
+.best-picked-box {
+    border-radius: 15px;
+}
+.best-picked-box img {
+    border-radius: 15px;
+}
+.best-picked-box span {
+    border-radius:0 0 15px 15px;
+}
+
+.tour-holidays-text{
+    padding: 60px 20px;
+}
+.tour-holidays-text p{
+    float: left;
+    width: 100%;
+    margin-top: 10px;
+}
+.tour-holidays-text .line{
+    float: left;
+    width: 40px;
+    height: 2px;
+    background-color: red;
+    clear: both;
+}
+.tour-holidays-text h6{}
+.tour-holidays-text ul{    list-style: none; padding-left: 0;}
+.tour-holidays-text li{
+    display: inline;
+    margin-right: 10px;
+}
+.tour-holidays-text li a{}
+
+
+.tour-holidays-box{
+    margin-bottom: 30px;
+    float: left;
+    width: 100%;
+}
+.tour-holidays-box img{
+    float: left;
+    width: 100%;
+    border-radius: 15px;
+}
+.tour-holidays-box span{
+    float: left;
+    width: 100%;
+    background: #f9555573;
+    border-radius: 15px;
+    margin-top: -67px;
+    padding: 12px 15px;
+    background:linear-gradient(0deg, rgba(2,0,36,1) 54%, rgba(0,0,0,0) 100%);
+    
+}
+.tour-holidays-box p {
+    padding-bottom: 0;
+    margin-bottom: 0;
+    color: #fff;
+}
+.tour-holidays-box h6 {
+    padding-bottom: 0;
+    margin-bottom: 0;
+    color: #fff;
+}
+.img-Holidays {
+    height: 100%;
+    object-fit: cover;
+    border-radius:15px;
+}
+
+.vertical-center{
+    display: flex;
+    align-items: center;
+}
+.fb svg{ color: #3b5998;}
+.tw svg { color: #1DA1F2;}
+.gp svg { color: #db4a39 ; font-size: 20px;}

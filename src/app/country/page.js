@@ -9,7 +9,7 @@ import GettingAroundTab from '../../../components/countries/getting-around-tab';
 
 function country() {
     const countryExplore = [
-        { id: 1, heading: 'Desitination Heading000', description: 'Luxury', image: "/images/blog/01.jpg" },
+        { id: 1, heading: 'Desitination Heading', description: 'Luxury', image: "/images/blog/01.jpg" },
         { id: 2, heading: 'Desitination Heading', description: 'Culture', image: "/images/blog/02.jpg" },
         { id: 3, heading: 'Desitination Heading', description: 'Coastal Esscapes', image: "/images/blog/03.jpg" },
         { id: 4, heading: 'Desitination Heading', description: 'History', image: "/images/blog/04.jpg" },
@@ -18,11 +18,34 @@ function country() {
 
 
     const countryExperiance = [
-        { id: 1, heading: 'Desitination Heading888', description: 'Luxury', image: "/images/blog/01.jpg" },
-        { id: 2, heading: 'Desitination Heading', description: 'Culture', image: "/images/blog/02.jpg" },
-        { id: 3, heading: 'Desitination Heading', description: 'Coastal Esscapes', image: "/images/blog/03.jpg" },
-        { id: 4, heading: 'Desitination Heading', description: 'History', image: "/images/blog/04.jpg" },
-        { id: 5, heading: 'Desitination Heading', description: 'Events', image: "/images/blog/01.jpg" },
+
+    ];
+
+    const accordionData = [
+        {
+            title: 'ACTIVITIES',
+            items: ['Hiking', 'Camping', 'Wildlife Watching', 'Water Sports']
+        },
+        {
+            title: 'CULTURAL ACTIVITIES',
+            items: ['Sightseeing', 'Museums', 'Historical Sites', 'Festivals', 'Food and Wine Tours']
+        },
+        {
+            title: 'RELAXATION AND REJUVENATION',
+            items: ['Sightseeing', 'Museums', 'Historical Sites', 'Festivals', 'Food and Wine Tours']
+        },
+        {
+            title: 'FILTER BY STAY',
+            items: ['Budget-Friendly Motels', 'Luxurious Five-Star Resorts', 'Apartments', 'Private Villas', 'Homestays', 'Boutique Hotels', 'Tents']
+        },
+        {
+            title: 'TRAVEL STYLE',
+            items: ['Luxury', 'Adventure', 'Family-Friendly', 'Couple', 'Group Tour', 'Budget Friendly']
+        },
+        {
+            title: 'GEOGRAPHY',
+            items: ['Coastal', 'Desert', 'Mountain', 'Nature', 'Sea', 'Forest']
+        }
     ];
 
     return (
@@ -144,7 +167,7 @@ function country() {
                     <div className='container'>
                         <div className="row">
                             <div className="col-md-12 pb-3">
-                                <h3>Experiance</h3>
+                                <h3>Experience</h3>
                                 <p>Funding freemium technology focus equity bootstrapping usernce niche market. Seed round agile growth hacking retur investment alpha investor advisor marketing pitch.</p>
                             </div>
                         </div>

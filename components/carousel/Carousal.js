@@ -1,4 +1,5 @@
 "use client";
+
 import React from 'react';
 import $ from "jquery"; // Import jQuery
 import "owl.carousel/dist/assets/owl.carousel.css";
@@ -11,12 +12,14 @@ import SingleHomeBlog from '../home/blog/blog';
 import TabSlider from '../countries/tab-slider';
 import CountryExperiance from '../countries/country-experiance';
 import CountryExplore from '../countries/countries-explore';
+import SingleBestPicked from '../tour-package/best-picked';
+import Singlewonders from '../tour-package/wonders';
 
 const OwlCarousel = dynamic(() => import("react-owl-carousel"), {
     ssr: false,
 });
 
-function Carousal({ packages, events, country, experiences, blog, countryExplore, count, type }) {
+function Carousal({ packages, events, country, experiences, blog, countryExplore, count, type, bestPicked, wonders }) {
     const Responsive = {
         0: {
             items: 1,
@@ -37,11 +40,11 @@ function Carousal({ packages, events, country, experiences, blog, countryExplore
     }
 
     const countryExperiance = [
-        { id: 1, heading: 'Desitination Heading5555', description: 'Luxury', image: "/images/blog/01.jpg" },
-        { id: 2, heading: 'Desitination Heading', description: 'Culture', image: "/images/blog/02.jpg" },
-        { id: 3, heading: 'Desitination Heading', description: 'Coastal Esscapes', image: "/images/blog/03.jpg" },
-        { id: 4, heading: 'Desitination Heading', description: 'History', image: "/images/blog/04.jpg" },
-        { id: 5, heading: 'Desitination Heading', description: 'Events', image: "/images/blog/01.jpg" },
+        { id: 1, link: 'https://www.google.com/', heading: 'Lorem Ipsum is simply dummy text', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s... ', image: "/images/blog/01.jpg" },
+        { id: 2, link: 'https://www.google.com/', heading: 'Lorem Ipsum is simply dummy text', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s... ', image: "/images/blog/02.jpg" },
+        { id: 3, link: 'https://www.google.com/', heading: 'Lorem Ipsum is simply dummy text', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s... ', image: "/images/blog/03.jpg" },
+        { id: 4, link: 'https://www.google.com/', heading: 'Lorem Ipsum is simply dummy text', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s... ', image: "/images/blog/04.jpg" },
+        { id: 5, link: 'https://www.google.com/', heading: 'Lorem Ipsum is simply dummy text', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s... ', image: "/images/blog/01.jpg" },
     ];
 
     return (
@@ -52,7 +55,8 @@ function Carousal({ packages, events, country, experiences, blog, countryExplore
             loop={true}
             slideSpeed={500}
             smartSpeed={1000}
-            nav={true}
+            nav={false} // Enable navigation
+            dots={type === 'tour-bestPicked' || type === 'tour-wonders'}
         >
             {type === 'home-package' && (
                 packages.map((pkg) => (
@@ -111,8 +115,6 @@ function Carousal({ packages, events, country, experiences, blog, countryExplore
                 ))
             )}
 
-
-
             {type === 'country-explore' && (
                 countryExplore.map((explore) => (
                     <CountryExplore
@@ -124,6 +126,7 @@ function Carousal({ packages, events, country, experiences, blog, countryExplore
                     />
                 ))
             )}
+
             {type === 'country-experiance' && (
                 countryExperiance.map((experiance) => (
                     <CountryExperiance
@@ -131,11 +134,35 @@ function Carousal({ packages, events, country, experiences, blog, countryExplore
                         image={experiance.image}
                         heading={experiance.heading}
                         description={experiance.description}
+                        link={experiance.link} // Pass the link prop
                         subHeading={experiance.subHeading}
                     />
                 ))
             )}
 
+            {type === 'tour-bestPicked' && (
+                bestPicked.map((bestPicke) => (
+                    <SingleBestPicked
+                        key={bestPicke.id}
+                        image={bestPicke.image}
+                        heading={bestPicke.heading}
+                        description={bestPicke.description}
+                        date={bestPicke.date}
+                    />
+                ))
+            )}
+
+            {type === 'tour-wonders' && (
+                wonders.map((wonders) => (
+                    <Singlewonders
+                        key={wonders.id}
+                        image={wonders.image}
+                        heading={wonders.heading}
+                        description={wonders.description}
+                        date={wonders.date}
+                    />
+                ))
+            )}
         </OwlCarousel>
     );
 }

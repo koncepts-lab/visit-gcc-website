@@ -1,0 +1,121 @@
+.tour-package-page{
+    float: left;
+    width: 100%;
+}
+
+.tour-package-page-container{
+    max-width: 100%;
+    margin: 0 auto;
+}
+.tour-package-page h4{
+    float: left;
+    width: 100%;
+    text-transform: uppercase;
+    font-size: 15px !important;
+}
+.package-filter{
+    float: right;
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 0 15px;
+    max-width: 320px;
+    
+}
+.price-range{
+    float: left;
+    width: 100%;
+    margin-bottom: 15px;
+    margin-top: 5px;
+}
+.package-filter p{
+    float: left;
+    width: 100%;
+    margin-top: 15px;
+}
+.duration-range{
+    float: left;
+    width: 100%;
+    margin-bottom: 5px;
+    margin-top: 15px;
+}
+.accordion-range{
+    float: left;
+    width: 100%;
+}
+.pr-0{ padding-right: 0 !important;}
+.cta-section {
+    float: left;
+    width: 100%;
+    max-width: 1108px;
+    padding: 0 30px;
+}
+.cta-section-container{
+    float: left;
+    width: 100%;
+    background-color: #01888b;
+    color: #fff;
+    padding: 25px 0;
+    margin-bottom: 30px;
+}
+.cta-section-left{
+    display: flex;
+    float: left;
+    width: 100%;
+}
+.cta-section-left svg{
+    font-size: 30px;
+}
+.cta-section-left h6{
+    font-size: 20px;
+    margin-bottom: 0;
+}
+.cta-section-left p{
+    margin-bottom: 0;
+}
+.cta-section-left span{
+    
+}
+.cta-section-right{
+    padding-left: 15px;
+    
+}
+.cta-section-right a{
+    color: #fff !important;
+    margin-top: 29px;
+    float: left;
+    /* font-size: 17px; */
+    letter-spacing: 1px;
+}
+.cta-half-left {
+   position: relative; 
+
+}
+.cta-half-container::after{
+    content: "OR";
+    background: #308ea8;
+    padding: 8px;
+    border-radius: 27px;
+    right: 0;
+    position: absolute;
+    top: 10px;
+}
+
+
+.pakage-bes-picked {
+    float: left;
+    width: 100%;
+    max-width: 1108px;
+    padding: 30px 30px 60px 30px;
+}
+
+.pakage-bes-picked h3 {
+    text-align: center;
+}
+.btn-one{
+    background-color: #a0daca;
+    border: none;
+    padding: 7px 25px;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
