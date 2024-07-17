@@ -4,11 +4,11 @@ import style from './style.module.css';
 import Banner from '../../../components/banner/banner';
 import Countries from '../../../components/countries/countries';
 import { Range } from 'react-range';
-import Accordion from '../../../components/accordion/Accordion';
 import TourPackageTab from '../../../components/tour-package/tour-package-tab';
 import { CiMobile3 } from "react-icons/ci";
 import Carousal from '../../../components/carousel/Carousal';
 import HolidaysTab from '../../../components/tour-package/holidays-tab';
+import Accordion from '../../../components/accordion/accordion';
 
 
 const Country = () => {
