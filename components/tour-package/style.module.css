@@ -440,9 +440,13 @@ background: linear-gradient(0deg, rgba(2,0,36,1) 54%, rgba(0,0,0,0) 100%);
 .img-Holidays {
     height: 100%;
     object-fit: cover;
+    border-radius:15px;
 }
 
 .vertical-center{
     display: flex;
     align-items: center;
 }
+.fb svg{ color: #3b5998;}
+.tw svg { color: #1DA1F2;}
+.gp svg { color: #db4a39 ; font-size: 20px;}

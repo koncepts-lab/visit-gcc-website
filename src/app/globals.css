@@ -230,3 +230,5 @@ select {
 }
 .owl-dots button{ background-color:#ccc !important;}
 
+.br-15{ border-radius:15px;}
+img{ max-width: 100%;}
