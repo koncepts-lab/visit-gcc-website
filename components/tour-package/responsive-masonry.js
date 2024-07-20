@@ -13,42 +13,42 @@ import { GiSailboat } from "react-icons/gi";
 
 const images = [
     {
-        src: "/images/demo/01.JPG",
+        src: "/images/demo/01.jpg",
         title: "Beautiful Yas Island and Dubai",
         provider: "John Smith",
         date: "04 July 2024",
         rating: 4
     },
     {
-        src: "/images/demo/02.JPG",
+        src: "/images/demo/02.jpg",
         title: "Dubai Jain Tour",
         provider: "John Smith",
         date: "04 July 2024",
         rating: 5
     },
     {
-        src: "/images/demo/03.JPG",
+        src: "/images/demo/03.jpg",
         title: "Dubai Extravaganza",
         provider: "John Smith",
         date: "04 July 2024",
         rating: 3
     },
     {
-        src: "/images/demo/04.JPG",
+        src: "/images/demo/04.jpg",
         title: "Dubai Miracle Garden",
         provider: "John Smith",
         date: "04 July 2024",
         rating: 4
     },
     {
-        src: "/images/demo/03.JPG",
+        src: "/images/demo/03.jpg",
         title: "Dubai Mall",
         provider: "John Smith",
         date: "04 July 2024",
         rating: 5
     },
     {
-        src: "/images/demo/06.JPG",
+        src: "/images/demo/06.jpg",
         title: "Dubai Aquarium & Underwater Zoo",
         provider: "John Smith",
         date: "04 July 2024",
