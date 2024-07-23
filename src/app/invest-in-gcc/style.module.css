@@ -1,0 +1,50 @@
+.invest-in-gcc{
+    float: left;
+    width: 100%;
+    padding: 50px 0 0 0;
+}
+.flex-box{
+    float: left;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+}
+.energy-subsidies-img{
+    width: 100%;
+    max-width: 390px;
+}
+
+.ask-your-questions{
+    background-color:#ecf1f7;
+    padding: 50px 0;
+    margin-top: 50px;
+}
+.ask-your-questions input{
+    float: left;
+    width: 100%;
+    border: solid 1px #ccc;
+    margin-bottom: 30px;
+    padding:0 15px;
+}
+.ask-your-questions textarea{
+    float: left;
+    width: 100%;
+    border: solid 1px #ccc;
+    margin-bottom: 30px;
+    padding:15px;
+    min-height: 100px;
+}
+.ask-your-questions button{
+    background-color: #57b1b2;
+    border: none;
+    padding: 7px 25px;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin: 0 auto;
+    display: block;
+}
+.pt-25 {padding-top: 25px;}
+.flex-box img{ max-width: 150px; margin: 0 auto; }

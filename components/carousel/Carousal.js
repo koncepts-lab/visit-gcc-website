@@ -14,12 +14,13 @@ import CountryExperiance from '../countries/country-experiance';
 import CountryExplore from '../countries/countries-explore';
 import SingleBestPicked from '../tour-package/best-picked';
 import Singlewonders from '../tour-package/wonders';
+import SinglePackageContainerReview from '../tour-package-details/package-container-review';
 
 const OwlCarousel = dynamic(() => import("react-owl-carousel"), {
     ssr: false,
 });
 
-function Carousal({ packages, events, country, experiences, blog, countryExplore, count, type, bestPicked, wonders }) {
+function Carousal({ packages, events, country, experiences, blog, countryExplore, count, type, bestPicked, wonders, packageDetailsReview }) {
     const Responsive = {
         0: {
             items: 1,
@@ -65,68 +66,58 @@ function Carousal({ packages, events, country, experiences, blog, countryExplore
                         image={pkg.image}
                         heading={pkg.heading}
                         description={pkg.description}
+                        location={pkg.location}
+                        price={pkg.price}
+                        priceOld={pkg.priceOld}
+                        currency={pkg.currency}
+                        link={pkg.link}
                     />
                 ))
             )}
-
-            {type === 'home-event' && (
-                events.map((evt) => (
-                    <SingleHomeEvents
-                        key={evt.id}
-                        image={evt.image}
-                        heading={evt.heading}
-                        description={evt.description}
-                        date={evt.date}
-                    />
-                ))
-            )}
-
             {type === 'home-experience' && (
-                experiences.map((exp) => (
+                experiences.map((experience) => (
                     <SingleHomeExperience
-                        key={exp.id}
-                        image={exp.image}
-                        heading={exp.heading}
-                        description={exp.description}
+                        key={experience.id}
+                        image={experience.image}
+                        heading={experience.heading}
+                        description={experience.description}
+                        link={experience.link}
                     />
                 ))
             )}
-
             {type === 'home-blog' && (
-                blog.map((post) => (
+                blog.map((b) => (
                     <SingleHomeBlog
-                        key={post.id}
-                        image={post.image}
-                        heading={post.heading}
-                        description={post.description}
+                        key={b.id}
+                        image={b.image}
+                        heading={b.heading}
+                        description={b.description}
+                        link={b.link}
                     />
                 ))
             )}
-
-            {type === 'country-tab' && (
-                country.map((pkg) => (
+            {type === 'home-event' && (
+                events.map((event) => (
+                    <SingleHomeEvents
+                        key={event.id}
+                        image={event.image}
+                        heading={event.heading}
+                        description={event.description}
+                        link={event.link}
+                    />
+                ))
+            )}
+            {type === 'country-tab-slider' && (
+                country.map((country) => (
                     <TabSlider
-                        key={pkg.id}
-                        image={pkg.image}
-                        heading={pkg.heading}
-                        description={pkg.description}
-                        subHeading={pkg.subHeading}
+                        key={country.id}
+                        image={country.image}
+                        heading={country.heading}
+                        description={country.description}
+                        link={country.link}
                     />
                 ))
             )}
-
-            {type === 'country-explore' && (
-                countryExplore.map((explore) => (
-                    <CountryExplore
-                        key={explore.id}
-                        image={explore.image}
-                        heading={explore.heading}
-                        description={explore.description}
-                        subHeading={explore.subHeading}
-                    />
-                ))
-            )}
-
             {type === 'country-experiance' && (
                 countryExperiance.map((experiance) => (
                     <CountryExperiance
@@ -134,24 +125,32 @@ function Carousal({ packages, events, country, experiences, blog, countryExplore
                         image={experiance.image}
                         heading={experiance.heading}
                         description={experiance.description}
-                        link={experiance.link} // Pass the link prop
-                        subHeading={experiance.subHeading}
+                        link={experiance.link}
                     />
                 ))
             )}
-
+            {type === 'country-explore' && (
+                countryExplore.map((countryExplore) => (
+                    <CountryExplore
+                        key={countryExplore.id}
+                        image={countryExplore.image}
+                        heading={countryExplore.heading}
+                        description={countryExplore.description}
+                        link={countryExplore.link}
+                    />
+                ))
+            )}
             {type === 'tour-bestPicked' && (
-                bestPicked.map((bestPicke) => (
+                bestPicked.map((bestPicked) => (
                     <SingleBestPicked
-                        key={bestPicke.id}
-                        image={bestPicke.image}
-                        heading={bestPicke.heading}
-                        description={bestPicke.description}
-                        date={bestPicke.date}
+                        key={bestPicked.id}
+                        image={bestPicked.image}
+                        heading={bestPicked.heading}
+                        description={bestPicked.description}
+                        link={bestPicked.link}
                     />
                 ))
             )}
-
             {type === 'tour-wonders' && (
                 wonders.map((wonders) => (
                     <Singlewonders
@@ -159,7 +158,15 @@ function Carousal({ packages, events, country, experiences, blog, countryExplore
                         image={wonders.image}
                         heading={wonders.heading}
                         description={wonders.description}
-                        date={wonders.date}
+                        link={wonders.link}
+                    />
+                ))
+            )}
+            {type === 'tour-package-details-reviews' && (
+                packageDetailsReview.map((packageDetailsReview) => (
+                    <SinglePackageContainerReview
+                        key={packageDetailsReview.id}
+                        image={packageDetailsReview.image}
                     />
                 ))
             )}

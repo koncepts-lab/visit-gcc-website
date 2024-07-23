@@ -1,0 +1,52 @@
+.tour-package-details{
+    float: left;
+    width: 100%;
+    margin: 50px 0;
+}
+.container-package-details{
+    background-color:#f5f5f5; 
+    border-radius:15px;
+    padding: 20px;
+}
+.flex-package-details{
+    float: left;
+    width: 100%;
+    display: flex;
+}
+.flex-package-details span{ margin-right: 15px;}
+.circle-icon {
+    margin-right: 5px;
+}
+.PiSealCheckFill{ font-size: 22px; margin-right: 5px;color: red;}
+.IoMdInformationCircleOutline{ font-size: 19px; margin-left: 5px;}
+.MdIosShare{ font-size: 19px;}
+.FaRegHeart{ font-size: 19px; margin-left: 5px;}
+
+.flex-package-details-right{
+    float: left;
+    width: 100%;
+    display: flex;  
+}
+.flex-package-details-right p{font-size: 13px;}
+.min-w {min-width: 100px;}
+.btn-one{
+    background-color: #a0daca;
+    border: none;
+    padding: 7px 15px;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 15px;
+    min-width: 120px;
+    margin: 0 15px;
+}
+.btn-two{
+    background-color: #000;
+    border: none;
+    padding: 7px 15px;
+    font-size: 15px;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
