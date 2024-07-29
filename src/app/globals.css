@@ -233,3 +233,41 @@ select {
 .br-15{ border-radius:15px;}
 img{ max-width: 100%;}
 
+.pdb-3{
+  padding-bottom: 1rem;
+}
+
+
+@media only screen and (max-width: 991px) {
+  h3 {
+    font-size: 20px !important;
+   
+}
+.pdb-3{
+  padding-bottom: 0px;
+}
+.footer-links li {
+  float: left;
+}
+footer .navbar-brand {
+  float: unset;
+  margin: 0 auto;
+  display: block;
+  text-align: center;
+  max-width: 125px;
+  margin-bottom: 15px;
+}
+.footer-links ul:last-child{
+  float: left;
+  width: 100%;
+  margin-top: 10px;
+}
+.footer-links ul:last-child li{
+  text-align: center ;
+}
+.social-media {
+  text-align: center;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+}
