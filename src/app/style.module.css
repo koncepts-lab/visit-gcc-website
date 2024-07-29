@@ -36,4 +36,18 @@
 }
 .home-blog img{ border-radius: 15px;} 
 
-  
+
+
+@media only screen and (max-width: 991px) {
+    .home-packages {
+        padding: 0 0 15px 0;
+    }
+    .home-event{ padding: 15px 0;}
+    .home-experience {
+        margin-bottom: 15px;
+    }
+    .home-blog {
+        padding: 15px 0;
+    }
+
+  }

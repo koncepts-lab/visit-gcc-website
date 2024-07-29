@@ -39,7 +39,7 @@ function Home() {
       <div className={style['home-packages']}>
         <div className='container'>
           <div className='row'>
-            <div className='col-md-12 pb-3'>
+            <div className='col-md-12 pdb-3'>
               <h3>GCC Packages</h3>
             </div>
             <Carousal packages={packagesData} count={3} type="home-package" />
@@ -50,7 +50,7 @@ function Home() {
 
       <div className='container'>
         <div className="row">
-          <div className="col-md-12 pb-3">
+          <div className="col-md-12 pdb-3">
             <img src="/images/banner-02.jpg" className='w-100' alt="Banner" />
           </div>
         </div>
@@ -60,10 +60,10 @@ function Home() {
       <div className={style['home-event']}>
         <div className='container'>
           <div className="row">
-            <div className="col-md-6 pb-3">
+            <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-8 col-sm-9 col-9 pdb-3">
               <h3>Upcoming events in April</h3>
             </div>
-            <div className="col-md-6 pb-3 text-right">
+            <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-4 col-sm-3 col-3 pdb-3 text-right">
               <a href="/" className='float-right'>View All</a>
             </div>
             <Carousal events={eventsData} count={3} type="home-event" />
@@ -76,10 +76,10 @@ function Home() {
       <div className={style['home-experience']}>
         <div className='container'>
           <div className="row">
-            <div className="col-md-6 pb-3">
+            <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-8 col-sm-9 col-9 pdb-3">
               <h3>What to experience</h3>
             </div>
-            <div className="col-md-6 pb-3 text-right">
+            <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-4 col-sm-3 col-3 text-right">
               <a href="/" className='float-right'>View All</a>
             </div>
             <Carousal experiences={experienceData} count={4} type="home-experience" />
@@ -90,7 +90,7 @@ function Home() {
 
       <div className='container'>
         <div className="row">
-          <div className="col-md-12 pb-3">
+          <div className="col-md-12 pdb-3">
             <img src="/images/banner-02.jpg" className='w-100' alt="Banner" />
           </div>
         </div>
@@ -100,10 +100,10 @@ function Home() {
       <div className={style['home-blog']}>
         <div className='container'>
           <div className="row">
-            <div className="col-md-6 pb-3">
+            <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-8 col-sm-9 col-9 pdb-3">
               <h3>Latest Blog Posts</h3>
             </div>
-            <div className="col-md-6 pb-3 text-right">
+            <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-4 col-sm-3 col-3 pdb-3 text-right">
               <a href="/" className='float-right'>View All</a>
             </div>
             <Carousal blog={blogData} count={4} type="home-blog" />

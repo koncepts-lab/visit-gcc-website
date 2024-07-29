@@ -55,3 +55,13 @@
   background: #135f74;
   color: #fff;
 }
+@media only screen and (max-width: 991px) {
+  .banner-container img {
+      max-width:30px;
+
+  }
+  .banner-container h4 {
+      margin-top: 10px;
+      font-size: 13px !important;
+  }
+}
