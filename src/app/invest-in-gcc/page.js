@@ -110,7 +110,7 @@ function page() {
 
                         <div className='container'>
                             <div className='row'>
-                                <div className='col-md-12'>
+                                <div className='col-md-8'>
                                     <h3>Ask Your Questions</h3>
                                     <p>If your question has not been answered, you can submit your own by using the form below. Alternatively, feel free to <a href='#0'><b><u>Contact Us</u></b></a> and one of our staff will be happy to assist you.</p>
                                 </div>

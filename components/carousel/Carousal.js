@@ -1,10 +1,10 @@
 "use client";
 
 import React from 'react';
-import $ from "jquery"; // Import jQuery
-import "owl.carousel/dist/assets/owl.carousel.css";
-import "owl.carousel/dist/assets/owl.theme.default.css";
-import dynamic from "next/dynamic";
+import $ from 'jquery'; // Import jQuery
+import 'owl.carousel/dist/assets/owl.carousel.css';
+import 'owl.carousel/dist/assets/owl.theme.default.css';
+import dynamic from 'next/dynamic';
 import SingleHomePackage from '../home/packages/packages';
 import SingleHomeEvents from '../home/events/events';
 import SingleHomeExperience from '../home/experience/experience';
@@ -15,12 +15,30 @@ import CountryExplore from '../countries/countries-explore';
 import SingleBestPicked from '../tour-package/best-picked';
 import Singlewonders from '../tour-package/wonders';
 import SinglePackageContainerReview from '../tour-package-details/package-container-review';
+import SinglePackageContainerReviewImage from '../tour-package-details/package-details-review'; // Import the component
+import RatingCarousel from '../tour-package-details/RatingCarousel';
+import PakageDetailsOtherPackages from '../tour-package-details/pakage-details-other-packages';
 
-const OwlCarousel = dynamic(() => import("react-owl-carousel"), {
-    ssr: false,
+const OwlCarousel = dynamic(() => import('react-owl-carousel'), {
+    ssr: false
 });
 
-function Carousal({ packages, events, country, experiences, blog, countryExplore, count, type, bestPicked, wonders, packageDetailsReview }) {
+function Carousal({
+    packages,
+    events,
+    country,
+    experiences,
+    blog,
+    countryExplore,
+    userRatingsCarosul,
+    pakageDetailsOtherPackages,
+    count,
+    type,
+    bestPicked,
+    wonders,
+    packageDetailsReview,
+    packageDetailsReviewImage
+}) {
     const Responsive = {
         0: {
             items: 1,
@@ -36,16 +54,20 @@ function Carousal({ packages, events, country, experiences, blog, countryExplore
         }
     };
 
-    if (typeof window !== "undefined" && !window.$) {
+    if (typeof window !== 'undefined' && !window.$) {
         window.$ = window.jQuery = $;
     }
 
     const countryExperiance = [
-        { id: 1, link: 'https://www.google.com/', heading: 'Lorem Ipsum is simply dummy text', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s... ', image: "/images/blog/01.jpg" },
-        { id: 2, link: 'https://www.google.com/', heading: 'Lorem Ipsum is simply dummy text', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s... ', image: "/images/blog/02.jpg" },
-        { id: 3, link: 'https://www.google.com/', heading: 'Lorem Ipsum is simply dummy text', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s... ', image: "/images/blog/03.jpg" },
-        { id: 4, link: 'https://www.google.com/', heading: 'Lorem Ipsum is simply dummy text', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s... ', image: "/images/blog/04.jpg" },
-        { id: 5, link: 'https://www.google.com/', heading: 'Lorem Ipsum is simply dummy text', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s... ', image: "/images/blog/01.jpg" },
+        {
+            id: 1,
+            link: 'https://www.google.com/',
+            heading: 'Lorem Ipsum is simply dummy text',
+            description:
+                'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s... ',
+            image: '/images/blog/01.jpg'
+        },
+        // More data...
     ];
 
     return (
@@ -56,10 +78,10 @@ function Carousal({ packages, events, country, experiences, blog, countryExplore
             loop={true}
             slideSpeed={500}
             smartSpeed={1000}
-            nav={false} // Enable navigation
+            nav={false}
             dots={type === 'tour-bestPicked' || type === 'tour-wonders'}
         >
-            {type === 'home-package' && (
+            {type === 'home-package' &&
                 packages.map((pkg) => (
                     <SingleHomePackage
                         key={pkg.id}
@@ -72,9 +94,8 @@ function Carousal({ packages, events, country, experiences, blog, countryExplore
                         currency={pkg.currency}
                         link={pkg.link}
                     />
-                ))
-            )}
-            {type === 'home-experience' && (
+                ))}
+            {type === 'home-experience' &&
                 experiences.map((experience) => (
                     <SingleHomeExperience
                         key={experience.id}
@@ -83,20 +104,12 @@ function Carousal({ packages, events, country, experiences, blog, countryExplore
                         description={experience.description}
                         link={experience.link}
                     />
-                ))
-            )}
-            {type === 'home-blog' && (
+                ))}
+            {type === 'home-blog' &&
                 blog.map((b) => (
-                    <SingleHomeBlog
-                        key={b.id}
-                        image={b.image}
-                        heading={b.heading}
-                        description={b.description}
-                        link={b.link}
-                    />
-                ))
-            )}
-            {type === 'home-event' && (
+                    <SingleHomeBlog key={b.id} image={b.image} heading={b.heading} description={b.description} link={b.link} />
+                ))}
+            {type === 'home-event' &&
                 events.map((event) => (
                     <SingleHomeEvents
                         key={event.id}
@@ -105,9 +118,8 @@ function Carousal({ packages, events, country, experiences, blog, countryExplore
                         description={event.description}
                         link={event.link}
                     />
-                ))
-            )}
-            {type === 'country-tab-slider' && (
+                ))}
+            {type === 'country-tab-slider' &&
                 country.map((country) => (
                     <TabSlider
                         key={country.id}
@@ -116,9 +128,8 @@ function Carousal({ packages, events, country, experiences, blog, countryExplore
                         description={country.description}
                         link={country.link}
                     />
-                ))
-            )}
-            {type === 'country-experiance' && (
+                ))}
+            {type === 'country-experiance' &&
                 countryExperiance.map((experiance) => (
                     <CountryExperiance
                         key={experiance.id}
@@ -127,9 +138,8 @@ function Carousal({ packages, events, country, experiences, blog, countryExplore
                         description={experiance.description}
                         link={experiance.link}
                     />
-                ))
-            )}
-            {type === 'country-explore' && (
+                ))}
+            {type === 'country-explore' &&
                 countryExplore.map((countryExplore) => (
                     <CountryExplore
                         key={countryExplore.id}
@@ -138,9 +148,8 @@ function Carousal({ packages, events, country, experiences, blog, countryExplore
                         description={countryExplore.description}
                         link={countryExplore.link}
                     />
-                ))
-            )}
-            {type === 'tour-bestPicked' && (
+                ))}
+            {type === 'tour-bestPicked' &&
                 bestPicked.map((bestPicked) => (
                     <SingleBestPicked
                         key={bestPicked.id}
@@ -149,9 +158,8 @@ function Carousal({ packages, events, country, experiences, blog, countryExplore
                         description={bestPicked.description}
                         link={bestPicked.link}
                     />
-                ))
-            )}
-            {type === 'tour-wonders' && (
+                ))}
+            {type === 'tour-wonders' &&
                 wonders.map((wonders) => (
                     <Singlewonders
                         key={wonders.id}
@@ -160,16 +168,55 @@ function Carousal({ packages, events, country, experiences, blog, countryExplore
                         description={wonders.description}
                         link={wonders.link}
                     />
-                ))
-            )}
-            {type === 'tour-package-details-reviews' && (
-                packageDetailsReview.map((packageDetailsReview) => (
+                ))}
+            {type === 'tour-package-details-reviews' &&
+                packageDetailsReview.map((review) => (
                     <SinglePackageContainerReview
-                        key={packageDetailsReview.id}
-                        image={packageDetailsReview.image}
+                        key={review.id}
+                        image={review.image}
+                        heading={review.heading} // Add missing props
+                        description={review.description} // Add missing props
                     />
-                ))
-            )}
+                ))}
+            {type === 'tour-package-details-reviews-img' &&
+                packageDetailsReviewImage.map((reviewImage) => (
+                    <SinglePackageContainerReviewImage
+                        key={reviewImage.id}
+                        image={reviewImage.image} // Correct image prop
+                        heading={reviewImage.heading} // Add heading prop
+                        description={reviewImage.description} // Add description prop
+                    />
+                ))}
+
+            {type === 'user-ratings-carosul' &&
+                userRatingsCarosul.map((userRatingsCarosul) => (
+                    <RatingCarousel
+                        key={userRatingsCarosul.id}
+                        image={userRatingsCarosul.image}
+                        headingIcon={userRatingsCarosul.headingIcon}
+                        heading={userRatingsCarosul.heading}
+                        date={userRatingsCarosul.date}
+                        description={userRatingsCarosul.description}
+                        link={userRatingsCarosul.link}
+                    />
+                ))}
+
+            {type === 'pakage-details-other-packages' &&
+                pakageDetailsOtherPackages.map((pakageDetailsOtherPackages) => (
+                    <PakageDetailsOtherPackages
+                        key={pakageDetailsOtherPackages.id}
+                        image={pakageDetailsOtherPackages.image}
+                        headingIcon={pakageDetailsOtherPackages.headingIcon}
+                        heading={pakageDetailsOtherPackages.heading}
+                        date={pakageDetailsOtherPackages.date}
+                        description={pakageDetailsOtherPackages.description}
+                        link={pakageDetailsOtherPackages.link}
+                    />
+                ))}
+
+
+
+
         </OwlCarousel>
     );
 }
