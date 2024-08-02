@@ -237,6 +237,14 @@ img{ max-width: 100%;}
   padding-bottom: 1rem;
 }
 
+.nav-tabs .nav-link.active {
+  color: #fff !important;
+}
+.filter-full-width{ width: 100%;}
+
+
+
+
 
 @media only screen and (max-width: 991px) {
   h3 {

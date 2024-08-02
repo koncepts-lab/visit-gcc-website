@@ -89,9 +89,10 @@
     padding: 15px;
     /* background: #cccccc17; */
     margin-top: 15px;
-    max-width: 1108px;
+    /* max-width: 1108px; */
     
 }
+
 .country-explore .container-fluid{
     max-width: 100px;
 }

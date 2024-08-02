@@ -194,11 +194,11 @@ function Page() {
 
                 <div className='container'>
                     <div className='row'>
-                        <div className='col-md-6'>
+                        <div className={`col-md-12 ${style['pdb-3']}`}>
                             <h3 className={`container ${style['p-color']}`}>Package Inclusions</h3>
                             <PackageInclusions />
                         </div>
-                        <div className='col-md-6'>
+                        <div className='col-md-12'>
                             <h3 className={`container ${style['p-color']}`}>Package Exclusions</h3>
                             <PackageExclusions />
                         </div>

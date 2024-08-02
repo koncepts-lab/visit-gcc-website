@@ -119,3 +119,16 @@
     text-transform: uppercase;
     font-weight: 600;
   }
+.highlight{ display: none;}  
+.filter-full-width{ width: 100% !important;}
+.tour-package-container{
+    display: flex;
+    margin: 0 auto;
+    position: relative;
+    max-width: 1500px;
+    background: darkslategrey;
+}
+.left{     color: red;
+    min-width: 300px;}
+.right{ color: red;}
+

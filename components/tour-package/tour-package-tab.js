@@ -2,11 +2,71 @@
 import React, { useEffect } from 'react';
 import style from './style.module.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import MyWrapper from './responsive-masonry';
 import Carousal from '../carousel/Carousal';
+// import MyWrapper from './responsive-masonry';
 
 
-const TourPackageTab = () => {
+
+import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
+import Rating from "react-rating-stars-component";
+// import style from "./style.module.css"; 
+import { IoChatbubbleOutline } from "react-icons/io5";
+import { FaRegLightbulb } from "react-icons/fa6";
+import { IoTicketOutline } from "react-icons/io5";
+import { MdOutlineDinnerDining } from "react-icons/md";
+import { MdOutlineEmojiPeople } from "react-icons/md";
+import { MdDownhillSkiing } from "react-icons/md";
+import { IoBusOutline } from "react-icons/io5";
+import { GiSailboat } from "react-icons/gi";
+import MyWrapper from './responsive-masonry';
+
+const images = [
+    {
+        src: "/images/demo/01.jpg",
+        title: "Beautiful Yas Island and Dubai",
+        provider: "John Smith",
+        date: "04 July 2024",
+        rating: 4
+    },
+    {
+        src: "/images/demo/02.jpg",
+        title: "Dubai Jain Tour",
+        provider: "John Smith",
+        date: "04 July 2024",
+        rating: 5
+    },
+    {
+        src: "/images/demo/03.jpg",
+        title: "Dubai Extravaganza",
+        provider: "John Smith",
+        date: "04 July 2024",
+        rating: 3
+    },
+    {
+        src: "/images/demo/04.jpg",
+        title: "Dubai Miracle Garden",
+        provider: "John Smith",
+        date: "04 July 2024",
+        rating: 4
+    },
+    {
+        src: "/images/demo/03.jpg",
+        title: "Dubai Mall",
+        provider: "John Smith",
+        date: "04 July 2024",
+        rating: 5
+    },
+    {
+        src: "/images/demo/06.jpg",
+        title: "Dubai Aquarium & Underwater Zoo",
+        provider: "John Smith",
+        date: "04 July 2024",
+        rating: 3
+    },
+
+
+];
+const TourPackageTab = ({ breakPoints }) => {
     const countryExplore = [
         { id: 1, heading: 'Desitination Heading', description: 'Luxury', image: "/images/blog/01.jpg" },
         { id: 2, heading: 'Desitination Heading', description: 'Culture', image: "/images/blog/02.jpg" },
@@ -111,7 +171,15 @@ const TourPackageTab = () => {
                                             <div className='container'>
                                                 <div className='row'>
                                                     <div className='col-md-12 p-0'>
-                                                        <MyWrapper /> {/* Use the MyWrapper component */}
+                                                        1555
+
+                                                        {/* MyWrapper start */}
+
+
+
+
+                                                        {/* MyWrapper end */}
+                                                        <MyWrapper breakPoints={breakPoints} />
                                                     </div>
                                                 </div>
                                             </div>
@@ -162,7 +230,7 @@ const TourPackageTab = () => {
                                                 <div className='row'>
                                                     <div className='col-md-12'>
                                                         <h4>New Activities</h4>
-                                                        <MyWrapper /> {/* Use the MyWrapper component */}
+                                                        {/* <MyWrapper /> */}
                                                     </div>
                                                 </div>
                                             </div>

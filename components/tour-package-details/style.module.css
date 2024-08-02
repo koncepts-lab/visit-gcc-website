@@ -169,6 +169,7 @@ border:none;
     border-top-right-radius: 0 !important;
     border-radius: 0;
     word-break: break-all;
+    padding: 15px 15px;
    
 }
 .package-inclusions-tabs li button:hover{
@@ -326,3 +327,4 @@ border:none;
 
 
     
+

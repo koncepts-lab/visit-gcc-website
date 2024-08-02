@@ -4,16 +4,22 @@ import style from './style.module.css';
 import Banner from '../../../components/banner/banner';
 import Countries from '../../../components/countries/countries';
 import { Range } from 'react-range';
-import TourPackageTab from '../../../components/tour-package/tour-package-tab';
 import { CiMobile3 } from "react-icons/ci";
 import Carousal from '../../../components/carousel/Carousal';
 import HolidaysTab from '../../../components/tour-package/holidays-tab';
 import Accordion from '../../../components/accordion/accordion';
-
+import TourPackageTab from '../../../components/tour-package/tour-package-tab';
 
 const Country = () => {
     const [priceRange, setPriceRange] = useState([30, 3900]);
     const [durationRange, setDurationRange] = useState([1, 10]);
+    const [isToggled, setIsToggled] = useState(false);
+    const firstBreakPoints = { 350: 1, 750: 3, 1200: 6, 1500: 4 };
+    const secondBreakPoints = { 350: 1, 750: 2, 1200: 5, 1500: 3 };
+
+    const handleToggle = () => {
+        setIsToggled(!isToggled);
+    };
 
     const handlePriceRangeChange = (values) => {
         setPriceRange(values);
@@ -58,6 +64,7 @@ const Country = () => {
         { id: 5, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/best-picked/02.jpg" },
         { id: 6, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/best-picked/03.jpg", },
     ];
+
     const wondersData = [
         { id: 1, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/wonders/01.jpg" },
         { id: 2, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/wonders/02.jpg" },
@@ -67,6 +74,8 @@ const Country = () => {
         { id: 6, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/wonders/03.jpg", },
     ];
 
+
+
     return (
         <>
             <Banner />
@@ -74,9 +83,12 @@ const Country = () => {
 
             <section className={style['tour-package-page']}>
                 <div className={`container-fluid ${style['tour-package-page-container']}`}>
-                    <div className='row'>
+                    <button onClick={handleToggle}>Toggle</button>
+
+                    <div className={style['tour-package-container']}>
+
                         {/* left */}
-                        <div className='col-md-3'>
+                        <div className={`${style['left']} ${isToggled ? `${style['highlight']}` : ''}`}>
                             <div className={style['package-filter']}>
                                 <h4>Filter</h4>
                                 <div className={style['price-range']}>
@@ -168,9 +180,22 @@ const Country = () => {
                         {/* left end */}
 
                         {/* right */}
-                        <div className={`col-md-9 ${style['pr-0']}`}>
+                        <div className={`${style['right']}  ${isToggled ? `${style['filter-full-width']}` : ''}`}>
                             <h3>GCC Countries</h3>
-                            <TourPackageTab />
+                            <TourPackageTab
+                                breakPoints={isToggled ? firstBreakPoints : secondBreakPoints}
+                            />
+
+
+                            {/* TourPackageTab Start */}
+                            {/* TourPackageTab End */}
+
+
+
+
+
+
+
 
                             <section className={style['cta-section']}>
                                 <div className={style['cta-section-container']}>
@@ -212,13 +237,12 @@ const Country = () => {
                                                     </div>
                                                 </div>
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>
                             </section>
 
-                            {/* bes picked for you */}
+                            {/* best picked for you */}
                             <section className={style['pakage-bes-picked']}>
                                 <div className='container'>
                                     <div className='row'>
@@ -231,10 +255,9 @@ const Country = () => {
                                     </div>
                                 </div>
                             </section>
-                            {/* bes picked for you END*/}
+                            {/* best picked for you END*/}
 
-
-                            {/* bes picked for you */}
+                            {/* lesser-known wonders */}
                             <section className={style['pakage-bes-picked']}>
                                 <div className='container'>
                                     <div className='row'>
@@ -248,10 +271,9 @@ const Country = () => {
                                     </div>
                                 </div>
                             </section>
-                            {/* bes picked for you END*/}
+                            {/* lesser-known wonders END*/}
 
-
-                            {/* bes picked for you */}
+                            {/* holidays by theme */}
                             <section className={style['pakage-bes-picked']}>
                                 <div className='container'>
                                     <div className='row'>
@@ -259,7 +281,6 @@ const Country = () => {
                                             <h3 className='pb-3'>Holidays by theme</h3>
                                             <HolidaysTab />
                                         </div>
-
                                     </div>
 
                                     <div className='row'>
@@ -269,22 +290,14 @@ const Country = () => {
                                     </div>
                                 </div>
                             </section>
-                            {/* bes picked for you END*/}
-
-
-
-
+                            {/* holidays by theme END*/}
 
                         </div>
                         {/* right end */}
 
-
-
                     </div>
                 </div>
             </section>
-
-
         </>
     );
 }
