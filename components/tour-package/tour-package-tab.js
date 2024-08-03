@@ -168,17 +168,10 @@ const TourPackageTab = ({ breakPoints }) => {
                                         aria-labelledby="All-tab"
                                     >
                                         <div className={`${style['documentation-container']} p-0`}>
-                                            <div className='container'>
+                                            <div className='container-fluid'>
                                                 <div className='row'>
                                                     <div className='col-md-12 p-0'>
-                                                        1555
 
-                                                        {/* MyWrapper start */}
-
-
-
-
-                                                        {/* MyWrapper end */}
                                                         <MyWrapper breakPoints={breakPoints} />
                                                     </div>
                                                 </div>

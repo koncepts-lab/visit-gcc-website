@@ -14,11 +14,8 @@
     font-size: 15px !important;
 }
 .package-filter{
-    float: right;
+    float: left;
     width: 100%;
-    margin-bottom: 15px;
-    padding: 0 15px;
-    max-width: 320px;
     
 }
 .price-range{
@@ -46,7 +43,7 @@
 .cta-section {
     float: left;
     width: 100%;
-    max-width: 1108px;
+    /* max-width: 1108px; */
     padding: 0 30px;
 }
 .cta-section-container{
@@ -104,7 +101,7 @@
 .pakage-bes-picked {
     float: left;
     width: 100%;
-    max-width: 1108px;
+    /* max-width: 1108px; */
     padding: 30px 30px 60px 30px;
 }
 
@@ -126,9 +123,33 @@
     margin: 0 auto;
     position: relative;
     max-width: 1500px;
-    background: darkslategrey;
 }
-.left{     color: red;
-    min-width: 300px;}
-.right{ color: red;}
+.tour-packagebtn-container{
+        margin: 0 auto;
+    position: relative;
+    max-width: 1500px;
+}
+.left{ flex: 1 1 25%;
+            padding: 50px 20px;
+            box-sizing: border-box;
+            overflow: hidden; 
+        }
+.right{ 
+    flex: 1 1 75%;
+    margin: 0;
+    padding: 50px 20px;
+    box-sizing: border-box;
+    overflow: hidden;
+ }
+.btn-toggle{
+    background: none;
+    border: none;
+    position: absolute;
+    z-index: 1000;
+    left: 20px;
+    top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 

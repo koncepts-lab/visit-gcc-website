@@ -9,6 +9,7 @@ import Carousal from '../../../components/carousel/Carousal';
 import HolidaysTab from '../../../components/tour-package/holidays-tab';
 import Accordion from '../../../components/accordion/accordion';
 import TourPackageTab from '../../../components/tour-package/tour-package-tab';
+import { LuMenu } from "react-icons/lu";
 
 const Country = () => {
     const [priceRange, setPriceRange] = useState([30, 3900]);
@@ -83,14 +84,18 @@ const Country = () => {
 
             <section className={style['tour-package-page']}>
                 <div className={`container-fluid ${style['tour-package-page-container']}`}>
-                    <button onClick={handleToggle}>Toggle</button>
+
+
+                    <div className={style['tour-packagebtn-container']}>
+                        <button className={style['btn-toggle']} onClick={handleToggle}><LuMenu /> &nbsp; FILTER</button>
+                    </div>
 
                     <div className={style['tour-package-container']}>
 
                         {/* left */}
                         <div className={`${style['left']} ${isToggled ? `${style['highlight']}` : ''}`}>
                             <div className={style['package-filter']}>
-                                <h4>Filter</h4>
+                                <h4 className='pt-2'>Price Range</h4>
                                 <div className={style['price-range']}>
                                     <Range
                                         step={1}
@@ -244,7 +249,7 @@ const Country = () => {
 
                             {/* best picked for you */}
                             <section className={style['pakage-bes-picked']}>
-                                <div className='container'>
+                                <div className='container-fluid'>
                                     <div className='row'>
                                         <div className='col-md-12'>
                                             <h3 className='pb-3'>Best picked for you</h3>
