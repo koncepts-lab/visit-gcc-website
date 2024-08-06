@@ -13,25 +13,26 @@ function Header() {
         <div className="container">
           <Link className="navbar-brand" href='/'><img src="/images/logo.svg" alt="" /></Link>
 
-          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+          <button className={`navbar-toggler ${style['toggle-btn']}`} type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
             <span className="navbar-toggler-icon"></span>
           </button>
           <div className="collapse navbar-collapse justify-content-end" id="collapsibleNavbar">
-            <ul className="navbar-nav">
+
+            <ul className={`navbar-nav ${style['navbar-nav-c']}`}>
               <li className="nav-item">
                 <Link className={`nav-link active ${style['invest-link']}`} href='/'>INVEST IN <span>GCC</span></Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" href='/packages'><img src="/images/GCC-one-visa.png" alt="" /></Link>
+                <Link className="nav-link" href='/packages'><img src="/images/GCC-one-visa.png" className={style['img-top-logo']} alt="" /></Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" href='/packages'><img src="/images/Partner.png" alt="" /></Link>
+                <Link className="nav-link" href='/packages'><img src="/images/Partner.png" alt="" className={style['img-top-logo']} /></Link>
               </li>
               <li className="nav-item">
                 <Link className={`nav-link ${style['login-link']}`} href='/about'>Login/Signup</Link>
               </li>
 
-              <li className="nav-item dropdown">
+              <li className={`nav-item dropdown ${style['dropdown-right']}`}>
                 <ReactFlagsSelect
                   countries={["US", "GB", "FR", "DE", "IT"]}
                   customLabels={{ US: "", GB: "", FR: "", DE: "", IT: "" }} // Empty labels to show only flags

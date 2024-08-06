@@ -73,7 +73,7 @@ body{
   }
   .social-media li {
     display: inline;
-    margin-left: 20px;
+    margin-left: 15px;
   }
   .social-media li a{color: #000;}
   .footer-links ul {
@@ -258,7 +258,7 @@ img{ max-width: 100%;}
   float: left;
 }
 footer .navbar-brand {
-  float: unset;
+  float: left;
   margin: 0 auto;
   display: block;
   text-align: center;
@@ -274,8 +274,12 @@ footer .navbar-brand {
   text-align: center ;
 }
 .social-media {
-  text-align: center;
+  text-align: left;
   margin-bottom: 0;
   padding-bottom: 0;
 }
 }
+
+
+
+
