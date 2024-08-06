@@ -138,3 +138,14 @@
   margin: 0 15px;
 }
 /* .sticky .only-stiky{ display: block;} */
+
+
+
+@media only screen and (max-width: 991px) {
+  
+  .banner-container img {
+      max-width: 30px !important;
+      margin-bottom: 10px;
+    }
+  
+  }

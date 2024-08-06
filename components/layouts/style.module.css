@@ -16,3 +16,45 @@
     padding: 8px 10px !important;
     color: #cdcdcd !important;
 }
+
+
+
+
+
+@media only screen and (max-width: 991px) {
+    .navbar-nav-c{
+        display: inline !important;
+        float: left;
+        width: 100%;
+        margin: 0 0 0 0;
+        padding: 0 0 0 0; 
+    }
+    .img-top-logo{
+        max-width: 55px;
+    }
+    .navbar-nav-c li {
+        margin-left: 20px;
+        float: left;
+        margin-left: 0;
+        margin-right: 5px;
+    }
+    .invest-link {
+        padding: 5px 5px !important;
+        font-size: 12px !important;
+    }
+    .login-link {
+        padding: 5px 10px !important;
+        font-size: 12px !important;
+    }
+    .dropdown-right{
+        float: right !important;
+    }
+    .toggle-btn{ 
+        border:none !important;
+    }
+    .banner-container img {
+        max-width: 30px !important;
+        margin-bottom: 10px;
+      }
+    
+    }

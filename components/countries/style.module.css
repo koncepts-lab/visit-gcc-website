@@ -1,7 +1,7 @@
 .home-countries {
     float: left;
     width: 100%;
-    padding: 50px 0;
+    padding: 50px 0 0 0;
 }
 
 .home-countries img{ border-radius: 15px;} 
@@ -16,6 +16,7 @@
     z-index: 10;
     position: relative;
     color: #fff;
+    margin-bottom: 50px;
 }
 /* tab */
 .country-container-box{     float: left;
@@ -308,11 +309,22 @@ border-radius:15px 15px 0 0;
         }
         .section-documentation {
             padding: 15px 0;
-        }
-        
-
-        
+        }    
+            
 
 
       }
+
+      @media screen and (max-width: 1023px) and (min-width: 992px) {
+        .country-tabslide-text {
+            margin-top: 0;
+        }
+        .block-content {
+            margin-top: -13px;
+        }
+        .block-content h4 {
+            margin-bottom: 0;
+        }
+      }
       
+ 
