@@ -60,9 +60,10 @@ const images = [
 
 class MyWrapper extends React.Component {
     render() {
+        const { breakPoints } = this.props;
         return (
             <ResponsiveMasonry
-                columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 3 }}
+                columnsCountBreakPoints={breakPoints}
             >
                 <Masonry>
                     {images.map((image, i) => (

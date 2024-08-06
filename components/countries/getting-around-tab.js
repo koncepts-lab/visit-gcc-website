@@ -84,7 +84,7 @@ const GettingAroundTab = () => {
                                 </div>
                                 <div className="col-md-8">
                                     <div className='row'>
-                                        <div className='col-md-6 pb-3'>
+                                        <div className='col-md-6 pb-3 mpt-15'>
                                             <label>From where in Behrain?</label>
                                             <select className='form-control'>
                                                 <option>Select</option>

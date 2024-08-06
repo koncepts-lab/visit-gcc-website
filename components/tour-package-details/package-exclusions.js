@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Tab, Tabs, Container, Row, Col } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Ensure you import Bootstrap CSS
-import style from './style.module.css'; // Ensure correct path for styles
+import 'bootstrap/dist/css/bootstrap.min.css';
+import style from './style.module.css';
 
 const PackageExclusions = () => {
     const [key, setKey] = useState('airport-transfers');

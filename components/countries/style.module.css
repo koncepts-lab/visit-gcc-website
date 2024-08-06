@@ -271,7 +271,10 @@ border-radius:15px 15px 0 0;
       .tag p{ padding-left: 10px;}
       .tag span{ margin-right:10px;}
     
-
+.ul-container{
+    float: left;
+    width: 100%;
+}
 
 
       @media only screen and (max-width: 991px) {
@@ -282,5 +285,34 @@ border-radius:15px 15px 0 0;
             padding-bottom: 0;
             padding-top: 15px;
         }
+        .country-container-box .country-nav-tabs{
+            display: grid;
+            grid-auto-flow: column;
+            grid-auto-columns: min-content;
+            overflow-y: hidden;
+            overflow-x: scroll;
+        }
+        .country-container-box .country-nav-tabs li button{
+            color: #000;
+            min-width: 231px;
+            text-align: center;
+        }
+
+        .country-tabslide-text {
+            padding: 10px;
+            margin-top: 0;
+        }
+        .mpt-15{ padding-top: 15px;}
+        .section-documentation {
+            padding: 15px 0;
+        }
+        .section-documentation {
+            padding: 15px 0;
+        }
+        
+
+        
+
+
       }
       

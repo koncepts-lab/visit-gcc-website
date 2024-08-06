@@ -89,9 +89,10 @@
     padding: 15px;
     /* background: #cccccc17; */
     margin-top: 15px;
-    max-width: 1108px;
+    /* max-width: 1108px; */
     
 }
+
 .country-explore .container-fluid{
     max-width: 100px;
 }
@@ -290,6 +291,7 @@ border-radius:15px 15px 0 0;
     display: flex;
     gap: 15px;
     align-items: center;
+    margin-bottom: 10px;
 }
 .star{
 
@@ -329,9 +331,7 @@ border-radius:15px 15px 0 0;
     float: left;
     width: 100%;
 }
-.countries-explore{
-    max-width: 1108px;
-}
+
 
 .best-picked-box {
     float: left;
@@ -450,3 +450,9 @@ background: linear-gradient(0deg, rgba(2,0,36,1) 54%, rgba(0,0,0,0) 100%);
 .fb svg{ color: #3b5998;}
 .tw svg { color: #1DA1F2;}
 .gp svg { color: #db4a39 ; font-size: 20px;}
+
+
+.countries-explore{
+    /* max-width: 1108px; */
+    max-width: 100%;
+}

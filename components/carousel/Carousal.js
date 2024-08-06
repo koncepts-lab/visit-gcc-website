@@ -119,6 +119,18 @@ function Carousal({
                         link={event.link}
                     />
                 ))}
+            {type === 'country-tab' && (
+                country.map((pkg) => (
+                    <TabSlider
+                        key={pkg.id}
+                        image={pkg.image}
+                        heading={pkg.heading}
+                        description={pkg.description}
+                        subHeading={pkg.subHeading}
+                    />
+                ))
+            )}
+
             {type === 'country-tab-slider' &&
                 country.map((country) => (
                     <TabSlider
