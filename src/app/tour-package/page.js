@@ -30,6 +30,9 @@ const Country = () => {
         setDurationRange(values);
     };
 
+
+
+    
     const accordionData = [
         {
             title: 'ACTIVITIES',
