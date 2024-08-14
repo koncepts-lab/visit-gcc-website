@@ -57,7 +57,7 @@ const images = [
 
 
 ];
-
+ 
 class MyWrapper extends React.Component {
     render() {
         const { breakPoints } = this.props;
