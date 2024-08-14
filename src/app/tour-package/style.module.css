@@ -199,12 +199,18 @@
     padding: 0 0px;
 }
 .btn-mobile{ display: block;}
-
-}
-
 .btn-close{
     right: 15px;
     align-items: end;
     justify-content: end;
     font-size: 30px;
 }
+
+
+}
+
+
+.btn-close{
+    display: none;
+}
+

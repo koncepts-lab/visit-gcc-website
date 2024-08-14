@@ -16,8 +16,8 @@ const Country = () => {
     const [priceRange, setPriceRange] = useState([30, 3900]);
     const [durationRange, setDurationRange] = useState([1, 10]);
     const [isToggled, setIsToggled] = useState(false);
-    const firstBreakPoints = { 350: 1, 750: 3, 1200: 3, 1500: 4 };
-    const secondBreakPoints = { 350: 1, 750: 2, 1200: 3, 1500: 3 };
+    const firstBreakPoints = { 350: 1, 750: 2, 1200: 2, 1500: 4 };
+    const secondBreakPoints = { 350: 1, 750: 2, 1200: 2, 1500: 3 };
 
     const handleToggle = () => {
         setIsToggled(!isToggled);
