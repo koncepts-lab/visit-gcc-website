@@ -154,22 +154,33 @@
 }
 
 
-
+.btn-mobile{ display: none;}
 
 @media only screen and (max-width: 991px) {
 .left{ display: none;}
-.highlight {
+/* .highlight {
     display: block !important;
     position: absolute;
     background: #f7f7f7;
     z-index: 100;
+} */
+.highlight {
+    display: block !important;
+    position: fixed;
+    background: #f7f7f7;
+    z-index: 1000000;
+    top: 0;
+    left: 0;
+    right: 0;
+    overflow: scroll;
+    height: 100vh;
 }
 .right {
     padding: 50px 0px;
     padding-bottom: 15px;
 }
 .btn-toggle {
-    left: 0;
+    left: 0px;
 }
 .cta-half-container::after {
     display: none;
@@ -187,8 +198,13 @@
 .cta-section {
     padding: 0 0px;
 }
-
+.btn-mobile{ display: block;}
 
 }
 
-
+.btn-close{
+    right: 15px;
+    align-items: end;
+    justify-content: end;
+    font-size: 30px;
+}

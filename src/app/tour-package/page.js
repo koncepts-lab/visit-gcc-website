@@ -10,6 +10,7 @@ import HolidaysTab from '../../../components/tour-package/holidays-tab';
 import Accordion from '../../../components/accordion/accordion';
 import TourPackageTab from '../../../components/tour-package/tour-package-tab';
 import { LuMenu } from "react-icons/lu";
+import { IoIosCloseCircleOutline } from "react-icons/io";
 
 const Country = () => {
     const [priceRange, setPriceRange] = useState([30, 3900]);
@@ -183,13 +184,26 @@ const Country = () => {
                                         <Accordion key={index} title={accordion.title} items={accordion.items} isOpenInitially={true} />
                                     ))}
                                 </div>
+
+                                <button className={`${style['btn-toggle']} ${style['btn-close']}`} onClick={handleToggle}>
+                                <IoIosCloseCircleOutline />
+                              </button>
+
                             </div>
+
+                            <button className={`${style['btn-one']} ${style['btn-mobile']}`} onClick={handleToggle}>
+                            Search
+                              </button>
+
+                           
+
+
                         </div>
                         {/* left end */}
 
                         {/* right */}
                         <div className={`${style['right']}  ${isToggled ? `${style['filter-full-width']}` : ''}`}>
-                            <h3>GCC Countries</h3>
+                            <h3>Tour Packages</h3>
                             <TourPackageTab
                                 breakPoints={isToggled ? firstBreakPoints : secondBreakPoints}
                             />

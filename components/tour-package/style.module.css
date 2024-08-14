@@ -463,5 +463,21 @@ background: linear-gradient(0deg, rgba(2,0,36,1) 54%, rgba(0,0,0,0) 100%);
     .countries-explore-container {
         padding: 15px 15px;
     }
+    .packages-ul{
+        display: grid !important;
+        grid-auto-flow: column;
+        grid-auto-columns: min-content;
+        overflow-y: hidden;
+        overflow-x: scroll;
+    }
+    .packages-ul li{
+        color: #000;
+    width: auto;
+    float: left;
+    white-space: nowrap;
+    }
+    .m-pb-5{
+        margin-bottom: 30px;
+    }
     
     }

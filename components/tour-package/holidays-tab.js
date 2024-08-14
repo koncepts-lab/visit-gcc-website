@@ -28,7 +28,8 @@ const HolidaysTab = () => {
                     <div className="col-md-12">
                         <div className={`pr-0 ${style['country-container-box']}`}>
                             <div className={style['country-container']}>
-                                <ul className={`nav nav-tabs border-0 ${style['country-nav-tabs']}`} id="myTab" role="tablist">
+                            <ul className={`nav nav-tabs border-0 ${style['country-nav-tabs']} ${style['packages-ul']}`} id="myTab" role="tablist">
+
                                     <li className={`nav-item ${style['country-nav-item']}`} role="presentation">
                                         <button
                                             className={`nav-link active border-0 ${style['country-nav-link']} ${style['active-tab']}`}
@@ -166,7 +167,7 @@ const HolidaysTab = () => {
                                                         </div>
                                                         <div className={`mb-0 ${style['tour-holidays-box']}`}>
                                                             <img src='../images/tour/02.jpg' className='w-100' />
-                                                            <span>
+                                                            <span  className={style['m-pb-5']}> 
                                                                 <h6>Destination</h6>
                                                                 <p>Saudi</p>
                                                             </span>

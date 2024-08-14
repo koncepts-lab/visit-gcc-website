@@ -88,8 +88,8 @@ const TourPackageTab = ({ breakPoints }) => {
                     <div className="col-md-12">
                         <div className={`pr-0 ${style['country-container-box']}`}>
                             <div className={style['country-container']}>
-                                <ul className={`nav nav-tabs border-0 ${style['country-nav-tabs']}`} id="myTab" role="tablist">
-                                    <li className={`nav-item ${style['country-nav-item']}`} role="presentation">
+                            <ul className={`nav nav-tabs border-0 ${style['country-nav-tabs']} ${style['packages-ul']}`} id="myTab" role="tablist">
+                                   <li className={`nav-item ${style['country-nav-item']}`} role="presentation">
                                         <button
                                             className={`nav-link active border-0 ${style['country-nav-link']} ${style['active-tab']}`}
                                             id="All-tab"
