@@ -223,7 +223,7 @@ const Country = () => {
                                 <div className={style['cta-section-container']}>
                                     <div className='container'>
                                         <div className='row'>
-                                            <div className={`col-md-6 ${style['cta-half-left']}`}>
+                                            <div className={`col-xxl-6 col-xl-6  col-lg-12  col-md-12  col-sm-12  col-12 mt-3 ${style['cta-half-left']}`}>
 
                                                 <div className={`container ${style['cta-half-container']}`}>
                                                     <div className='row'>
@@ -242,7 +242,7 @@ const Country = () => {
                                                 </div>
                                             </div>
 
-                                            <div className='col-md-6'>
+                                            <div className='col-xxl-6 col-xl-6  col-lg-12  col-md-12  col-sm-12  col-12 mt-3'>
                                                 <div className='container'>
                                                     <div className='row'>
                                                         <div className='col-md-6 '>
