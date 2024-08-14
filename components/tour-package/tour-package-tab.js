@@ -83,7 +83,7 @@ const TourPackageTab = ({ breakPoints }) => {
 
     return (
         <section className={style.innerpage} >
-            <div className={`container-fluid ${style['pr-0']}`}>
+            <div className={`container-fluid p-0 ${style['pr-0']}`}>
                 <div className="row pb-2">
                     <div className="col-md-12">
                         <div className={`pr-0 ${style['country-container-box']}`}>

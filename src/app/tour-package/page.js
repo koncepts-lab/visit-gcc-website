@@ -267,7 +267,7 @@ const Country = () => {
 
                             {/* lesser-known wonders */}
                             <section className={style['pakage-bes-picked']}>
-                                <div className='container'>
+                                <div className='container p-0'>
                                     <div className='row'>
                                         <div className='col-md-12'>
                                             <h3 className='pb-3'>Lesser-Known Wonders</h3>
@@ -283,7 +283,7 @@ const Country = () => {
 
                             {/* holidays by theme */}
                             <section className={style['pakage-bes-picked']}>
-                                <div className='container'>
+                                <div className='container p-0'>
                                     <div className='row'>
                                         <div className='col-md-12'>
                                             <h3 className='pb-3'>Holidays by theme</h3>
