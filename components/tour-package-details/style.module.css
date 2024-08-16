@@ -327,4 +327,38 @@ border:none;
 
 
     
+@media only screen and (max-width: 991px) {
+    .tabButtons {
+        display: grid;
+        grid-auto-flow: column;
+        grid-auto-columns: min-content;
+        overflow-y: hidden;
+        overflow-x: scroll;
+    }
+    .tabButtons button {
+        width: auto;
+        float: left;
+        white-space: nowrap;
+    }
+    .package-inclusions-tabs {
+        display: grid;
+        grid-auto-flow: column;
+        grid-auto-columns: min-content;
+        overflow-y: hidden;
+        overflow-x: scroll;
+    }
+    .package-inclusions-tabs li {
+        width: auto;
+        float: left;
+        white-space: nowrap;
+    }
+    .accordionContent {
+        padding: 0 10px;
+    }
+
+}
+
+
+
+    
 

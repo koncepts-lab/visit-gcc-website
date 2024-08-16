@@ -55,7 +55,7 @@ function page() {
                             <p>Leading sectors drawing FDI in the GCC include</p>
                         </div>
                     </div>
-                    <div className='row'>
+                    <div className={`row ${style['key-investment']}`}>
                         <div className='col-md-3 text-center'>
                             <img src="../images/icons/01.jpg" alt="Bahrain" />
                             <h4 className='pt-2'>Manufacturing</h4>

@@ -78,3 +78,36 @@
 .partner-with-us-form p{ color: #fff;}
 .partner-with-us-form h3{ color: #fff;}
 .partner-with-us-form hr{ color: #fff;}
+.pdt-4{
+    padding-top: 30px;
+}
+
+
+@media only screen and (max-width: 991px) {
+    
+    .partner-with-us{
+        padding: 15px;
+    }
+    .btn-first-section button{
+        padding: 7px 7px;
+        margin-bottom: 15px;
+        margin-right: 5px;
+        font-size: 14px;
+    }
+    .btn-first-section h3 {
+        margin-bottom: 5px;
+        font-size: 25px !important;
+    }
+    .pwu-box {
+        margin-bottom: 15px;
+    }
+    .pdt-4{
+        padding-top: 0px;
+    }
+    .partner-with-us-form {
+        margin-top: 15px;
+        padding: 10px 10px;
+    }
+  
+
+}
