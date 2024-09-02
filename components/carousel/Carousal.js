@@ -115,6 +115,7 @@ function Carousal({
                         key={event.id}
                         image={event.image}
                         heading={event.heading}
+                        date={event.date}
                         description={event.description}
                         link={event.link}
                     />
