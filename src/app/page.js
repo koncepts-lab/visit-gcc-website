@@ -47,7 +47,7 @@ function Home() {
         <div className='container'>
           <div className='row'>
             <div className='col-md-12'>
-              <h3>GCC Packages</h3>
+              <h3>GCC Packages</h3>88888
             </div>
             <Carousal packages={packagesData} count={3} type="home-package" />
           </div>
