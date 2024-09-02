@@ -13,6 +13,7 @@
     float: left;
     width: 100%;
     padding: 50px 0;
+    overflow: hidden;
 }
 .btn-one{
     background-color: #a0daca;

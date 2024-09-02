@@ -4,15 +4,19 @@
     padding: 50px 0;
 }
 
-.home-countries img{ border-radius: 15px;} 
+.home-countries img{
+    border-radius: 15px;
+    max-width: 130px;
+    margin: 0 auto;
+    display: block;
+    margin-bottom: 20px;
+} 
 .title-countries {
     float: left;
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 0 10px;
-    margin-top: -32px;
+    justify-content: center;
     z-index: 10;
     position: relative;
     color: #fff;
@@ -67,6 +71,7 @@
 .country-explore-item{
     border-radius:15px;
 }
+
 .country-explore-text{
     padding: 10px;
 }
@@ -331,7 +336,54 @@ border-radius:15px 15px 0 0;
     padding: 50px 15px;
     float: left;
     width: 100%;
+    overflow: hidden;
 }
+
+
+
+.featured-travel {
+    float: left;
+    width: 100%;
+    position: relative;
+    
+}
+.featured-travel span {
+    float: left;
+    width: 100%;
+    position: relative;
+    margin-top: -66px;
+    padding: 10px 10px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+.pakage-bes-picked .item {
+    border-radius:15px !important;
+}
+.featured-travel {
+    border-radius: 15px;
+}
+.featured-travel img {
+    border-radius: 15px;
+}
+.featured-travel span {
+    border-radius:0 0 15px 15px;
+}
+.item-padding{
+    padding:0 10px;
+    float: left;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.featured-travel p{
+    margin-bottom: 0;
+}
+
+
 
 
 .best-picked-box {
@@ -457,27 +509,12 @@ background: linear-gradient(0deg, rgba(2,0,36,1) 54%, rgba(0,0,0,0) 100%);
     /* max-width: 1108px; */
     max-width: 100%;
 }
-
-
-@media only screen and (max-width: 991px) {
-    .countries-explore-container {
-        padding: 15px 15px;
-    }
-    .packages-ul{
-        display: grid !important;
-        grid-auto-flow: column;
-        grid-auto-columns: min-content;
-        overflow-y: hidden;
-        overflow-x: scroll;
-    }
-    .packages-ul li{
-        color: #000;
-    width: auto;
-    float: left;
-    white-space: nowrap;
-    }
-    .m-pb-5{
-        margin-bottom: 30px;
-    }
-    
-    }
+.bg-container {
+    position: absolute;
+    background: #ecf1f7;
+    width: 100%;
+    margin-left: -12px;
+    margin-top: -542px;
+    height: 542px;
+    z-index: 1;
+}

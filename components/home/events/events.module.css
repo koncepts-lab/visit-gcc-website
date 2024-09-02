@@ -5,6 +5,7 @@
     padding: 15px;
     border-radius: 15px;
     position: relative;
+    margin: 15px 0;
 }
 .event-box .date {
     position: absolute;
@@ -28,4 +29,11 @@
 
 .owl-stage-outer {
     padding: 5px 0;
+}
+.item-padding{
+    padding:0 10px;
+    float: left;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
 }

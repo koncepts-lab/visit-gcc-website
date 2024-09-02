@@ -1,13 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
-
-
-@font-face {
-  font-family: 'Gotham';
-  src: url('/font/gotham-book-webfont.woff2') format('woff2'),
-       url('/font/gotham-bookitalic-webfont.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-}
 :root {
   --black: #000;
 }
@@ -103,11 +94,6 @@ body{
     float: left;
     width: 100%;
     border-bottom: solid 1px #ccc;
-    -webkit-transition: all .3s ease-in-out;
-	-moz-transition: all .3s ease-in-out;
-	-ms-transition: all .3s ease-in-out;
-	-o-transition: all .3s ease-in-out;
-	transition: all .3s ease-in-out
   }
   h1{
     color: #000;
@@ -214,13 +200,9 @@ select {
   font-size: 0.9em;
   color: #fff;
 }
-
-
-
-
-
-
-
+/* .slick-slide .item{
+  padding-right: 15px;
+} */
 
 
 
@@ -247,14 +229,31 @@ select {
 .br-15{ border-radius:15px;}
 img{ max-width: 100%;}
 
-.pdb-3{
+/* .pdb-3{
   padding-bottom: 1rem;
-}
+} */
 
 .nav-tabs .nav-link.active {
   color: #fff !important;
 }
 .filter-full-width{ width: 100%;}
+
+
+.home-package-item .slick-slide{
+  padding: 10px !important;
+}
+h3 {
+  margin-bottom: 15px !important;
+}
+
+
+.slick-prev, .slick-next{ display: none;}
+
+
+.slick-dots {
+  display: none !important;
+}
+
 
 
 

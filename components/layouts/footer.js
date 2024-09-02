@@ -14,28 +14,28 @@ function Footer() {
 
             <div className="col-md-8 footer-links">
               <ul className='mb-3'>
-                <li><a href="/">About Us</a></li>
-                <li><a href="/">Careers</a></li>
-                <li><a href="/">FAQs</a></li>
-                <li><a href="/">Support</a></li>
-                <li><a href="/">Organize Your Trip</a></li>
-                <li><a href="/">Your Visa Guide</a></li>
-                <li><a href="/">GCC Event Schedule</a></li>
+                <li><Link href="#0">About Us</Link></li>
+                <li><Link href="#0">Careers</Link></li>
+                <li><Link href="#0">FAQs</Link></li>
+                <li><Link href="#0">Support</Link></li>
+                <li><Link href="#0">Organize Your Trip</Link></li>
+                <li><Link href="#0">Your Visa Guide</Link></li>
+                <li><Link href="#0">GCC Event Schedule</Link></li>
               </ul>
               <ul>
                 <li>© 2024 Visit GCC.</li>
-                <li><a href="/">Privacy</a></li>
-                <li><a href="/">Security</a></li>
-                <li><a href="/">Terms of Use</a></li>
+                <li><Link href="#0">Privacy</Link></li>
+                <li><Link href="#0">Security</Link></li>
+                <li><Link href="#0">Terms of Use</Link></li>
               </ul>
             </div>
 
             <div className="col-md-2">
               <ul className='social-media'>
-                <li><a href="/"><FaFacebookF /></a></li>
-                <li><a href="/"><FaWhatsapp /></a></li>
-                <li><a href="/"><FaInstagram /></a></li>
-                <li><a href="/"><RiTwitterXFill /></a></li>
+                <li><Link href="#0"><FaFacebookF /></Link></li>
+                <li><Link href="#0"><FaWhatsapp /></Link></li>
+                <li><Link href="#0"><FaInstagram /></Link></li>
+                <li><Link href="#0"><RiTwitterXFill /></Link></li>
               </ul>
             </div>
           </div>

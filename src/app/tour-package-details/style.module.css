@@ -52,7 +52,7 @@
 }
 .review-text-container{
     position: absolute;
-    margin-top: -355px;
+    margin-top: -369px;
     max-width: 238px;
     margin-left: 35px;
 }
@@ -152,68 +152,11 @@
 }
 .tour-package-details p{ text-align: justify;}
 
-.pdb-3{
+/* .pdb-3{
     padding-bottom: 2rem;
-  }
-.pdt-5{
-    padding-top: 3rem;
-}
-.pdbt-5{
-    padding-bottom: 3rem;
-    padding-top: 3rem;
-}
-
-@media only screen and (max-width: 991px) {
-    
-    .inclusions {
-        flex-wrap: wrap;
-    }
-    .inclusions span {
-        padding: 10px;
-        margin-bottom: 15px;
-        min-width: 33%;
-    }
-    .review-text-container {
-        margin-top: -200px;
-        margin-left: 15px;
-    }
-   .mmt-enchanting {
-    margin-top: 40px !important;
-}
-.accordionContent {
-    padding: 0 10px;
-}
-.pdt-5{
-    padding-top: 15px;
-}
-.pdbt-5{
-    padding-bottom: 15px;
-    padding-top: 0;
-}
-.Legend-ul h4 {
-    margin-top: 10px;
-    font-size: 22px !important;
-    margin-bottom: 10px;
-}
-.ask-your-questions {
-    margin-top: 15px;
-}
-.btn-three {
-    margin-top: 15px !important;
-}
-.tour-package-details p {
-    text-align: justify;
-    margin-bottom: 0;
-}
-.flex-package-details {
-    flex-wrap: wrap;
-}
-.flex-package-details span {
-    margin-bottom: 10px;
-}
+  } */
 
 
-}
 
 
 

@@ -1,6 +1,7 @@
 "use client";
 import React from 'react';
 
+
 const MapEmbed = () => {
     return (
         <iframe
@@ -12,6 +13,7 @@ const MapEmbed = () => {
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
         ></iframe>
+        
     );
 };
 

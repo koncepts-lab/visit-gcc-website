@@ -48,21 +48,3 @@
 }
 .pt-25 {padding-top: 25px;}
 .flex-box img{ max-width: 150px; margin: 0 auto; }
-
-
-
-@media only screen and (max-width: 991px) {
-.flex-box{
-    flex-wrap: wrap;
-}
-.flex-box span{
-    width: 50%;
-}
-.flex-box img {
-    max-width: 100px;
-}
-.key-investment img{
-    max-width: 60px;
-}
-
-}

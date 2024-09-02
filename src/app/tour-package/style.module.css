@@ -226,9 +226,12 @@
 .btn-close{
     display: none;
 }
-
-
-
-
-
-
+.bg-container div{
+    position: absolute;
+    background: #ecf1f7;
+    width: 100%;
+    margin-left: -12px;
+    margin-top: -542px;
+    height: 542px;
+    z-index: 1;
+}

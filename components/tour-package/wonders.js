@@ -7,7 +7,7 @@ const ArrowIcon = () => <FaArrowRightLong />;
 function Singlewonders(props) {
     return (
         <>
-            <div className="item">
+            <div className={`item ${style['item-padding']}`}> 
                 <div className={style['best-picked-box']}>
                     <img src={props.image} className='w-100' alt={props.heading} />
                     <span>

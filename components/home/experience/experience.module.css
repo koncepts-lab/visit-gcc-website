@@ -7,7 +7,7 @@
 }
 .experience-box h4  {
     font-size: 18px !important;
-    margin-top: -86px !important;
+    margin-top: -43px !important;
     background-color: #ffffffdb;
     position: relative;
     padding: 10px;
@@ -24,7 +24,14 @@
     float: left;
     width: 100%;
     padding: 0px 0;
-    margin-bottom: 68px;
+    margin-bottom: 50px;
 }
 .home-experience img{ border-radius: 15px;} 
 
+.item-padding{
+    padding: 10px;
+    float: left;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}

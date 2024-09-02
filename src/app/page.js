@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import style from './style.module.css';
 import Banner from '../../components/banner/banner';
 import Countries from '../../components/countries/countries';
@@ -9,6 +10,9 @@ function Home() {
     { id: 1, heading: 'Package 1', description: 'Description of package 1', image: "/images/package/01.jpg" },
     { id: 2, heading: 'Package 2', description: 'Description of package 2', image: "/images/package/02.jpg" },
     { id: 3, heading: 'Package 3', description: 'Description of package 3', image: "/images/package/03.jpg" },
+    { id: 4, heading: 'Package 4', description: 'Description of package 1', image: "/images/package/01.jpg" },
+    { id: 5, heading: 'Package 5', description: 'Description of package 2', image: "/images/package/02.jpg" },
+    { id: 6, heading: 'Package 6', description: 'Description of package 3', image: "/images/package/03.jpg" },
   ];
 
   const eventsData = [
@@ -28,6 +32,9 @@ function Home() {
     { id: 1, heading: 'Blog Post 1', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', image: "/images/blog/01.jpg" },
     { id: 2, heading: 'Blog Post 2', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', image: "/images/blog/02.jpg" },
     { id: 3, heading: 'Blog Post 3', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', image: "/images/blog/03.jpg" },
+    { id: 4, heading: 'Blog Post 4', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', image: "/images/blog/01.jpg" },
+    { id: 5, heading: 'Blog Post 5', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', image: "/images/blog/02.jpg" },
+    { id: 6, heading: 'Blog Post 6', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', image: "/images/blog/03.jpg" },
   ];
 
   return (
@@ -39,7 +46,7 @@ function Home() {
       <div className={style['home-packages']}>
         <div className='container'>
           <div className='row'>
-            <div className='col-md-12 pdb-3'>
+            <div className='col-md-12'>
               <h3>GCC Packages</h3>
             </div>
             <Carousal packages={packagesData} count={3} type="home-package" />
@@ -64,7 +71,7 @@ function Home() {
               <h3>Upcoming events in April</h3>
             </div>
             <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-4 col-sm-3 col-3 pdb-3 text-right">
-              <a href="/" className='float-right'>View All</a>
+              <Link href="#0" className='float-right'>View All</Link>
             </div>
             <Carousal events={eventsData} count={3} type="home-event" />
           </div>
@@ -80,7 +87,7 @@ function Home() {
               <h3>What to experience</h3>
             </div>
             <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-4 col-sm-3 col-3 text-right">
-              <a href="/" className='float-right'>View All</a>
+              <Link href="#0" className='float-right'>View All</Link>
             </div>
             <Carousal experiences={experienceData} count={4} type="home-experience" />
           </div>
@@ -104,7 +111,7 @@ function Home() {
               <h3>Latest Blog Posts</h3>
             </div>
             <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-4 col-sm-3 col-3 pdb-3 text-right">
-              <a href="/" className='float-right'>View All</a>
+              <Link href="#0" className='float-right'>View All</Link>
             </div>
             <Carousal blog={blogData} count={4} type="home-blog" />
           </div>

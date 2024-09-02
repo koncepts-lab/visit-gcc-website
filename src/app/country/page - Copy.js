@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import style from './style.module.css';
 import Banner from '../../../components/banner/banner';
 import Countries from '../../../components/countries/countries';
@@ -7,59 +7,65 @@ import Carousal from '../../../components/carousel/Carousal';
 import DocumentationTabs from '../../../components/countries/documentation-tab';
 import GettingAroundTab from '../../../components/countries/getting-around-tab';
 
+function country() {
+    const countryExplore = [
+        { id: 1, heading: 'Desitination Heading', description: 'Luxury', image: "/images/blog/01.jpg" },
+        { id: 2, heading: 'Desitination Heading', description: 'Culture', image: "/images/blog/02.jpg" },
+        { id: 3, heading: 'Desitination Heading', description: 'Coastal Esscapes', image: "/images/blog/03.jpg" },
+        { id: 4, heading: 'Desitination Heading', description: 'History', image: "/images/blog/04.jpg" },
+        { id: 5, heading: 'Desitination Heading', description: 'Events', image: "/images/blog/01.jpg" },
+    ];
 
-function Country() {
     const countryDestinationsData = [
-        { id: 1, heading: 'Destination Heading 1', description: 'Luxury', image: "/images/blog/01.jpg" },
-        { id: 2, heading: 'Destination Heading 2', description: 'Culture', image: "/images/blog/02.jpg" },
-        { id: 3, heading: 'Destination Heading 3', description: 'Coastal Escapes', image: "/images/blog/03.jpg" },
-        { id: 4, heading: 'Destination Heading 4', description: 'History', image: "/images/blog/04.jpg" },
-        { id: 5, heading: 'Destination Heading 5', description: 'Events', image: "/images/blog/01.jpg" },
+        { id: 1, heading: 'Desitination Heading', description: 'Luxury', image: "/images/blog/01.jpg" },
+        { id: 2, heading: 'Desitination Heading', description: 'Culture', image: "/images/blog/02.jpg" },
+        { id: 3, heading: 'Desitination Heading', description: 'Coastal Esscapes', image: "/images/blog/03.jpg" },
+        { id: 4, heading: 'Desitination Heading', description: 'History', image: "/images/blog/04.jpg" },
+        { id: 5, heading: 'Desitination Heading', description: 'Events', image: "/images/blog/01.jpg" },
     ];
 
-    const countryExperiance = [        
+
+    const countryExperianceData = [
+        { id: 1, heading: 'Experience 1', description: 'Adventure', image: "/images/experience/01.jpg" },
+        { id: 2, heading: 'Experience 2', description: 'Cultural', image: "/images/experience/02.jpg" },
+        { id: 3, heading: 'Experience 3', description: 'Relaxation', image: "/images/experience/03.jpg" },
     ];
-
-    
-
-    
 
     return (
-        <div>
+        <>
             <Banner />
             <Countries />
+
             <div className={style['section-normal']}>
                 <div className='container'>
                     <div className='row'>
                         <div className='col-md-12'>
                             <h3>A Blend of Ancient Traditions and Modern Wonders</h3>
-                            <p>Funding freemium technology focus equity bootstrapping user niche market. Seed round agile growth hacking return investment alpha investor advisor marketing pitch.</p>
+                            <p>Funding freemium technology focus equity bootstrapping usernce niche market. Seed round agile growth hacking retur investment alpha investor advisor marketing pitch.</p>
                         </div>
                     </div>
                 </div>
             </div>
             <Tabs />
+
+            {/* explore */}
+
             <section className={style['countries-explore-container']}>
                 <div className={style['countries-explore']}>
                     <div className='container'>
                         <div className="row">
-                            <div className='col-md-12 pb-3'>
+                            <div className="col-md-12 pb-3">
                                 <h3>Explore your Destinations, Inspiration, Events</h3>
                             </div>
                         </div>
                     </div>
-
+ 
                     {/* CountryExplore */}
                     <div className={style['country-explore']}>
                         <div className='container-fluid'>
                             <div className='row'>
-                                <div className='col-md-12'>
-                                    <Carousal
-                                        country={countryDestinationsData}
-                                        count={5}
-                                        type='country-tab-slider'
-                                    />
-                                </div>
+                               {/* <Carousal countryExplore={countryExplore} count={5} type="country-explore" /> */}
+                                <Carousal countryDestinations={countryDestinationsData} count={5} type="home-countryDestinations" />
                             </div>
                             <div className='row'>
                                 <div className='col-md-12 text-center mt-4'>
@@ -68,9 +74,9 @@ function Country() {
                             </div>
                         </div>
                     </div>
-                    {/* CountryExplore */}
                 </div>
             </section>
+            {/* CountryExplore */}
 
             <div className={style['section-normal']}>
                 <div className='container'>
@@ -110,6 +116,7 @@ function Country() {
             </div>
 
 
+
             <div className={style['section-documentation']}>
                 <div className={style['section-normal']}>
                     <div className='container'>
@@ -133,9 +140,11 @@ function Country() {
                         </div>
                     </div>
                 </div>
-               <GettingAroundTab /> 
+                <GettingAroundTab />
             </div>
+ 
 
+            {/* explore */}
 
             <section className={style['countries-explore-container']}>
                 <div className={style['countries-explore']}>
@@ -152,20 +161,18 @@ function Country() {
                     <div className={style['country-experiance']}>
                         <div className='container'>
                             <div className='row'>
-                            <div className="col-md-12 pb-3">
                             {/* <Carousal countryExperiance={countryExperiance} count={3} type="country-experiance" /> */}
 
-                            <Carousal countryExperiance={countryExperiance} count={4} countTab={1} type="country-Experiance" />
-                           </div>
+                            <Carousal countryExperiance={countryExperianceData} count={4} type="country-Experiance" />
+
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
-
-
-        </div>
-    )
+            {/* countryExperiance */}
+        </>
+    );
 }
 
-export default Country;
+export default country;

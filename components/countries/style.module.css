@@ -4,20 +4,27 @@
     padding: 50px 0 0 0;
 }
 
-.home-countries img{ border-radius: 15px;} 
+.home-countries img{
+    border-radius: 15px;
+    max-width: 130px;
+    margin: 0 auto;
+    display: block;
+    margin-bottom: 20px;
+} 
 .title-countries {
     float: left;
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     padding: 0 10px;
-    margin-top: -32px;
     z-index: 10;
     position: relative;
     color: #fff;
     margin-bottom: 50px;
 }
+.title-countries h4 { color: #000;margin-bottom: 0;}
+.title-countries h3 { margin-bottom: 0;}
 /* tab */
 .country-container-box{     float: left;
     width: 100%;}
@@ -64,14 +71,19 @@
     width: 100%;
     border-radius: 15px;
 } */
+
 .country-explore-item{
     border-radius:15px;
 }
 .country-explore-text{
     padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    float: left;
+    width: 100%;
 }
 .country-explore-item{
-    box-shadow: -1px 0px 5px 0px rgba(0,0,0,0.04);
+    /* box-shadow: -1px 0px 5px 0px rgba(0,0,0,0.04); */
     float: left;
     width: 100%;
     border-radius: 15px;
@@ -153,7 +165,7 @@
   
   .flip-container, .front, .back {
       width: 100%;
-      height: 380px;
+      height: 320px;
       border-radius:20px;
      
   }
@@ -169,7 +181,7 @@
   .back {
     background: #009597;
     color: #fff;
-    padding: 40px 20px;
+    padding:20px;
   }
   
   span .h3, .back h3 {
@@ -191,7 +203,7 @@
   }
   
   .block-content {
-    padding: 15px 20px 20px 20px;
+    padding: 15px 0px 20px 0px;
   }
   
   .front h2 {
@@ -203,12 +215,12 @@
     color: #000;
     display: inline-block;
     font-size: 12px;
-    padding: 8px 12px;
+    padding: 8px;
     border-radius: 15px;
   }
   .tag i{ margin-right: 10px;}
   .back p {
-    margin: 40px 0;
+    margin: 30px 0;
     line-height: 20px;
     text-align: justify;
     margin-top: 10px;
@@ -233,7 +245,7 @@
   .flipper {
       transition: 0.4s;
       transform-style: preserve-3d;
-    margin: 0 20px;
+    margin: 0 10px;
       position: relative;
   }
   
@@ -276,8 +288,35 @@ border-radius:15px 15px 0 0;
     float: left;
     width: 100%;
 }
-
-
+.item-padding{
+    padding:0 10px;
+    float: left;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+.item-padding .country-explore-item:hover{
+    -webkit-box-shadow: 1px 4px 5px 0px rgba(0,0,0,0.24);
+    -moz-box-shadow: 1px 4px 5px 0px rgba(0,0,0,0.24);
+    box-shadow: 1px 4px 5px 0px rgba(0,0,0,0.24);
+    cursor: pointer;
+    -webkit-transition: all .3s ease-in-out;
+	-moz-transition: all .3s ease-in-out;
+	-ms-transition: all .3s ease-in-out;
+	-o-transition: all .3s ease-in-out;
+	transition: all .3s ease-in-out
+}
+.item-padding .country-explore-item:hover #Circle_Chev_Right {
+    background-color: #009597;
+    border-radius: 50%;
+}
+.item-padding .country-explore-item{
+    margin-bottom: 15px;
+}
+.icon-next svg{
+    font-size: 50px;
+    color: #ccc;
+}
       @media only screen and (max-width: 991px) {
         .title-countries {
             margin-bottom: 30px;
@@ -310,13 +349,14 @@ border-radius:15px 15px 0 0;
         }
         .section-documentation {
             padding: 15px 0;
-        }    
-        .tag {
-            padding: 8px 5px;
-        }
+        }   
+        .flip-container, .front, .back {
+            height: 360px;
+           
+        } 
             
 
-
+ 
       }
 
       @media screen and (max-width: 1023px) and (min-width: 992px) {

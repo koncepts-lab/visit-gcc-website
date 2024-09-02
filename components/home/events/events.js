@@ -1,22 +1,23 @@
 import React from 'react';
+import Link from 'next/link';
 import style from './events.module.css';
 import { FaArrowRightLong } from "react-icons/fa6";
 
 const ArrowIcon = () => <FaArrowRightLong />;
 
-function SingleHomeEvents(props) {
+function SingleHomeEvents({ image, date, heading, description }) {
+    console.log(date); // Debugging line
     return (
-        <>
-            <div className="item">   
-                <div className={style['event-box']}>
-                    <img src={props.image} className='w-100' alt={props.heading} />
-                    <div className={style['date']}>{props.date}</div>
-                    <h4>{props.heading}</h4>
-                    <p>{props.description}</p>
-                </div>
+        <Link href="#0" className={`item ${style['item-padding']}`}>
+            <div className={style['event-box']}>
+                <img src={image} className='w-100' alt={heading} />
+                <div className={style['date']}>{date}</div>
+                <h4>{heading}</h4>
+                <p>{description}</p>
             </div>
-        </>
+        </Link>
     );
 }
+
 
 export default SingleHomeEvents;

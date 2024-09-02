@@ -1,12 +1,13 @@
 import React from 'react'
+import Link from 'next/link';
 import style from './style.module.css';
 
 
-function RatingCarousel(props) {
+function RatingCarousel(props) { 
 
     return (
         <>
-            <a className="item">
+            <Link className={`item ${style['item-padding']}`} href="#0">
                 <div className={style['country-explore-item']}>
                     <div className={style['country-explore-text']}>
                         <div className={style['RatingCarousel-top']}>
@@ -21,7 +22,7 @@ function RatingCarousel(props) {
                         </div>
                     </div>
                 </div>
-            </a>
+            </Link>
         </>
     )
 }

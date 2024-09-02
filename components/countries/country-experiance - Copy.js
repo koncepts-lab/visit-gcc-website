@@ -8,7 +8,7 @@ import { FaTwitter } from "react-icons/fa";
 
 function CountryExperiance(props) {
     return (
-        <div className={`${style['flip-container']} item`}>
+        <div className={`${style['flip-container']} item`} ontouchstart="this.classList.toggle('hover');">
             <div className={style['flipper']}>
                 <div className={style['front']}>
                     {/* front content */}

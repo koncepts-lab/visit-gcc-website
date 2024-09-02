@@ -31,9 +31,7 @@
   font-weight: 700;
   font-size: 18px !important;
   text-align: center;
-  color: #135f74; 
-  font-family: 'Gotham';
-  
+  color: #135f74;
 }
 .banner-search{
   max-width: 500px;
@@ -94,6 +92,7 @@
   background-image: none;
   padding-bottom: 0;
   z-index: 10000;
+  transition: all 0.3s ease; /* Smooth transition for background, padding, etc. */
 }
 .sticky .serch-div{ display: none;}
 .sticky .banner-container{ margin-bottom: 0;}

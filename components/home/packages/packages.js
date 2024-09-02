@@ -1,4 +1,5 @@
 import React from 'react'
+import Link from 'next/link';
 import style from './pakages.module.css';
 import { FaArrowRightLong } from "react-icons/fa6";
 const ArrowIcon = () => <FaArrowRightLong />;
@@ -6,7 +7,7 @@ const ArrowIcon = () => <FaArrowRightLong />;
 function SingleHomePackage(props) {
     return (
         <>
-            <a className="item">
+        <Link href="#0"  className={`item ${style['item-padding']}`}>
                 <div className={style['bg-black-shade']}></div>
                 <img src={props.image} className='w-100' alt="" />
                 <div className={style['home-packages-text']}>
@@ -14,7 +15,7 @@ function SingleHomePackage(props) {
                     <p>{props.description}</p>
                     <ArrowIcon />
                 </div>
-            </a>
+            </Link>
 
         </>
     )

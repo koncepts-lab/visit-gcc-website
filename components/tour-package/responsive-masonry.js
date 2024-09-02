@@ -1,4 +1,5 @@
 import React from "react";
+import Link from 'next/link';
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import Rating from "react-rating-stars-component";
 import style from "./style.module.css"; // Adjust the import according to your style file location
@@ -57,7 +58,7 @@ const images = [
 
 
 ];
- 
+
 class MyWrapper extends React.Component {
     render() {
         const { breakPoints } = this.props;
@@ -102,7 +103,7 @@ class MyWrapper extends React.Component {
                                     <li><IoBusOutline /> Transfers</li>
                                 </ul>
 
-                                <a href="#0" className={style['r-button']}>Read More</a>
+                                <Link href="#0" className={style['r-button']}>Read More</Link>
 
 
                             </div>

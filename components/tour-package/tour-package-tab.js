@@ -75,6 +75,16 @@ const TourPackageTab = ({ breakPoints }) => {
         { id: 5, heading: 'Desitination Heading', description: 'Events', image: "/images/blog/01.jpg" },
     ];
 
+
+    const featuredTravelData = [
+        { id: 1, heading: 'Travel Heading', description: 'Industry Name', image: "/images/best-picked/01.jpg" },
+        { id: 2, heading: 'Travel Heading', description: 'Industry Name', image: "/images/best-picked/02.jpg" },
+        { id: 3, heading: 'Travel Heading', description: 'Industry Name', image: "/images/best-picked/03.jpg", },
+        { id: 4, heading: 'Travel Heading', description: 'Industry Name', image: "/images/best-picked/01.jpg" },
+        { id: 5, heading: 'Travel Heading', description: 'Industry Name', image: "/images/best-picked/02.jpg" },
+        { id: 6, heading: 'Travel Heading', description: 'Industry Name', image: "/images/best-picked/03.jpg", },
+    ];
+
     useEffect(() => {
         if (typeof window !== 'undefined') {
             require('bootstrap/dist/js/bootstrap.bundle.min.js');
@@ -83,13 +93,13 @@ const TourPackageTab = ({ breakPoints }) => {
 
     return (
         <section className={style.innerpage} >
-            <div className={`container-fluid p-0 ${style['pr-0']}`}>
+            <div className={`container-fluid ${style['pr-0']}`}>
                 <div className="row pb-2">
                     <div className="col-md-12">
                         <div className={`pr-0 ${style['country-container-box']}`}>
                             <div className={style['country-container']}>
-                            <ul className={`nav nav-tabs border-0 ${style['country-nav-tabs']} ${style['packages-ul']}`} id="myTab" role="tablist">
-                                   <li className={`nav-item ${style['country-nav-item']}`} role="presentation">
+                                <ul className={`nav nav-tabs border-0 ${style['country-nav-tabs']}`} id="myTab" role="tablist">
+                                    <li className={`nav-item ${style['country-nav-item']}`} role="presentation">
                                         <button
                                             className={`nav-link active border-0 ${style['country-nav-link']} ${style['active-tab']}`}
                                             id="All-tab"
@@ -278,7 +288,10 @@ const TourPackageTab = ({ breakPoints }) => {
                                 <div className={style['country-explore2']}>
                                     <div className='container'>
                                         <div className='row'>
-                                            <Carousal countryExplore={countryExplore} count={3} type="country-explore" />
+                                        <div className='col-md-12 text-center mt-4'>
+    <Carousal featuredTravel={featuredTravelData} count={4} type="tour-FeaturedTravel" />
+    </div>
+
                                         </div>
                                         <div className='row'>
                                             <div className='col-md-12 text-center mt-4'>
@@ -287,13 +300,21 @@ const TourPackageTab = ({ breakPoints }) => {
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
                         </section>
                     </div>
                 </div>
                 {/* CountryExplore */}
+<div className='bg-container'><div>dd</div></div>
+            </div>       
+                    
 
-            </div>
+
+
+
+
+
         </section>
 
 

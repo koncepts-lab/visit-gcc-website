@@ -1,9 +1,5 @@
 "use client";
-
 import React from 'react';
-import $ from 'jquery'; // Import jQuery
-import 'owl.carousel/dist/assets/owl.carousel.css';
-import 'owl.carousel/dist/assets/owl.theme.default.css';
 import dynamic from 'next/dynamic';
 import SingleHomePackage from '../home/packages/packages';
 import SingleHomeEvents from '../home/events/events';
@@ -11,15 +7,19 @@ import SingleHomeExperience from '../home/experience/experience';
 import SingleHomeBlog from '../home/blog/blog';
 import TabSlider from '../countries/tab-slider';
 import CountryExperiance from '../countries/country-experiance';
-import CountryExplore from '../countries/countries-explore';
 import SingleBestPicked from '../tour-package/best-picked';
 import Singlewonders from '../tour-package/wonders';
 import SinglePackageContainerReview from '../tour-package-details/package-container-review';
-import SinglePackageContainerReviewImage from '../tour-package-details/package-details-review'; // Import the component
+import SinglePackageContainerReviewImage from '../tour-package-details/package-details-review';
 import RatingCarousel from '../tour-package-details/RatingCarousel';
 import PakageDetailsOtherPackages from '../tour-package-details/pakage-details-other-packages';
+import CountryInspiration from '../countries/country-inspiration';
+// Import Slick Carousel and styles
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import FeaturedTravel from '../tour-package/featured-travel';
 
-const OwlCarousel = dynamic(() => import('react-owl-carousel'), {
+const SlickCarousel = dynamic(() => import('react-slick'), {
     ssr: false
 });
 
@@ -29,71 +29,104 @@ function Carousal({
     country,
     experiences,
     blog,
-    countryExplore,
     userRatingsCarosul,
     pakageDetailsOtherPackages,
     count,
     type,
     bestPicked,
+    featuredTravel,
     wonders,
     packageDetailsReview,
-    packageDetailsReviewImage
+    packageDetailsReviewImage  
 }) {
     const Responsive = {
-        0: {
-            items: 1,
-            margin: 5
-        },
-        768: {
-            items: 2,
-            margin: 10
-        },
-        1024: {
-            items: count,
-            margin: 15
-        }
+        dots: type !== 'home-package' && type !== 'home-event' && type !== 'home-experience' && type !== 'home-blog',
+        infinite: true,
+        speed: 500,
+        slidesToShow: count,
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 3000,
+        responsive: [
+            {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 1,
+                    infinite: true,
+                    dots: type !== 'home-package' && type !== 'home-event' && type !== 'home-experience' && type !== 'home-blog'
+                }
+            },
+            {
+                breakpoint: 768,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    infinite: true
+                }
+            }
+        ]
     };
-
-    if (typeof window !== 'undefined' && !window.$) {
-        window.$ = window.jQuery = $;
-    }
 
     const countryExperiance = [
         {
             id: 1,
             link: 'https://www.google.com/',
-            heading: 'Lorem Ipsum is simply dummy text',
+            heading: 'Lorem Ipsum is dummy text',
             description:
-                'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s... ',
+                'Lorem Ipsum is dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s... ',
             image: '/images/blog/01.jpg'
         },
-        // More data...
+        {
+            id: 2,
+            link: 'https://www.google.com/',
+            heading: 'Lorem Ipsum is dummy text',
+            description:
+                'Lorem Ipsum is dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s... ',
+            image: '/images/blog/01.jpg'
+        },
+        {
+            id: 3,
+            link: 'https://www.google.com/',
+            heading: 'Lorem Ipsum is dummy text',
+            description:
+                'Lorem Ipsum is dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s... ',
+            image: '/images/blog/01.jpg'
+        },
+        {
+            id: 4,
+            link: 'https://www.google.com/',
+            heading: 'Lorem Ipsum is dummy text',
+            description:
+                'Lorem Ipsum is dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s... ',
+            image: '/images/blog/01.jpg'
+        },
+        {
+            id: 5,
+            link: 'https://www.google.com/',
+            heading: 'Lorem Ipsum is dummy text',
+            description:
+                'Lorem Ipsum is dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s... ',
+            image: '/images/blog/01.jpg'
+        },
     ];
 
     return (
-        <OwlCarousel
-            responsive={Responsive}
-            autoplay={true}
-            autoplayTimeout={3000}
-            loop={true}
-            slideSpeed={500}
-            smartSpeed={1000}
-            nav={false}
-            dots={type === 'tour-bestPicked' || type === 'tour-wonders'}
-        >
+        <SlickCarousel {...Responsive}>
             {type === 'home-package' &&
                 packages.map((pkg) => (
-                    <SingleHomePackage
-                        key={pkg.id}
-                        image={pkg.image}
-                        heading={pkg.heading}
-                        description={pkg.description}
-                        location={pkg.location}
-                        price={pkg.price}
-                        priceOld={pkg.priceOld}
-                        currency={pkg.currency}
-                        link={pkg.link}
-                    />
+                    <div key={pkg.id} className="home-package-item">
+                        <SingleHomePackage
+                            image={pkg.image}
+                            heading={pkg.heading}
+                            description={pkg.description}
+                            location={pkg.location}
+                            price={pkg.price}
+                            priceOld={pkg.priceOld}
+                            currency={pkg.currency}
+                            link={pkg.link}
+                        />
+                    </div>
                 ))}
             {type === 'home-experience' &&
                 experiences.map((experience) => (
@@ -109,6 +142,8 @@ function Carousal({
                 blog.map((b) => (
                     <SingleHomeBlog key={b.id} image={b.image} heading={b.heading} description={b.description} link={b.link} />
                 ))}
+            
+                
             {type === 'home-event' &&
                 events.map((event) => (
                     <SingleHomeEvents
@@ -134,7 +169,7 @@ function Carousal({
 
             {type === 'country-tab-slider' &&
                 country.map((country) => (
-                    <TabSlider
+                    <CountryInspiration
                         key={country.id}
                         image={country.image}
                         heading={country.heading}
@@ -142,7 +177,7 @@ function Carousal({
                         link={country.link}
                     />
                 ))}
-            {type === 'country-experiance' &&
+            {type === 'country-Experiance' &&
                 countryExperiance.map((experiance) => (
                     <CountryExperiance
                         key={experiance.id}
@@ -151,17 +186,20 @@ function Carousal({
                         description={experiance.description}
                         link={experiance.link}
                     />
-                ))}
-            {type === 'country-explore' &&
-                countryExplore.map((countryExplore) => (
-                    <CountryExplore
-                        key={countryExplore.id}
-                        image={countryExplore.image}
-                        heading={countryExplore.heading}
-                        description={countryExplore.description}
-                        link={countryExplore.link}
+                ))
+            }
+
+            {type === 'tour-FeaturedTravel' &&
+                featuredTravel.map((featuredTravel) => (
+                    <FeaturedTravel
+                        key={featuredTravel.id}
+                        image={featuredTravel.image}
+                        heading={featuredTravel.heading}
+                        description={featuredTravel.description}
+                        link={featuredTravel.link}
                     />
                 ))}
+           
             {type === 'tour-bestPicked' &&
                 bestPicked.map((bestPicked) => (
                     <SingleBestPicked
@@ -187,17 +225,17 @@ function Carousal({
                     <SinglePackageContainerReview
                         key={review.id}
                         image={review.image}
-                        heading={review.heading} // Add missing props
-                        description={review.description} // Add missing props
+                        heading={review.heading}
+                        description={review.description}
                     />
                 ))}
             {type === 'tour-package-details-reviews-img' &&
                 packageDetailsReviewImage.map((reviewImage) => (
                     <SinglePackageContainerReviewImage
                         key={reviewImage.id}
-                        image={reviewImage.image} // Correct image prop
-                        heading={reviewImage.heading} // Add heading prop
-                        description={reviewImage.description} // Add description prop
+                        image={reviewImage.image}
+                        heading={reviewImage.heading}
+                        description={reviewImage.description}
                     />
                 ))}
 
@@ -226,11 +264,7 @@ function Carousal({
                         link={pakageDetailsOtherPackages.link}
                     />
                 ))}
-
-
-
-
-        </OwlCarousel>
+        </SlickCarousel>
     );
 }
 

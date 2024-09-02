@@ -1,6 +1,8 @@
 import React from 'react';
 import style from './style.module.css';
 import { IoIosStar } from "react-icons/io";
+import Link from 'next/link';
+
 
 function SinglePackageContainerReviewImage({ heading, description }) { // Destructure props
     return (
@@ -10,7 +12,7 @@ function SinglePackageContainerReviewImage({ heading, description }) { // Destru
                     <div className={style['review-text-top']}>
                         <span><IoIosStar /></span>
                         <span><h1>4.3</h1></span>
-                        <span><p>Very good</p><a href='#0'>13 reviews</a></span>
+                        <span><p>Very good</p><Link href='#0'>13 reviews</Link></span>
                     </div>
 
                     <div className={style['review-text-body']}>

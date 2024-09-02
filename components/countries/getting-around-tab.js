@@ -9,11 +9,7 @@ import MapEmbed from './map-embed';
 import { LuArrowRightCircle } from "react-icons/lu";
 
 const GettingAroundTab = () => {
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-            require('bootstrap/dist/js/bootstrap.bundle.min.js');
-        }
-    }, []);
+
 
     return (
         <section className={style.innerpage}>
@@ -41,40 +37,39 @@ const GettingAroundTab = () => {
                                         <li className={`nav-item ${style['country-nav-item']}`} role="presentation">
                                             <button
                                                 className={`nav-link border-0 ${style['around-nav-link']}`}
-                                                id="passport-tab-unique"
+                                                id="train-tab-unique"
                                                 data-bs-toggle="tab"
-                                                data-bs-target="#passport-unique"
+                                                data-bs-target="#train-unique"
                                                 type="button"
                                                 role="tab"
-                                                aria-controls="passport-unique"
+                                                aria-controls="train-unique"
                                                 aria-selected="false"
-                                            ><FaTrainSubway />
-
+                                            >
+                                                <FaTrainSubway />
                                             </button>
                                         </li>
                                         <li className={`nav-item ${style['country-nav-item']}`} role="presentation">
                                             <button
                                                 className={`nav-link border-0 ${style['around-nav-link']}`}
-                                                id="other-tab-unique"
+                                                id="plane-tab-unique"
                                                 data-bs-toggle="tab"
-                                                data-bs-target="#other-unique"
+                                                data-bs-target="#plane-unique"
                                                 type="button"
                                                 role="tab"
-                                                aria-controls="other-unique"
+                                                aria-controls="plane-unique"
                                                 aria-selected="false"
                                             >
                                                 <MdAirplanemodeActive />
                                             </button>
                                         </li>
                                         <li className={`nav-item ${style['country-nav-item']}`} role="presentation">
-                                            <button
-                                                className={`nav-link border-0 ${style['around-nav-link']}`}
-                                                id="other-tab-unique"
+                                            <button className={`nav-link border-0 ${style['around-nav-link']}`}
+                                                id="boat-tab-unique"
                                                 data-bs-toggle="tab"
-                                                data-bs-target="#other-unique"
+                                                data-bs-target="#boat-unique"
                                                 type="button"
                                                 role="tab"
-                                                aria-controls="other-unique"
+                                                aria-controls="boat-unique"
                                                 aria-selected="false"
                                             >
                                                 <IoMdBoat />
@@ -84,8 +79,8 @@ const GettingAroundTab = () => {
                                 </div>
                                 <div className="col-md-8">
                                     <div className='row'>
-                                        <div className='col-md-6 pb-3 mpt-15'>
-                                            <label>From where in Behrain?</label>
+                                        <div className={`col-md-6 pb-3 ${style['mpt-15']}`}>
+                                            <label>From where in Bahrain?</label>
                                             <select className='form-control'>
                                                 <option>Select</option>
                                                 <option>Place</option>
@@ -93,7 +88,7 @@ const GettingAroundTab = () => {
                                             </select>
                                         </div>
                                         <div className='col-md-6 pb-3'>
-                                            <label>To where in behrain?</label>
+                                            <label>To where in Bahrain?</label>
                                             <select className='form-control'>
                                                 <option>Select</option>
                                                 <option>Place</option>
@@ -117,10 +112,9 @@ const GettingAroundTab = () => {
                                             <div className='container'>
                                                 <div className='row'>
                                                     <div className='col-md-12'>
-                                                        <MapEmbed />
+                                                        {/*  <MapEmbed /> */}
 
                                                         <div className='table-responsive pt-3'>
-
                                                             <table className={`table ${style['country-table']}`}>
                                                                 <thead>
                                                                     <tr>
@@ -135,48 +129,40 @@ const GettingAroundTab = () => {
                                                                         <th>Departs</th>
                                                                         <th></th>
                                                                         <th>Arriving</th>
-
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-
                                                                     <tr className='border'>
-                                                                        <td colspan="9">
+                                                                        <td colSpan="9">
                                                                             <p className='py-0'>Next Available</p>
                                                                         </td>
                                                                     </tr>
                                                                     <tr className='border'>
                                                                         <td className={style['bg-1']}>
-
                                                                             <p>01:00 PM</p>
-
-
-
-
                                                                         </td>
                                                                         <td className={style['bg-1']}><LuArrowRightCircle /></td>
                                                                         <td className={style['bg-1']}>
-                                                                            <div><p>01:00 PM</p></div></td>
-
+                                                                            <p>01:00 PM</p>
+                                                                        </td>
                                                                         <td>
-                                                                            <p>01:00 PM</p></td>
+                                                                            <p>01:00 PM</p>
+                                                                        </td>
                                                                         <td><LuArrowRightCircle /></td>
                                                                         <td>
-                                                                            <p>01:00 PM</p></td>
-
+                                                                            <p>01:00 PM</p>
+                                                                        </td>
                                                                         <td className={style['bg-1']}>
-                                                                            <p>01:00 PM</p></td>
+                                                                            <p>01:00 PM</p>
+                                                                        </td>
                                                                         <td className={style['bg-1']}><LuArrowRightCircle /></td>
                                                                         <td className={style['bg-1']}>
-                                                                            <p>01:00 PM</p></td>
-
-
+                                                                            <p>01:00 PM</p>
+                                                                        </td>
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
                                                         </div>
-
-
                                                     </div>
                                                 </div>
                                             </div>
@@ -184,9 +170,9 @@ const GettingAroundTab = () => {
                                     </div>
                                     <div
                                         className="tab-pane fade"
-                                        id="passport-unique"
+                                        id="train-unique"
                                         role="tabpanel"
-                                        aria-labelledby="passport-tab-unique"
+                                        aria-labelledby="train-tab-unique"
                                     >
                                         <div className={style['documentation-container']}>
                                             <div className='container'>
@@ -200,9 +186,25 @@ const GettingAroundTab = () => {
                                     </div>
                                     <div
                                         className="tab-pane fade"
-                                        id="other-unique"
+                                        id="plane-unique"
                                         role="tabpanel"
-                                        aria-labelledby="other-tab-unique"
+                                        aria-labelledby="plane-tab-unique"
+                                    >
+                                        <div className={style['documentation-container']}>
+                                            <div className='container'>
+                                                <div className='row'>
+                                                    <div className='col-md-12'>
+                                                        <p>Dummy Text</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        className="tab-pane fade"
+                                        id="boat-unique"
+                                        role="tabpanel"
+                                        aria-labelledby="boat-tab-unique"
                                     >
                                         <div className={style['documentation-container']}>
                                             <div className='container'>

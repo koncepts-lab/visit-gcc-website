@@ -6,7 +6,7 @@ import Banner from '../../../components/banner/banner'
 function page() {
     return (
         <>
-            <Banner /> 
+            <Banner />
             <section className={style['partner-with-us']}>
                 <div className='container'>
                     <div className='row'>
@@ -40,7 +40,7 @@ function page() {
                         </div>
                     </div>
 
-                    <div className={`row ${style['pdt-4']}`}>
+                    <div className='row pt-4'>
                         <div className='col-md-6'>
                             <div className={style['pwu-box']}>
                                 <h4>Marketing Advantage</h4>
@@ -55,7 +55,7 @@ function page() {
                         </div>
                     </div>
 
-                    <div className={`row ${style['pdt-4']}`}>
+                    <div className='row pt-4'>
                         <div className='col-md-6'>
                             <div className={style['pwu-box']}>
                                 <h4>Broad Exposure</h4>
@@ -95,7 +95,8 @@ function page() {
                                     <div className='col-md-6'><input type='text' placeholder='Website or Social media Link'></input></div>
                                     <div className='col-md-12'><textarea placeholder='Company Description'></textarea></div>
                                     <div className='col-md-12 mb-3'><button className={style['btn-one']}>Submit Now</button></div>
-                                    
+                                    <hr />
+                                    <div className='col-md-12'><p className={style['form-text']}>2024 Dojoin.com all right reserved Powered by DoJoin System & Software DoJoin Marketing Services LLC</p></div>
                                 </div>
 
                             </div>

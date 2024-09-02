@@ -1,4 +1,5 @@
 import React from 'react'
+import Link from 'next/link';
 import style from './style.module.css';
 import Banner from '../../../components/banner/banner'
 
@@ -55,7 +56,7 @@ function page() {
                             <p>Leading sectors drawing FDI in the GCC include</p>
                         </div>
                     </div>
-                    <div className={`row ${style['key-investment']}`}>
+                    <div className='row'>
                         <div className='col-md-3 text-center'>
                             <img src="../images/icons/01.jpg" alt="Bahrain" />
                             <h4 className='pt-2'>Manufacturing</h4>
@@ -112,7 +113,7 @@ function page() {
                             <div className='row'>
                                 <div className='col-md-8'>
                                     <h3>Ask Your Questions</h3>
-                                    <p>If your question has not been answered, you can submit your own by using the form below. Alternatively, feel free to <a href='#0'><b><u>Contact Us</u></b></a> and one of our staff will be happy to assist you.</p>
+                                    <p>If your question has not been answered, you can submit your own by using the form below. Alternatively, feel free to <Link href='#0'><b><u>Contact Us</u></b></Link> and one of our staff will be happy to assist you.</p>
                                 </div>
                             </div>
 

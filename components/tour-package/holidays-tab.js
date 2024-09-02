@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect } from 'react';
+import Link from 'next/link';
 import style from './style.module.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaFacebookF } from "react-icons/fa";
@@ -28,8 +29,7 @@ const HolidaysTab = () => {
                     <div className="col-md-12">
                         <div className={`pr-0 ${style['country-container-box']}`}>
                             <div className={style['country-container']}>
-                            <ul className={`nav nav-tabs border-0 ${style['country-nav-tabs']} ${style['packages-ul']}`} id="myTab" role="tablist">
-
+                                <ul className={`nav nav-tabs border-0 ${style['country-nav-tabs']}`} id="myTab" role="tablist">
                                     <li className={`nav-item ${style['country-nav-item']}`} role="presentation">
                                         <button
                                             className={`nav-link active border-0 ${style['country-nav-link']} ${style['active-tab']}`}
@@ -150,9 +150,9 @@ const HolidaysTab = () => {
                                                             <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
 
                                                             <ul>
-                                                                <li><a href='#0' className={style['fb']}><FaFacebookF /></a></li>
-                                                                <li><a href='#0' className={style['tw']}><FaTwitter /></a></li>
-                                                                <li><a href='#0' className={style['gp']}><FaGooglePlusG /></a></li>
+                                                                <li><Link href='#0' className={style['fb']}><FaFacebookF /></Link></li>
+                                                                <li><Link href='#0' className={style['tw']}><FaTwitter /></Link></li>
+                                                                <li><Link href='#0' className={style['gp']}><FaGooglePlusG /></Link></li>
                                                             </ul>
                                                         </div>
                                                     </div>
@@ -167,7 +167,7 @@ const HolidaysTab = () => {
                                                         </div>
                                                         <div className={`mb-0 ${style['tour-holidays-box']}`}>
                                                             <img src='../images/tour/02.jpg' className='w-100' />
-                                                            <span  className={style['m-pb-5']}> 
+                                                            <span>
                                                                 <h6>Destination</h6>
                                                                 <p>Saudi</p>
                                                             </span>
@@ -215,9 +215,9 @@ const HolidaysTab = () => {
                                                             <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
 
                                                             <ul>
-                                                                <li><a href='#0' className={style['fb']}><FaFacebookF /></a></li>
-                                                                <li><a href='#0' className={style['tw']}><FaTwitter /></a></li>
-                                                                <li><a href='#0' className={style['gp']}><FaGooglePlusG /></a></li>
+                                                                <li><Link href='#0' className={style['fb']}><FaFacebookF /></Link></li>
+                                                                <li><Link href='#0' className={style['tw']}><FaTwitter /></Link></li>
+                                                                <li><Link href='#0' className={style['gp']}><FaGooglePlusG /></Link></li>
                                                             </ul>
                                                         </div>
                                                     </div>
@@ -280,9 +280,9 @@ const HolidaysTab = () => {
                                                             <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
 
                                                             <ul>
-                                                                <li><a href='#0' className={style['fb']}><FaFacebookF /></a></li>
-                                                                <li><a href='#0' className={style['tw']}><FaTwitter /></a></li>
-                                                                <li><a href='#0' className={style['gp']}><FaGooglePlusG /></a></li>
+                                                                <li><Link href='#0' className={style['fb']}><FaFacebookF /></Link></li>
+                                                                <li><Link href='#0' className={style['tw']}><FaTwitter /></Link></li>
+                                                                <li><Link href='#0' className={style['gp']}><FaGooglePlusG /></Link></li>
                                                             </ul>
                                                         </div>
                                                     </div>
@@ -345,9 +345,9 @@ const HolidaysTab = () => {
                                                             <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
 
                                                             <ul>
-                                                                <li><a href='#0' className={style['fb']}><FaFacebookF /></a></li>
-                                                                <li><a href='#0' className={style['tw']}><FaTwitter /></a></li>
-                                                                <li><a href='#0' className={style['gp']}><FaGooglePlusG /></a></li>
+                                                                <li><Link href='#0' className={style['fb']}><FaFacebookF /></Link></li>
+                                                                <li><Link href='#0' className={style['tw']}><FaTwitter /></Link></li>
+                                                                <li><Link href='#0' className={style['gp']}><FaGooglePlusG /></Link></li>
                                                             </ul>
                                                         </div>
                                                     </div>
@@ -410,9 +410,9 @@ const HolidaysTab = () => {
                                                             <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
 
                                                             <ul>
-                                                                <li><a href='#0' className={style['fb']}><FaFacebookF /></a></li>
-                                                                <li><a href='#0' className={style['tw']}><FaTwitter /></a></li>
-                                                                <li><a href='#0' className={style['gp']}><FaGooglePlusG /></a></li>
+                                                                <li><Link href='#0' className={style['fb']}><FaFacebookF /></Link></li>
+                                                                <li><Link href='#0' className={style['tw']}><FaTwitter /></Link></li>
+                                                                <li><Link href='#0' className={style['gp']}><FaGooglePlusG /></Link></li>
                                                             </ul>
                                                         </div>
                                                     </div>
@@ -475,9 +475,9 @@ const HolidaysTab = () => {
                                                             <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
 
                                                             <ul>
-                                                                <li><a href='#0' className={style['fb']}><FaFacebookF /></a></li>
-                                                                <li><a href='#0' className={style['tw']}><FaTwitter /></a></li>
-                                                                <li><a href='#0' className={style['gp']}><FaGooglePlusG /></a></li>
+                                                                <li><Link href='#0' className={style['fb']}><FaFacebookF /></Link></li>
+                                                                <li><Link href='#0' className={style['tw']}><FaTwitter /></Link></li>
+                                                                <li><Link href='#0' className={style['gp']}><FaGooglePlusG /></Link></li>
                                                             </ul>
                                                         </div>
                                                     </div>
@@ -540,9 +540,9 @@ const HolidaysTab = () => {
                                                             <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
 
                                                             <ul>
-                                                                <li><a href='#0' className={style['fb']}><FaFacebookF /></a></li>
-                                                                <li><a href='#0' className={style['tw']}><FaTwitter /></a></li>
-                                                                <li><a href='#0' className={style['gp']}><FaGooglePlusG /></a></li>
+                                                                <li><Link href='#0' className={style['fb']}><FaFacebookF /></Link></li>
+                                                                <li><Link href='#0' className={style['tw']}><FaTwitter /></Link></li>
+                                                                <li><Link href='#0' className={style['gp']}><FaGooglePlusG /></Link></li>
                                                             </ul>
                                                         </div>
                                                     </div>
