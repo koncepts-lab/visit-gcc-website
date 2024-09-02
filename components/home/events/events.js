@@ -7,7 +7,7 @@ const ArrowIcon = () => <FaArrowRightLong />;
 function SingleHomeEvents(props) {
     return (
         <>
-            <div className="item">
+            <div className="item">   
                 <div className={style['event-box']}>
                     <img src={props.image} className='w-100' alt={props.heading} />
                     <div className={style['date']}>{props.date}</div>
