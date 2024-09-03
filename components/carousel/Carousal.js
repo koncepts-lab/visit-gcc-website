@@ -141,7 +141,7 @@ function Carousal({
             {type === 'home-blog' &&
                 blog.map((b) => (
                     <SingleHomeBlog key={b.id} image={b.image} heading={b.heading} description={b.description} link={b.link} />
-                ))}
+                ))} 
             
                 
             {type === 'home-event' &&

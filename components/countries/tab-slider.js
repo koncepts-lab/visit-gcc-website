@@ -10,9 +10,9 @@ function TabSlider(props) {
                 <div className={style['bg-black-shade']}></div>
                 <img src={props.image} className='w-100' alt="" />
                 <div className={style['country-tabslide-text']}>
-                    <h4>{props.heading}</h4>
-                    <h5>{props.subHeading}</h5>
-                    <p>{props.description}</p>
+                    <h4>{props.heading}888</h4>
+                //* <h5>{props.subHeading}</h5> //*
+                    <p>{props.description}</p> 
                 </div>
             </Link>
 

@@ -5,7 +5,7 @@ import Carousal from '../carousel/Carousal';
 
 const Tabs = () => {
     const countryData = [
-        { id: 1, heading: 'Unveiling the Rich History and Heritage', subHeading: 'Journey Through Time', description: 'Lorem Ipsum is simply dummy text of the printing typesetting industry. Lorem Ipsum has been the industry', image: "/images/country/01.jpg" },
+        { id: 1, heading: 'Discover the Ancient Dilmun Civilization', subHeading: 'Journey Through Time', description: 'Unveil the mysteries of Bahrains early history as you explore the remnants of the Dilmun civilization, one of the most important ancient cultures in the Arabian Gulf. Visit the Qal’at al-Bahrain (Bahrain Fort), a UNESCO World Heritage Site, and delve into the artifacts and structures that reveal the region’s historical significance.', image: "/images/country/01.jpg" },
         { id: 2, heading: 'unveiling the Rich History and Heritage', subHeading: 'Journey Through Time', description: 'Lorem Ipsum is simply dummy text of the printing typesetting industry. Lorem Ipsum has been the industry', image: "/images/country/02.jpg" },
 
     ];
@@ -78,7 +78,7 @@ const Tabs = () => {
                                                 aria-controls="Luxury"
                                                 aria-selected="false"
                                             >
-                                                Luxury and Shopping
+                                                Luxury and Shopping 
                                             </button>
                                         </li>
                                     </ul>

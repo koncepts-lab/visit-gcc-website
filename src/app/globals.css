@@ -12,7 +12,13 @@ body{
   margin: 0;
 }
 
-
+@font-face {
+  font-family: 'Gotham';
+  src: url('/font/gotham-book-webfont.woff2') format('woff2'),
+       url('/font/gotham-bookitalic-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
 
 body{
     float: left;
