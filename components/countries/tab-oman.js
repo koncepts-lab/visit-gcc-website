@@ -3,27 +3,28 @@ import React, { useEffect } from 'react';
 import style from './style.module.css';
 import Carousal from '../carousel/Carousal';
 
-const Tabs = () => {
+
+const TabsOman = () => {
     const countryData = [
         {
             id: 1,
-            heading: 'Discover the Ancient Dilmun Civilization',
+            heading: 'Journey Through Oman\'s Ancient Forts and Historical Sites',
             subHeading: 'Journey Through Time',
-            description: 'Unveil the mysteries of Bahrain\'s early history as you explore the remnants of the Dilmun civilization, one of the most important ancient cultures in the Arabian Gulf. Visit the Qal’at al-Bahrain (Bahrain Fort), a UNESCO World Heritage Site, and delve into the artifacts and structures that reveal the region’s historical significance.',
+            description: 'Explore Oman\'s rich historical tapestry by visiting iconic forts such as the Nizwa Fort, renowned for its impressive architecture and strategic significance in Omani history. The fort\'s towering walls and intricate defensive design o er a glimpse into the country\'s military past. Additionally, the Bahla Fort, a UNESCO World Heritage Site, showcases the ancient mudbrick architecture and is a testament to Oman\'s historical significance as a center of trade and culture.',
             image: "/images/country/01.jpg"
         },
-        {
+        { 
             id: 2,
-            heading: 'Step Back in Time with Historic Forts',
+            heading: ' Discover Oman\'s Maritime Legacy',
             subHeading: 'Journey Through Time',
-            description: 'Journey through Bahrain\'s fortified past by visiting its impressive forts. From the 16th-century Bahrain Fort to the 19th-century Rifa Fort, these architectural marvels o er a glimpse into the strategic importance of Bahrain throughout the ages. Experience the stunning views and historical narratives that these forts provide.',
+            description: ' Delve into Oman\'s maritime history by exploring its historic ports and landmarks. The Sultan Qaboos Port in Muscat, one of the region\'s oldest harbors, reflects Oman\'s long-standing role as a trading hub. Visit the Maritime Museum in Muscat to learn about Oman\'s seafaring heritage, including its traditional dhows and navigation techniques that played a crucial role in maritime trade across the Indian Ocean.',
             image: "/images/country/02.jpg"
         },
         {
             id: 3,
-            heading: 'Explore Museums that Bahrain\'s Story',
+            heading: ' Explore Traditional Villages and Historic Landmarks',
             subHeading: 'Journey Through Time',
-            description: ' Immerse yourself in Bahrain\'s rich heritage at its diverse museums. The Bahrain National Museum o ers a comprehensive overview of the country\'s history, while the Bahrain Maritime Museum highlights the island\'s seafaring legacy. Each museum presents interactive exhibits and artifacts that bring Bahrain\'s past to life.',
+            description: 'Wander through traditional Omani villages such as Misfat al Abriyeen, known for its ancient irrigation systems and terraced gardens. Experience the historical charm of Jabrin Castle, an architectural marvel of the 17th century that served as a royal residence and a center of learning. These landmarks provide insight into Oman\'s traditional lifestyle and historical development.',
             image: "/images/country/02.jpg"
         }
     ];
@@ -31,23 +32,23 @@ const Tabs = () => {
     const countryDataTwo = [
         {
             id: 1,
-            heading: 'Revel in the Bahrain International Music Festiva',
+            heading: 'Experience Omani Festivals and Traditional Arts',
             subHeading: 'Journey Through Time',
-            description: 'Join the festivities at the Bahrain International Music Festival, a vibrant celebration of global music and dance. Experience performances by renowned artists from around the world, showcasing the island\'s role as a cultural crossroads in the Arabian Gulf.',
+            description: ' Immerse yourself in Oman\'s cultural vibrancy by participating in traditional festivals such as Muscat Festival, which celebrates Omani culture with music, dance, and arts. The festival showcases traditional performances, crafts, and culinary delights, o ering a deep dive into Omani heritage.',
             image: "/images/country/01.jpg"
         },
         {
             id: 2,
-            heading: ' Embrace the Charm of Traditional Crafts',
+            heading: ' Engage with Traditional Omani Crafts',
             subHeading: 'Journey Through Time',
-            description: 'Discover the intricate beauty of Bahrain\'s traditional crafts, from hand-woven textiles to beautifully crafted pottery. Visit local artisans and markets to purchase unique souvenirs and learn about the techniques that have been passed down through generations.',
+            description: ' Discover the artistry behind traditional Omani crafts, including incense burning and silver jewelry crafting. Visit local markets and workshops to witness the intricate processes involved in creating frankincense, a resin used in ceremonial and daily practices. Explore the craftsmanship of Omani silver jewelry, known for its elaborate designs and cultural significance, reflecting the rich artistic heritage of the region.',
             image: "/images/country/02.jpg"
         },
         {
             id: 3,
-            heading: ' Celebrate at Lively Cultural Events',
+            heading: 'Explore Omani Music and Dance',
             subHeading: 'Journey Through Time',
-            description: 'Dive into Bahrain\'s dynamic cultural scene with festivals and events that celebrate its diverse heritage. From the annual Spring of Culture festival to the Bahrain Food Festival, these events o er an opportunity to engage with local traditions and experience the island\'s vibrant community spirit.',
+            description: 'Experience the rhythm of Omani culture through traditional music and dance performances. Attend events featuring Ribaat (traditional Omani songs) and Bar’ah (a dance performed with swords), which are integral to Omani celebrations and ceremonies. These performances o er a captivating look at the musical and dance traditions that are central to Omani cultural identity.',
             image: "/images/country/02.jpg"
         }
     ];
@@ -55,23 +56,23 @@ const Tabs = () => {
     const countryDataThree = [
         {
             id: 1,
-            heading: 'Savor the Richness of Machboos',
+            heading: 'Delight in Traditional Omani Dishes',
             subHeading: 'Journey Through Time',
-            description: 'Indulge in Machboos, Bahrain\'s beloved spiced rice dish, typically accompanied by tender meat or seafood. This flavorful dish blends Arabian spices with Persian influences, o ering a taste of Bahrain\'s rich culinary heritage.',
+            description: ' Savor the flavors of Omani cuisine with traditional dishes such as Shuwa, a slow-cooked lamb marinated in spices and cooked underground, providing a unique and flavorful culinary experience. Another staple is Harees, a wheat and meat dish often enjoyed during special occasions and festivals.',
             image: "/images/country/01.jpg"
         },
         {
             id: 2,
-            heading: 'Delight in Traditional Bahraini Sweets',
+            heading: ' Explore Oman\'s Culinary Fusion',
             subHeading: 'Journey Through Time',
-            description: ' Treat yourself to Bahraini sweets like Halwa, a delicious dessert made from saffron, rosewater, and nuts. These confections are not only a culinary delight but also a symbol of Bahrain\'s rich and diverse food culture.',
+            description: 'Experience the blend of Arabian and Indian flavors in Omani cuisine. Visit local eateries that o er a fusion of traditional Omani dishes with Indian influences, reflecting the rich cultural interactions of the region. Enjoy dishes that combine aromatic spices and cooking techniques from both cuisines, o ering a diverse and flavorful dining experience.',
             image: "/images/country/02.jpg"
         },
         {
             id: 3,
-            heading: 'Experience Fusion Cuisine at Local Eateries',
+            heading: 'Discover Omani Food Markets and Street Food',
             subHeading: 'Journey Through Time',
-            description: 'Discover Bahrain\'s unique culinary fusion in local eateries that blend traditional Bahraini flavors with international influences. Enjoy dishes that reflect the island\'s role as a melting pot of cultures, offering an array of tastes that cater to every palate.',
+            description: 'Explore Omani food markets to taste a variety of local street foods and delicacies. The Mutrah Souq in Muscat offers an array of traditional snacks and sweets, such as Omani halwa, a sweet treat made from sa ron and rosewater. The market is also a great place to sample other local specialties and experience the vibrant food culture of Oman.',
             image: "/images/country/02.jpg"
         }
     ];
@@ -79,23 +80,23 @@ const Tabs = () => {
     const countryDataFour = [
         {
             id: 1,
-            heading: 'Shop in Style at Manama\'s Luxury Malls',
+            heading: '  Shop at Muscat\'s Premier Malls',
             subHeading: 'Journey Through Time',
-            description: 'Experience a shopping spree in Manama\'s upscale malls, such as City Centre Bahrain and The Avenues. These high-end shopping destinations o er a range of designer boutiques, luxury brands, and exclusive items that cater to discerning shoppers.',
+            description: 'Indulge in luxury shopping at Muscat\'s high-end malls such as Muscat Grand Mall and The Avenues Mall. These shopping destinations o er a range of international luxury brands, fine dining options, and entertainment facilities, providing a sophisticated retail experience in a modern setting.',
             image: "/images/country/01.jpg"
         },
         {
             id: 2,
-            heading: 'Explore the Charm of Traditional Souks',
+            heading: 'Find Exquisite Omani Crafts and Souvenirs',
             subHeading: 'Journey Through Time',
-            description: 'Wander through the vibrant Bab El Bahrain Souk and discover a treasure trove of traditional crafts, spices, and textiles. This bustling marketplace provides a taste of Bahrain\'s rich trading history and an opportunity to find unique, handcrafted souvenirs.',
+            description: 'Discover unique Omani crafts in traditional souks and markets. Explore the Mutrah Souq for handcrafted items like silver jewelry, traditional khanjars (curved daggers), and handwoven textiles. These markets o er authentic souvenirs that reflect Oman\'s rich artisanal heritage.',
             image: "/images/country/02.jpg"
         },
         {
             id: 3,
-            heading: ' Discover Local Artistry in Boutique Stores',
+            heading: ' Experience Contemporary and Traditional Shopping Centers',
             subHeading: 'Journey Through Time',
-            description: 'Uncover unique local crafts and artworks in boutique stores across Bahrain. From contemporary jewelry to traditional textiles, these boutiques o er a glimpse into Bahrain\'s artistic heritage and provide a chance to purchase distinctive items that reflect the island\'s cultural richness.',
+            description: 'Blend contemporary shopping with traditional experiences by visiting both modern malls and historical souks. Enjoy the luxury o erings in places like Sultan Qaboos Street, while also exploring traditional markets that provide a glimpse into Oman\'s cultural and commercial history. This combination of shopping environments o ers a diverse retail experience catering to various tastes and interests',
             image: "/images/country/02.jpg"
         }
     ];
@@ -127,7 +128,7 @@ const Tabs = () => {
                                                 aria-controls="History"
                                                 aria-selected="true"
                                             >
-                                                History and Heritage 
+                                                History and Heritage
                                             </button>
                                         </li>
                                         <li className={`nav-item ${style['country-nav-item']}`} role="presentation">
@@ -253,4 +254,4 @@ const Tabs = () => {
     );
 };
 
-export default Tabs;
+export default TabsOman;

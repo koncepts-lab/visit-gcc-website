@@ -3,27 +3,28 @@ import React, { useEffect } from 'react';
 import style from './style.module.css';
 import Carousal from '../carousel/Carousal';
 
-const Tabs = () => {
+
+const TabsKuwait = () => {
     const countryData = [
         {
             id: 1,
-            heading: 'Discover the Ancient Dilmun Civilization',
+            heading: ' Explore the UAE\'s Rich Bedouin Legacy',
             subHeading: 'Journey Through Time',
-            description: 'Unveil the mysteries of Bahrain\'s early history as you explore the remnants of the Dilmun civilization, one of the most important ancient cultures in the Arabian Gulf. Visit the Qal’at al-Bahrain (Bahrain Fort), a UNESCO World Heritage Site, and delve into the artifacts and structures that reveal the region’s historical significance.',
+            description: ' Discover the UAE\'s Bedouin heritage by visiting cultural centers and museums that highlight traditional desert life. Experience the nomadic customs, crafts, and social structures that have shaped the nation\'s history. Sites like the Al Ain Palace Museum o er a glimpse into the royal family\'s past and the traditional lifestyle of early Emirati communities.',
             image: "/images/country/01.jpg"
         },
-        {
+        { 
             id: 2,
-            heading: 'Step Back in Time with Historic Forts',
+            heading: 'Uncover Historic Landmarks Across the Emirates',
             subHeading: 'Journey Through Time',
-            description: 'Journey through Bahrain\'s fortified past by visiting its impressive forts. From the 16th-century Bahrain Fort to the 19th-century Rifa Fort, these architectural marvels o er a glimpse into the strategic importance of Bahrain throughout the ages. Experience the stunning views and historical narratives that these forts provide.',
+            description: ' Visit iconic historical sites that tell the story of the UAE\'s transformation. Explore the Al Fahidi Fort in Dubai, a symbol of the city\'s early trade roots, and the Fujairah Fort, which dates back to the 16th century. Each emirate, from Sharjah\'s Islamic Museum to Ajman\'s cultural landmarks, o ers unique insights into the region\'s past.',
             image: "/images/country/02.jpg"
         },
         {
             id: 3,
-            heading: 'Explore Museums that Bahrain\'s Story',
+            heading: 'Experience the Evolution of Modern Dubai',
             subHeading: 'Journey Through Time',
-            description: ' Immerse yourself in Bahrain\'s rich heritage at its diverse museums. The Bahrain National Museum o ers a comprehensive overview of the country\'s history, while the Bahrain Maritime Museum highlights the island\'s seafaring legacy. Each museum presents interactive exhibits and artifacts that bring Bahrain\'s past to life.',
+            description: ' Witness the remarkable evolution of Dubai from a modest trading port to a global metropolis. Tour landmarks such as the Burj Khalifa, showcasing Dubai\'s architectural ambition, and the Dubai Creek, reflecting the city\'s historical trade significance. Dubai\'s blend of old and new highlights its status as a modern hub on the world stage.',
             image: "/images/country/02.jpg"
         }
     ];
@@ -31,23 +32,23 @@ const Tabs = () => {
     const countryDataTwo = [
         {
             id: 1,
-            heading: 'Revel in the Bahrain International Music Festiva',
+            heading: 'Celebrate at UAE\'s Major Festivals',
             subHeading: 'Journey Through Time',
-            description: 'Join the festivities at the Bahrain International Music Festival, a vibrant celebration of global music and dance. Experience performances by renowned artists from around the world, showcasing the island\'s role as a cultural crossroads in the Arabian Gulf.',
+            description: 'Join in the excitement of the UAE\'s vibrant festivals. Attend the Abu Dhabi Film Festival for a showcase of international and regionalcinema or the Dubai Shopping Festival for a blend of retail therapy and entertainment. These events reflect the UAE\'s dynamic cultural scene and o er aglimpse into its diverse traditions.',
             image: "/images/country/01.jpg"
         },
         {
             id: 2,
-            heading: ' Embrace the Charm of Traditional Crafts',
+            heading: 'Experience Traditional Dance and Music',
             subHeading: 'Journey Through Time',
-            description: 'Discover the intricate beauty of Bahrain\'s traditional crafts, from hand-woven textiles to beautifully crafted pottery. Visit local artisans and markets to purchase unique souvenirs and learn about the techniques that have been passed down through generations.',
+            description: ' Immerse yourself in the UAE\'s rich musical heritage by watching traditional performances like Al Ayala, characterized by rhythmic drumming and poetry. Explore the traditional music and dance at cultural venues and festivals, which celebrate the UAE\'s artistic expressions and heritage.',
             image: "/images/country/02.jpg"
         },
         {
             id: 3,
-            heading: ' Celebrate at Lively Cultural Events',
+            heading: 'Explore Art and Cultural Institutions',
             subHeading: 'Journey Through Time',
-            description: 'Dive into Bahrain\'s dynamic cultural scene with festivals and events that celebrate its diverse heritage. From the annual Spring of Culture festival to the Bahrain Food Festival, these events o er an opportunity to engage with local traditions and experience the island\'s vibrant community spirit.',
+            description: 'Visit cultural institutions like the Louvre Abu Dhabi and the Sharjah Art Museum to experience the UAE\'s artistic and cultural achievements. These venues feature extensive collections of contemporary and classical art, highlighting the country\'s commitment to preserving and celebrating its cultural legacy.',
             image: "/images/country/02.jpg"
         }
     ];
@@ -55,23 +56,23 @@ const Tabs = () => {
     const countryDataThree = [
         {
             id: 1,
-            heading: 'Savor the Richness of Machboos',
+            heading: 'Savor Traditional Emirati Dishes',
             subHeading: 'Journey Through Time',
-            description: 'Indulge in Machboos, Bahrain\'s beloved spiced rice dish, typically accompanied by tender meat or seafood. This flavorful dish blends Arabian spices with Persian influences, o ering a taste of Bahrain\'s rich culinary heritage.',
+            description: 'Taste the essence of Emirati cuisine with traditional dishes such as Al Harees, a slow-cooked blend of wheat and meat, and Al Madrooba, a spiced fish dish. Enjoy these local specialties at traditional restaurants and eateries across the UAE, which o er a rich culinary experience steeped in history.',
             image: "/images/country/01.jpg"
         },
         {
             id: 2,
-            heading: 'Delight in Traditional Bahraini Sweets',
+            heading: 'Indulge in Street Food and Global Flavors',
             subHeading: 'Journey Through Time',
-            description: ' Treat yourself to Bahraini sweets like Halwa, a delicious dessert made from saffron, rosewater, and nuts. These confections are not only a culinary delight but also a symbol of Bahrain\'s rich and diverse food culture.',
+            description: 'Explore the diverse food scene with popular street foods like Shawarma and Falafel. The UAE\'s cosmopolitan cities o er a range of international cuisines, reflecting its multicultural population and providing a dynamic dining experience from casual to gourmet.',
             image: "/images/country/02.jpg"
         },
         {
             id: 3,
-            heading: 'Experience Fusion Cuisine at Local Eateries',
+            heading: '.Experience Fine Dining and Culinary Innovation',
             subHeading: 'Journey Through Time',
-            description: 'Discover Bahrain\'s unique culinary fusion in local eateries that blend traditional Bahraini flavors with international influences. Enjoy dishes that reflect the island\'s role as a melting pot of cultures, offering an array of tastes that cater to every palate.',
+            description: 'Discover the UAE\'s high-end dining options at world-class restaurants like Pierchic in Dubai or the Emirates Palace\'s fine dining venues in Abu Dhabi. These establishments o er innovative dishes and luxurious settings, showcasing the UAE\'s culinary creativity and commitment to excellence.',
             image: "/images/country/02.jpg"
         }
     ];
@@ -79,23 +80,23 @@ const Tabs = () => {
     const countryDataFour = [
         {
             id: 1,
-            heading: 'Shop in Style at Manama\'s Luxury Malls',
+            heading: 'Shop at Iconic Malls in Dubai and Abu Dhabi',
             subHeading: 'Journey Through Time',
-            description: 'Experience a shopping spree in Manama\'s upscale malls, such as City Centre Bahrain and The Avenues. These high-end shopping destinations o er a range of designer boutiques, luxury brands, and exclusive items that cater to discerning shoppers.',
+            description: ' Indulge in luxury shopping at Dubai Mall, the world\'s largest retail and entertainment destination, featuring a wide range of high-end brands and attractions. In Abu Dhabi, The Galleria provides a sophisticated shopping experience with luxury boutiques and fine dining, reflecting the city\'s elegant style.',
             image: "/images/country/01.jpg"
         },
         {
             id: 2,
-            heading: 'Explore the Charm of Traditional Souks',
+            heading: 'Discover Traditional Markets and Souqs',
             subHeading: 'Journey Through Time',
-            description: 'Wander through the vibrant Bab El Bahrain Souk and discover a treasure trove of traditional crafts, spices, and textiles. This bustling marketplace provides a taste of Bahrain\'s rich trading history and an opportunity to find unique, handcrafted souvenirs.',
+            description: 'Explore traditional markets such as the Gold Souq and Spice Souq in Dubai, where you can find unique treasures and traditional goods. The vibrant souqs o er a sensory experience that connects you to the UAE\'s historical trading heritage and cultural diversity.',
             image: "/images/country/02.jpg"
         },
         {
             id: 3,
-            heading: ' Discover Local Artistry in Boutique Stores',
+            heading: ' Uncover Unique Finds in Boutique Stores',
             subHeading: 'Journey Through Time',
-            description: 'Uncover unique local crafts and artworks in boutique stores across Bahrain. From contemporary jewelry to traditional textiles, these boutiques o er a glimpse into Bahrain\'s artistic heritage and provide a chance to purchase distinctive items that reflect the island\'s cultural richness.',
+            description: 'Visit boutique stores across the UAE to discover distinctive local art and craftsmanship. From contemporary jewelry to traditional textiles, these boutiques o er a glimpse into the UAE\'s artistic scene and provide unique items that reflect the country\'s cultural richnes',
             image: "/images/country/02.jpg"
         }
     ];
@@ -127,7 +128,7 @@ const Tabs = () => {
                                                 aria-controls="History"
                                                 aria-selected="true"
                                             >
-                                                History and Heritage 
+                                                History and HeritageTabsKuwait
                                             </button>
                                         </li>
                                         <li className={`nav-item ${style['country-nav-item']}`} role="presentation">
@@ -253,4 +254,4 @@ const Tabs = () => {
     );
 };
 
-export default Tabs;
+export default TabsKuwait;

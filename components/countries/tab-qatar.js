@@ -3,27 +3,28 @@ import React, { useEffect } from 'react';
 import style from './style.module.css';
 import Carousal from '../carousel/Carousal';
 
-const Tabs = () => {
+
+const TabsQatar = () => {
     const countryData = [
         {
             id: 1,
-            heading: 'Discover the Ancient Dilmun Civilization',
+            heading: 'Unveil the Legacy of the Ancient Qatari Civilization',
             subHeading: 'Journey Through Time',
-            description: 'Unveil the mysteries of Bahrain\'s early history as you explore the remnants of the Dilmun civilization, one of the most important ancient cultures in the Arabian Gulf. Visit the Qal’at al-Bahrain (Bahrain Fort), a UNESCO World Heritage Site, and delve into the artifacts and structures that reveal the region’s historical significance.',
+            description: 'Dive into the fascinating history of Qatar as you explore the Al Zubarah Fort, a UNESCO World Heritage Site. This well-preserved 18th-century fort o ers a glimpse into Qatar\'s ancient trading hub, revealing the strategic importance and vibrant culture of early Qatari civilization. Extend your journey by visiting nearby archaeological sites where you can uncover ancient settlements and artifacts that illuminate Qatar\'s historical significance.',
             image: "/images/country/01.jpg"
         },
-        {
+        { 
             id: 2,
-            heading: 'Step Back in Time with Historic Forts',
+            heading: 'Explore Majestic Forts and Museums',
             subHeading: 'Journey Through Time',
-            description: 'Journey through Bahrain\'s fortified past by visiting its impressive forts. From the 16th-century Bahrain Fort to the 19th-century Rifa Fort, these architectural marvels o er a glimpse into the strategic importance of Bahrain throughout the ages. Experience the stunning views and historical narratives that these forts provide.',
+            description: ' Step back in time by exploring Qatar\'s majestic forts and world-class museums. The imposing Al Khor Fort and the elegant Umm Salal Mohammed Fort stand as testaments to the country\'s strategic past. Meanwhile, the Museum of Islamic Art and Qatar National Museum house extraordinary collections that bring Qatar\'s rich heritage and artistic achievements into sharp focus, o ering visitors a comprehensive understanding of its historical evolution.',
             image: "/images/country/02.jpg"
         },
         {
             id: 3,
-            heading: 'Explore Museums that Bahrain\'s Story',
+            heading: 'Wander Through Cultural Heritage Sites',
             subHeading: 'Journey Through Time',
-            description: ' Immerse yourself in Bahrain\'s rich heritage at its diverse museums. The Bahrain National Museum o ers a comprehensive overview of the country\'s history, while the Bahrain Maritime Museum highlights the island\'s seafaring legacy. Each museum presents interactive exhibits and artifacts that bring Bahrain\'s past to life.',
+            description: 'Experience the charm of Qatar\'s cultural heritage by wandering through iconic sites like Souq Waqif and the Pearl-Qatar. Souq Waqif is a lively marketplace where traditional architecture and vibrant commerce converge, o ering a taste of authentic Qatari life. The Pearl-Qatar, a modern waterfront development, contrasts this with its luxurious surroundings while reflecting the country\'s blend of historical and contemporary influence.',
             image: "/images/country/02.jpg"
         }
     ];
@@ -31,23 +32,23 @@ const Tabs = () => {
     const countryDataTwo = [
         {
             id: 1,
-            heading: 'Revel in the Bahrain International Music Festiva',
+            heading: 'Experience the Glitz of the Qatar International Food Festival',
             subHeading: 'Journey Through Time',
-            description: 'Join the festivities at the Bahrain International Music Festival, a vibrant celebration of global music and dance. Experience performances by renowned artists from around the world, showcasing the island\'s role as a cultural crossroads in the Arabian Gulf.',
+            description: ' Indulge in a culinary extravaganza at the Qatar International Food Festival, a dazzling event that brings together a global array of flavors and Qatari cuisine. This festival features gourmet food, live cooking demonstrations, and captivating entertainment, o ering a vibrant celebration of Qatar\'s diverse food culture and its role as a culinary crossroads.',
             image: "/images/country/01.jpg"
         },
         {
             id: 2,
-            heading: ' Embrace the Charm of Traditional Crafts',
+            heading: 'Delight in Traditional Qatari Arts and Crafts',
             subHeading: 'Journey Through Time',
-            description: 'Discover the intricate beauty of Bahrain\'s traditional crafts, from hand-woven textiles to beautifully crafted pottery. Visit local artisans and markets to purchase unique souvenirs and learn about the techniques that have been passed down through generations.',
+            description: ' Immerse yourself in the exquisite world of Qatari arts and crafts, from intricate weaving and pottery to traditional silverwork. Visit local artisans and markets to witness the craftsmanship that has been passed down through generations, and discover unique, handcrafted items that reflect the rich artistic heritage of Qatar.',
             image: "/images/country/02.jpg"
         },
         {
             id: 3,
-            heading: ' Celebrate at Lively Cultural Events',
+            heading: ' Celebrate at Spectacular Cultural Festivals',
             subHeading: 'Journey Through Time',
-            description: 'Dive into Bahrain\'s dynamic cultural scene with festivals and events that celebrate its diverse heritage. From the annual Spring of Culture festival to the Bahrain Food Festival, these events o er an opportunity to engage with local traditions and experience the island\'s vibrant community spirit.',
+            description: 'Join in the festivities at Qatar\'s spectacular cultural festivals, such as the Doha Cultural Festival and Qatar National Day celebrations. These events o er a lively showcase of traditional music, dance, and art, allowing you to experience the vibrant cultural spirit and deep-rooted heritage that define Qatari identity.',
             image: "/images/country/02.jpg"
         }
     ];
@@ -55,23 +56,23 @@ const Tabs = () => {
     const countryDataThree = [
         {
             id: 1,
-            heading: 'Savor the Richness of Machboos',
+            heading: 'Savor the Rich Flavors of Majboos',
             subHeading: 'Journey Through Time',
-            description: 'Indulge in Machboos, Bahrain\'s beloved spiced rice dish, typically accompanied by tender meat or seafood. This flavorful dish blends Arabian spices with Persian influences, o ering a taste of Bahrain\'s rich culinary heritage.',
+            description: ' Experience the bold and aromatic flavors of Majboos, Qatar\'s signature spiced rice dish. Often served with tender meat or seafood, this dish combines a blend of spices that reflect Qatar\'s rich culinary traditions and regional influences, o ering a delicious taste of the country\'s gastronomic heritage.',
             image: "/images/country/01.jpg"
         },
         {
             id: 2,
-            heading: 'Delight in Traditional Bahraini Sweets',
+            heading: 'Indulge in Sweet Delights like Luqaimat',
             subHeading: 'Journey Through Time',
-            description: ' Treat yourself to Bahraini sweets like Halwa, a delicious dessert made from saffron, rosewater, and nuts. These confections are not only a culinary delight but also a symbol of Bahrain\'s rich and diverse food culture.',
+            description: ' Treat yourself to Luqaimat, delightful sweet dumplings drenched in date syrup. These golden, syrupy bites are a beloved part of Qatari dessert traditions, o ering a perfect balance of sweetness and texture that captures the essence of local culinary delights.',
             image: "/images/country/02.jpg"
         },
         {
             id: 3,
-            heading: 'Experience Fusion Cuisine at Local Eateries',
+            heading: 'Experience Innovative Dining at Trendy Restaurants',
             subHeading: 'Journey Through Time',
-            description: 'Discover Bahrain\'s unique culinary fusion in local eateries that blend traditional Bahraini flavors with international influences. Enjoy dishes that reflect the island\'s role as a melting pot of cultures, offering an array of tastes that cater to every palate.',
+            description: ' Explore Qatar\'s evolving dining scene at trendy restaurants that blend traditional flavors with modern culinary techniques. These innovative eateries o er a fresh take on classic Qatari dishes and international cuisine, providing a diverse and exciting dining experience that reflects the country\'s cosmopolitan flair',
             image: "/images/country/02.jpg"
         }
     ];
@@ -79,23 +80,23 @@ const Tabs = () => {
     const countryDataFour = [
         {
             id: 1,
-            heading: 'Shop in Style at Manama\'s Luxury Malls',
+            heading: 'Shop in Opulence at Doha\'s Luxury Malls',
             subHeading: 'Journey Through Time',
-            description: 'Experience a shopping spree in Manama\'s upscale malls, such as City Centre Bahrain and The Avenues. These high-end shopping destinations o er a range of designer boutiques, luxury brands, and exclusive items that cater to discerning shoppers.',
+            description: 'Indulge in a premium shopping experience at Doha\'s luxury malls, such as The Gate Mall and Villaggio Mall. These high-end shopping destinations feature designer boutiques, upscale brands, and exclusive items, making them the perfect place for a lavish retail experience in the heart of Qatar',
             image: "/images/country/01.jpg"
         },
         {
             id: 2,
-            heading: 'Explore the Charm of Traditional Souks',
+            heading: 'Explore the Vibrant Souqs',
             subHeading: 'Journey Through Time',
-            description: 'Wander through the vibrant Bab El Bahrain Souk and discover a treasure trove of traditional crafts, spices, and textiles. This bustling marketplace provides a taste of Bahrain\'s rich trading history and an opportunity to find unique, handcrafted souvenirs.',
+            description: ' Discover the vibrant atmosphere of Souq Waqif, where traditional Qatari crafts, spices, and textiles are on display. This bustling market o ers a rich sensory experience and a chance to find unique, handcrafted souvenirs that capture the essence of Qatar\'s rich trading history.',
             image: "/images/country/02.jpg"
         },
         {
             id: 3,
-            heading: ' Discover Local Artistry in Boutique Stores',
+            heading: ' Discover Unique Finds in Boutique Stores',
             subHeading: 'Journey Through Time',
-            description: 'Uncover unique local crafts and artworks in boutique stores across Bahrain. From contemporary jewelry to traditional textiles, these boutiques o er a glimpse into Bahrain\'s artistic heritage and provide a chance to purchase distinctive items that reflect the island\'s cultural richness.',
+            description: 'Uncover distinctive local artistry and craftsmanship in boutique stores across Qatar. From contemporary jewelry and traditional textiles to innovative art pieces, these shops o er a glimpse into Qatar\'s creative scene and provide one-of-a-kind items that reflect the country\'s cultural richness',
             image: "/images/country/02.jpg"
         }
     ];
@@ -127,7 +128,7 @@ const Tabs = () => {
                                                 aria-controls="History"
                                                 aria-selected="true"
                                             >
-                                                History and Heritage 
+                                                History and Heritage
                                             </button>
                                         </li>
                                         <li className={`nav-item ${style['country-nav-item']}`} role="presentation">
@@ -253,4 +254,4 @@ const Tabs = () => {
     );
 };
 
-export default Tabs;
+export default TabsQatar;

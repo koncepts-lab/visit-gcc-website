@@ -3,27 +3,28 @@ import React, { useEffect } from 'react';
 import style from './style.module.css';
 import Carousal from '../carousel/Carousal';
 
-const Tabs = () => {
+
+const TabsKuwait = () => {
     const countryData = [
         {
             id: 1,
-            heading: 'Discover the Ancient Dilmun Civilization',
+            heading: ' Uncover Kuwait\'s History through its Historic Landmarks and Museums',
             subHeading: 'Journey Through Time',
-            description: 'Unveil the mysteries of Bahrain\'s early history as you explore the remnants of the Dilmun civilization, one of the most important ancient cultures in the Arabian Gulf. Visit the Qal’at al-Bahrain (Bahrain Fort), a UNESCO World Heritage Site, and delve into the artifacts and structures that reveal the region’s historical significance.',
+            description: 'Explore Kuwait\'s rich past by visiting its significant historic sites. The Kuwait National Museum offers a comprehensive look at Kuwait\'s cultural and historical journey, showcasing artifacts from ancient times through the modern era. Nearby, Al Kout Fort stands as a testament to Kuwait\'s defensive architecture and its strategic importance in the region. Wander through these landmarks to gain insight into Kuwait\'s maritime heritage and its transformation into a modern state.',
             image: "/images/country/01.jpg"
         },
-        {
+        { 
             id: 2,
-            heading: 'Step Back in Time with Historic Forts',
+            heading: 'Discover Kuwait\'s Maritime Legacy',
             subHeading: 'Journey Through Time',
-            description: 'Journey through Bahrain\'s fortified past by visiting its impressive forts. From the 16th-century Bahrain Fort to the 19th-century Rifa Fort, these architectural marvels o er a glimpse into the strategic importance of Bahrain throughout the ages. Experience the stunning views and historical narratives that these forts provide.',
+            description: ' Dive into Kuwait\'s deep maritime history at the Kuwait Maritime Museum, which highlights the country\'s seafaring traditions and maritime trade. Learn about Kuwait\'s historical pearl diving industry and its impact on the region\'s economy. The museum\'s exhibits provide a vivid portrayal of Kuwait\'s naval prowess and its role in regional trade networks.',
             image: "/images/country/02.jpg"
         },
         {
             id: 3,
-            heading: 'Explore Museums that Bahrain\'s Story',
+            heading: 'Explore Traditional Souks and Historical Sites',
             subHeading: 'Journey Through Time',
-            description: ' Immerse yourself in Bahrain\'s rich heritage at its diverse museums. The Bahrain National Museum o ers a comprehensive overview of the country\'s history, while the Bahrain Maritime Museum highlights the island\'s seafaring legacy. Each museum presents interactive exhibits and artifacts that bring Bahrain\'s past to life.',
+            description: 'Experience Kuwait\'s vibrant past by visiting traditional markets like the Souk Al-Mubarakiya, one of the oldest souks in Kuwait. This bustling marketplace offers a glimpse into traditional Kuwaiti life, with its array of spices, textiles, and crafts. Additionally, explore historical sites such as Kuwait\'s Old Government Palace to understand the architectural evolution and historical governance of the country.',
             image: "/images/country/02.jpg"
         }
     ];
@@ -31,23 +32,23 @@ const Tabs = () => {
     const countryDataTwo = [
         {
             id: 1,
-            heading: 'Revel in the Bahrain International Music Festiva',
+            heading: 'Delve into Kuwaiti Culture with Traditional Music and Dance',
             subHeading: 'Journey Through Time',
-            description: 'Join the festivities at the Bahrain International Music Festival, a vibrant celebration of global music and dance. Experience performances by renowned artists from around the world, showcasing the island\'s role as a cultural crossroads in the Arabian Gulf.',
+            description: 'Immerse yourself in Kuwaiti culture by enjoying traditional performances such as ‘Ardah, a folk dance featuring swordplay and rhythmic drumming. Attend local festivals and cultural events to experience live performances of Kuwaiti music and dance, which reflect the rich Bedouin heritage and contemporary influences.',
             image: "/images/country/01.jpg"
         },
         {
             id: 2,
-            heading: ' Embrace the Charm of Traditional Crafts',
+            heading: 'Experience the Art of Falconry',
             subHeading: 'Journey Through Time',
-            description: 'Discover the intricate beauty of Bahrain\'s traditional crafts, from hand-woven textiles to beautifully crafted pottery. Visit local artisans and markets to purchase unique souvenirs and learn about the techniques that have been passed down through generations.',
+            description: ' Discover the ancient art of falconry, a traditional sport deeply rooted in Kuwaiti culture. Visit falconry centers where you can learn about the training and handling of these majestic birds. Participate in exhibitions and demonstrations to appreciate this revered practice, which symbolizes the close bond between Kuwaitis and their natural heritage.',
             image: "/images/country/02.jpg"
         },
         {
             id: 3,
-            heading: ' Celebrate at Lively Cultural Events',
+            heading: 'Explore the Blend of Bedouin Traditions and Modern Influences',
             subHeading: 'Journey Through Time',
-            description: 'Dive into Bahrain\'s dynamic cultural scene with festivals and events that celebrate its diverse heritage. From the annual Spring of Culture festival to the Bahrain Food Festival, these events o er an opportunity to engage with local traditions and experience the island\'s vibrant community spirit.',
+            description: 'Experience the unique fusion of Bedouin traditions and modern Kuwaiti life through cultural centers and events. Visit the Sheikh Jaber Al-Ahmad Cultural Centre to witness a blend of traditional Kuwaiti architecture and contemporary cultural expressions. Engage with local art and craft exhibitions that highlight the evolving nature of Kuwaiti culture while honoring its deep-rooted traditions.',
             image: "/images/country/02.jpg"
         }
     ];
@@ -55,23 +56,23 @@ const Tabs = () => {
     const countryDataThree = [
         {
             id: 1,
-            heading: 'Savor the Richness of Machboos',
+            heading: 'Taste the Diverse Kuwaiti Cuisine',
             subHeading: 'Journey Through Time',
-            description: 'Indulge in Machboos, Bahrain\'s beloved spiced rice dish, typically accompanied by tender meat or seafood. This flavorful dish blends Arabian spices with Persian influences, o ering a taste of Bahrain\'s rich culinary heritage.',
+            description: 'Savor the flavors of Kuwaiti cuisine, which includes beloved dishes like Harees, a slow-cooked mixture of wheat and meat, and Shawarma, a popular street food. Visit local restaurants to experience a range of traditional dishes that reflect the rich culinary heritage of Kuwait, prepared with authentic spices and techniques.',
             image: "/images/country/01.jpg"
         },
         {
             id: 2,
-            heading: 'Delight in Traditional Bahraini Sweets',
+            heading: 'Explore Vibrant Food Markets and Street Food',
             subHeading: 'Journey Through Time',
-            description: ' Treat yourself to Bahraini sweets like Halwa, a delicious dessert made from saffron, rosewater, and nuts. These confections are not only a culinary delight but also a symbol of Bahrain\'s rich and diverse food culture.',
+            description: 'Discover Kuwait\'s dynamic food scene by exploring vibrant street food markets and local eateries. From savory kebabs and fresh seafood to sweet delicacies, the street food offers a taste of Kuwait\'s culinary diversity. The Souk Al-Mubarakiya is an excellent place to sample a variety of traditional snacks and meals.',
             image: "/images/country/02.jpg"
         },
         {
             id: 3,
-            heading: 'Experience Fusion Cuisine at Local Eateries',
+            heading: 'Dine in Upscale Restaurants and International Cuisine',
             subHeading: 'Journey Through Time',
-            description: 'Discover Bahrain\'s unique culinary fusion in local eateries that blend traditional Bahraini flavors with international influences. Enjoy dishes that reflect the island\'s role as a melting pot of cultures, offering an array of tastes that cater to every palate.',
+            description: ' Experience Kuwait\'s upscale dining scene at high-end restaurants in The Avenues Mall and other luxury venues. These restaurants o er a fusion of Kuwaiti and international flavors, providing gourmet dining experiences in sophisticated settings. Enjoy a diverse range of cuisines from around the world while appreciating the luxurious ambiance and world-class service.',
             image: "/images/country/02.jpg"
         }
     ];
@@ -79,23 +80,23 @@ const Tabs = () => {
     const countryDataFour = [
         {
             id: 1,
-            heading: 'Shop in Style at Manama\'s Luxury Malls',
+            heading: ' Shop at Opulent Malls like The Avenues and 360 Mall',
             subHeading: 'Journey Through Time',
-            description: 'Experience a shopping spree in Manama\'s upscale malls, such as City Centre Bahrain and The Avenues. These high-end shopping destinations o er a range of designer boutiques, luxury brands, and exclusive items that cater to discerning shoppers.',
+            description: ' Indulge in luxury shopping at Kuwait’s premier malls, including The Avenues and 360 Mall. These shopping destinations feature a wide range of high-end international brands, designer boutiques, and upscale dining options. Enjoy a world-class shopping experience in environments that combine modern elegance with cutting-edge design.',
             image: "/images/country/01.jpg"
         },
         {
             id: 2,
-            heading: 'Explore the Charm of Traditional Souks',
+            heading: 'Discover Unique Finds in Traditional Souks',
             subHeading: 'Journey Through Time',
-            description: 'Wander through the vibrant Bab El Bahrain Souk and discover a treasure trove of traditional crafts, spices, and textiles. This bustling marketplace provides a taste of Bahrain\'s rich trading history and an opportunity to find unique, handcrafted souvenirs.',
+            description: 'Explore Kuwait’s traditional souks, such as Souk Al-Mubarakiya, where you can find unique handcrafted items, spices, textiles, and traditional Kuwaiti goods. These markets o er a charming contrast to modern shopping centers, allowing you to discover authentic souvenirs and experience the local market culture.',
             image: "/images/country/02.jpg"
         },
         {
             id: 3,
-            heading: ' Discover Local Artistry in Boutique Stores',
+            heading: ' Explore Local Artistry and High-End Boutique Stores',
             subHeading: 'Journey Through Time',
-            description: 'Uncover unique local crafts and artworks in boutique stores across Bahrain. From contemporary jewelry to traditional textiles, these boutiques o er a glimpse into Bahrain\'s artistic heritage and provide a chance to purchase distinctive items that reflect the island\'s cultural richness.',
+            description: 'Uncover Kuwait’s vibrant artistic scene by visiting boutique stores that feature local craftsmanship and contemporary art. From handmade jewelry and textiles to bespoke home décor, these boutiques o er distinctive items that reflect Kuwait’s rich cultural heritage and modern creativity',
             image: "/images/country/02.jpg"
         }
     ];
@@ -127,7 +128,7 @@ const Tabs = () => {
                                                 aria-controls="History"
                                                 aria-selected="true"
                                             >
-                                                History and Heritage 
+                                                History and HeritageTabsKuwait
                                             </button>
                                         </li>
                                         <li className={`nav-item ${style['country-nav-item']}`} role="presentation">
@@ -253,4 +254,4 @@ const Tabs = () => {
     );
 };
 
-export default Tabs;
+export default TabsKuwait;

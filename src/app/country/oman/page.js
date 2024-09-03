@@ -1,11 +1,11 @@
 import React from 'react'
 import style from './style.module.css';
-import Banner from '../../../components/banner/banner';
-import Countries from '../../../components/countries/countries';
-import Tabs from '../../../components/countries/tabs';
-import Carousal from '../../../components/carousel/Carousal';
-import DocumentationTabs from '../../../components/countries/documentation-tab';
-import GettingAroundTab from '../../../components/countries/getting-around-tab';
+import Banner from '../../../../components/banner/banner';
+import Countries from '../../../../components/countries/countries';
+import Carousal from '../../../../components/carousel/Carousal';
+import DocumentationTabs from '../../../../components/countries/documentation-tab';
+import GettingAroundTab from '../../../../components/countries/getting-around-tab';
+import TabsSaudiArabia from '../../../../components/countries/tab-saudi-arabia';
 
 
 function Country() {
@@ -38,7 +38,7 @@ function Country() {
                     </div>
                 </div>
             </div>
-            <Tabs />
+            <TabsSaudiArabia />
             <section className={style['countries-explore-container']}>
                 <div className={style['countries-explore']}>
                     <div className='container'>

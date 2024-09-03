@@ -3,27 +3,28 @@ import React, { useEffect } from 'react';
 import style from './style.module.css';
 import Carousal from '../carousel/Carousal';
 
-const Tabs = () => {
+
+const TabsSaudiArabia = () => {
     const countryData = [
         {
             id: 1,
-            heading: 'Discover the Ancient Dilmun Civilization',
+            heading: '.Explore Diriyah\'s Historical Significance',
             subHeading: 'Journey Through Time',
-            description: 'Unveil the mysteries of Bahrain\'s early history as you explore the remnants of the Dilmun civilization, one of the most important ancient cultures in the Arabian Gulf. Visit the Qal’at al-Bahrain (Bahrain Fort), a UNESCO World Heritage Site, and delve into the artifacts and structures that reveal the region’s historical significance.',
+            description: 'Visit Diriyah, the birthplace of the Saudi state and a UNESCO World Heritage Site. This historic town, with its mud-brick architecture and traditional Najdi buildings, o ers a glimpse into the early days of the Kingdom. The At-Turaif District, in particular, highlights the rich history and cultural heritage of Saudi Arabia.',
             image: "/images/country/01.jpg"
         },
-        {
+        { 
             id: 2,
-            heading: 'Step Back in Time with Historic Forts',
+            heading: 'Discover the Ancient Wonders of Al-Ula',
             subHeading: 'Journey Through Time',
-            description: 'Journey through Bahrain\'s fortified past by visiting its impressive forts. From the 16th-century Bahrain Fort to the 19th-century Rifa Fort, these architectural marvels o er a glimpse into the strategic importance of Bahrain throughout the ages. Experience the stunning views and historical narratives that these forts provide.',
+            description: ' Wander through the stunning landscapes and archaeological marvels of Al-Ula, an ancient oasis town in the northwest of Saudi Arabia. The site includes the rock-cut tombs of Madain Saleh (also known as Al-Hijr), which date back to the Nabatean period and are an important part of Saudi Arabia\'s historical and cultural legacy.',
             image: "/images/country/02.jpg"
         },
         {
             id: 3,
-            heading: 'Explore Museums that Bahrain\'s Story',
+            heading: 'Learn About Saudi Arabia\'s Islamic Heritage',
             subHeading: 'Journey Through Time',
-            description: ' Immerse yourself in Bahrain\'s rich heritage at its diverse museums. The Bahrain National Museum o ers a comprehensive overview of the country\'s history, while the Bahrain Maritime Museum highlights the island\'s seafaring legacy. Each museum presents interactive exhibits and artifacts that bring Bahrain\'s past to life.',
+            description: 'Explore the profound Islamic heritage of Saudi Arabia by visiting key religious sites such as the Masjid al-Haram in Mecca, the world\'s largest mosque and the site of the Kaaba, and the Prophet\'s Mosque in Medina, where the Prophet Muhammad is buried. These sacred places are central to the Islamic faith and attract millions of pilgrims each year.',
             image: "/images/country/02.jpg"
         }
     ];
@@ -31,23 +32,23 @@ const Tabs = () => {
     const countryDataTwo = [
         {
             id: 1,
-            heading: 'Revel in the Bahrain International Music Festiva',
+            heading: ' Experience the Hajj Pilgrimage',
             subHeading: 'Journey Through Time',
-            description: 'Join the festivities at the Bahrain International Music Festival, a vibrant celebration of global music and dance. Experience performances by renowned artists from around the world, showcasing the island\'s role as a cultural crossroads in the Arabian Gulf.',
+            description: 'Witness the annual Hajj pilgrimage, one of the Five Pillars of Islam, which draws millions of Muslims from around the world to Mecca. This religious journey is a profound expression of faith and unity, with rituals that have been performed for centuries, reflecting the deep spiritual significance of the pilgrimage.',
             image: "/images/country/01.jpg"
         },
         {
             id: 2,
-            heading: ' Embrace the Charm of Traditional Crafts',
+            heading: 'Enjoy Traditional Saudi Dance and Music',
             subHeading: 'Journey Through Time',
-            description: 'Discover the intricate beauty of Bahrain\'s traditional crafts, from hand-woven textiles to beautifully crafted pottery. Visit local artisans and markets to purchase unique souvenirs and learn about the techniques that have been passed down through generations.',
+            description: ' Immerse yourself in Saudi Arabia\'s vibrant cultural scene by experiencing traditional dance forms like the Ardah, a folk dance performed with swords and accompanied by drumming and chanting. Explore the diverse musical heritage of the Kingdom through performances and festivals that showcase traditional instruments and songs.',
             image: "/images/country/02.jpg"
         },
         {
             id: 3,
-            heading: ' Celebrate at Lively Cultural Events',
+            heading: ' Discover Saudi Arabia\'s Cultural Practices',
             subHeading: 'Journey Through Time',
-            description: 'Dive into Bahrain\'s dynamic cultural scene with festivals and events that celebrate its diverse heritage. From the annual Spring of Culture festival to the Bahrain Food Festival, these events o er an opportunity to engage with local traditions and experience the island\'s vibrant community spirit.',
+            description: ' Engage with Saudi Arabia\'s rich cultural practices and values through local festivals and cultural events. From the annual Janadriyah Festival, which celebrates Saudi heritage and traditions, to the traditional hospitality practices of Saudi families, these experiences provide insight into the customs and social fabric of the Kingdom. Discover the NEOM Project: A Vision for Future Cultural Tourism. NEOM is Saudi Arabia\'s revolutionary $500 billion initiative to build a futuristic city blending technology, sustainability, and cultural heritage. Located in the northwest of Saudi Arabia, NEOM promises to captivate global tourists with its innovative approach to urban living.',
             image: "/images/country/02.jpg"
         }
     ];
@@ -55,23 +56,23 @@ const Tabs = () => {
     const countryDataThree = [
         {
             id: 1,
-            heading: 'Savor the Richness of Machboos',
+            heading: 'Indulge in Kabsa and Other Traditional Dishes',
             subHeading: 'Journey Through Time',
-            description: 'Indulge in Machboos, Bahrain\'s beloved spiced rice dish, typically accompanied by tender meat or seafood. This flavorful dish blends Arabian spices with Persian influences, o ering a taste of Bahrain\'s rich culinary heritage.',
+            description: ' Enjoy Kabsa, a flavorful dish made with spiced rice, meat (such as chicken, lamb, or beef), and a blend of aromatic spices. This quintessential Saudi dish is a staple at family gatherings and special occasions. Also, try other traditional dishes like Mandi and Harees, which are integral to Saudi culinary traditions.',
             image: "/images/country/01.jpg"
         },
         {
             id: 2,
-            heading: 'Delight in Traditional Bahraini Sweets',
+            heading: 'Taste the Rich Flavors of Jareesh',
             subHeading: 'Journey Through Time',
-            description: ' Treat yourself to Bahraini sweets like Halwa, a delicious dessert made from saffron, rosewater, and nuts. These confections are not only a culinary delight but also a symbol of Bahrain\'s rich and diverse food culture.',
+            description: 'Jareesh, a comforting dish made from cracked wheat and meat, slow-cooked to create a savory, porridge-like consistency. This dish is often enjoyed during Ramadan and special celebrations, reflecting the Kingdom\'s rich culinary heritage and communal dining culture.',
             image: "/images/country/02.jpg"
         },
         {
             id: 3,
-            heading: 'Experience Fusion Cuisine at Local Eateries',
+            heading: 'Explore Modern Culinary Innovations',
             subHeading: 'Journey Through Time',
-            description: 'Discover Bahrain\'s unique culinary fusion in local eateries that blend traditional Bahraini flavors with international influences. Enjoy dishes that reflect the island\'s role as a melting pot of cultures, offering an array of tastes that cater to every palate.',
+            description: 'Experience the evolving food scene in Saudi Arabia, where traditional flavors meet modern culinary techniques. Visit contemporary restaurants that o er innovative takes on classic dishes, blending local ingredients with international influences to create a unique dining experience.',
             image: "/images/country/02.jpg"
         }
     ];
@@ -79,23 +80,23 @@ const Tabs = () => {
     const countryDataFour = [
         {
             id: 1,
-            heading: 'Shop in Style at Manama\'s Luxury Malls',
+            heading: 'Shop at Kingdom Centre in Riyadh',
             subHeading: 'Journey Through Time',
-            description: 'Experience a shopping spree in Manama\'s upscale malls, such as City Centre Bahrain and The Avenues. These high-end shopping destinations o er a range of designer boutiques, luxury brands, and exclusive items that cater to discerning shoppers.',
+            description: 'Discover luxury shopping at Kingdom Centre, one of Riyadh\'s most iconic malls. With its high-end boutiques, upscale dining options, and stunning architecture, Kingdom Centre o ers a premier shopping experience that showcases both international brands and local designer labels.',
             image: "/images/country/01.jpg"
         },
         {
             id: 2,
-            heading: 'Explore the Charm of Traditional Souks',
+            heading: ' Explore Al Faisaliah Mall',
             subHeading: 'Journey Through Time',
-            description: 'Wander through the vibrant Bab El Bahrain Souk and discover a treasure trove of traditional crafts, spices, and textiles. This bustling marketplace provides a taste of Bahrain\'s rich trading history and an opportunity to find unique, handcrafted souvenirs.',
+            description: 'Visit Al Faisaliah Mall in Riyadh, known for its elegant design and high-end shopping options. The mall features a range of luxury stores, from global fashion brands to exclusive local boutiques, and o ers a sophisticated shopping environment.',
             image: "/images/country/02.jpg"
         },
         {
             id: 3,
-            heading: ' Discover Local Artistry in Boutique Stores',
+            heading: 'Discover Unique Finds in Vibrant Shopping Districts',
             subHeading: 'Journey Through Time',
-            description: 'Uncover unique local crafts and artworks in boutique stores across Bahrain. From contemporary jewelry to traditional textiles, these boutiques o er a glimpse into Bahrain\'s artistic heritage and provide a chance to purchase distinctive items that reflect the island\'s cultural richness.',
+            description: 'lore Saudi Arabia\'s vibrant shopping districts, such as Jeddah\'s Al-Balad historic area and the modern shopping precincts in Dhahran. These districts o er a mix of luxury brands, traditional souqs, and artisanal products, providing a diverse shopping experience that reflects the Kingdom\'s rich cultural heritage',
             image: "/images/country/02.jpg"
         }
     ];
@@ -127,7 +128,7 @@ const Tabs = () => {
                                                 aria-controls="History"
                                                 aria-selected="true"
                                             >
-                                                History and Heritage 
+                                                History and Heritage
                                             </button>
                                         </li>
                                         <li className={`nav-item ${style['country-nav-item']}`} role="presentation">
@@ -253,4 +254,4 @@ const Tabs = () => {
     );
 };
 
-export default Tabs;
+export default TabsSaudiArabia;
