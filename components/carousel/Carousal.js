@@ -112,7 +112,8 @@ function Carousal({
     ];
 
     return (
-        <SlickCarousel {...Responsive}>
+        // <SlickCarousel {...Responsive}>
+        <SlickCarousel {...Responsive} className={type === 'country-tab' ? 'custom-country-tab-class' : ''}>
             {type === 'home-package' &&
                 packages.map((pkg) => (
                     <div key={pkg.id} className="home-package-item">

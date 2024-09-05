@@ -302,12 +302,6 @@ footer .navbar-brand {
 
 
 
-.slick-prev:before, .slick-next:before {
-  font-family: 'slick';
-  font-size: 20px;
-  line-height: 1;
-  opacity: .75;
-  color: #149997;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.custom-country-tab-class .slick-next:before {
+  color: #a0daca !important;
 }

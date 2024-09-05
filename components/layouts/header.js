@@ -1,11 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Link from 'next/link';
 import style from './style.module.css';
 import ReactFlagsSelect from 'react-flags-select';
 
+// Ensure that Bootstrap's JS is included
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+
 function Header() {
   const [selected, setSelected] = useState("US");
+
+  // This ensures that the Bootstrap JavaScript is loaded
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      require('bootstrap/dist/js/bootstrap.bundle.min.js');
+    }
+  }, []);
 
   return (
     <>

@@ -127,6 +127,9 @@
   float: left;
   width: 100%;
 }
+.banner-box div{
+  width:25% ;
+}
 
 
 .sticky .banner-box{
