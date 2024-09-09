@@ -8,8 +8,7 @@ export default function Page() {
 
   return (
     <div>
-      <h1>Page with slug: {slug}</h1>
-      2555555
+     
     </div>
   );
 }

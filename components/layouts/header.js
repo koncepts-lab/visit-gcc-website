@@ -42,7 +42,27 @@ function Header() {
                 <Link className={`nav-link ${style['login-link']}`} href='/about'>Login/Signup</Link>
               </li>
 
-              <li className={`nav-item dropdown ${style['dropdown-right']}`}>
+              <li className={`nav-item dropdown ${style['dropdown-right']} ${style['view-pc']}`}>
+                <ReactFlagsSelect
+                  countries={["US", "GB", "FR", "DE", "IT"]}
+                  customLabels={{ US: "", GB: "", FR: "", DE: "", IT: "" }} // Empty labels to show only flags
+                  selected={selected}
+                  onSelect={code => setSelected(code)}
+                  placeholder="US"
+                  showSelectedLabel={false} // Hide selected label
+                  showOptionLabel={false} // Hide option labels  
+                />
+              </li>
+            </ul>
+
+            
+
+          </div>
+        </div>
+      </nav>
+
+  
+      <div className={`nav-item dropdown ${style['dropdown-right']} ${style['view-mobile']}`}>
                 <ReactFlagsSelect
                   countries={["US", "GB", "FR", "DE", "IT"]}
                   customLabels={{ US: "", GB: "", FR: "", DE: "", IT: "" }} // Empty labels to show only flags
@@ -52,11 +72,7 @@ function Header() {
                   showSelectedLabel={false} // Hide selected label
                   showOptionLabel={false} // Hide option labels
                 />
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
+              </div>
     </>
   );
 }

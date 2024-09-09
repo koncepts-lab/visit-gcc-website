@@ -16,8 +16,12 @@
     padding: 8px 10px !important;
     color: #cdcdcd !important;
 }
-
-
+.view-mobile{
+   display: none; 
+}
+.view-pc {
+    display: block; 
+ }
 
 
 
@@ -56,5 +60,15 @@
         max-width: 30px !important;
         margin-bottom: 10px;
       }
-    
+      .view-mobile {
+        display: block;
+        position: absolute !important;
+        top: 20px;
+        right: 60px;
+    }
+    .view-pc{
+        display: none; 
+     }
+  
+
     }

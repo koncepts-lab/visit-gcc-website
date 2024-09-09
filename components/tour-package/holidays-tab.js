@@ -42,7 +42,7 @@ const HolidaysTab = () => {
                                             aria-selected="true"
                                         >
                                             All Offers
-                                        </button>
+                                        </button> 
                                     </li>
                                     <li className={`nav-item ${style['country-nav-item']}`} role="presentation">
                                         <button
@@ -165,7 +165,8 @@ const HolidaysTab = () => {
                                                                 <p>Saudi</p>
                                                             </span>
                                                         </div>
-                                                        <div className={`mb-0 ${style['tour-holidays-box']}`}>
+                                                      
+                                                        <div className={`mb-0 ${style['tour-holidays-box']} ${style['mobile-pb']}`}>
                                                             <img src='../images/tour/02.jpg' className='w-100' />
                                                             <span>
                                                                 <h6>Destination</h6>

@@ -2,7 +2,7 @@
     float: left;
     width: 100%;
     padding: 50px 0;
-}
+} 
 
 .home-countries img{
     border-radius: 15px;
@@ -518,3 +518,21 @@ background: linear-gradient(0deg, rgba(2,0,36,1) 54%, rgba(0,0,0,0) 100%);
     height: 542px;
     z-index: 1;
 }
+
+@media only screen and (max-width: 991px) {
+   .country-nav-tabs{
+    display: grid !important;
+        grid-auto-flow: column;
+        grid-auto-columns: min-content;
+        overflow-y: hidden;
+        overflow-x: scroll;
+   }
+   .country-nav-tabs li{
+    float: left;
+    text-wrap: nowrap;
+}
+.mobile-pb{
+    padding-bottom: 30px;
+}
+
+  }

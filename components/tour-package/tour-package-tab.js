@@ -306,7 +306,7 @@ const TourPackageTab = ({ breakPoints }) => {
                     </div>
                 </div>
                 {/* CountryExplore */}
-<div className='bg-container'><div>dd</div></div>
+
             </div>       
                     
 

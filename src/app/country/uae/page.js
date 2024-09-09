@@ -2,10 +2,10 @@ import React from 'react'
 import style from './style.module.css';
 import Banner from '../../../../components/banner/banner';
 import Countries from '../../../../components/countries/countries';
-import Tabs from '../../../../components/countries/tabs';
 import Carousal from '../../../../components/carousel/Carousal';
 import DocumentationTabs from '../../../../components/countries/documentation-tab';
 import GettingAroundTab from '../../../../components/countries/getting-around-tab';
+import TabsUae from '../../../../components/countries/tab-uae';
 
 
 function Country() {
@@ -20,9 +20,6 @@ function Country() {
     const countryExperiance = [        
     ];
 
-    
-
-    
 
     return (
         <div>
@@ -38,7 +35,7 @@ function Country() {
                     </div>
                 </div>
             </div>
-            <Tabs />
+            <TabsUae />
             <section className={style['countries-explore-container']}>
                 <div className={style['countries-explore']}>
                     <div className='container'>

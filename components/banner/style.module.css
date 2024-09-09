@@ -152,5 +152,8 @@
       max-width: 30px !important;
       margin-bottom: 10px;
     }
+    .banner-box {
+      margin: 0 0 15px 0;
+  }
   
   }

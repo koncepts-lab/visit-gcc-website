@@ -4,11 +4,11 @@ import style from './style.module.css';
 import Carousal from '../carousel/Carousal';
 
 
-const TabsKuwait = () => {
+const TabsUae = () => {
     const countryData = [
         {
             id: 1,
-            heading: ' Explore the UAE\'s Rich Bedouin Legacy',
+            heading: 'Explore the UAE\'s Rich Bedouin Legacy',
             subHeading: 'Journey Through Time',
             description: ' Discover the UAE\'s Bedouin heritage by visiting cultural centers and museums that highlight traditional desert life. Experience the nomadic customs, crafts, and social structures that have shaped the nation\'s history. Sites like the Al Ain Palace Museum o er a glimpse into the royal family\'s past and the traditional lifestyle of early Emirati communities.',
             image: "/images/country/01.jpg"
@@ -128,7 +128,7 @@ const TabsKuwait = () => {
                                                 aria-controls="History"
                                                 aria-selected="true"
                                             >
-                                                History and HeritageTabsKuwait
+                                                History and Heritage
                                             </button>
                                         </li>
                                         <li className={`nav-item ${style['country-nav-item']}`} role="presentation">
@@ -254,4 +254,4 @@ const TabsKuwait = () => {
     );
 };
 
-export default TabsKuwait;
+export default TabsUae;

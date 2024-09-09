@@ -305,3 +305,10 @@ footer .navbar-brand {
 .custom-country-tab-class .slick-next:before {
   color: #a0daca !important;
 }
+.custom-country-tab-class .slick-prev:before {
+  color: #a0daca !important;
+}
+
+.navbar-toggler:focus {
+  box-shadow: none !important;
+}

@@ -5,7 +5,7 @@ import Countries from '../../../../components/countries/countries';
 import Carousal from '../../../../components/carousel/Carousal';
 import DocumentationTabs from '../../../../components/countries/documentation-tab';
 import GettingAroundTab from '../../../../components/countries/getting-around-tab';
-import TabsSaudiArabia from '../../../../components/countries/tab-saudi-arabia';
+import TabsOman from '../../../../components/countries/tab-oman';
 
 
 function Country() {
@@ -19,7 +19,7 @@ function Country() {
 
     const countryExperiance = [        
     ];
-
+ 
     
 
     
@@ -38,7 +38,7 @@ function Country() {
                     </div>
                 </div>
             </div>
-            <TabsSaudiArabia />
+            <TabsOman />
             <section className={style['countries-explore-container']}>
                 <div className={style['countries-explore']}>
                     <div className='container'>

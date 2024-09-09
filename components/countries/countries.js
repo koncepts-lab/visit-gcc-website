@@ -7,7 +7,7 @@ const countriesData = [
   { id: 2, link: '/country/kuwait', heading: 'Kuwait', image: "/images/countries/02.jpg" },
   { id: 3, link: '/country/oman', heading: 'Oman', image: "/images/countries/03.jpg" },
   { id: 4, link: '/country/qatar', heading: 'Qatar', image: "/images/countries/04.jpg" },
-  { id: 5, link: '/country/aaudi-arabia', heading: 'Saudi Arabia', image: "/images/countries/05.jpg" },
+  { id: 5, link: '/country/saudi-arabia', heading: 'Saudi Arabia', image: "/images/countries/05.jpg" },
   { id: 6, link: '/country/uae', heading: 'UAE', image: "/images/countries/06.jpg" },
 ];
 
