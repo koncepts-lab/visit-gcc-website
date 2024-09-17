@@ -41,6 +41,30 @@ function Footer() {
           </div>
         </div>
       </footer>
+
+      <div className='mobile-footer'>
+      <div className='mobile-footer-container'>
+          <div>
+          <img src="../images/01.png" alt="Explore Bahrain" />
+          <h4>Explore</h4>
+        </div>
+        <div>
+          <img src="../images/02.png" alt="Plan Bahrain" />
+          <h4>Plan</h4>
+        </div>
+        <div>
+          <img src="../images/03.png" alt="Book Bahrain" />
+          <h4>Book</h4>
+        </div>
+        <div>
+          <img src="../images/04.png" alt="Experience Bahrain" />
+          <h4>Experience</h4>
+        </div>
+        </div>
+      </div>
+
+
+
     </>
   )
 }
