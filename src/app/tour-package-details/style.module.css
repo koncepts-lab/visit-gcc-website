@@ -63,6 +63,7 @@
     border-radius:15px;
 }
 .inclusions{
+    flex-wrap: wrap;
     display: flex;
 }
 .inclusions span{
@@ -161,12 +162,12 @@
   @media only screen and (max-width: 991px) {
   .review-text-container {
     position: absolute;
-    margin-top: -180px;
+    margin-top: -50px;
     max-width: 320px;
     margin-left: 22px;
 }
 .mobile-mrb{
-    margin-top: 90px;
+    margin-top: 200px;
 }
 .inclusions {
     flex-wrap: wrap;
@@ -192,6 +193,16 @@
 .Legend-ul h4 {
     margin-top: 0;
     margin-bottom: 15px;
+}
+.btn-one{
+    font-size: 12px;
+}
+.btn-two{
+    font-size: 12px;
+}
+.flex-package-details span {
+    margin-right: 15px;
+    min-width: 50px;
 }
   }
 
