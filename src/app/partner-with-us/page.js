@@ -27,10 +27,12 @@ function page() {
 
                     <div className={`row ${style['pt-50']}`}>
                         <div className='col-md-6'>
+                        <div className={style['mobile-padb']}>
                             <div className={style['pwu-box']}>
                                 <h4>Global Reach</h4>
                                 <p>Tap into a worldwide network of travelers eager to explore the GCC region.</p>
                             </div>
+                        </div>
                         </div>
                         <div className='col-md-6'>
                             <div className={style['pwu-box']}>
@@ -42,10 +44,12 @@ function page() {
 
                     <div className='row pt-4'>
                         <div className='col-md-6'>
+                        <div className={style['mobile-padb']}>
                             <div className={style['pwu-box']}>
                                 <h4>Marketing Advantage</h4>
                                 <p>Leverage our robust marketing campaigns to boost your visibility and attract more customers.</p>
                             </div>
+                        </div>
                         </div>
                         <div className='col-md-6'>
                             <div className={style['pwu-box']}>
@@ -57,10 +61,12 @@ function page() {
 
                     <div className='row pt-4'>
                         <div className='col-md-6'>
+                        <div className={style['mobile-padb']}>
                             <div className={style['pwu-box']}>
                                 <h4>Broad Exposure</h4>
                                 <p>Access a vast audience of global travelers and local adventurers.</p>
                             </div>
+                        </div>
                         </div>
                         <div className='col-md-6'>
                             <div className={style['pwu-box']}>

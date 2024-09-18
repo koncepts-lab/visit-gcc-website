@@ -153,7 +153,7 @@ function Page() {
                         </div>
 
                         <div className='col-md-5 align-items'>
-                            <div>
+                            <div  className={style['mobile-mrb']}>
                                 <h3>Enchanting Salalah</h3>
                                 <p>Lorem ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
                             </div>
@@ -216,7 +216,8 @@ function Page() {
                 </div>
 
                 <div className='container'>
-                    <div className='row pt-5 pb-5'>
+                <div className={`row ${style['ptb-30']}`}>
+                    
                         <div className='col-md-12'>
                             <h3>Trip Map & Itinerary</h3>
                         </div>
@@ -268,10 +269,10 @@ function Page() {
                         </div>
                     </div>
                     <div className='row pt-5'>
-                        <div className='col-md-4'>
+                        <div className='col-md-4 col-8'>
                             <h4>What guests loved most</h4>
                         </div>
-                        <div className='col-md-4'>
+                        <div className='col-md-4 col-4'>
                             <Link className='float-right' href='#0'>See all reviews</Link>
                         </div>
                     </div>

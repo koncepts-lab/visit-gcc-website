@@ -304,7 +304,21 @@ footer{
 .mobile-footer{
   display: block !important;
 }
+.lap-view{
+  display: none !important;
+}
+.mobile-view{
+  display: block !important;
+  max-width: 100%;
+}
+.slick-prev, .slick-next {
+  display: none !important;
+}
+}
 
+
+.mobile-view{
+  display: none;
 }
 .mobile-footer {
   display: none;
@@ -314,6 +328,7 @@ footer{
   bottom: 0;
   left: 0;
   right: 0;
+  z-index: 1000;
 }
 .mobile-footer-container {
   display: flex;
@@ -324,6 +339,7 @@ footer{
   width: 100%;
   padding: 5px 0;
   background-color: #fff;
+  z-index: 100000;
 }
 .mobile-footer-container img {
   max-width: 30px;
@@ -350,4 +366,18 @@ footer{
 
 .navbar-toggler:focus {
   box-shadow: none !important;
+}
+.lap-view{
+  display: block;
+}
+
+body{
+  overflow-x: hidden;
+}
+
+.slick-prev:before {
+  color: #a0daca !important;
+}
+.slick-next:before {
+  color: #a0daca !important;
 }

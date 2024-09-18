@@ -78,3 +78,25 @@
 .partner-with-us-form p{ color: #fff;}
 .partner-with-us-form h3{ color: #fff;}
 .partner-with-us-form hr{ color: #fff;}
+@media only screen and (max-width: 991px) {
+.btn-two{
+    margin-top: 15px;
+margin-bottom: 15px;
+}
+.mobile-padb {
+    margin-bottom: 1.5rem !important;
+    float: left;
+    width: 100%;
+}
+.partner-with-us-form {
+    padding: 15px;
+    margin-bottom: 70px;
+}
+.partner-with-us {
+    padding: 15px;
+}
+.pb-5 {
+    padding-bottom: 0 !important;
+}
+
+}

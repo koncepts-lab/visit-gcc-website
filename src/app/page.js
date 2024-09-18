@@ -58,7 +58,8 @@ function Home() {
       <div className='container'>
         <div className="row">
           <div className="col-md-12 pdb-3">
-            <img src="/images/banner-02.jpg" className='w-100' alt="Banner" />
+            <img src="/images/banner-02.jpg" className='lap-view' alt="Banner" />
+            <img src="/images/banner-03.jpg" className='mobile-view' alt="Banner" />
           </div>
         </div>
       </div>
@@ -98,7 +99,8 @@ function Home() {
       <div className='container'>
         <div className="row">
           <div className="col-md-12 pdb-3">
-            <img src="/images/banner-02.jpg" className='w-100' alt="Banner" />
+            <img src="/images/banner-02.jpg" className='lap-view' alt="Banner" />
+            <img src="/images/banner-03.jpg" className='mobile-view' alt="Banner" />
           </div>
         </div>
       </div>

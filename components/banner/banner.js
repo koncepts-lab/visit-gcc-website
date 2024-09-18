@@ -1,5 +1,5 @@
 "use client";  // Add this directive at the top
-
+import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import style from './style.module.css';
 import Search from '../search/search';
@@ -16,7 +16,7 @@ const Banner = () => {
     window.addEventListener('scroll', handleScroll);
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('scroll', handleScroll); 
     };
   }, []);
 
@@ -28,7 +28,8 @@ const Banner = () => {
             <div className={style['banner-container']}>
 
               <div className={style['only-stiky']}>
-                888</div>
+              <Link className="navbar-brand" href='/'><img src="/images/logo.svg"  className={style['banner-box-logo']} alt="" /></Link>
+              </div>
 
 
               <div className={style['banner-box']}>
@@ -51,7 +52,12 @@ const Banner = () => {
               </div>
 
 
-              <div className={style['only-stiky']}>d88dd </div>
+              <div className={style['only-stiky']}>
+              <div className='d-flex'>
+              <img src="../images/05.png" alt="Explore Bahrain"  className={style['profile-icon']} />Johnny Depp 
+              </div>
+              
+              </div>
 
             </div>
 
