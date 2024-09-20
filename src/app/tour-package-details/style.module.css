@@ -8,6 +8,7 @@
     border-radius:15px;
     padding: 20px;
 }
+
 .flex-package-details{
     float: left;
     width: 100%;
@@ -223,6 +224,8 @@
     padding-top: 30px;
     padding-bottom: 30px;
 }
-
+.slick-prev{
+    display: none !important;
+}
 
 
