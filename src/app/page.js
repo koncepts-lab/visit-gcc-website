@@ -55,7 +55,7 @@ function Home() {
       </div>
       {/* home-packages end */}
 
-      <div className='container'>
+      <div className={`container ${style['home-add-banner']}`}>
         <div className="row">
           <div className="col-md-12 pdb-3">
             <img src="/images/banner-02.jpg" className='lap-view' alt="Banner" />
@@ -96,7 +96,7 @@ function Home() {
       </div>
       {/* home-experience end */}
 
-      <div className='container'>
+      <div className={`container ${style['home-add-banner']}`}>
         <div className="row">
           <div className="col-md-12 pdb-3">
             <img src="/images/banner-02.jpg" className='lap-view' alt="Banner" />

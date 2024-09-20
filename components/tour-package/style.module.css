@@ -28,7 +28,7 @@
 .country-container{     float: left;
     width: 100%;}
 .country-nav-tabs{ color:#000;}
-.country-nav-item{ color:#000;}
+.country-nav-item{ color:#000; margin-bottom: 10px;}
 .country-nav-link {
     background-color: #a0daca !important;
     color: #fff !important;
@@ -309,7 +309,7 @@ border-radius:15px 15px 0 0;
     margin-left: 0;
     padding-left: 0;
     display: flex;
-    font-size: 14px;
+    font-size: 12px;
     text-align: center;
 }
 .r-button {

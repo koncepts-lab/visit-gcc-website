@@ -68,11 +68,11 @@ const images = [
 ];
 const TourPackageTab = ({ breakPoints }) => {
     const countryExplore = [
-        { id: 1, heading: 'Desitination Heading', description: 'Luxury', image: "/images/blog/01.jpg" },
-        { id: 2, heading: 'Desitination Heading', description: 'Culture', image: "/images/blog/02.jpg" },
-        { id: 3, heading: 'Desitination Heading', description: 'Coastal Esscapes', image: "/images/blog/03.jpg" },
-        { id: 4, heading: 'Desitination Heading', description: 'History', image: "/images/blog/04.jpg" },
-        { id: 5, heading: 'Desitination Heading', description: 'Events', image: "/images/blog/01.jpg" },
+        { id: 1, heading: 'Destination Heading', description: 'Luxury', image: "/images/blog/01.jpg" },
+        { id: 2, heading: 'Destination Heading', description: 'Culture', image: "/images/blog/02.jpg" },
+        { id: 3, heading: 'Destination Heading', description: 'Coastal Esscapes', image: "/images/blog/03.jpg" },
+        { id: 4, heading: 'Destination Heading', description: 'History', image: "/images/blog/04.jpg" },
+        { id: 5, heading: 'Destination Heading', description: 'Events', image: "/images/blog/01.jpg" },
     ];
 
 

@@ -31,7 +31,7 @@
 .country-container{     float: left;
     width: 100%;}
 .country-nav-tabs{ color:#000;}
-.country-nav-item{ color:#000;}
+.country-nav-item{ color:#000; margin-bottom: 10px;}
 .country-nav-link {
     background-color: #a0daca !important;
     color: #fff !important;

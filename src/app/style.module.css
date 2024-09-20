@@ -35,7 +35,9 @@
     padding: 50px 0;
 }
 .home-blog img{ border-radius: 15px;} 
-
+.home-add-banner img{
+    border-radius: 15px;
+  }
 
 
 @media only screen and (max-width: 991px) {
@@ -50,5 +52,9 @@
         padding: 15px 0;
         padding-bottom: 71px;
     }
+    .home-add-banner img{
+        width: 100%;
+        float: left;
+      }
 
   }

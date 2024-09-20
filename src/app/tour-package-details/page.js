@@ -112,7 +112,7 @@ function Page() {
                                 </span>
                                 <span>
                                     <button className={style['btn-two']}>Contact Seller</button>
-                                    <p>You can now directly communicate with the Seller of this package</p>
+                                    <p className='lap-view'>You can now directly communicate with the Seller of this package</p>
                                 </span>
                             </div>
                         </div>
@@ -128,21 +128,22 @@ function Page() {
                                         <div className='col-md-12'>
                                             <div className={style['review-img-container']}>
                                                 <Carousal
-                                                    packageDetailsReviewImage={tourPackageDetailsReviewsImageData} // Correct prop name
-                                                    packageDetailsReview={tourPackageDetailsReviewsData} // Correct prop name
+                                                    packageDetailsReviewImage={tourPackageDetailsReviewsImageData}
+                                                    packageDetailsReview={tourPackageDetailsReviewsData}
                                                     count={1}
                                                     type='tour-package-details-reviews'
                                                 />
                                             </div>
+                                            
 
-                                            <div className={style['review-text-container']}>
+                                            {/* <div className={style['review-text-container']}>
                                                 <Carousal
-                                                    packageDetailsReviewImage={tourPackageDetailsReviewsImageData} // Correct prop name
-                                                    packageDetailsReview={tourPackageDetailsReviewsData} // Correct prop name
+                                                    packageDetailsReviewImage={tourPackageDetailsReviewsImageData} 
+                                                    packageDetailsReview={tourPackageDetailsReviewsData} 
                                                     count={1}
                                                     type='tour-package-details-reviews-img'
                                                 />
-                                            </div>
+                                            </div>*/}
                                         </div>
 
                                     </div>

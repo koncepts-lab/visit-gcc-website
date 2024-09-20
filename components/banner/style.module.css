@@ -170,5 +170,8 @@
   .only-stiky {
     display: none !important;
 }
+.banner-container {
+  justify-content: center;
+}
   
   }

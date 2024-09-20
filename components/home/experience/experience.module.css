@@ -35,3 +35,11 @@
     position: relative;
     overflow: hidden;
 }
+
+
+@media only screen and (max-width: 991px) {
+.experience-box h4  {
+    margin-top: -41px !important;
+}
+
+}

@@ -205,6 +205,14 @@
     margin-right: 15px;
     min-width: 50px;
 }
+
+.flex-package-details-right h4 {
+    margin-top: -15px;
+    font-size: 15px !important;
+    color: red;
+}
+
+
   }
 
 

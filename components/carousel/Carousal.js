@@ -59,10 +59,13 @@ function Carousal({
             },
             {
                 breakpoint: 768,
-                settings: {
-                    slidesToShow: 1,
-                    slidesToScroll: 1,
-                    infinite: true
+            settings: {
+                slidesToShow: 1, // Show one full item
+                centerMode: type === 'home-experience', // Enable center mode for 'home-experience'
+                centerPadding: '50px', // Show half of the second item (adjust as needed)
+                slidesToScroll: 1,
+                infinite: true,
+                dots: false // You can keep dots off for mobile if needed
                 }
             }
         ]

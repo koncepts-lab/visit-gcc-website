@@ -128,7 +128,7 @@ const TabsKuwait = () => {
                                                 aria-controls="History"
                                                 aria-selected="true"
                                             >
-                                                History and HeritageTabsKuwait
+                                                History and Heritage
                                             </button>
                                         </li>
                                         <li className={`nav-item ${style['country-nav-item']}`} role="presentation">

@@ -84,7 +84,7 @@ const Country = () => {
     return (
         <>
             <Banner />
-            <Countries />
+         
 
             <section className={style['tour-package-page']}>
                 <div className={`container-fluid ${style['tour-package-page-container']}`}>
