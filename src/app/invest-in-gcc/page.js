@@ -56,24 +56,24 @@ function page() {
                             <p>Leading sectors drawing FDI in the GCC include</p>
                         </div>
                     </div>
-                    <div className='row'>
-                        <div className='col-md-3 text-start'>
+                    <div className='row align-items-baseline'>
+                        <div className='col-md-3'>
                             <img src="../images/icons/01.jpg" alt="Bahrain" className='img-center' />
                             <h4 className='pt-2 text-center'>Manufacturing</h4>
                             <p className='text-center'>Witnessing a surge in advanced manufacturing, particularly in petrochemicals, pharmaceuticals, and food processing</p>
                         </div>
-                        <div className='col-md-3 text-start'>
+                        <div className='col-md-3'>
                             <img src="../images/icons/02.jpg" alt="Bahrain"  className='img-center' />
                             <h4 className='pt-2 text-center'>Tourism and Hospitality</h4>
                             <p className='text-center'>Booming tourism infrastructure and cultural attractions are attracting significant investments in
                                 this sector</p>
                         </div>
-                        <div className='col-md-3 text-start'>
+                        <div className='col-md-3'>
                             <img src="../images/icons/03.jpg" alt="Bahrain"  className='img-center' />
                             <h4 className='pt-2 text-center'>Logistics & Transportation</h4>
                             <p className='text-center'>The GCC's strategic location makes it a natural logistics hub, with ongoing investments in ports, airports, and supply chain infrastructure</p>
                         </div>
-                        <div className='col-md-3 text-start'>
+                        <div className='col-md-3'>
                             <img src="../images/icons/04.jpg" alt="Bahrain"  className='img-center'/>
                             <h4 className='pt-2 text-center'>Booming Tourism</h4>
                             <p className='text-center'>With a focus on renewable energy sources like solar and wind, the GCC is attracting Investments in clean technologies</p>
