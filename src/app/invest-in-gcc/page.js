@@ -57,26 +57,26 @@ function page() {
                         </div>
                     </div>
                     <div className='row'>
-                        <div className='col-md-3 text-center'>
-                            <img src="../images/icons/01.jpg" alt="Bahrain" />
-                            <h4 className='pt-2'>Manufacturing</h4>
-                            <p>Witnessing a surge in advanced manufacturing, particularly in petrochemicals, pharmaceuticals, and food processing</p>
+                        <div className='col-md-3 text-start'>
+                            <img src="../images/icons/01.jpg" alt="Bahrain" className='img-center' />
+                            <h4 className='pt-2 text-center'>Manufacturing</h4>
+                            <p className='text-center'>Witnessing a surge in advanced manufacturing, particularly in petrochemicals, pharmaceuticals, and food processing</p>
                         </div>
-                        <div className='col-md-3 text-center'>
-                            <img src="../images/icons/02.jpg" alt="Bahrain" />
-                            <h4 className='pt-2'>Tourism and Hospitality</h4>
-                            <p>Booming tourism infrastructure and cultural attractions are attracting significant investments in
+                        <div className='col-md-3 text-start'>
+                            <img src="../images/icons/02.jpg" alt="Bahrain"  className='img-center' />
+                            <h4 className='pt-2 text-center'>Tourism and Hospitality</h4>
+                            <p className='text-center'>Booming tourism infrastructure and cultural attractions are attracting significant investments in
                                 this sector</p>
                         </div>
-                        <div className='col-md-3 text-center'>
-                            <img src="../images/icons/03.jpg" alt="Bahrain" />
-                            <h4 className='pt-2'>Logistics & Transportation</h4>
-                            <p>The GCC's strategic location makes it a natural logistics hub, with ongoing investments in ports, airports, and supply chain infrastructure</p>
+                        <div className='col-md-3 text-start'>
+                            <img src="../images/icons/03.jpg" alt="Bahrain"  className='img-center' />
+                            <h4 className='pt-2 text-center'>Logistics & Transportation</h4>
+                            <p className='text-center'>The GCC's strategic location makes it a natural logistics hub, with ongoing investments in ports, airports, and supply chain infrastructure</p>
                         </div>
-                        <div className='col-md-3 text-center'>
-                            <img src="../images/icons/04.jpg" alt="Bahrain" />
-                            <h4 className='pt-2'>Booming Tourism</h4>
-                            <p>With a focus on renewable energy sources like solar and wind, the GCC is attracting Investments in clean technologies</p>
+                        <div className='col-md-3 text-start'>
+                            <img src="../images/icons/04.jpg" alt="Bahrain"  className='img-center'/>
+                            <h4 className='pt-2 text-center'>Booming Tourism</h4>
+                            <p className='text-center'>With a focus on renewable energy sources like solar and wind, the GCC is attracting Investments in clean technologies</p>
                         </div>
                     </div>
 

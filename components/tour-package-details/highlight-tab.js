@@ -79,7 +79,7 @@ const HighlightContent = () => {
             ),
         },
         {
-            name: "Day 3 East Salalah Tour Discover Nature's Wonders and Ancient Treasures",
+            name: "Day 3 - East Salalah Tour Discover Nature's Wonders and Ancient Treasures",
             content: (
                 <>
                     <p>

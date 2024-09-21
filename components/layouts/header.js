@@ -4,6 +4,7 @@ import Link from 'next/link';
 import style from './style.module.css';
 import ReactFlagsSelect from 'react-flags-select';
 
+
 // Ensure that Bootstrap's JS is included
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
