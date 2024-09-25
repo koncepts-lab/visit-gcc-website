@@ -1,0 +1,14 @@
+.events-full-container{
+    float: left;
+    width: 100%;
+    margin: 0 0;
+    padding: 50px 0;
+}
+.events-top-text p{
+    max-width: 500px;
+    
+}
+.d-flex{
+    display: flex;
+    align-items: center;  
+}
