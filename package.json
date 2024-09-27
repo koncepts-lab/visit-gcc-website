@@ -14,6 +14,7 @@
     "owl.carousel": "^2.3.4",
     "react": "^18",
     "react-bootstrap": "^2.10.2",
+    "react-calendar": "^5.0.0",
     "react-dom": "^18",
     "react-flags-select": "^2.2.3",
     "react-icons": "^5.2.1",

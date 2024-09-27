@@ -30,10 +30,11 @@
 .country-nav-tabs{ color:#000;}
 .country-nav-item{ color:#000; margin-bottom: 10px;}
 .country-nav-link {
-    background-color: #a0daca !important;
-    color: #fff !important;
+    background-color: #e6e6e6 !important;
+    color: #000 !important;
     border-radius: 6px !important;
     margin-right: 10px;
+    padding: 2px 8px !important;
 }
 .country-tab {
     float: left;
@@ -313,6 +314,20 @@ border-radius:15px 15px 0 0;
     text-align: center;
 }
 .r-button {
+    background: #009496;
+    color: #fff !important;
+    padding: 5px 15px;
+    border-radius: 25px;
+    margin: 0 auto;
+    position: relative;
+    text-align: center;
+    display: table;
+}
+.event-button-section{
+    float: left;
+    width: 100%;
+}
+.event-button-section button{
     background: #009496;
     color: #fff !important;
     padding: 5px 15px;

@@ -15,9 +15,10 @@ import { GiSailboat } from "react-icons/gi";
 const images = [
     {
         src: "/images/demo/01.jpg",
-        title: "Beautiful Yas Island and Dubai",
-        provider: "John Smith",
-        date: "04 July 2024",
+        title: "Dubai Shopping Festival",
+        provider: "Jby Tour provider",
+        discription: "Amonth-long shopping extravaganza featuring discounts, promotions, and entertainment at ainment Dubai's top mallis and out",
+        date: "15 November, 2017",
         rating: 4
     },
     {
@@ -95,15 +96,10 @@ class MyWrapper extends React.Component {
                                 </div>
 
                                 <ul className={style['pakages-ul']}>
-                                    <li><GiSailboat /> Boating</li>
-                                    <li><IoTicketOutline />Ticket </li>
-                                    <li><MdOutlineDinnerDining /> Meals</li>
-                                    <li><MdOutlineEmojiPeople /> Guide</li>
-                                    <li><MdDownhillSkiing /> Activities</li>
-                                    <li><IoBusOutline /> Transfers</li>
+                                    <li><p className="text-start">Amonth-long shopping extravaganza featuring discounts, promotions, and entertainment at ainment Dubai's top mallis and out</p></li>
                                 </ul>
 
-                                <Link href="#0" className={style['r-button']}>Read More</Link>
+                                <Link href="#0" className={`${style['r-button']} text-start`}>SHOPPING & RETAIL</Link>
 
 
                             </div>

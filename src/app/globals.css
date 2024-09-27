@@ -190,7 +190,7 @@ select {
 
 .masonry-item-content {
   padding: 10px;
-  margin-top: -216px;
+  margin-top: -265px;
   color: #fff;
   position: relative;
   background: linear-gradient(0deg, rgba(0, 0, 0, 1) 6%, rgba(0, 0, 0, 0) 100%);
@@ -205,6 +205,7 @@ select {
   margin: 0;
   font-size: 0.9em;
   color: #fff;
+  font-size: 14px;
 }
 /* .slick-slide .item{
   padding-right: 15px;
@@ -384,4 +385,34 @@ body{
 .img-center {
   margin: 0 auto;
   display: block;
+}
+.event-full-width-slider .slick-arrow{ display: none !important;}
+.event-full-width-slider .slick-next{ display: none !important;}
+
+.react-calendar {
+  position: relative;
+  float: left;
+}
+.react-calendar{
+  width: 100% !important;
+}
+.react-calendar .react-calendar__tile  {
+  background: #e5e9f2;
+  margin: 2px !important;
+  border-radius: 10px;
+  padding: 8px 0 !important;
+  flex: 0 0 13% !important;
+}
+.react-calendar__month-view__weekdays__weekday {
+  /* margin: 5px !important; */
+}
+.react-calendar {
+  border: none !important;
+}
+.react-calendar__navigation {
+  margin-bottom: 0 !important;
+}
+
+.Accordion_accordionHeader__FynIu h4 {
+  font-size: 16px !important;
 }

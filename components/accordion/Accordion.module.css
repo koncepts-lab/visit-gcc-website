@@ -1,7 +1,7 @@
 .accordion {
     border-bottom: 1px solid #ddd;
-    margin-bottom: 15px;
-    padding-bottom: 15px;
+    /* margin-bottom: 15px; */
+    padding: 10px;
 }
 
 .accordionHeader {
@@ -22,11 +22,11 @@
 }
 
 .accordionContent {
-    padding: 10px 0;
+    /* padding: 10px 0; */
 }
-.accordion ul { padding-left: 0; list-style: none;}
+.accordion ul { padding-left: 0; list-style: none;margin-bottom: 0; }
 .accordion ul li  {
-    font-size: 15px;
+    font-size: 14px;
     padding: 4px 0;
     display: flex;
     align-items: center;

@@ -47,6 +47,7 @@ function Carousal({
         slidesToScroll: 1,
         autoplay: true,
         autoplaySpeed: 3000,
+        arrows: type !== 'media-page-full-carosul',
         responsive: [
             {
                 breakpoint: 1024,
@@ -268,6 +269,19 @@ function Carousal({
                         link={pakageDetailsOtherPackages.link}
                     />
                 ))}
+
+                {type === 'media-page-full-carosul' &&
+                    pakageDetailsOtherPackages.map((pakageDetailsOtherPackages) => (
+                        <PakageDetailsOtherPackages
+                            key={pakageDetailsOtherPackages.id}
+                            image={pakageDetailsOtherPackages.image}
+                            headingIcon={pakageDetailsOtherPackages.headingIcon}
+                            heading={pakageDetailsOtherPackages.heading}
+                            date={pakageDetailsOtherPackages.date}
+                            description={pakageDetailsOtherPackages.description}
+                            link={pakageDetailsOtherPackages.link}
+                        />
+                    ))}
         </SlickCarousel>
     );
 }
