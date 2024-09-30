@@ -2,23 +2,7 @@
 import React, { useEffect } from 'react';
 import style from './style.module.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Carousal from '../carousel/Carousal';
-// import MyWrapper from './responsive-masonry';
-
-
-
-import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
-import Rating from "react-rating-stars-component";
-// import style from "./style.module.css"; 
-import { IoChatbubbleOutline } from "react-icons/io5";
-import { FaRegLightbulb } from "react-icons/fa6";
-import { IoTicketOutline } from "react-icons/io5";
-import { MdOutlineDinnerDining } from "react-icons/md";
-import { MdOutlineEmojiPeople } from "react-icons/md";
-import { MdDownhillSkiing } from "react-icons/md";
-import { IoBusOutline } from "react-icons/io5";
-import { GiSailboat } from "react-icons/gi";
-import MyWrapper from './responsive-masonry';
+import ExploreEventsContainer from './event-responsive-masonry';
 
 const images = [
     {
@@ -76,14 +60,7 @@ const EventsExploreTab = ({ breakPoints }) => {
     ];
 
 
-    const featuredTravelData = [
-        { id: 1, heading: 'Travel Heading', description: 'Industry Name', image: "/images/best-picked/01.jpg" },
-        { id: 2, heading: 'Travel Heading', description: 'Industry Name', image: "/images/best-picked/02.jpg" },
-        { id: 3, heading: 'Travel Heading', description: 'Industry Name', image: "/images/best-picked/03.jpg", },
-        { id: 4, heading: 'Travel Heading', description: 'Industry Name', image: "/images/best-picked/01.jpg" },
-        { id: 5, heading: 'Travel Heading', description: 'Industry Name', image: "/images/best-picked/02.jpg" },
-        { id: 6, heading: 'Travel Heading', description: 'Industry Name', image: "/images/best-picked/03.jpg", },
-    ];
+
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -210,7 +187,7 @@ const EventsExploreTab = ({ breakPoints }) => {
                                                 <div className='row'>
                                                     <div className='col-md-12 p-0'>
 
-                                                        <MyWrapper breakPoints={breakPoints} />
+                                                        <ExploreEventsContainer breakPoints={breakPoints} />
                                                     </div>
                                                 </div>
                                             </div>
@@ -290,49 +267,13 @@ const EventsExploreTab = ({ breakPoints }) => {
                     </div>
                 </div>
 
-                <div className='row'>
-                    <div className='col-md-12 text-center mt-4 mb-5'>
-                        <button className={style['btn-one']}>Show Me More</button>
-                    </div>
-                </div>
+           
 
                 {/* explore */}
 
 
 
-                <div className='row'>
-                    <div className='col-md-12 p-0'>
-                        <section className={style['countries-explore-container']}>
-                            <div className={style['countries-explore']}>
-                                <div className='container-fluid'>
-                                    <div className="row">
-                                        <div className="col-md-12 pb-3 text-center">
-                                            <h3>Featured Travel</h3>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* CountryExplore */}
-                                <div className={style['country-explore2']}>
-                                    <div className='container'>
-                                        <div className='row'>
-                                        <div className='col-md-12 text-center mt-4'>
-    <Carousal featuredTravel={featuredTravelData} count={4} type="tour-FeaturedTravel" />
-    </div>
-
-                                        </div>
-                                        <div className='row'>
-                                            <div className='col-md-12 text-center mt-4'>
-                                                <button className={style['btn-one']}>Full List</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </section>
-                    </div>
-                </div>
+             
                 {/* CountryExplore */}
 
             </div>       

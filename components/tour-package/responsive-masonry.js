@@ -15,10 +15,9 @@ import { GiSailboat } from "react-icons/gi";
 const images = [
     {
         src: "/images/demo/01.jpg",
-        title: "Dubai Shopping Festival",
-        provider: "Jby Tour provider",
-        discription: "Amonth-long shopping extravaganza featuring discounts, promotions, and entertainment at ainment Dubai's top mallis and out",
-        date: "15 November, 2017",
+        title: "Beautiful Yas Island and Dubai",
+        provider: "John Smith",
+        date: "04 July 2024",
         rating: 4
     },
     {
@@ -67,7 +66,7 @@ class MyWrapper extends React.Component {
             <ResponsiveMasonry
                 columnsCountBreakPoints={breakPoints}
             >
-                <Masonry>
+                <Masonry> 
                     {images.map((image, i) => (
                         <div key={i} className="masonry-item">
                             <img
@@ -75,7 +74,7 @@ class MyWrapper extends React.Component {
                                 style={{ width: "100%", display: "block" }}
                                 alt={image.title}
                             />
-                            <div className="masonry-item-content">
+                            <div className="tour-pakage-masonry-item-content">
                                 <h5>{image.title}</h5>
                                 <div className={style['provider-date']}>
                                     <p>{image.provider}</p> &nbsp; | &nbsp;
@@ -95,11 +94,21 @@ class MyWrapper extends React.Component {
                                     <div><FaRegLightbulb /></div>
                                 </div>
 
+                                
+
                                 <ul className={style['pakages-ul']}>
-                                    <li><p className="text-start">Amonth-long shopping extravaganza featuring discounts, promotions, and entertainment at ainment Dubai's top mallis and out</p></li>
+                                    <li><GiSailboat /> Boating</li>
+                                    <li><IoTicketOutline />Ticket </li>
+                                    <li><MdOutlineDinnerDining /> Meals</li>
+                                    <li><MdOutlineEmojiPeople /> Guide</li>
+                                    <li><MdDownhillSkiing /> Activities</li>
+                                    <li><IoBusOutline /> Transfers</li>
                                 </ul>
 
-                                <Link href="#0" className={`${style['r-button']} text-start`}>SHOPPING & RETAIL</Link>
+                                <Link href="#0" className={style['r-button']}>Read More</Link>
+                               
+
+                                
 
 
                             </div>

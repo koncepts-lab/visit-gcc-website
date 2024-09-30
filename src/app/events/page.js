@@ -6,14 +6,29 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';  // Import Calendar styles
 import style from './style.module.css';
 import Banner from '../../../components/banner/banner';
-import Carousal from '../../../components/carousel/Carousal';
+import Carousal from '../../../components/carousel/Carousal'; 
 import Accordion from '../../../components/accordion/accordion';
 import EventsExploreTab from '../../../components/tour-package/events-explore';
 
 const pakageDetailsOtherPackages = [
   // ... your packages data
 ];
-
+const bestPickedData = [
+  { id: 1, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/best-picked/01.jpg" },
+  { id: 2, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/best-picked/02.jpg" },
+  { id: 3, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/best-picked/03.jpg", },
+  { id: 4, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/best-picked/01.jpg" },
+  { id: 5, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/best-picked/02.jpg" },
+  { id: 6, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/best-picked/03.jpg", },
+];
+const wondersData = [
+  { id: 1, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/wonders/01.jpg" },
+  { id: 2, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/wonders/02.jpg" },
+  { id: 3, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/wonders/03.jpg", },
+  { id: 4, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/wonders/01.jpg" },
+  { id: 5, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/wonders/02.jpg" },
+  { id: 6, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/wonders/03.jpg", },
+];
 const accordionData = [
     {
         title: 'DATE',
@@ -160,6 +175,40 @@ const Country = () => {
                                     
               <h3>Explore the Latest Events and Happenings</h3>
               <EventsExploreTab />
+
+
+              {/* best picked for you */}
+              <section className={style['pakage-bes-picked']}>
+              <div className='container-fluid'>
+                  <div className='row'>
+                      <div className='col-md-12'>
+                          <h3 className='pb-3'>Best picked for you</h3>
+                      </div>
+                      <div className='col-md-12'>
+                          <Carousal bestPicked={bestPickedData} count={4} type="tour-bestPicked" />
+                      </div>
+                  </div>
+              </div>
+          </section>
+          {/* best picked for you END*/}
+
+          {/* lesser-known wonders */}
+          <section className={style['pakage-bes-picked']}>
+              <div className='container p-0'>
+                  <div className='row'>
+                      <div className='col-md-12'>
+                          <h3 className='pb-3'>Lesser-Known Wonders</h3>
+                          <p className='text-center'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. <br />Lorem Ipsum has been the industry's standard dummy text</p>
+                      </div>
+                      <div className='col-md-12'>
+                          <Carousal wonders={wondersData} count={3} type="tour-wonders" />
+                      </div>
+                  </div>
+              </div>
+          </section>
+          {/* lesser-known wonders END*/}
+
+
 
 
               </div>

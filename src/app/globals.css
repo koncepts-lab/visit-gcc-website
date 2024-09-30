@@ -188,25 +188,48 @@ select {
   height: auto;
 }
 
-.masonry-item-content {
+.tour-pakage-masonry-item-content {
   padding: 10px;
-  margin-top: -265px;
+  margin-top: -193px;
   color: #fff;
   position: relative;
   background: linear-gradient(0deg, rgba(0, 0, 0, 1) 6%, rgba(0, 0, 0, 0) 100%);
 }
-
-.masonry-item-content h5 {
+ 
+.tour-pakage-masonry-item-content h5 {
   margin: 0;
   font-size: 1.2em;
 }
 
-.masonry-item-content p {
+.tour-pakage-masonry-item-content p {
   margin: 0;
   font-size: 0.9em;
   color: #fff;
   font-size: 14px;
 }
+
+
+.event-masonry-item-content {
+  padding: 10px;
+  margin-top: -212px;
+  color: #fff;
+  position: relative;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 1) 6%, rgba(0, 0, 0, 0) 100%);
+  padding-bottom: 21px;
+}
+ 
+.event-masonry-item-content h5 {
+  margin: 0;
+  font-size: 1.2em;
+}
+
+.event-masonry-item-content p {
+  margin: 0;
+  font-size: 0.9em;
+  color: #fff;
+  font-size: 13px;
+}
+
 /* .slick-slide .item{
   padding-right: 15px;
 } */
