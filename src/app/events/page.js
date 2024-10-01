@@ -10,26 +10,65 @@ import Carousal from '../../../components/carousel/Carousal';
 import Accordion from '../../../components/accordion/accordion';
 import EventsExploreTab from '../../../components/tour-package/events-explore';
 
-const pakageDetailsOtherPackages = [
-  // ... your packages data
+const eventScrollData = [
+  {
+    id: 1,
+    heading: "Project Heading55",
+    description: "Industry Name",
+    image: "/images/other-packages/01.jpg",
+    link: "www.google.com",
+  },
+  {
+    id: 2,
+    heading: "Project Heading",
+    description: "Industry Name",
+    image: "/images/other-packages/02.jpg",
+    link: "www.google.com",
+  },
+  {
+    id: 3,
+    heading: "Project Heading",
+    description: "Industry Name",
+    image: "/images/other-packages/03.jpg",
+    link: "www.google.com",
+  },
+  {
+    id: 4,
+    heading: "Project Heading",
+    description: "Industry Name",
+    image: "/images/other-packages/04.jpg",
+    link: "www.google.com",
+  },
+  {
+    id: 5,
+    heading: "Project Heading",
+    description: "Industry Name",
+    image: "/images/other-packages/05.jpg",
+    link: "www.google.com",
+  },
+  {
+    id: 6,
+    heading: "Project Heading",
+    description: "Industry Name",
+    image: "/images/other-packages/06.jpg",
+    link: "www.google.com",
+  },
 ];
-const bestPickedData = [
-  { id: 1, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/best-picked/01.jpg" },
-  { id: 2, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/best-picked/02.jpg" },
-  { id: 3, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/best-picked/03.jpg", },
-  { id: 4, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/best-picked/01.jpg" },
-  { id: 5, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/best-picked/02.jpg" },
-  { id: 6, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/best-picked/03.jpg", },
-];
-const wondersData = [
-  { id: 1, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/wonders/01.jpg" },
-  { id: 2, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/wonders/02.jpg" },
-  { id: 3, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/wonders/03.jpg", },
-  { id: 4, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/wonders/01.jpg" },
-  { id: 5, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/wonders/02.jpg" },
-  { id: 6, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/wonders/03.jpg", },
-];
-const accordionData = [
+
+const Country = () => {
+  const [priceRange, setPriceRange] = useState([30, 3900]);
+  const [selectedDate, setSelectedDate] = useState(new Date()); // State for selected date
+
+  const handlePriceRangeChange = (values) => {
+    setPriceRange(values);
+  };
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
+
+
+  const accordionData = [
     {
         title: 'DATE',
         items: ['Upcoming Events (sorted by date)', 'Past Events (sorted by date)', 'Todays Events', 'This Weeks Events', 'This Months Events']
@@ -59,48 +98,61 @@ const accordionData = [
         items: ['Adults only', 'Family-friendly events', 'Childrens events']
     }
 ];
+const bestPickedData = [
+  { id: 1, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/best-picked/01.jpg" },
+  { id: 2, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/best-picked/02.jpg" },
+  { id: 3, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/best-picked/03.jpg", },
+  { id: 4, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/best-picked/01.jpg" },
+  { id: 5, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/best-picked/02.jpg" },
+  { id: 6, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/best-picked/03.jpg", },
+];
+const wondersData = [
+  { id: 1, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/wonders/01.jpg" },
+  { id: 2, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/wonders/02.jpg" },
+  { id: 3, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/wonders/03.jpg", },
+  { id: 4, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/wonders/01.jpg" },
+  { id: 5, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/wonders/02.jpg" },
+  { id: 6, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/wonders/03.jpg", },
+];
 
-const Country = () => {
-  const [priceRange, setPriceRange] = useState([30, 3900]);
-  const [selectedDate, setSelectedDate] = useState(new Date()); // State for selected date
-
-  const handlePriceRangeChange = (values) => {
-    setPriceRange(values);
-  };
-
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-  };
 
   return (
     <>
       <Banner />
-      <section className={style['events-full-container']}>
+      <section className={style["events-full-container"]}>
+        {/* Intro section */}
         <div className="container">
           <div className="row">
             <div className="col-md-6">
-              <img src="/images/events/03.jpg" className={`${style['banner-box-logo']} img-fluid w-100`} alt="Banner"/>
+              <img
+                src="/images/events/03.jpg"
+                className={`${style["banner-box-logo"]} img-fluid w-100`}
+                alt="Banner"
+              />
             </div>
-            <div className={`col-md-6 ${style['d-flex']}`}>
-              <div className={style['events-top-text']}>
+            <div className={`col-md-6 ${style["d-flex"]}`}>
+              <div className={style["events-top-text"]}>
                 <h3>Top Picks</h3>
-                <p className="mb-2">Don't miss out on these unmissable events!</p>
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                <p className="mb-2">
+                  Don't miss out on these unmissable events!
+                </p>
+                <p>
+                  Lorem Ipsum is simply dummy text of the printing and
+                  typesetting industry. Lorem Ipsum has been the industry's
+                  standard dummy text ever since the 1500s, when an unknown
+                  printer took a galley of type and scrambled it to make a type
+                  specimen book...
+                </p>
               </div>
             </div>
           </div>
         </div>
 
-        <div className={style['event-full-width-slider']}>
-          <div className="container-fluid">
-            <div className="row">
-              <div className="col-md-12">
-                <Carousal
-                  pakageDetailsOtherPackages={pakageDetailsOtherPackages}
-                  count={5}
-                  type="media-page-full-carosul"
-                />
-              </div>
+        {/* Event Scroll */}
+        <div className="container-fluid py-lg-5">
+          <div className="row">
+            <div className="col-md-12">
+              <Carousal eventScroll={eventScrollData} count={5} type="event-page-scroll" />
             </div>
           </div>
         </div>
@@ -109,7 +161,6 @@ const Country = () => {
           <div className="container-fluid">
             <div className="row">
               <div className="col-md-3">
-
                 <div className={style['event-left-container']}>
                   <h4 className="pt-2">Price Range</h4>
                   <div className={style['price-range']}>
@@ -151,70 +202,64 @@ const Country = () => {
                         Price Range: ${priceRange[0]} — ${priceRange[1]}
                       </p>
                     </div>
-
                   </div>
-                  
+
                   <div className={style['media-calendar']}>
-                      <h4 className="pt-2">Calendar</h4>
-                      <Calendar onChange={handleDateChange} value={selectedDate} />
+                    <h4 className="pt-2">Calendar</h4>
+                    <Calendar onChange={handleDateChange} value={selectedDate} />
                   </div>
-
 
                   <div className={style['accordion-range']}>
-                        {accordionData.map((accordion, index) => (
-                            <Accordion key={index} title={accordion.title} items={accordion.items} isOpenInitially={true} />
-                                    ))}
-                        </div>
-
-
-
+                    {accordionData.map((accordion, index) => (
+                      <Accordion
+                        key={index}
+                        title={accordion.title}
+                        items={accordion.items}
+                        isOpenInitially={true}
+                      />
+                    ))}
+                  </div>
                 </div>
-
               </div>
+
               <div className="col-md-7">
-                                    
-              <h3>Explore the Latest Events and Happenings</h3>
-              <EventsExploreTab />
+                <h3>Explore the Latest Events and Happenings</h3>
+                <EventsExploreTab />
 
-
-              {/* best picked for you */}
-              <section className={style['pakage-bes-picked']}>
-              <div className='container-fluid'>
-                  <div className='row'>
-                      <div className='col-md-12'>
-                          <h3 className='pb-3'>Best picked for you</h3>
+                {/* Upcoming Events */}
+                <section className={style['pakage-bes-picked']}>
+                  <div className="container-fluid">
+                    <div className="row">
+                      <div className="col-md-12">
+                        <h3 className="pb-3">Upcoming Events</h3>
                       </div>
-                      <div className='col-md-12'>
-                          <Carousal bestPicked={bestPickedData} count={4} type="tour-bestPicked" />
+                      <div className="col-md-12">
+                        <Carousal bestPicked={bestPickedData} count={2} type="upcoming-events" />
                       </div>
+                    </div>
                   </div>
-              </div>
-          </section>
-          {/* best picked for you END*/}
+                </section>
 
-          {/* lesser-known wonders */}
-          <section className={style['pakage-bes-picked']}>
-              <div className='container p-0'>
-                  <div className='row'>
-                      <div className='col-md-12'>
-                          <h3 className='pb-3'>Lesser-Known Wonders</h3>
-                          <p className='text-center'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. <br />Lorem Ipsum has been the industry's standard dummy text</p>
+                {/* Lesser-known wonders */}
+                <section className={style['pakage-bes-picked']}>
+                  <div className="container p-0">
+                    <div className="row">
+                      <div className="col-md-12">
+                        <h3 className="pb-3">Lesser-Known Wonders</h3>
+                        <p className="text-center">
+                          Lorem Ipsum is simply dummy text of the printing and
+                          typesetting industry...
+                        </p>
                       </div>
-                      <div className='col-md-12'>
-                          <Carousal wonders={wondersData} count={3} type="tour-wonders" />
+                      <div className="col-md-12">
+                        <Carousal wonders={wondersData} count={3} type="past-events" />
                       </div>
+                    </div>
                   </div>
+                </section>
+
+                
               </div>
-          </section>
-          {/* lesser-known wonders END*/}
-
-
-
-
-              </div>
-
-
-
             </div>
           </div>
         </div>

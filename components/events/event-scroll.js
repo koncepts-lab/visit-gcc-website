@@ -4,25 +4,24 @@ import style from './style.module.css';
 import { FaChevronRight } from "react-icons/fa6"; 
 
 
-function PakageDetailsOtherPackages(props) {
-
+function EventScroll(props) {
     return (
         <>
-            <Link className={`item ${style['item-padding']}`} href="" key={props.key}>
-                <div className={style['PakageDetailsOtherPackages']}>
+            <div className={`item ${style['item-padding']}`}  key={props.key}>            
+                <div className={style['event-scroll']}>
                     <img src={props.image} className='w-100' alt="" />
-                    <div className={style['PakageDetailsOtherPackages-text']}>
+                    <div className={style['event-scroll-text']}>
                         <span><h4>{props.heading}</h4>
                             <p>{props.description}</p></span>
-                        <span><Link href='#0'><FaChevronRight /></Link></span>
+                        <span><Link href='{props.Link}'><FaChevronRight /></Link></span>
 
                     </div>
                 </div>
-            </Link>
+            </div>
         </>
     )
 }
 
-export default PakageDetailsOtherPackages
+export default EventScroll
 
 

@@ -1,0 +1,363 @@
+.review-text{
+    background-color: #fff;
+    border-radius: 15px;
+    padding: 20px 15px;
+}
+
+.review-text-top {
+    display: flex;
+    border-bottom: solid 1px #ccc;
+    margin-bottom: 12px;
+}
+.review-text-top span:first-child {
+    font-size: 23px;
+    color: #feb809;
+  }
+  .review-text-top span p {
+    font-weight: 600;
+    margin-bottom: 0;
+  }
+  .review-text-top span a {
+    color: #8ec6d5 !important;
+    font-size: 12px;
+    top: -10px;
+    position: relative;
+}
+.review-text-body p{
+    font-weight: 600;
+    margin-bottom: 0;
+
+}
+.review-text-body span{
+    display: flex;
+
+}
+.review-text-body h3{
+    background-color: #5579b8;
+    font-size: 14px !important;
+    color: #fff;
+    /* padding: 15px; */
+    border-radius: 30px;
+    height: 30px;
+    width: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 6px;
+}
+.content-p{
+    font-weight: 400 !important;
+    font-size: 14px;
+    line-height: 18px;
+}
+
+
+
+.tabContainer {
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+.tabButtons {
+    display: flex;
+   
+}
+
+.tabButton {
+    background-color: #a0daca !important;
+color: #fff;
+border-radius: 6px !important;
+margin-right: 10px;
+padding: 10px 15px;
+border:none;
+}
+
+.tabButton:hover {
+    background-color: #009597 !important;
+}
+
+.active {
+    background-color: #009597 !important;
+    
+}
+
+.tabContent {
+    padding: 20px 0;
+}
+.tabButton{ background-color:red;}
+
+
+
+/* accordian */
+
+.tabContainer {    
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+.tabButtons {
+    display: flex;    
+}
+
+/* .tabButton {
+  
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #f8f8f8;
+    border: none;
+    outline: none;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #555;
+    border-right: 1px solid #e0e0e0;
+} */
+
+.tabButton:last-child {
+    border-right: none;
+}
+
+.tabButton:hover {
+    background-color: #ddd;
+}
+
+.active {
+    background-color: #04ac6a;
+    color: white;
+}
+
+.tabContent {
+    padding: 20px 0;
+}
+
+/* Accordion Styles */
+
+.accordionTab {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* .accordionTab:hover {
+    background-color: #e0e0e0;
+}
+
+.activeAccordion {
+    background-color: #04ac6a;
+    color: white;
+} */
+
+.accordionContent {
+    padding: 10px 30px;
+}
+
+
+.package-inclusions-tabs li{
+    background-color:rgba(255, 0, 0, 0);
+}
+.package-inclusions-tabs li button{
+    background-color: rgba(255, 0, 0, 0);
+    color: #000;
+    height: 100%;
+    border: solid 1px #ccc !important;
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+    border-radius: 0;
+    word-break: break-all;
+    padding: 15px 15px;
+   
+}
+.package-inclusions-tabs li button:hover{
+    border: solid 1px #ccc !important;
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+    color:#000;
+}
+.package-inclusions-tabs .tab-content{
+    background-color:red;
+}
+.package-inclusions-tabs .nav-tabs .active {
+    background-color: #00959700 !important;
+    color: #fff !important;
+}
+
+.package-inclusions-tabs{
+    display: flex !important;
+    flex-wrap: nowrap !important;
+}
+.package-inclusions-tabs .tab-content{border: solid 1px #ccc !important; }
+.box-container{
+    border: solid 1px #ccc !important;
+    padding: 15px;
+    margin-top: -1px;
+}
+.box-container p{
+    margin-bottom: 0;
+}
+
+
+/* Rateing */
+/* style.module.css */
+
+.rating-bar-container {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.star-rating {
+    display: flex;
+    align-items: center;
+    font-size: 1.2em;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 10px;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-left: 15px;
+    margin-right: 15px;
+    position: relative;
+}
+
+.progress {
+    height: 100%;
+    background-color: #fdcc0d; /* Color for the filled portion of the progress bar */
+    transition: width 0.5s ease-in-out;
+}
+
+.progress-text {
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.9em;
+    color: #333;
+}
+
+.star-icon {
+    color: #fdcc0d; /* Gold color for stars */
+    margin-right: 5px;
+}
+
+.review-count {
+    margin-left: 10px;
+    font-size: 0.9em;
+    color: #555;
+}
+
+
+/* rating carousel */
+/* style.module.css */
+
+.rating-item {
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #fff;
+    margin-bottom: 20px;
+}
+
+.rating-item h4 {
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.rating-item p {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.rating-item small {
+    font-size: 14px;
+    color: #999;
+}
+
+
+.RatingCarousel-top {
+ display: flex;
+}
+.RatingCarousel-top {
+    display: flex;
+   }
+.RatingCarousel-top h6 {
+    font-size: 18px;
+    background: #042fa5;
+    color: #fff;
+    padding: 7px 10px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+.RatingCarousel-top h4 {
+    padding-top:5px;
+}
+.country-explore-item{
+    border:solid 1px #ccc;
+    border-radius:5px;
+    padding: 15px;
+}
+.country-explore{ overflow: hide;}
+.event-scroll{
+    border:solid 1px #ccc;
+}
+.event-scroll-text{ padding: 15px; display: flex; justify-content: space-between;}
+.event-scroll-text a{
+    float: right;
+    border: solid 1px #ccc;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+.event-scroll-text:hover {-webkit-box-shadow: 3px 4px 5px 0px rgba(0,0,0,0.33);
+    -moz-box-shadow: 3px 4px 5px 0px rgba(0,0,0,0.33);
+    box-shadow: 3px 4px 5px 0px rgba(0,0,0,0.33);}
+
+
+
+    .item-padding{
+        padding:0 10px;
+        float: left;
+        width: 100%;
+        position: relative;
+        overflow: hidden;
+        padding-bottom: 10px;
+    }
+   
+
+
+    @media only screen and (max-width: 991px) {
+    .tabButtons {
+        display: grid;
+        grid-auto-flow: column;
+        grid-auto-columns: min-content;
+        overflow-y: hidden;
+        overflow-x: scroll;
+    }
+    .tabButton {
+        white-space: nowrap;
+    }
+    .package-inclusions-tabs{
+        display: grid !important;
+        grid-auto-flow: column;
+        grid-auto-columns: min-content;
+        overflow-y: hidden;
+        overflow-x: scroll; 
+    }
+    .package-inclusions-tabs li {
+        white-space: nowrap;
+    }
+
+
+}
