@@ -219,7 +219,7 @@ const Country = () => {
 
 
 
-                            <section className={style['cta-section']}>
+                            {/* <section className={style['cta-section']}>
                                 <div className={style['cta-section-container']}>
                                     <div className='container'>
                                         <div className='row'>
@@ -262,7 +262,7 @@ const Country = () => {
                                         </div>
                                     </div>
                                 </div>
-                            </section>
+                            </section> */}
 
                             {/* best picked for you */}
                             <section className={style['pakage-bes-picked']}>

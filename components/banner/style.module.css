@@ -173,5 +173,8 @@
 .banner-container {
   justify-content: center;
 }
+.sticky {
+  display: none;
+}
   
   }

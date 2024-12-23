@@ -115,7 +115,7 @@ function Country() {
                     <div className='container'>
                         <div className='row'>
                             <div className='col-md-12'>
-                                <h3>Documentation</h3>
+                                <h3>Important Information</h3>
                             </div>
                         </div>
                     </div>

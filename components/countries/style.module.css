@@ -37,7 +37,7 @@
     color: #000 !important;
     border-radius: 6px !important;
     margin-right: 10px;
-    padding: 2px 8px !important;
+    padding: 10px 8px !important;
 }
 .country-tab {
     float: left;
@@ -318,6 +318,33 @@ border-radius:15px 15px 0 0;
     font-size: 50px;
     color: #ccc;
 }
+.important_numbers{
+    float: left;
+    width: 100%;
+    display: flex;
+    margin-bottom: 15px;
+}
+.important_numbers img{
+    margin-right: 10px;
+}
+.important_numbers span p{
+    margin-bottom: 0;
+
+}
+
+.important_numbers span p:nth-child(2){
+    color: #ccc;
+}
+
+
+
+
+
+
+
+
+
+
       @media only screen and (max-width: 991px) {
         .title-countries {
             margin-bottom: 30px;

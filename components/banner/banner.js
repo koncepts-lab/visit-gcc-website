@@ -5,23 +5,10 @@ import style from './style.module.css';
 import Search from '../search/search';
 
 const Banner = () => {
-  const [isSticky, setIsSticky] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const bannerHeight = document.querySelector(`.${style['banner']}`).offsetHeight;
-      setIsSticky(window.scrollY > bannerHeight);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll); 
-    };
-  }, []);
+  
 
   return (
-    <section className={`${style['banner']} ${isSticky ? style['sticky'] : ''}`}>
+    <section className={`${style['banner']}`}>
       <div className='container'>
         <div className='row'>
           <div className="col-md-12">

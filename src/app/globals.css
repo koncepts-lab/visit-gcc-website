@@ -364,11 +364,25 @@ footer{
   padding: 5px 0;
   background-color: #fff;
   z-index: 100000;
+  padding-bottom: 15px;
+}
+.mobile-footer-container::after {
+  background-color: #ffffff;
+    content: '';
+    width: 900px;
+    position: absolute;
+    bottom: -807px;
+    padding: 0 0;
+    border-radius: 838px;
+    border: solid 1px #e7e7e7;
+    height: 900px;
+    z-index: 10;
 }
 .mobile-footer-container img {
-  max-width: 30px;
+  max-width: 45px;
 }
 .mobile-footer-container div {
+  z-index: 100;
 
 }
 .mobile-footer-container h4 {
@@ -439,3 +453,53 @@ body{
 .Accordion_accordionHeader__FynIu h4 {
   font-size: 16px !important;
 }
+
+/* Add this to your CSS file */
+@keyframes rotateImage {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.rotating-image {
+  display: inline-block;
+  animation: rotateImage 5s linear infinite; /* Adjust the duration (5s) as needed */
+}
+
+
+.ReactFlagsSelect-module_selectOptionValue__vS99- {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ReactFlagsSelect-module_selectOptions__3LNBJ {
+  border: none !important;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  
+}
+
+
+
+.scrolled {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  animation: slideDown 0.5s ease-in-out;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+} 
