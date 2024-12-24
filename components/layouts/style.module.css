@@ -26,7 +26,7 @@
 @media only screen and (max-width: 991px) {
   .navbar  {
     position: fixed;
-    z-index: 10000;
+    z-index: 10000 !important;
   }
   .navbar-nav-c {
     /* display: inline !important; */
@@ -34,7 +34,7 @@
     width: 100%;
     margin: 0 0 0 0;
     padding: 25px 0;
-    min-height: 100vh;
+    min-height: 93vh;
     margin-bottom: 10px;
     display: flex !important;
     align-items: center;
