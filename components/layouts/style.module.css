@@ -24,8 +24,11 @@
 }
 
 @media only screen and (max-width: 991px) {
+  .scrolled {
+    animation: none !important;
+}
   .navbar  {
-    position: fixed;
+    position: fixed !important;
     z-index: 10000 !important;
   }
   .navbar-nav-c {
