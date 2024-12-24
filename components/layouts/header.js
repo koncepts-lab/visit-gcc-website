@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Link from "next/link";
-import style from "./style.module.css";   
+import style from "./style.module.css";    
 import ReactFlagsSelect from "react-flags-select";
 
 function Header() {
