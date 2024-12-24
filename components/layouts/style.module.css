@@ -27,6 +27,7 @@
   .scrolled {
     animation: none !important;
 }
+
   .navbar  {
     position: fixed !important;
     z-index: 10000 !important;
@@ -120,3 +121,11 @@
       transform: translateY(0);
     }
   } 
+
+
+  @media (min-width:576px) and (max-width:991px) {
+ 
+      .banner {
+        margin-top: 87px;
+    }
+    }
