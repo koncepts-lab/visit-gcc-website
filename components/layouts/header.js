@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Link from "next/link";
-import style from "./style.module.css";    
+import style from "./style.module.css";
 import ReactFlagsSelect from "react-flags-select";
 
 function Header() {
   const [selected, setSelected] = useState("US");
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     // Initialize Bootstrap JS
@@ -33,9 +34,13 @@ function Header() {
     };
   }, []);
 
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+
   return (
     <div className={style.headerWrapper}>
-      <nav 
+      <nav
         className={`navbar navbar-expand-sm navbar-light ${style.navbar} ${
           scrolled ? style.scrolled : ""
         }`}
@@ -51,20 +56,29 @@ function Header() {
             type="button"
             data-bs-toggle="collapse"
             data-bs-target="#collapsibleNavbar"
+            aria-expanded={menuOpen}
+            onClick={toggleMenu}
           >
-            <span className="navbar-toggler-icon"></span>
-          </button> 
+            {menuOpen ? (
+              <span className={style["close-icon"]}>×</span> // Close icon
+            ) : (
+              <span className="navbar-toggler-icon"></span> // Default icon
+            )}
+          </button>
           <div
-            className="collapse navbar-collapse justify-content-end"
+            className={`collapse navbar-collapse justify-content-end ${
+              menuOpen ? "show" : ""
+            }`}
             id="collapsibleNavbar"
           >
             <ul className={`navbar-nav ${style["navbar-nav-c"]}`}>
               <li className="nav-item">
-                <Link
-                  className={`nav-link active ${style["invest-link"]}`}
-                  href="/"
-                >
-                 <span>GCC</span>
+                <Link className="nav-link active" href="/">
+                  <img
+                    src="/images/inv-gcc.png"
+                    className={style["img-top-logo"]}
+                    alt=""
+                  />
                 </Link>
               </li>
               <li className="nav-item">

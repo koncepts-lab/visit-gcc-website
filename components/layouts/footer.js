@@ -48,7 +48,7 @@ function Footer() {
           <img src="../images/02.png" alt="Plan Bahrain" />
         </div>
         <div>
-        <img src="../images/06.png" className='rotating-image' alt="Explore Bahrain" />
+        <img src="../images/06.png" className='rotating-image' max-width={'50px'} alt="Explore Bahrain" />
         </div>
         <div>
           <img src="../images/03.png" alt="Book Bahrain" />
