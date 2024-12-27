@@ -53,7 +53,7 @@ function Header() {
             data-bs-target="#collapsibleNavbar"
           >
             <span className="navbar-toggler-icon"></span>
-          </button>
+          </button> 
           <div
             className="collapse navbar-collapse justify-content-end"
             id="collapsibleNavbar"
