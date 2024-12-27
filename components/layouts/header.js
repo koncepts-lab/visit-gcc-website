@@ -64,7 +64,7 @@ function Header() {
                   className={`nav-link active ${style["invest-link"]}`}
                   href="/"
                 >
-                  INVEST IN <span>GCC</span>
+                 <span>GCC</span>
                 </Link>
               </li>
               <li className="nav-item">
