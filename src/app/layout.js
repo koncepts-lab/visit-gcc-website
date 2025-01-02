@@ -1,26 +1,22 @@
-import { Inter } from "next/font/google";
-import "./globals.css";
-import 'bootstrap/dist/css/bootstrap.css';
-import dynamic from 'next/dynamic';
+import {NextUIProvider} from "@nextui-org/react";
+import './globals.css';
+import Header from "../../components/layout/header";
+import Footer from "../../components/layout/footer";
 
-
-export const metadata = {
-  title: "Visit GCC",
-  description: "Visit GCC",
-};
-
-const ClientSideRouter = dynamic(() => import('../../components/layouts/ClientSideRouter'), {
-  ssr: false
-});
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>
-        <ClientSideRouter>
-          {children}
-        </ClientSideRouter>
+    
+      <body id="style-1">
+      <NextUIProvider> 
+      <Header />
+      {children}
+      <Footer/>
+      </NextUIProvider>
       </body>
     </html>
   );
 }
+
+
