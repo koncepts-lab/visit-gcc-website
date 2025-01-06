@@ -280,12 +280,20 @@ h3 {
 .slick-prev, .slick-next{ display: none;}
 
 
-.slick-dots {
+/* .slick-dots {
   display: none !important;
+} */
+/* .photoGalleryContainer .slick-dots {
+  text-align: right;
+} */
+.slick-dots li button:before {
+  font-size: 16px !important;
+  color: #60b5b8 !important;
 }
-
-
-
+.slick-dots li {
+  height: 23px !important;
+  width: 12px !important;
+}
 
 
 
@@ -518,4 +526,12 @@ body{
   .banner {
     margin-top: 87px;
 }
+}
+
+
+.text_underline {
+  text-decoration: underline !important;
+}
+.mrg_left{
+  margin-left: 10px;
 }

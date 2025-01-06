@@ -1,0 +1,239 @@
+.tour-package-details{
+    float: left;
+    width: 100%;
+    margin: 50px 0 0 0;
+}
+.container-package-details{
+    /* background-color:#f5f5f5;  */
+    border-radius:15px;
+    padding: 20px;
+}
+
+.flex-package-details{
+    float: left;
+    width: 100%;
+    display: flex;
+}
+.flex-package-details span{ margin-right: 15px; display: flex;}
+.circle-icon {
+    margin-right: 5px;
+}
+.PiSealCheckFill{ font-size: 22px; margin-right: 5px;color: red;}
+.IoMdInformationCircleOutline{ font-size: 19px; margin-left: 5px;}
+.MdIosShare{ font-size: 19px;}
+.FaRegHeart{ font-size: 19px; margin-left: 5px;}
+
+.flex-package-details-right{
+    float: left;
+    width: 100%;
+    display: flex;  
+}
+.flex-package-details-right p{font-size: 13px;}
+.min-w {min-width: 100px;}
+.btn-one{
+    background-color: #a0daca;
+    border: none;
+    padding: 7px 15px;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 15px;
+    min-width: 120px;
+    margin: 0 15px;
+}
+.btn-two{
+    background-color: #000;
+    border: none;
+    padding: 7px 15px;
+    font-size: 15px;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+.review-text-container{
+    position: absolute;
+    margin-top: -369px;
+    max-width: 238px;
+    margin-left: 35px;
+}
+.review-img-conainer{
+    position: relative; 
+}
+.review-img-conainer img{
+    border-radius:15px;
+}
+.inclusions{
+    flex-wrap: wrap;
+    display: flex;
+}
+.inclusions span{
+    text-align: center;
+    min-width: 85px;
+    margin-right: 10px;
+}
+.inclusions svg{
+   font-size: 30px;
+   color: #44a8aa;
+}
+.align-items {
+    display: flex;
+    align-items: center;
+}
+.border-right {
+    border-right: solid 1px #ccc;
+}
+.p-color{ color: #309da2; font-weight: 600;}
+
+
+.ask-your-questions{
+    background-color:#ecf1f7;
+    padding: 50px 0;
+    margin-top: 50px;
+}
+.ask-your-questions input{
+    float: left;
+    width: 100%;
+    border: solid 1px #ccc;
+    margin-bottom: 30px;
+    padding:0 15px;
+}
+.ask-your-questions textarea{
+    float: left;
+    width: 100%;
+    border: solid 1px #ccc;
+    margin-bottom: 30px;
+    padding:15px;
+    min-height: 100px;
+}
+.ask-your-questions button{
+    background-color: #57b1b2;
+    border: none;
+    padding: 7px 25px;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin: 0 auto;
+    display: block;
+}
+.pt-25 {padding-top: 25px;}
+.flex-box img{ max-width: 150px; margin: 0 auto; }
+
+.btn-three {
+    margin-top: 30px !important;
+    background-color: #57b1b2;
+    border: none;
+    padding: 7px 25px;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin: 0 auto;
+    display: block;
+}
+.Legend-ul ul{
+    margin-left: 0;
+    padding-left: 0;
+    list-style: none;
+}
+.Legend-ul {
+    -webkit-box-shadow: 2px 2px 51px 4px rgba(0, 0, 0, 0.19);
+    -moz-box-shadow: 2px 2px 51px 4px rgba(0, 0, 0, 0.19);
+    box-shadow: 2px 2px 51px 4px rgb(0 0 0 / 4%);
+    margin-top: 50px;
+}
+.Legend-ul h4 {
+    margin-top: 50px;
+    font-size: 22px !important;
+    margin-bottom: 30px;
+}
+.Legend-ul svg {
+    margin-right: 10px;
+    font-size: 25px;
+}
+.Legend-ul p {
+    font-size: 20px;
+}
+.tour-package-details p{ text-align: justify;}
+
+/* .pdb-3{
+    padding-bottom: 2rem;
+  } */
+
+
+  @media only screen and (max-width: 991px) {
+  .review-text-container {
+    position: absolute;
+    margin-top: -50px;
+    max-width: 320px;
+    margin-left: 22px;
+}
+.mobile-mrb{
+    margin-top: 200px;
+}
+.inclusions {
+    flex-wrap: wrap;
+}
+.inclusions span {
+    margin-bottom: 15px;
+}
+
+.ask-your-questions {
+    padding-bottom: 85px;
+}
+
+.pt-30{
+    padding-top: 15px !important; 
+}
+.pb-30{
+    padding-bottom: 15px !important; 
+}
+.ptb-30{
+    padding-top: 15px !important; 
+    padding-bottom: 15px !important; 
+}
+.Legend-ul h4 {
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+.btn-one{
+    font-size: 12px;
+}
+.btn-two{
+    font-size: 12px;
+}
+.flex-package-details span {
+    margin-right: 15px;
+    min-width: 50px;
+}
+
+.flex-package-details-right h4 {
+    margin-top: -15px;
+    font-size: 15px !important;
+    color: red;
+}
+
+
+  }
+
+
+
+  .mobile-padb {
+    float: left;
+    width: 100%;
+}
+
+.pt-30{
+    padding-top: 30px;
+}
+.pb-30{
+    padding-bottom: 30px;
+}
+.ptb-30{
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+.slick-prev{
+    display: none !important;
+}
+
+
