@@ -100,11 +100,7 @@ function Country() {
                             <button className={`${style['btn-two']} w-100`} >Get Visa Eligibility</button>
                         </div>
                     </div>
-                    <div className='row'>
-                        <div className='col-md-12 text-center mt-4'>
-                            <button className={style['btn-one']}>Get More Details</button>
-                        </div>
-                    </div>
+                   
 
                 </div>
             </div>
