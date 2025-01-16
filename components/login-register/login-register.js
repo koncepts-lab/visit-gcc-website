@@ -99,7 +99,7 @@ const LoginRegisterTabs = () => {
           </div>
           <button
             type="submit"
-            className={`btn btn-primary w-100 ${styles['btn-custom']}`}
+            className={`btn btn-success  w-100 ${styles['btn-custom']}`}
           >
             Sign In
           </button>
