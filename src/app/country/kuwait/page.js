@@ -6,6 +6,7 @@ import Carousal from '../../../../components/carousel/Carousal';
 import DocumentationTabs from '../../../../components/countries/documentation-tab';
 import GettingAroundTab from '../../../../components/countries/getting-around-tab';
 import TabsKuwait from '../../../../components/countries/tab-kuwait'
+import CountriesKuwait from '../../../../components/countries/countries-kuwait';
 
 function Country() {
     const countryDestinationsData = [
@@ -26,7 +27,7 @@ function Country() {
     return (
         <div>
             <Banner />
-            <Countries />
+            <CountriesKuwait />
             <div className={style['section-normal']}>
                 <div className='container'>
                     <div className='row'>

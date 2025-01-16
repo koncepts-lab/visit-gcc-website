@@ -6,6 +6,7 @@ import Tabs from '../../../../components/countries/tabs';
 import Carousal from '../../../../components/carousel/Carousal';
 import DocumentationTabs from '../../../../components/countries/documentation-tab';
 import GettingAroundTab from '../../../../components/countries/getting-around-tab';
+import CountriesQatar from '../../../../components/countries/countries-qatar';
 
 
 function Country() {
@@ -27,7 +28,7 @@ function Country() {
     return (
         <div>
             <Banner />
-            <Countries />
+            <CountriesQatar />
             <div className={style['section-normal']}>
                 <div className='container'>
                     <div className='row'>

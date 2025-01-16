@@ -1,13 +1,13 @@
 import React from 'react'
 import style from './style.module.css';
 import Banner from '../../../../components/banner/banner';
-import Countries from '../../../../components/countries/countries';
 import Carousal from '../../../../components/carousel/Carousal';
 import DocumentationTabs from '../../../../components/countries/documentation-tab';
 import GettingAroundTab from '../../../../components/countries/getting-around-tab';
 import TabsUae from '../../../../components/countries/tab-uae';
+import CountriesUae from '../../../../components/countries/countries-uae';
 
-
+ 
 function Country() {
     const countryDestinationsData = [
         { id: 1, heading: 'Destination Heading 1', description: 'Luxury', image: "/images/blog/01.jpg" },
@@ -24,7 +24,7 @@ function Country() {
     return (
         <div>
             <Banner />
-            <Countries />
+            <CountriesUae />
             <div className={style['section-normal']}>
                 <div className='container'>
                     <div className='row'>

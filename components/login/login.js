@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import style from './style.module.css';
 import Search from '../search/search';
 
-const Banner = () => {
+const LoginRegisterTabs = () => {
   
 
   return (
@@ -58,4 +58,4 @@ const Banner = () => {
   );
 };
 
-export default Banner;
+export default LoginRegisterTabs;

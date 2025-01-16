@@ -136,3 +136,45 @@
       color: #006175;
     }
     
+
+
+
+    .headerWrapper {
+      transition: transform 0.3s ease-in-out;
+    }
+    
+    .headerWrapper.hidden {
+      transform: translateY(-100%);
+    }
+    
+    .navbar {
+      transition: background-color 0.3s ease-in-out;
+    }
+    
+    .navbar.scrolled {
+      background-color: #ffffff; /* Adjust based on your design */
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .navbar_sticky img{
+      max-width: 35px;
+    }
+    .scrolled .navbar_sticky{display: block;}
+.navbar_sticky a{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-transform: uppercase;
+      font-weight: 700;
+      font-size: 11px !important;
+      text-align: center;
+      color: #149699 !important;
+      font-family: 'Gotham';
+      
+  }
+
+  .hidden .navbar_sticky{
+    display: none;
+  }
+  .navbar_sticky{
+    display: none;
+  }

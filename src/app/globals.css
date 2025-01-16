@@ -535,3 +535,9 @@ body{
 .mrg_left{
   margin-left: 10px;
 }
+.mb-4 .active {
+  background-color: #006175 !important;
+  color: white;
+  font-weight: bold;
+  border: none;
+}

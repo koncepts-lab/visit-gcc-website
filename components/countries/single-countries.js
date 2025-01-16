@@ -5,15 +5,14 @@ import style from './style.module.css'; // Ensure the correct path to your CSS m
 
 const ArrowIcon = () => <FaArrowRightLong />;
 
+
+
 const SingleCountry = (props) => {
   return (
     <div className="col-xxl-2 col-xl-2 col-lg-4 col-md-2 col-sm-2 col-6">
       <Link href={props.link}> {/* Pass link directly without curly braces */}
         <img src={props.image} alt={props.heading} />
-        <div className={style['title-countries']}>
-          <h4>{props.heading}</h4>
-          {/*  <ArrowIcon />  */}
-        </div>
+        
       </Link>
     </div>
   );

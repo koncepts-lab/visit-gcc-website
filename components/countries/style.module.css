@@ -33,7 +33,7 @@
 .country-nav-tabs{ color:#000;}
 .country-nav-item{ color:#000; margin-bottom: 10px;}
 .country-nav-link {
-    background-color: #e6e6e6 !important;
+    background-color: #0095976b !important;
     color: #ffffff !important;
     border-radius: 6px !important;
     margin-right: 10px;
@@ -404,3 +404,12 @@ border-radius:15px 15px 0 0;
       
  
 
+    
+      
+  
+      
+      .highlighted-image {
+        padding: 7px 9px;
+        background-color: #009597;
+        border-radius: 82px !important;
+    }

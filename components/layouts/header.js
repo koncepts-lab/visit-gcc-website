@@ -8,6 +8,8 @@ function Header() {
   const [selected, setSelected] = useState("US");
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [hideOnScroll, setHideOnScroll] = useState(false);
+  const [lastScrollPos, setLastScrollPos] = useState(0);
 
   useEffect(() => {
     // Initialize Bootstrap JS
@@ -15,14 +17,24 @@ function Header() {
       require("bootstrap/dist/js/bootstrap.bundle.min.js");
     }
 
-    // Scroll handler
     const handleScroll = () => {
-      const offset = window.scrollY;
-      if (offset > 600) {
+      const currentScrollPos = window.scrollY;
+
+      if (currentScrollPos > 600) {
         setScrolled(true);
       } else {
         setScrolled(false);
       }
+
+      if (currentScrollPos > lastScrollPos && currentScrollPos > 100) {
+        // Scrolling down
+        setHideOnScroll(true);
+      } else {
+        // Scrolling up
+        setHideOnScroll(false);
+      }
+
+      setLastScrollPos(currentScrollPos);
     };
 
     // Add scroll listener
@@ -32,14 +44,14 @@ function Header() {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [lastScrollPos]);
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
 
   return (
-    <div className={style.headerWrapper}>
+    <div className={`${style.headerWrapper} ${hideOnScroll ? style.hidden : ""}`}>
       <nav
         className={`navbar navbar-expand-sm navbar-light ${style.navbar} ${
           scrolled ? style.scrolled : ""
@@ -72,6 +84,49 @@ function Header() {
             id="collapsibleNavbar"
           >
             <ul className={`navbar-nav ${style["navbar-nav-c"]}`}>
+
+            <li className={`nav-item ${style["navbar_sticky"]}`}>
+                <Link className="nav-link active" href="/">
+                  <img
+                    src="../images/01.png"
+                    className={style["img-top-logo"]}
+                    alt=""
+                  />
+                  Explore
+                </Link>
+              </li>
+              <li  className={`nav-item ${style["navbar_sticky"]}`}>
+                <Link className="nav-link active" href="/">
+                  <img
+                    src="../images/02.png"
+                    className={style["img-top-logo"]}
+                    alt=""
+                  />
+                  Plan
+                </Link>
+              </li>
+              <li  className={`nav-item ${style["navbar_sticky"]}`}>
+                <Link className="nav-link active" href="/">
+                  <img
+                    src="../images/03.png"
+                    className={style["img-top-logo"]}
+                    alt=""
+                  />
+                  Book
+                </Link>
+              </li>
+              <li  className={`nav-item ${style["navbar_sticky"]}`}>
+                <Link className="nav-link active" href="/">
+                  <img
+                    src="../images/04.png"
+                    className={style["img-top-logo"]}
+                    alt=""
+                  />
+                  Experience
+                </Link>
+              </li>
+
+
               <li className="nav-item">
                 <Link className="nav-link active" href="/">
                   <img
@@ -102,7 +157,7 @@ function Header() {
               <li className="nav-item">
                 <Link
                   className={`nav-link ${style["login-link"]}`}
-                  href="/about"
+                  href="/login"
                 >
                   Login/Signup
                 </Link>

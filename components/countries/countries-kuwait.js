@@ -1,6 +1,5 @@
 import React from 'react';
 import Link from 'next/link'; // Import Link from next/link
-import { FaArrowRightLong } from "react-icons/fa6"; // Import arrow icon
 import style from './style.module.css'; // Import CSS module
 
 const countriesData = [
@@ -12,21 +11,25 @@ const countriesData = [
   { id: 1, link: '/country/bahrain', heading: 'Bahrain', image: "/images/countries/01.jpg" },
 ];
 
-const Countries = () => {
+const CountriesKuwait = () => {
   return (
     <div className={style['home-countries']}>
-      <div className='container'>
+      <div className="container">
         <div className="row">
           <div className="col-md-12">
-            <h3>Welcome to GCC Countries</h3>
+            <h3 style={{ color: 'white' }}>Welcome to GCC Countries</h3>
           </div>
-          {countriesData.map((country) => (
+          {countriesData.map((country, index) => (
             <div
               key={country.id}
               className="col-xxl-2 col-xl-2 col-lg-4 col-md-2 col-sm-2 col-6"
             >
               <Link href={country.link}>
-                <img src={country.image} alt={country.heading} />
+                <img
+                  src={country.image}
+                  alt={country.heading}
+                  className={index === 4 ? style['highlighted-image'] : ''}
+                />
               </Link>
             </div>
           ))}
@@ -36,4 +39,4 @@ const Countries = () => {
   );
 };
 
-export default Countries;
+export default CountriesKuwait;
