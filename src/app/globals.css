@@ -551,3 +551,7 @@ body{
 .btn-google{
   background-color:#db4a39  ;
 }
+
+.scrolled .stiky_time{
+  justify-content: center !important;
+}

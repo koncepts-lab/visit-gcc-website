@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Link from "next/link";
 import style from "./style.module.css";
 import ReactFlagsSelect from "react-flags-select";
+import { CgProfile } from "react-icons/cg";
 
 function Header() {
   const [selected, setSelected] = useState("US");
@@ -78,11 +79,11 @@ function Header() {
             )}
           </button>
           <div
-            className={`collapse navbar-collapse justify-content-end ${
-              menuOpen ? "show" : ""
-            }`}
-            id="collapsibleNavbar"
-          >
+  className={`collapse navbar-collapse justify-content-end ${style["stiky_time"]} ${
+    menuOpen ? "show" : ""
+  }`}
+  id="collapsibleNavbar"
+>
             <ul className={`navbar-nav ${style["navbar-nav-c"]}`}>
 
             <li className={`nav-item ${style["navbar_sticky"]}`}>
@@ -127,7 +128,7 @@ function Header() {
               </li>
 
 
-              <li className="nav-item">
+              <li  className={`nav-item ${style["navbar_sticky_hide"]}`}>
                 <Link className="nav-link active" href="/">
                   <img
                     src="/images/inv-gcc.png"
@@ -136,7 +137,7 @@ function Header() {
                   />
                 </Link>
               </li>
-              <li className="nav-item">
+              <li  className={`nav-item ${style["navbar_sticky_hide"]}`}>
                 <Link className="nav-link" href="/packages">
                   <img
                     src="/images/GCC-one-visa.png"
@@ -145,7 +146,7 @@ function Header() {
                   />
                 </Link>
               </li>
-              <li className="nav-item">
+              <li  className={`nav-item ${style["navbar_sticky_hide"]}`}>
                 <Link className="nav-link" href="/packages">
                   <img
                     src="/images/Partner.png"
@@ -154,7 +155,7 @@ function Header() {
                   />
                 </Link>
               </li>
-              <li className="nav-item">
+              <li className={`nav-item ${style["navbar_sticky_hide"]}`}>
                 <Link
                   className={`nav-link ${style["login-link"]}`}
                   href="/login"
@@ -164,7 +165,7 @@ function Header() {
               </li>
 
               <li
-                className={`nav-item dropdown ${style["dropdown-right"]} ${style["view-pc"]}`}
+                className={`nav-item dropdown ${style["dropdown-right"]} ${style["view-pc"]} ${style["navbar_sticky_hide"]}`}
               >
                 <ReactFlagsSelect
                   countries={["US", "GB", "FR", "DE", "IT"]}
@@ -178,6 +179,16 @@ function Header() {
               </li>
             </ul>
           </div>
+
+          <div className={`nav-item ${style["navbar_sticky"]}`}>
+                <Link
+                  className={`nav-link ${style["login_profile"]}`}
+                  href="/login"
+                >
+                <CgProfile /> <span>Leonardo DiCaprio</span>
+                </Link>
+              </div>
+
         </div>
       </nav>
 

@@ -155,8 +155,11 @@
       background-color: #ffffff; /* Adjust based on your design */
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
+
+
+
     .navbar_sticky img{
-      max-width: 35px;
+      max-width: 40px;
     }
     .scrolled .navbar_sticky{display: block;}
 .navbar_sticky a{
@@ -165,7 +168,7 @@
       align-items: center;
       text-transform: uppercase;
       font-weight: 700;
-      font-size: 11px !important;
+      font-size: 14px !important;
       text-align: center;
       color: #149699 !important;
       font-family: 'Gotham';
@@ -178,3 +181,43 @@
   .navbar_sticky{
     display: none;
   }
+
+
+
+
+  .scrolled .navbar_sticky_hide{display: none;}
+.navbar_sticky_hide a{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 11px !important;
+    text-align: center;
+    color: #149699 !important;
+    font-family: 'Gotham';
+    
+}
+
+.hidden .navbar_sticky_hide{
+  display: block;
+}
+.navbar_sticky_hide{
+  display: block;
+}
+.scrolled .stiky_time{
+  justify-content: center !important;
+}
+.login_profile{
+  display: flex !important;
+      flex-direction: row !important;
+}
+.login_profile span{
+  font-size: 14px;
+  color: #000;
+}
+.login_profile svg{
+  font-size: 16px;
+  margin-right: 4px;
+  color: #000;
+}
