@@ -137,9 +137,9 @@ const ExploreEventsContainer = ({ breakPoints }) => {
                                 )}
                             </ul>
 
-                            <Link href="#0" className={`${style['event-detail-button']} text-start`}>SHOPPING & RETAIL</Link>
+                            <Link href="/event-details" className={`${style['event-detail-button']} text-start`}>SHOPPING & RETAIL</Link>
 
-                            <button  className={style['btn-plus']} onClick={() => toggleExpand(i)}> 
+                            <button  className={style['btn-plus']} onClick={() => toggleExpand(i)}>  
                                 <FiPlus />
                             </button>
                         </div>

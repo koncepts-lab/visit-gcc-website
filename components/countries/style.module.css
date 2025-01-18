@@ -329,11 +329,13 @@ border-radius:15px 15px 0 0;
 }
 .important_numbers span p{
     margin-bottom: 0;
+    font-weight: 600;
 
 }
 
 .important_numbers span p:nth-child(2){
     color: #ccc;
+    font-weight: 300;
 }
 
 

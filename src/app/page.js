@@ -72,7 +72,7 @@ function Home() {
               <h3>Upcoming events in April</h3>
             </div>
             <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-4 col-sm-3 col-3 pdb-3 text-right">
-              <Link href="#0" className='float-right'>View All</Link>
+              <Link href="/events" className='float-right'>View All</Link>
             </div>
             <Carousal events={eventsData} count={3} type="home-event" />
           </div>
