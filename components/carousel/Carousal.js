@@ -297,6 +297,9 @@ function Carousal({
           />
         ))}
 
+
+        
+
         {type === "upcoming-events" &&
           bestPicked.map((bestPicked) => (
             <SingleBestPicked

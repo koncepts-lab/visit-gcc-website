@@ -385,7 +385,7 @@ border-radius:15px 15px 0 0;
            
         } 
         .home-countries img{
-            max-width: 140px;
+            max-width: 80px;
         } 
          
 
@@ -409,9 +409,9 @@ border-radius:15px 15px 0 0;
     
       
   
-      
+/*       
       .highlighted-image {
         padding: 7px 9px;
         background-color: #009597;
         border-radius: 82px !important;
-    }
+    } */

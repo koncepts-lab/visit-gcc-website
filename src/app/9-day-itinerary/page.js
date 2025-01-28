@@ -18,8 +18,7 @@ import { LiaBinocularsSolid } from "react-icons/lia";
 import { PiMountains } from "react-icons/pi";
 import { GiMountainClimbing } from "react-icons/gi";
 import { IoMdHeart } from "react-icons/io";
-import { MdFamilyRestroom } from "react-icons/md";
-import HighlightTab from '../../../components/tour-package-details/highlight-tab'; // Ensure correct path
+import { MdFamilyRestroom } from "react-icons/md"; // Ensure correct path
 import PackageInclusions from '../../../components/tour-package-details/package-inclusions';
 import PackageExclusions from '../../../components/tour-package-details/package-exclusions';
 import { IoIosStar } from "react-icons/io";
@@ -32,6 +31,7 @@ import { FaFerry } from "react-icons/fa6";
 import { IoIosAirplane } from "react-icons/io";
 import { FaTrain } from "react-icons/fa";
 import { IoIosCloudyNight } from "react-icons/io";
+import ItineraryHighlightTab from '../../../components/tour-package-details/9-day-itinerary-highlight';
 
 function Page() {
     const tourPackageDetailsReviewsImageData = [
@@ -74,10 +74,10 @@ function Page() {
             <section className={style['tour-package-details']}>
                 <div className={`container ${style['container-package-details']}`}>
                     <div className='row'>
-                        <div className='col-md-7'>
-                            <h3>4 DAYS IN SALALAH</h3>
+                        <div className='col-md-5'>
+                            <h3>9-day itinerary</h3>
                             <p>
-                                <Link href='#0'>By Easytours24h-Hanoi Day Tours</Link>
+                                <Link href='#0'>Dubai, Abu Dhabi, Riyadh, Manama</Link>
                             </p>
                             <div className={style['flex-package-details']}>
                                 <span>
@@ -98,14 +98,14 @@ function Page() {
                                 </span>
                             </div>
                         </div>
-                        <div className='col-md-5'>
+                        <div className='col-md-7'>
                             <div className={style['flex-package-details-right']}>
                                 <span className={style['min-w']}>
                                     <p>Starting From</p>
-                                    <h3>₹6,599</h3>
-                                    <h4>
+                                    <h3>$18,000 - $35,000 per person</h3>
+                                     {/*<h4>
                                         <del>₹28,599</del>
-                                    </h4>
+                                    </h4>*/}
                                 </span>
                                 <span>
                                     <button className={style['btn-one']}>Book Now</button>
@@ -155,8 +155,8 @@ function Page() {
 
                         <div className='col-md-5 align-items'>
                             <div  className={style['mobile-mrb']}>
-                                <h3>Enchanting Salalah</h3>
-                                <p>Lorem ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
+                                <h3>9-day itinerary</h3>
+                                <p>Experience a luxurious 9-day journey through Dubai, Abu Dhabi, Riyadh, and Manama. Stay in 5-star accommodations and enjoy private transfers and curated experiences. Highlights include a helicopter tour in Dubai, the Sheikh Zayed Grand Mosque in Abu Dhabi, Saudi heritage in Riyadh, and Bahrain’s cultural gems in Manama. Indulge in traditional cuisine, private tours, and sunset cruises for a perfect blend of culture and luxury, starting at $18,000 per person.</p>
                             </div>
                         </div>
 
@@ -189,12 +189,12 @@ function Page() {
                 <div className={`container ${style['time']}`}>
                     <div className='row'>
                         <div className='col-md-12'>
-                            <HighlightTab />
+                            <ItineraryHighlightTab />
                         </div>
                     </div>
                 </div>
 
-                <div className='container'>
+                 {/* <div className='container'>
                     <div className='row'>
                         <div className={`col-md-12 ${style['pdb-3']}`}>
                             <h3 className={`container ${style['p-color']}`}>Package Inclusions</h3>
@@ -205,13 +205,52 @@ function Page() {
                             <PackageExclusions />
                         </div>
                     </div>
-                </div>
+                </div>*/}
 
                 <div className='container'>
                     <div className='row pt-5'>
                         <div className='col-md-12'>
-                            <h3>Note</h3>
-                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged</p>
+                            <h3>Luxury Accommodations</h3>
+                            <p>
+                            <ol>
+                            
+                           <li> Burj Al Arab, Dubai</li>
+                           <li>Emirates Palace, Abu Dhabi</li>
+                           <li>Four Seasons Hotel Riyadh, Saudi Arabia</li>
+                           <li>Four Seasons Hotel Bahrain Bay, Bahrain</li>
+                        </ol>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div className='container'>
+                    <div className='row pt-2'>
+                        <div className='col-md-12'>
+                            <h3>Transportation</h3>
+                            <p>
+                            <ol>
+                            
+                           <li>Private airport transfers</li>
+                           <li>Private car transfers within cities</li>
+                        </ol>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div className='container'>
+                    <div className='row pt-2'>
+                        <div className='col-md-12'>
+                            <h3>Activities</h3>
+                            <p>
+                            <ol>
+                            
+                           <li> Private tours of museums and landmarks</li>
+                           <li>Traditional meals and cultural experiences</li>
+                           <li>Sunset cruises and cocktails</li>
+                        </ol>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -247,7 +286,22 @@ function Page() {
 
                 <div className='container'>
                     <div className='row pt-5'>
-                        <div className='col-md-12'>
+
+                    <div className='col-md-12'>
+                    <h4>Write your review</h4>
+                    <textarea placeholder='Could you share a review about your experience ?' className="textarea_review" ></textarea>
+
+                    <div className='clearfix'></div>
+
+                    <button className={`${style['btn-one']} m-0`}>Submit</button>
+                   
+
+                    </div>
+
+
+                    
+
+                        <div className='col-md-12 pt-5'>
                             <h4>User ratings</h4>
                             <p className='mb-0'><IoIosStar color="#FDCC0D" />  4.2. Very good (13 reviews) <Link href='#0'>See all reviews</Link></p>
                         </div>

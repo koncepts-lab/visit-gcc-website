@@ -287,7 +287,7 @@ h3 {
   text-align: right;
 } */
 .slick-dots li button:before {
-  font-size: 16px !important;
+  font-size: 7px !important;
   color: #60b5b8 !important;
 }
 .slick-dots li {
@@ -554,4 +554,16 @@ body{
 
 .scrolled .stiky_time{
   justify-content: center !important;
+}
+
+.textarea_review{
+  resize: none;
+  border-style: solid;
+  border-color: #0000001a;
+  border-radius: 5px;
+  padding: 10px;
+  min-height: 125px;
+  margin-bottom: 10px;
+  width: 100%;
+  max-width: 500px;
 }

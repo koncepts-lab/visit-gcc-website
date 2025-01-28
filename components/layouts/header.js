@@ -59,8 +59,63 @@ function Header() {
         }`}
         id="navbar"
       >
+
+
+
+
+
         <div className="container">
-          <Link className="navbar-brand" href="/">
+
+
+        
+              {/*only mobile stiky */}
+<div  className={style['navbar_sticky_mobile_container']}>
+              <div className={`nav-item ${style["navbar_sticky_mobile"]}`}>
+              <Link className="nav-link active" href="/">
+                <img
+                  src="../images/01.png"
+                  className={style["img-top-logo"]}
+                  alt=""
+                />
+                Explore
+              </Link>
+            </div>
+            <div  className={`nav-item ${style["navbar_sticky_mobile"]}`}>
+              <Link className="nav-link active" href="/">
+                <img
+                  src="../images/02.png"
+                  className={style["img-top-logo"]}
+                  alt=""
+                />
+                Plan
+              </Link>
+            </div>
+            <div  className={`nav-item ${style["navbar_sticky_mobile"]}`}>
+              <Link className="nav-link active" href="/">
+                <img
+                  src="../images/03.png"
+                  className={style["img-top-logo"]}
+                  alt=""
+                />
+                Book
+              </Link>
+            </div>
+            <div  className={`nav-item ${style["navbar_sticky_mobile"]}`}>
+              <Link className="nav-link active" href="/">
+                <img
+                  src="../images/04.png"
+                  className={style["img-top-logo"]}
+                  alt=""
+                />
+                Experience
+              </Link>
+            </div>
+            </div>
+              {/*only mobile stiky */}
+
+
+
+          <Link className={`navbar-brand ${style["navbar_logo"]}`} href="/">
             <img src="/images/logo.svg" alt="" />
           </Link>
 
@@ -126,6 +181,9 @@ function Header() {
                   Experience
                 </Link>
               </li>
+
+
+
 
 
               <li  className={`nav-item ${style["navbar_sticky_hide"]}`}>

@@ -3,10 +3,10 @@
 import React, { useState } from 'react';
 import style from './style.module.css'; // Ensure correct path for styles
 import { HiOutlineArrowLongRight } from "react-icons/hi2";
-function HighlightTab() {
+function ItineraryUaeQatarSaudiArabiaBahrainKuwait() { 
     // State to keep track of the active tab
     const [activeTab, setActiveTab] = useState('Highlight');
-
+ 
     // Tab names 
     const tabs = [
         { name: 'Highlight', label: 'Highlight' },
@@ -15,7 +15,7 @@ function HighlightTab() {
         { name: 'Note', label: 'Note' }
     ];
 
-    // Render tab content based on active tab
+    // Render tab content based on active tab 
     const renderTabContent = () => {
         switch (activeTab) {
             case 'Highlight':
@@ -59,45 +59,147 @@ const HighlightContent = () => {
     // List of accordion tabs and their content
     const accordionTabs = [
         {
-            name: 'Day 1 - Arrival in Salalah',
+            name: 'Day 1-2 : Dubai , UAE',
             content: (
                 <>
                     <p> 
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                    Arrive at Dubai International Airport<br />
+
+Private transfer to Burj Al Arab (or similar 5-star hotel)<br />
+
+Explore Dubai Mall, Dubai Fountain Show and Dubai Marina<br />
+
+Private helicopter tour over Dubai's iconic landmarks<br />
+
+Dhow cruise with dinner at Dubai Creek
+
                     </p>
                 </>
             ),
         },
         {
-            name: 'Day 2 - Salalah City Tour Discover the Cultural Delights of Salalah',
+            name: 'Day 3-4 : Abu Dhabi ,UAE',
             content: (
                 <>
                     <p>
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                    Private transfer to Abu Dhabi (approximately 1.5 hours)<br />
+
+Check-in at Emirates Palace (or similar 5-star hotel)<br />
+
+Visit Sheikh Zayed Grand Mosque (private tour)<br />
+
+Explore Louvre Abu Dhabi Museum (private tour)<br />
+
+Yas Marina Circuit and Ferrari World
+ 
                     </p>
                 </>
             ),
         },
         {
-            name: "Day 3 - East Salalah Tour Discover Nature's Wonders and Ancient Treasures",
+            name: "Day 5-6 : Doha, Qatar",
             content: (
                 <>
                     <p>
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+
+                   Fly to Doha (approximately 1 hour)<br />
+
+Private transfer to The St. Regis Doha (or similar 5-star hotel)<br />
+
+Visit Museum of Islamic Art (private tour)<br />
+
+Explore Souq Waqif and Falcon Souk<br />
+
+Katara Cultural Village
+
+                   
                     </p>
                 </>
             ),
         },
         {
-            name: 'Day 4 - Farewell Salalah',
+            name: 'Day 7-8 : Riyadh, Saudi Arabia',
             content: (
                 <>
                     <p>
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+
+                   Fly to Riyadh (approximately 1.5 hours)<br />
+
+Private transfer to Four Seasons Hotel Riyadh
+
+(or similar 5-star hotel)<br />
+
+Visit National Museum of Saudi Arabia (private tour)<br />
+
+Explore Masmak Fortress (private tour)<br />
+
+Kingdom Centre Tower and Sky Bridge
+
+
                     </p>
                 </>
             ),
         },
+
+
+
+        {
+            name: 'Day 9-10 : Manama, Bahrain',
+            content: (
+                <>
+                    <p>
+
+                    Fly to Manama (approximately 1 hour)<br/>
+
+Private transfer to Four Seasons Hotel Bahrain Bay
+
+(or similar 5-star hotel)<br/>
+
+Visit Al Fateh Grand Mosque (private tour)<br/>
+
+Explore Bahrain National Museum (private tour)<br/>
+
+Manama Souk and Bab Al Bahrain
+
+
+
+                    </p>
+                </>
+            ),
+        },
+
+        {
+            name: 'Day 11-12 : Kuwait City, Kuwait',
+            content: (
+                <>
+                    <p>
+
+                   Fly to Kuwait City (approximately 1 hour)<br/>
+
+Private transfer to The Ritz-Carlton, Kuwait
+
+(or similar 5-star hotel)<br/>
+
+Visit Kuwait Towers and Liberation Tower<br/>
+
+Explore National Museum of Kuwait (private tour)<br/>
+
+Souk Al-Mubarakia
+
+
+
+                    </p>
+                </>
+            ),
+        },
+
+        
+
+
+        
+
+
+
     ];
 
     // Toggle the active accordion panel
@@ -107,10 +209,7 @@ const HighlightContent = () => {
 
     return (
         <>
-            <h3>Highlight</h3>
-            <p>
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged
-            </p>
+           
             <div>
                 {accordionTabs.map((tab, index) => (
                     <div key={index} className={style.accordion}>
@@ -158,4 +257,4 @@ const NoteContent = () => (
 
 
 
-export default HighlightTab;
+export default ItineraryUaeQatarSaudiArabiaBahrainKuwait;

@@ -81,13 +81,49 @@
     position: absolute !important;
     top: 20px;
     right: 60px;
+    z-index: 10000;
   }
   .view-pc {
-    display: none;
+    display: none !important;
   }
+  .navbar_sticky{
+    display: none !important;
+  }
+  .scrolled .navbar_sticky_hide {
+    display: block !important;
+}
+.scrolled .navbar_logo {
+display: none;
+}
+.scrolled  .toggle-btn{
+  display: none;
+}
+.navbar_sticky_mobile{
+  display: block;
 }
 
+.scrolled .navbar_sticky_mobile_container{
+  display: flex !important;
+  padding: 0 0;
+  text-align: center;
+  text-transform: uppercase;
+}
+.navbar_sticky_mobile_container a{
+  text-transform: uppercase;
+  color: #149699 !important;
+  font-family: 'Gotham';
+  font-size: 13px;
 
+}
+.navbar_sticky_mobile_container img{
+  max-width: 40px;
+  margin-bottom: 5px;
+}
+}
+
+.navbar_sticky_mobile_container{
+  display: none;
+}
 
 /* .sticky {
     position: fixed !important;
@@ -128,6 +164,7 @@
       .banner {
         margin-top: 87px;
     }
+   
     }
 
 

@@ -7,7 +7,7 @@ import Banner from '../../../components/banner/banner'; // Ensure correct path
 import { FaCircle } from 'react-icons/fa';
 import { PiSealCheckFill } from 'react-icons/pi';
 import { IoMdInformationCircleOutline } from 'react-icons/io';
-import { MdIosShare } from 'react-icons/md';
+import { MdIosShare } from 'react-icons/md'; 
 import { FaRegHeart } from 'react-icons/fa';
 import Carousal from '../../../components/carousel/Carousal'; // Ensure correct path
 import { RiBusFill } from "react-icons/ri";
@@ -18,10 +18,7 @@ import { LiaBinocularsSolid } from "react-icons/lia";
 import { PiMountains } from "react-icons/pi";
 import { GiMountainClimbing } from "react-icons/gi";
 import { IoMdHeart } from "react-icons/io";
-import { MdFamilyRestroom } from "react-icons/md";
-import HighlightTab from '../../../components/tour-package-details/highlight-tab'; // Ensure correct path
-import PackageInclusions from '../../../components/tour-package-details/package-inclusions';
-import PackageExclusions from '../../../components/tour-package-details/package-exclusions';
+import { MdFamilyRestroom } from "react-icons/md"; // Ensure correct path
 import { IoIosStar } from "react-icons/io";
 import StarRatingBar from '../../../components/tour-package-details/StarRatingBar';
 
@@ -32,6 +29,7 @@ import { FaFerry } from "react-icons/fa6";
 import { IoIosAirplane } from "react-icons/io";
 import { FaTrain } from "react-icons/fa";
 import { IoIosCloudyNight } from "react-icons/io";
+import ItineraryLuxuryUmrahPackage from '../../../components/tour-package-details/10-days-itinerary-luxury-umrah-package-with-alula-saudi-arabia';
 
 function Page() {
     const tourPackageDetailsReviewsImageData = [
@@ -74,10 +72,10 @@ function Page() {
             <section className={style['tour-package-details']}>
                 <div className={`container ${style['container-package-details']}`}>
                     <div className='row'>
-                        <div className='col-md-7'>
-                            <h3>4 DAYS IN SALALAH</h3>
+                        <div className='col-md-5'>
+                            <h3>7-day itinerary for UAE, Oman, Qatar</h3>
                             <p>
-                                <Link href='#0'>By Easytours24h-Hanoi Day Tours</Link>
+                                <Link href='#0'>UAE, Oman, Qatar</Link>
                             </p>
                             <div className={style['flex-package-details']}>
                                 <span>
@@ -88,7 +86,7 @@ function Page() {
                                     <FaCircle color='#04ac6a' className={style['circle-icon']} />
                                     <p className='pt-2'>2,471 reviews</p>
                                 </span>
-                                <span>
+                                <span> 
                                     <PiSealCheckFill className={style['PiSealCheckFill']} /> Recommended by 99% of travellers{' '}
                                     <IoMdInformationCircleOutline className={style['IoMdInformationCircleOutline']} />
                                 </span>
@@ -98,14 +96,14 @@ function Page() {
                                 </span>
                             </div>
                         </div>
-                        <div className='col-md-5'>
+                        <div className='col-md-7'>
                             <div className={style['flex-package-details-right']}>
                                 <span className={style['min-w']}>
                                     <p>Starting From</p>
-                                    <h3>₹6,599</h3>
-                                    <h4>
+                                    <h3>$7,000 - $11,000 per person</h3>
+                                     {/*<h4>
                                         <del>₹28,599</del>
-                                    </h4>
+                                    </h4>*/}
                                 </span>
                                 <span>
                                     <button className={style['btn-one']}>Book Now</button>
@@ -133,17 +131,9 @@ function Page() {
                                                     count={1}
                                                     type='tour-package-details-reviews'
                                                 />
-                                            </div>
-                                            
+                                            </div>                                           
 
-                                            {/* <div className={style['review-text-container']}>
-                                                <Carousal
-                                                    packageDetailsReviewImage={tourPackageDetailsReviewsImageData} 
-                                                    packageDetailsReview={tourPackageDetailsReviewsData} 
-                                                    count={1}
-                                                    type='tour-package-details-reviews-img'
-                                                />
-                                            </div>*/}
+                                         
                                         </div>
 
                                     </div>
@@ -155,8 +145,8 @@ function Page() {
 
                         <div className='col-md-5 align-items'>
                             <div  className={style['mobile-mrb']}>
-                                <h3>Enchanting Salalah</h3>
-                                <p>Lorem ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
+                                <h3>7-day itinerary for UAE, Oman, Qatar</h3>
+                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard </p>
                             </div>
                         </div>
 
@@ -189,12 +179,12 @@ function Page() {
                 <div className={`container ${style['time']}`}>
                     <div className='row'>
                         <div className='col-md-12'>
-                            <HighlightTab />
+                            <ItineraryLuxuryUmrahPackage />
                         </div>
                     </div>
                 </div>
 
-                <div className='container'>
+                 {/* <div className='container'>
                     <div className='row'>
                         <div className={`col-md-12 ${style['pdb-3']}`}>
                             <h3 className={`container ${style['p-color']}`}>Package Inclusions</h3>
@@ -205,13 +195,79 @@ function Page() {
                             <PackageExclusions />
                         </div>
                     </div>
-                </div>
+                </div>*/}
 
                 <div className='container'>
                     <div className='row pt-5'>
                         <div className='col-md-12'>
-                            <h3>Note</h3>
-                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged</p>
+                            <h3>Luxury Accommodations</h3>
+                            <p>
+                            <ol>
+
+                            <li>Burj Al Arab, Dubai</li>
+
+                            <li>The Chedi Muscat, Oman</li>
+
+                            <li>The St. Regis Doha ,Qatar</li>
+
+                           
+                        </ol>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div className='container'>
+                    <div className='row pt-2'>
+                        <div className='col-md-12'>
+                            <h3>Transportation</h3>
+                            <p>
+                            <ol>
+                            
+                           <li>Private airport transfers</li>
+                           <li>Private car transfers within cities</li>
+                        </ol>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div className='container'>
+                    <div className='row pt-2'>
+                        <div className='col-md-12'>
+                            <h3>Activities</h3>
+                            <p>
+                            <ol>
+                            <li>Private tours of museums and landmarks</li>
+                            <li>Sunset cruises and cocktails</li>
+                            <li>Traditional meals and cultural experiences</li>
+
+                            
+                        </ol>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div className='container'>
+                    <div className='row pt-2'>
+                        <div className='col-md-12'>
+                            <h3>Budget (approximate)</h3>
+                            <p>
+
+
+                            Accommodation : $3,000 - $5,000 per person<br />
+
+Transportation : $2,000 - $3,000 per person<br />
+
+Activities and meals: $2,000 - $3,000 per person<br />
+
+Total : $7,000 - $11,000 per person
+
+                          
+
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -247,7 +303,22 @@ function Page() {
 
                 <div className='container'>
                     <div className='row pt-5'>
-                        <div className='col-md-12'>
+
+                    <div className='col-md-12'>
+                    <h4>Write your review</h4>
+                    <textarea placeholder='Could you share a review about your experience ?' className="textarea_review" ></textarea>
+
+                    <div className='clearfix'></div>
+
+                    <button className={`${style['btn-one']} m-0`}>Submit</button>
+                   
+
+                    </div>
+
+
+                    
+
+                        <div className='col-md-12 pt-5'>
                             <h4>User ratings</h4>
                             <p className='mb-0'><IoIosStar color="#FDCC0D" />  4.2. Very good (13 reviews) <Link href='#0'>See all reviews</Link></p>
                         </div>

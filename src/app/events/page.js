@@ -234,7 +234,9 @@ const wondersData = [
                         <h3 className="pb-3">Upcoming Events</h3>
                       </div>
                       <div className="col-md-12">
-                        <Carousal bestPicked={bestPickedData} count={2} type="upcoming-events" />
+                        <div className="upcoming-events-picked">
+                          <Carousal bestPicked={bestPickedData} count={2} type="upcoming-events" />
+                        </div>
                       </div>
                     </div>
                   </div>

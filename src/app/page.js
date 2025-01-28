@@ -7,7 +7,7 @@ import Carousal from '../../components/carousel/Carousal';
 
 function Home() {
   const packagesData = [
-    { id: 1, heading: 'Package 1', description: 'Description of package 1', image: "/images/package/01.jpg" },
+    { id: 1, heading: '9-day itinerary', description: 'Dubai, Abu Dhabi, Riyadh, Manama', image: "/images/package/01.jpg" },
     { id: 2, heading: 'Package 2', description: 'Description of package 2', image: "/images/package/02.jpg" },
     { id: 3, heading: 'Package 3', description: 'Description of package 3', image: "/images/package/03.jpg" },
     { id: 4, heading: 'Package 4', description: 'Description of package 1', image: "/images/package/01.jpg" },

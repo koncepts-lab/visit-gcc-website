@@ -8,7 +8,7 @@ const PackageInclusions = () => {
 
     return (
         <Container>
-            <Tabs
+            <Tabs 
                 id="package-inclusions-tabs"
                 activeKey={key}
                 onSelect={(k) => setKey(k)}
