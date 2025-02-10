@@ -13,7 +13,7 @@ import { MdDownhillSkiing } from "react-icons/md";
 import { IoBusOutline } from "react-icons/io5";
 import { GiSailboat } from "react-icons/gi";
 
-const images = [
+const images = [ 
     {
         src: "/images/demo/01.jpg",
         title: "Dubai Shopping Festival",
@@ -107,7 +107,7 @@ const ExploreEventsContainer = ({ breakPoints }) => {
                                 <p>{image.date}</p>
                             </div>
                             <div className={style['star-section']}>
-                                <div className={style['star']}>
+                                 <div className={style['star']}>
                                     <Rating
                                         count={5}
                                         value={image.rating}

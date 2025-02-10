@@ -64,7 +64,7 @@ function Home() {
         </div>
       </div>
 
-      {/* home-event */}
+      {/* home-event */} 
       <div className={style['home-event']}>
         <div className='container'>
           <div className="row">

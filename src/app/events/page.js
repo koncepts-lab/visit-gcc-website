@@ -231,7 +231,7 @@ const wondersData = [
                   <div className="container-fluid">
                     <div className="row">
                       <div className="col-md-12">
-                        <h3 className="pb-3">Upcoming Events</h3>
+                        <h3 className="pb-3">Upcoming Events</h3> 
                       </div>
                       <div className="col-md-12">
                         <div className="upcoming-events-picked">
@@ -244,11 +244,11 @@ const wondersData = [
 
                 {/* Lesser-known wonders */}
                 <section className={style['pakage-bes-picked']}>
-                  <div className="container p-0">
+                  <div className="container pt-5">
                     <div className="row">
                       <div className="col-md-12">
-                        <h3 className="pb-3">Lesser-Known Wonders</h3>
-                        <p className="text-center">
+                        <h3 className="pb-1">Lesser-Known Wonders</h3>
+                        <p>
                           Lorem Ipsum is simply dummy text of the printing and
                           typesetting industry...
                         </p>

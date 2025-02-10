@@ -334,7 +334,7 @@ border-radius:15px 15px 0 0;
 }
 
 .important_numbers span p:nth-child(2){
-    color: #ccc;
+    color: #666;
     font-weight: 300;
 }
 
@@ -385,7 +385,7 @@ border-radius:15px 15px 0 0;
            
         } 
         .home-countries img{
-            max-width: 80px;
+            max-width: 100px;
         } 
          
 

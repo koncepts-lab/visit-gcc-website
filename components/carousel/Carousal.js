@@ -23,7 +23,7 @@ import EventScroll from "../events/event-scroll";
 const SlickCarousel = dynamic(() => import("react-slick"), {
   ssr: false,
 });
-
+ 
 function Carousal({
   packages,
   events,
@@ -145,7 +145,7 @@ function Carousal({
               link={pkg.link}
             />
           </div>
-        ))}
+        ))} 
       {type === "home-experience" &&
         experiences.map((experience) => (
           <SingleHomeExperience
