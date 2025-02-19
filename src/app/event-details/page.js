@@ -1,6 +1,6 @@
 "use client"; // Add this if you need hooks or client-side functionalities here
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import style from "./style.module.css"; // Ensure correct path for styles
 import Banner from "../../../components/banner/banner"; // Ensure correct path
@@ -12,11 +12,25 @@ import { FaRegHeart } from "react-icons/fa";
 import Carousal from "../../../components/carousel/Carousal"; // Ensure correct path
 import { IoIosStar } from "react-icons/io";
 import StarRatingBar from "../../../components/tour-package-details/StarRatingBar";
-
-
 import EventHighlightTab from "../../../components/event-details/highlight-tab";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import EnhancedDatePicker from "./date";
 
 function Page() {
+
+  
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
+  const handleBookNowClick = () => {
+    setIsPopupOpen(true);
+  };
+
+  const handleClosePopup = () => {
+    setIsPopupOpen(false);
+  };
+
   const tourPackageDetailsReviewsImageData = [
     {
       id: 1,
@@ -141,8 +155,7 @@ function Page() {
         <div className={`container ${style["container-package-details"]}`}>
           <div className="row">
             <div className="col-md-7">
-              {/* <h3>4 DAYS IN SALALAH</h3> */}
-
+              <h3>4 DAYS IN SALALAH</h3>
               <p>
                 <Link href="#0" className="text_underline">
                   By Easytours24h-Hanoi Day Tours
@@ -184,7 +197,7 @@ function Page() {
                   </h4>
                 </span>
                 <span>
-                  <button className={style["btn-one"]}>Book Now</button>
+                  <button className={style["btn-one"]} onClick={handleBookNowClick}>Book Now</button>
                 </span>
                 <span>
                   <button className={style["btn-two"]}>Contact Seller</button>
@@ -214,15 +227,6 @@ function Page() {
                           type="tour-package-details-reviews"
                         />
                       </div>
-
-                      {/* <div className={style['review-text-container']}>
-                                                <Carousal
-                                                    packageDetailsReviewImage={tourPackageDetailsReviewsImageData} 
-                                                    packageDetailsReview={tourPackageDetailsReviewsData} 
-                                                    count={1}
-                                                    type='tour-package-details-reviews-img'
-                                                />
-                                            </div>*/}
                     </div>
                   </div>
                 </div>
@@ -379,6 +383,13 @@ function Page() {
           </div>
         </div>
       </section>
+
+      {isPopupOpen && (
+        <div className={style["popup-overlay"]}>
+          <EnhancedDatePicker onClose={handleClosePopup} />
+        </div>
+      )}
+      
     </>
   );
 }

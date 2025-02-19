@@ -567,3 +567,33 @@ body{
   width: 100%;
   max-width: 500px;
 }
+
+
+
+
+.react-datepicker__day {
+  width: 90px !important;
+  padding: 15px 0;
+  font-size: 20px;
+  color: #797979 !important;
+}
+.react-datepicker__day-name {
+  width: 90px !important;
+  padding: 15px 0;
+  font-size: 20px;
+  color: #797979;
+}
+.react-datepicker {
+  border: none !important;
+}
+.react-datepicker__header {
+  background-color: #f0f0f000 !important;
+  border-bottom: none !important;
+}
+.react-datepicker__current-month{
+  margin-top: 0 !important;
+  color: #000 !important;
+  font-weight: 400 !important;
+  font-size: 20px !important;
+  padding-bottom: 15px !important;
+}
