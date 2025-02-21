@@ -1,6 +1,6 @@
 "use client"; // Add this if you need hooks or client-side functionalities here
 
-import React from 'react';
+import React, {useState} from 'react';
 import Link from 'next/link';
 import style from './style.module.css'; // Ensure correct path for styles
 import Banner from '../../../components/banner/banner'; // Ensure correct path
@@ -24,14 +24,13 @@ import PackageInclusions from '../../../components/tour-package-details/package-
 import PackageExclusions from '../../../components/tour-package-details/package-exclusions';
 import { IoIosStar } from "react-icons/io";
 import StarRatingBar from '../../../components/tour-package-details/StarRatingBar';
-
+import EnhancedDatePicker from "./date";
 import { IoLocationSharp } from "react-icons/io5";
 import { GoDotFill } from "react-icons/go";
 import { GiCruiser } from "react-icons/gi";
 import { FaFerry } from "react-icons/fa6";
-import { IoIosAirplane } from "react-icons/io";
+import { IoIosAirplane ,IoIosCloudyNight} from "react-icons/io";
 import { FaTrain } from "react-icons/fa";
-import { IoIosCloudyNight } from "react-icons/io";
 
 function Page() {
     const tourPackageDetailsReviewsImageData = [
@@ -66,8 +65,16 @@ function Page() {
         { id: 6, heading: 'Project Heading', description: 'Industry Name', image: "/images/other-packages/06.jpg" },
     ];
 
-
- 
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
+    const [selectedDate, setSelectedDate] = useState(new Date());
+  
+    const handleBookNowClick = () => {
+      setIsPopupOpen(true);
+    };
+  
+    const handleClosePopup = () => {
+      setIsPopupOpen(false);
+    };
     return (
         <>
             <Banner />
@@ -108,7 +115,7 @@ function Page() {
                                     </h4>
                                 </span>
                                 <span>
-                                    <button className={style['btn-one']}>Book Now</button>
+                                    <button className={style['btn-one']} onClick={handleBookNowClick}>Book Now</button>
                                 </span>
                                 <span>
                                     <button className={style['btn-two']}>Contact Seller</button>
@@ -342,8 +349,12 @@ function Page() {
                     </div>
                 </div>
 
-
             </section>
+            {isPopupOpen && (
+        <div className={style["popup-overlay"]}>
+          <EnhancedDatePicker onClose={handleClosePopup} />
+        </div>
+      )}
         </>
     );
 }
