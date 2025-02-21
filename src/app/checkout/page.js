@@ -121,7 +121,7 @@ const Checkout = () => {
                     </p>
                     <div className=''>
                       <input className={`${style["promo_input"]} `} placeholder='LastName (in English)*' />
-                      <input className={`${style["promo_input"]} ms-xxl-5 ms-xl-5 ms-md-0`} placeholder='First & middle name(in English)*' /><br/>
+                      <input className={`${style["promo_input"]} ms-xxl-5 ms-xl-5 ms-md-0  col-xxl-5 col-xl-6`} placeholder='First & middle name(in English)*' /><br/>
                       <input className={`${style["promo_input"]}`} placeholder='ID type' />
                       <input className={`${style["promo_input"]} ms-xxl-5 ms-xl-5 ms-md-0 col-xl-4 `} placeholder='Id number*' /> <br />
 
@@ -177,17 +177,17 @@ const Checkout = () => {
                       </select>
 
                       <h1 className='m-3 ms-0'>Contact Info</h1>
-                      <div className='d-flex flex-lg-row flex-md-column flex-column justify-content-between col-12 gap-xl-5 gap-lg-2'>
-                        <div>
+                      <div className='d-flex flex-lg-row flex-md-column flex-column justify-content-between col-12 gap-xl-5 gap-lg-3'>
+                        <div className='col-xl-6 col-12' >
                           <label className=''>Contact Name</label><br />
-                          <input className={`${style["promo_input"]} my-2`} placeholder='Please enter contact name *' />
+                          <input className={`${style["promo_input"]} my-2 col-12`} placeholder='Please enter contact name *' />
                         </div>
-                        <div className='col-6'>
+                        <div className='col-xl-6 col-lg-8 col-md-12 col-12'>
                           <label className=''>Contact Number</label><br />
                           <select className={`${style["promo_select"]} my-2` } style={{width: '68px'}}>
                             <option>+918</option>
                           </select>
-                          <input className={`${style["promo_input"]} my-2 ms-xl-4 ms-lg-0`} style={{width: '240px'}} placeholder='Mobile Number*' />
+                          <input className={`${style["promo_input"]} my-2 ms-xl-3 ms-lg-1 ms-2`} style={{width: '240px'}} placeholder='Mobile Number*' />
                         </div>
                       </div>
                       <div className='my-3'>
@@ -259,7 +259,7 @@ const Checkout = () => {
                           style={{ height: '35px' }}
                         />
                         <button
-                          className={`${style["btn-one"]} my-lg-0 my-md-1`}
+                          className={`${style["btn-one"]} my-lg-0 my-md-1 my-2`}
                           style={{ padding: '6px 10px' }}
                         >
                           Apply Now
