@@ -300,7 +300,7 @@ const Checkout = () => {
            </div>
 
           <div className="container-fluid">
-            <div className="row pt-2">
+            <div className="row pt-2 pb-5">
               <div className="col-md-12">
                 <Carousal
                   pakageDetailsOtherPackages={pakageDetailsOtherPackages}
