@@ -46,20 +46,20 @@ border-radius: 5px;
 }
 
 .promo_input::placeholder  {
-font-size: 14px;
+font-size: 12px;
 padding-left: 10px;  }
 
 .promo_input::-webkit-input-placeholder { /* Chrome, Safari */
-    font-size: 14px;
+    font-size: 12px;
   }
   .promo_input:-moz-placeholder { /* Firefox 18- */
-    font-size: 14px;
+    font-size: 12px;
   }
   .promo_input::-moz-placeholder { /* Firefox 19+ */
-    font-size: 14px;
+    font-size: 12px;
   }
   .promo_input:-ms-input-placeholder { /* IE 10+ */
-    font-size: 14px;
+    font-size: 12px;
   }
   
 .checkout-package-details label{
@@ -83,7 +83,12 @@ padding-left: 10px;  }
 }
 
 @media(max-width: 520px) {
-    .btn-two{
+    .btn-two {
       margin-top: 0px;
     }
+
+   .promo_input, .promo_select {
+   font-size: 14px;
+    }
+            
 }
