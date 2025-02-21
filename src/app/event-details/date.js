@@ -184,33 +184,8 @@ const DatePickerWithHover = ({ onClose }) => {
       </div>
     <div className={`bg-white rounded-lg shadow-xl p-lg-6 p-2 ${style["date-pick"]}`}>
 
-
-    <div className={style["date-left"]}>
-    <p className='py-2'>Departure Data Selected: {selectedDate ? formatDate(selectedDate) : 'No date selected'}</p>
-
-      <style>{customStyles}</style>
-      <div className="relative">
-        <DatePicker
-          selected={selectedDate}
-          onChange={setSelectedDate}
-          inline
-          renderDayContents={renderDayContents}
-          calendarStartDay={0}
-        />
-      </div>
-
-      {/* <div className='d-flex flex-row gap-3'>
-      <p> <RiCheckboxBlankFill color="green" size={25} /><span>Lowest Price</span></p>  
-      <p> <RiCheckboxBlankFill color="blue" size={25} /><span>Regular Price</span></p>  
-      <p> <RiCheckboxBlankFill color="red" size={25} /><span>Sold Out</span></p>  
-      <p> <RiCheckboxBlankFill color="grey" size={25} /><span>On Requestt</span></p>  
-      <p> <RiCheckboxBlankFill color="yellow" size={25} /><span>selling Fast</span></p>  
-      </div> */}
-      </div>
-
-
       <div className={style["date-right"]}>
-        <div className='d-flex flex-xl-column flex-lg-row flex-md-row flex-column overflow-auto justify-content-between'>
+        <div className='d-flex flex-column overflow-auto justify-content-between'>
           <div className=''>
         <h4 className="text-xl font-semibold">Rooms & Travellers:</h4>
     <div className='d-flex flex-row justify-content-between col-12'>

@@ -110,14 +110,14 @@ const DatePickerWithHover = ({ onClose }) => {
 
    @media (max-width: 520px) {
  .react-datepicker__day {
-    width: 30px !important;
-    padding: 4px 0;
+    width: 40px !important;
+    padding: 4px 0px;
     font-size: 15px;
     color: #797979 !important;    }
 
   }
     .react-datepicker__day-name {
-    width: 30px !important;
+    width: 40px !important;
     padding: 4px 0;
     font-size: 18px;
 }

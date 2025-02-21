@@ -120,11 +120,17 @@ const Checkout = () => {
                       Traveller <span className='fs-4 fw-bold'>1</span>
                     </p>
                     <div className=''>
-                      <input className={`${style["promo_input"]} `} placeholder='LastName (in English)*' />
-                      <input className={`${style["promo_input"]} ms-xxl-5 ms-xl-5 ms-md-0  col-xxl-5 col-xl-6`} placeholder='First & middle name(in English)*' /><br/>
-                      <input className={`${style["promo_input"]}`} placeholder='ID type' />
-                      <input className={`${style["promo_input"]} ms-xxl-5 ms-xl-5 ms-md-0 col-xl-4 `} placeholder='Id number*' /> <br />
+                      <div className='col-12'>
+                      <input className={`${style["promo_input"]} col-xl-5 col-lg-6 col-12 `} placeholder='LastName (in English)*' />  <br className='d-xl-none d-lg-block'/>
+                      <input className={`${style["promo_input"]} ms-xxl-5 ms-xl-5 ms-md-0 col-xl-5 col-lg-6 col-12`} placeholder='First & middle name(in English)*' /><br/>
+                     
+                      </div>
+                      <div  className='col-12'>
+                      <input className={`${style["promo_input"]} col-xl-5 col-lg-6 col-12`} placeholder='ID type' /> <br className='d-xl-none d-lg-block'/>
+                      <input className={`${style["promo_input"]} ms-xxl-5 ms-xl-5 ms-md-0 col-xl-4 col-lg-6 col-12 `} placeholder='Id number*' /> 
 
+                      </div>
+                     
                       {/* Custom Gender Selection Buttons */}
                       <div style={{ marginTop: '10px', marginBottom: '10px' }}>
                         <button
@@ -134,7 +140,7 @@ const Checkout = () => {
                           style={{
                             backgroundColor: gender === 'male' ? '#5ab2b3' : 'white',
                             color: gender === 'male' ? 'white' : '#686767',
-                            padding: '5px 50px',
+                            padding: '5px 45px',
                             border: '#e2e2e2 2px solid',
                             borderRadius: '5px'
                           }}>
@@ -147,7 +153,7 @@ const Checkout = () => {
                           style={{
                             backgroundColor: gender === 'female' ? '#5ab2b3' : 'white',
                             color: gender === 'female' ? 'white' : '#686767',
-                            padding: '5px 48px',
+                            padding: '5px 45px',
                             border: '#e2e2e2 2px solid',
                             borderRadius: '5px'
                           }}>
