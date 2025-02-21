@@ -90,6 +90,7 @@ const DatePickerWithHover = ({ onClose }) => {
   color: white !important;
 }
 
+
    @media (max-width: 1200px) {
  .react-datepicker__day {
     width: 70px !important;
@@ -124,13 +125,27 @@ const DatePickerWithHover = ({ onClose }) => {
  margin-bottom: -25px
 }
  .react-datepicker__current-month {
+    margin-top: 0 !important;
+    color: #000 !important;
+    font-weight: 400 !important;
+    font-size: 20px !important;
     padding-bottom: 5px !important;
     margin-top: -10px !important
 }
 
 
 .time-slots {
+  display: none;
+  position: absolute;
   left: 10%;
+  top: -10px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 8px;
+  width: 200px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  z-index: 1000;
 }
 
 .time-slot {
@@ -270,7 +285,7 @@ const DatePickerWithHover = ({ onClose }) => {
         Proceed
         </button>
         </Link>
-      </div>
+      </div> 
       </div>
       </div>
     </div>
