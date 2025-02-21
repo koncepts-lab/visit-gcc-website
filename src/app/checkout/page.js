@@ -120,9 +120,9 @@ const Checkout = () => {
                       Traveller <span className='fs-4 fw-bold'>1</span>
                     </p>
                     <div className=''>
-                      <input className={`${style["promo_input"]} `} placeholder='LastName (in English)*' />
+                      <input className={`${style["promo_input"]} `} placeholder='LastName (in English)*' /> <br className='d-xl-none d-lg-block' />
                       <input className={`${style["promo_input"]} ms-xxl-5 ms-xl-5 ms-md-0  col-xxl-5 col-xl-6`} placeholder='First & middle name(in English)*' /><br/>
-                      <input className={`${style["promo_input"]}`} placeholder='ID type' />
+                      <input className={`${style["promo_input"]}`} placeholder='ID type' /> <br className='d-xl-none d-lg-block' />
                       <input className={`${style["promo_input"]} ms-xxl-5 ms-xl-5 ms-md-0 col-xl-4 `} placeholder='Id number*' /> <br />
 
                       {/* Custom Gender Selection Buttons */}
