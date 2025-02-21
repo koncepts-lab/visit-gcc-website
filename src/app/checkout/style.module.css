@@ -45,6 +45,23 @@ border: #e2e2e2 2px solid;
 border-radius: 5px;
 }
 
+.promo_input::placeholder  {
+font-size: 14px;
+padding-left: 10px;  }
+
+.promo_input::-webkit-input-placeholder { /* Chrome, Safari */
+    font-size: 14px;
+  }
+  .promo_input:-moz-placeholder { /* Firefox 18- */
+    font-size: 14px;
+  }
+  .promo_input::-moz-placeholder { /* Firefox 19+ */
+    font-size: 14px;
+  }
+  .promo_input:-ms-input-placeholder { /* IE 10+ */
+    font-size: 14px;
+  }
+  
 .checkout-package-details label{
     font-size: 14px;
     color: #000;

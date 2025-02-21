@@ -121,7 +121,7 @@ const Checkout = () => {
                     </p>
                     <div className=''>
                       <input className={`${style["promo_input"]} `} placeholder='LastName (in English)*' />
-                      <input className={`${style["promo_input"]} ms-xxl-5 ms-xl-5 ms-md-0`} placeholder='First & middle name(in English)*' />
+                      <input className={`${style["promo_input"]} ms-xxl-5 ms-xl-5 ms-md-0`} placeholder='First & middle name(in English)*' /><br/>
                       <input className={`${style["promo_input"]}`} placeholder='ID type' />
                       <input className={`${style["promo_input"]} ms-xxl-5 ms-xl-5 ms-md-0 col-xl-4 `} placeholder='Id number*' /> <br />
 
@@ -289,11 +289,11 @@ const Checkout = () => {
             </div>
             </div>
               <div className="container">
-                <img src="/images/blank.png" className='w-100 h-25' alt="Banner" />
+                <img src="/images/blank.png" className='w-100' style={{height: '400px',borderRadius: '15px'}} alt="Banner" />
               </div>
             <div className="container">
               <div className="row">
-                <div className="col-md-12">
+                <div className="col-md-12 pt-5">
                   <h3>Other Packages</h3>
                 </div>
               </div>
