@@ -33,128 +33,120 @@ const DatePickerWithHover = ({ onClose }) => {
 
   // Custom CSS for the hover effect
   const customStyles = `
-  
-    .date-cell:hover .time-slots {
-      display: block;
+  .date-cell:hover .time-slots {
+    display: block;
+  }
+
+  .time-slots {
+    display: none;
+    position: absolute;
+    left: 100%;
+    top: -10px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 8px;
+    width: 200px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    z-index: 1000;
+  }
+
+  .time-slot {
+    padding: 4px 8px;
+    border-bottom: 1px solid #eee;
+  }
+
+  .time-slot:last-child {
+    border-bottom: none;
+  }
+
+  .react-datepicker__day:hover {
+    background-color: #f0f9ff;
+    border: none;
+  }
+
+  .react-datepicker__day--selected {
+    color: white !important;
+    background-color: blue !important;
+    border: none;
+  }
+
+  .react-datepicker__day-name {
+    width: 90px !important;
+    padding: 7px 0;
+    font-size: 20px;
+  }
+
+  .react-datepicker__day--selected:hover,
+  .react-datepicker__day--in-selecting-range:hover,
+  .react-datepicker__day--in-range:hover,
+  .react-datepicker__month-text--selected:hover,
+  .react-datepicker__month-text--in-selecting-range:hover,
+  .react-datepicker__month-text--in-range:hover,
+  .react-datepicker__quarter-text--selected:hover,
+  .react-datepicker__quarter-text--in-selecting-range:hover,
+  .react-datepicker__quarter-text--in-range:hover,
+  .react-datepicker__year-text--selected:hover,
+  .react-datepicker__year-text--in-selecting-range:hover,
+  .react-datepicker__year-text--in-range:hover {
+    border: none;
+    border-radius: 0px;
+    background-color: blue !important;
+    color: white !important;
+  }
+
+  @media (max-width: 1200px) {
+    .react-datepicker__day {
+      width: 70px !important;
+      padding: 7px 0;
+      font-size: 15px;
+      color: #797979 !important;
+    }
+
+       .react-datepicker__day-names {
+    margin-bottom: -10px;
+  }
+
+   .react-datepicker__day-name {
+    width: 70px !important;
+    padding: 7px 0;
+    font-size: 18px;
+  }
+  }
+
+  @media (max-width: 520px) {
+    .react-datepicker__day {
+      width: 40px !important;
+      padding: 4px 0;
+      font-size: 15px;
+      color: #797979 !important;
+    }
+
+    .react-datepicker__day-name {
+      width: 40px !important;
+      padding: 4px 0;
+      font-size: 18px;
+    }
+
+    .react-datepicker__day-names {
+      margin-bottom: -10px;
+    }
+
+    .react-datepicker__current-month {
+      padding-bottom: 15px !important;
+      margin-top: -10px !important;
     }
 
     .time-slots {
-      display: none;
-      position: absolute;
-      left: 100%;
-      top: -10px;
-      background: white;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      padding: 8px;
-      width: 200px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      z-index: 1000;
+      left: 10%;
     }
 
     .time-slot {
       padding: 4px 8px;
       border-bottom: 1px solid #eee;
     }
-
-    .time-slot:last-child {
-      border-bottom: none;
-    }
-
-    .react-datepicker__day:hover {
-      background-color: #f0f9ff;
-        border: none;
-    }
-
-    .react-datepicker__day--selected {
-  color: white !important;
-    background-color: blue !important;
-  border: none;
-    }
-
-    .react-datepicker__day--selected:hover,
-.react-datepicker__day--in-selecting-range:hover,
-.react-datepicker__day--in-range:hover,
-.react-datepicker__month-text--selected:hover,
-.react-datepicker__month-text--in-selecting-range:hover,
-.react-datepicker__month-text--in-range:hover,
-.react-datepicker__quarter-text--selected:hover,
-.react-datepicker__quarter-text--in-selecting-range:hover,
-.react-datepicker__quarter-text--in-range:hover,
-.react-datepicker__year-text--selected:hover,
-.react-datepicker__year-text--in-selecting-range:hover,
-.react-datepicker__year-text--in-range:hover {
-  border: none;
-  border-radius: 0px;
-  background-color: blue !important;
-  color: white !important;
-}
-
-
-   @media (max-width: 1200px) {
- .react-datepicker__day {
-    width: 70px !important;
-    padding: 7px 0;
-    font-size: 15px;
-    color: #797979 !important;    }
-
   }
-    .react-datepicker__day-name {
-    width: 70px !important;
-    padding: 10px 0;
-    font-size: 20px;
-}
-     .react-datepicker__day-names {
- margin-bottom: -20px
-}
-
-   @media (max-width: 520px) {
- .react-datepicker__day {
-    width: 30px !important;
-    padding: 4px 0;
-    font-size: 15px;
-    color: #797979 !important;    }
-
-  }
-    .react-datepicker__day-name {
-    width: 30px !important;
-    padding: 4px 0;
-    font-size: 18px;
-}
-     .react-datepicker__day-names {
- margin-bottom: -25px
-}
- .react-datepicker__current-month {
-    margin-top: 0 !important;
-    color: #000 !important;
-    font-weight: 400 !important;
-    font-size: 20px !important;
-    padding-bottom: 5px !important;
-    margin-top: -10px !important
-}
-
-
-.time-slots {
-  display: none;
-  position: absolute;
-  left: 10%;
-  top: -10px;
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 8px;
-  width: 200px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  z-index: 1000;
-}
-
-.time-slot {
-  padding: 4px 8px;
-  border-bottom: 1px solid #eee;
-}
-}
-
-  `;
+`;
 
   const renderDayContents = (day, date) => {
     const dateString = date.toISOString().split('T')[0];
@@ -264,7 +256,7 @@ const DatePickerWithHover = ({ onClose }) => {
     </div>
     <div className='my-md-4 my-1'>
       <label className='text-black fw-semibold'>Customer State*</label><br/>
-      <select className='col-11 fw-semibold' style={{height: '35px'}}>
+      <select className='col-xl-11 col-lg-12 col-12 fw-semibold my-1' style={{height: '35px'}}>
         <option>New Delhi</option>
         <option>Delhi</option>
         <option>Chennai</option>

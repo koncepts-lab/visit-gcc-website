@@ -164,7 +164,7 @@ const Checkout = () => {
                           </span>
                           <FaPlus size={23} className='ms-lg-2 ms-md-2 ms-0 ' color="#5ab2b3" style={{ marginTop: '6px' }} />
                         </p>
-                        <label className='my-3'>*Adult-Should be Above 18 Years</label>
+                        <label className='my-3 text-black-50'>*Adult-Should be Above 18 Years</label>
                       </div>
 
                       {/* single line */}
@@ -268,14 +268,14 @@ const Checkout = () => {
                       <div className='pt-4 d-flex flex-xl-row flex-lg-column flex-column'>
                         <div>
                           <label className='text-black fw-semibold fs-4'>Complete Booking In</label><br />
-                          <p>The package price will refresh<br className='d-lg-block d-none' /> After</p>
+                          <p> &nbsp; The package price will refresh<br className='d-lg-block d-none' /> &nbsp; After</p>
                         </div>
                         <div
                           className='rounded-pill align-content-center'
-                          style={{ height: '85px', width: '85px', border: '4px solid #abd7d8' }}
+                          style={{ height: '85px', width: '85px', border: '4px solid #5ab2b3' }}
                         >
-                          <h1 className='align-items-center align-self-center d-flex flex-column ms-2 my-1'>
-                            <span style={{ fontSize: '20px' }}>
+                          <h1 className='align-items-center align-self-center d-flex flex-column ms-2 my-1 text-black-50'>
+                            <span style={{ fontSize: '23px' }}>
                               {minutes < 10 ? `0${minutes}` : minutes}:{seconds < 10 ? `0${seconds}` : seconds}
                             </span>
                             <span style={{ fontSize: '12px' }}>mins</span>
