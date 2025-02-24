@@ -1,16 +1,16 @@
-.checkout-package-details{
+.checkout-tour-details{
     /* background-color:#f5f5f5;  */
     border-radius:15px;
     padding: 20px;
 }
 
 
-.flex-checkout-details-right{
+.tour-checkout-details-right{
     float: left;
     width: 100%;
     display: flex;  
 }
-.flex-checkout-details-right p{font-size: 13px;}
+.tour-checkout-details-right p{font-size: 13px;}
 .min-w {min-width: 100px;}
 .btn-one{
     background-color: #5ab2b3;
@@ -68,6 +68,12 @@ padding-left: 10px;  }
     font-weight: 600;
 }
 
+.ordinary_button{
+  padding: 5px 18px;
+  background-color: white;
+  border-radius: 8px;
+  font-size: 15px;
+}
 
 @media(max-width: 992px) {
     .btn-two{
@@ -89,9 +95,9 @@ padding-left: 10px;  }
 }
 
 @media(max-width: 520px) {
-    .btn-two {
-      margin-top: 0px;
-    }
+  .btn-two {
+    margin-top: 0px;
+  }
 
    .promo_input, .promo_select {
    font-size: 14px;

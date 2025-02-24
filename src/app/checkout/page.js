@@ -1,9 +1,9 @@
-"use client";  // Ensure this is at the top of the file
+"use client"; 
 
 import React, { useState, useEffect } from 'react';
 import { Range } from 'react-range';
 import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';  // Import Calendar styles
+import 'react-calendar/dist/Calendar.css'; 
 import style from './style.module.css';
 import Banner from '../../../components/banner/banner';
 import Link from 'next/link';
@@ -23,9 +23,49 @@ const Checkout = () => {
         const [timeLeft, setTimeLeft] = useState(initialTime); 
         const [gender, setGender] = useState('');
 
-        const handleGenderChange = (value) => {
-            setGender(value);
+        const [travellers, setTravellers] = useState([
+          {
+            id: 1,
+            lastName: '',
+            firstName: '',
+            idType: '',
+            idNumber: '',
+            gender: '',
+          },
+        ]);
+        const [nextTravellerId, setNextTravellerId] = useState(2);
+      
+        const handleInputChange = (travellerId, field, value) => {
+          setTravellers((prevTravellers) =>
+            prevTravellers.map((traveller) =>
+              traveller.id === travellerId ? { ...traveller, [field]: value } : traveller
+            )
+          );
         };
+      
+        const handleGenderChange = (travellerId, gender) => {
+          setTravellers((prevTravellers) =>
+            prevTravellers.map((traveller) =>
+              traveller.id === travellerId ? { ...traveller, gender } : traveller
+            )
+          );
+        };
+      
+        const handleAddTraveller = () => {
+          setTravellers((prevTravellers) => [
+            ...prevTravellers,
+            {
+              id: nextTravellerId,
+              lastName: '',
+              firstName: '',
+              idType: '',
+              idNumber: '',
+              gender: '',
+            },
+          ]);
+          setNextTravellerId(nextTravellerId + 1);
+        };
+      
       
         useEffect(() => {
           const interval = setInterval(() => {
@@ -115,62 +155,113 @@ const Checkout = () => {
                 <div>
                   <h1 className='m-3 ms-0'>Traveller Info</h1>
                   <form className='col-xxl-10 col-xl-12'>
-                    <p className='align-items-center' style={{ color: "#5ab2b3", height: '12px' }}>
-                      <FaUser size={23} className='me-3' color="#5ab2b3" style={{ marginTop: '-11px' }} />
-                      Traveller <span className='fs-4 fw-bold'>1</span>
-                    </p>
-                    <div className=''>
-                      <div className='col-12'>
-                      <input className={`${style["promo_input"]} col-xl-5 col-lg-6 col-12 `} placeholder='LastName (in English)*' />  <br className='d-xl-none d-lg-block'/>
-                      <input className={`${style["promo_input"]} ms-xxl-5 ms-xl-5 ms-md-0 col-xl-5 col-lg-6 col-12`} placeholder='First & middle name(in English)*' /><br/>
-                     
-                      </div>
-                      <div  className='col-12'>
-                      <input className={`${style["promo_input"]} col-xl-5 col-lg-6 col-12`} placeholder='ID type' /> <br className='d-xl-none d-lg-block'/>
-                      <input className={`${style["promo_input"]} ms-xxl-5 ms-xl-5 ms-md-0 col-xl-4 col-lg-6 col-12 `} placeholder='Id number*' /> 
-
-                      </div>
-                     
-                      {/* Custom Gender Selection Buttons */}
-                      <div style={{ marginTop: '10px', marginBottom: '10px' }}>
-                        <button
-                          type="button"
-                          className={`${gender === 'male' ? 'active' : ''}`}
-                          onClick={() => handleGenderChange('male')}
-                          style={{
-                            backgroundColor: gender === 'male' ? '#5ab2b3' : 'white',
-                            color: gender === 'male' ? 'white' : '#686767',
-                            padding: '5px 45px',
-                            border: '#e2e2e2 2px solid',
-                            borderRadius: '5px'
-                          }}>
-                          Male
-                        </button>
-                        <button
-                          type="button"
-                          className={`promo_input ${gender === 'female' ? 'active' : ''} ms-md-3 ms-2 `}
-                          onClick={() => handleGenderChange('female')}
-                          style={{
-                            backgroundColor: gender === 'female' ? '#5ab2b3' : 'white',
-                            color: gender === 'female' ? 'white' : '#686767',
-                            padding: '5px 45px',
-                            border: '#e2e2e2 2px solid',
-                            borderRadius: '5px'
-                          }}>
-                          Female
-                        </button>
-                      </div>
-
-                      <div className='d-flex flex-md-row flex-column justify-content-between'>
-                        <p className='align-items-center d-flex' style={{ color: "#5ab2b3" }}>
-                          <FaUser size={23} className='me-3' color="#5ab2b3" />
-                          <span className='d-flex flex-column'>
-                            <span style={{ fontSize: '11px' }}>Traveller 2</span>
-                            <span>Add Traveller </span>
-                          </span>
-                          <FaPlus size={23} className='ms-lg-2 ms-md-2 ms-0 ' color="#5ab2b3" style={{ marginTop: '6px' }} />
+                  {travellers.map((traveller) => (
+                      <div key={traveller.id} className='pt-3'>
+                        <p
+                          className="align-items-center"
+                          style={{ color: '#5ab2b3', height: '12px' }}
+                        >
+                          <FaUser
+                            size={23}
+                            className="me-3"
+                            color="#5ab2b3"
+                            style={{ marginTop: '-11px' }}
+                          />
+                          Traveller <span className="fs-4 fw-bold">{traveller.id}</span>
                         </p>
-                        <label className='my-3 text-black-50'>*Adult-Should be Above 18 Years</label>
+                        <div className="">
+                          <div className="col-12">
+                            <input
+                              className={`${style['promo_input']} col-xl-5 col-lg-6 col-12 `}
+                              placeholder="LastName (in English)*"
+                              value={traveller.lastName}
+                              onChange={(e) =>
+                                handleInputChange(traveller.id, 'lastName', e.target.value)
+                              }
+                            />
+                            <br className="d-xl-none d-lg-block" />
+                            <input
+                              className={`${style['promo_input']} ms-xxl-5 ms-xl-5 ms-md-0 col-xl-5 col-lg-6 col-12`}
+                              placeholder="First & middle name(in English)*"
+                              value={traveller.firstName}
+                              onChange={(e) =>
+                                handleInputChange(traveller.id, 'firstName', e.target.value)
+                              }
+                            />
+                            <br />
+                          </div>
+                          <div className="col-12">
+                            <input
+                              className={`${style['promo_input']} col-xl-5 col-lg-6 col-12`}
+                              placeholder="ID type"
+                              value={traveller.idType}
+                              onChange={(e) =>
+                                handleInputChange(traveller.id, 'idType', e.target.value)
+                              }
+                            />
+                            <br className="d-xl-none d-lg-block" />
+                            <input
+                              className={`${style['promo_input']} ms-xxl-5 ms-xl-5 ms-md-0 col-xl-4 col-lg-6 col-12 `}
+                              placeholder="Id number*"
+                              value={traveller.idNumber}
+                              onChange={(e) =>
+                                handleInputChange(traveller.id, 'idNumber', e.target.value)
+                              }
+                            />
+                          </div>
+                         {/* gender buttons  */}
+                          <div style={{ marginTop: '10px', marginBottom: '10px' }}>
+                            <button
+                              type="button"
+                              className={`${traveller.gender === 'male' ? 'active' : ''}`}
+                              onClick={() => handleGenderChange(traveller.id, 'male')}
+                              style={{
+                                backgroundColor:
+                                  traveller.gender === 'male' ? '#5ab2b3' : 'white',
+                                color: traveller.gender === 'male' ? 'white' : '#686767',
+                                padding: '5px 45px',
+                                border: '#e2e2e2 2px solid',
+                                borderRadius: '5px',
+                              }}
+                            >
+                              Male
+                            </button>
+                            <button
+                              type="button"
+                              className={`promo_input ${
+                                traveller.gender === 'female' ? 'active' : ''
+                              } ms-md-3 ms-2 `}
+                              onClick={() => handleGenderChange(traveller.id, 'female')}
+                              style={{
+                                backgroundColor:
+                                  traveller.gender === 'female' ? '#5ab2b3' : 'white',
+                                color: traveller.gender === 'female' ? 'white' : '#686767',
+                                padding: '5px 45px',
+                                border: '#e2e2e2 2px solid',
+                                borderRadius: '5px',
+                              }}
+                            >
+                              Female
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                     ))}
+                        <div className="d-flex flex-md-row flex-column justify-content-between">
+                          <p
+                            className="align-items-center d-flex cursor-pointer "
+                            style={{ color: '#5ab2b3' }}
+                            onClick={handleAddTraveller}
+                          >
+                            <FaUser size={23} className="me-3" color="#5ab2b3" />
+                            <span className="d-flex flex-column">
+                              <span style={{ fontSize: '11px' }}>Traveller {nextTravellerId}</span>
+                              <span>Add Traveller </span>
+                            </span>
+                            <FaPlus size={23} className="ms-lg-2 ms-md-2 ms-0" color="#5ab2b3" style={{ marginTop: '6px' }}
+                            />
+                          </p>
+                          <label className="my-3 text-black-50">*Adult-Should be Above 18 Years</label>
                         </div>
 
                       {/* single line */}
@@ -208,23 +299,12 @@ const Checkout = () => {
                       <h1 className='m-3 ms-0'>Package Add-Ons</h1>
                         <label className='pe-0 me-0'>Travel + Medical Insurace</label><br />
                         <input className={`${style["promo_input"]} my-2 col-12`} placeholder='Please enter ' />
-                    </div>
                   </form>
                 </div>
             </div>
 
             <div className="col-md-4 my-md-0 my-5">
                     <div className={style["flex-checkout-details-right"]}>
-                      <div className='d-flex flex-column'>
-                        <p style={{ fontSize: '10px', height: '7px' }}>Starting From</p>
-                        <p className="fs-5 fw-semibold" style={{ marginTop: '-8px', minWidth: '86px', marginRight: '-5px' }}>
-                          ₹6,599
-                          <RiInformationLine color="#3C99DC" style={{ marginTop: '-8px' }} size={13} />
-                          <p className='fw-medium'>
-                            <del>₹28,599</del>
-                          </p>
-                        </p>
-                      </div>
                       <div className='d-flex flex-lg-row flex-md-column flex-row ms-lg-0 ms-3'>
                         <span>
                           <button className={style["btn-one"]}>Pay Now</button>

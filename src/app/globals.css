@@ -601,3 +601,7 @@ body{
 .font10{
 font-size: 10px;
 }
+
+.cursor-pointer {
+  cursor: pointer;
+}
