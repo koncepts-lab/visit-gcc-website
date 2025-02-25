@@ -12,22 +12,60 @@ const DatePickerWithHover = ({ onClose }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [number, setNumber] = useState(0);
 
-  const handleIncrement = () => {
-    setNumber(number + 1);
+  const [rooms, setRooms] = useState([{ id: 1, adults: 1, children: 0 }]);
+  const [nextRoomId, setNextRoomId] = useState(2);
+
+  const handleIncrement = (roomId, type) => {
+    setRooms((prevRooms) =>
+      prevRooms.map((room) =>
+        room.id === roomId
+          ? {
+              ...room,
+              [type]: room[type] + 1,
+            }
+          : room
+      )
+    );
   };
 
-  const handleDecrement = () => {
-    setNumber(number - 1);
+  const handleDecrement = (roomId, type) => {
+    setRooms((prevRooms) =>
+      prevRooms.map((room) =>
+        room.id === roomId && room[type] > 0
+          ? {
+              ...room,
+              [type]: room[type] - 1,
+            }
+          : room
+      )
+    );
+  };
+
+  const handleAddRoom = () => {
+    setRooms((prevRooms) => [
+      ...prevRooms,
+      { id: nextRoomId, adults: 1, children: 0 },
+    ]);
+    setNextRoomId(nextRoomId + 1);
   };
 
   // Sample data - add more dates as needed
   const timeSlots = {
-    '2025-02-10': [
+    '2025-02-24': [
       { time: '09:00 AM', price: '₹6,599' },
       { time: '02:00 PM', price: '₹7,299' },
       { time: '05:00 PM', price: '₹6,999' }
     ],
-    '2025-02-11': [
+    '2025-02-27': [
+      { time: '10:00 AM', price: '₹6,799' },
+      { time: '03:00 PM', price: '₹7,099' }
+    ],
+    '2025-02-02': [
+      { time: '09:00 AM', price: '₹6,599' },
+      { time: '02:00 PM', price: '₹7,299' },
+      { time: '05:00 PM', price: '₹6,999' }
+    ],
+    '2025-02-07': [
       { time: '10:00 AM', price: '₹6,799' },
       { time: '03:00 PM', price: '₹7,099' }
     ]
@@ -36,31 +74,37 @@ const DatePickerWithHover = ({ onClose }) => {
   // Custom CSS for the hover effect
   const customStyles = `
   .date-cell:hover .time-slots {
-    display: block;
-  }
+      display: block;
+    }
 
-  .time-slots {
-    display: none;
-    position: absolute;
-    left: 100%;
-    top: -10px;
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 8px;
-    width: 200px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    z-index: 1000;
-  }
+    .date-cell--selected .time-slots {
+      display: block;
+      color: black;
+    }
 
-  .time-slot {
-    padding: 4px 8px;
-    border-bottom: 1px solid #eee;
-  }
+    .time-slots {
+      display: none;
+      position: absolute;
+      left: 100%;
+      top: -10px;
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 8px;
+      width: 200px;
+      color: black;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+    }
 
-  .time-slot:last-child {
-    border-bottom: none;
-  }
+    .time-slot {
+      padding: 4px 8px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .time-slot:last-child {
+      border-bottom: none;
+    }
 
   .react-datepicker__day:hover {
     background-color: #f0f9ff;
@@ -114,6 +158,10 @@ const DatePickerWithHover = ({ onClose }) => {
     padding: 7px 0;
     font-size: 18px;
   }
+
+  .time-slots {
+    left: 10%;
+  }
   }
 
   @media (max-width: 520px) {
@@ -145,14 +193,16 @@ const DatePickerWithHover = ({ onClose }) => {
 
     .time-slot {
       padding: 4px 8px;
-      border-bottom: 1px solid #eee;
     }
   }
 `;
 
-  const renderDayContents = (day, date) => {
-    const dateString = date.toISOString().split('T')[0];
-    const slots = timeSlots[dateString];
+const renderDayContents = (day, date) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const dayOfMonth = String(date.getDate()).padStart(2, '0');
+  const dateString = `${year}-${month}-${dayOfMonth}`;
+  const slots = timeSlots[dateString];
 
     return (
       <div className="date-cell">
@@ -207,54 +257,73 @@ const DatePickerWithHover = ({ onClose }) => {
           calendarStartDay={0}
         />
       </div>
-
-      {/* <div className='d-flex flex-row gap-3'>
-      <p> <RiCheckboxBlankFill color="green" size={25} /><span>Lowest Price</span></p>  
-      <p> <RiCheckboxBlankFill color="blue" size={25} /><span>Regular Price</span></p>  
-      <p> <RiCheckboxBlankFill color="red" size={25} /><span>Sold Out</span></p>  
-      <p> <RiCheckboxBlankFill color="grey" size={25} /><span>On Requestt</span></p>  
-      <p> <RiCheckboxBlankFill color="yellow" size={25} /><span>selling Fast</span></p>  
-      </div> */}
-      </div>
+  </div>
 
 
       <div className={style["date-right"]}>
         <div className='d-flex flex-xl-column flex-lg-row flex-md-row flex-column overflow-auto justify-content-between'>
           <div className=''>
         <h4 className="text-xl font-semibold">Rooms & Travellers:</h4>
-    <div className='d-flex flex-row justify-content-between col-12'>
-      <div className='me-xl-0 me-lg-5 me-5'>
-        <p>Room 1</p>
-      </div>
-      <div className='me-xl-0 me-lg-5 me-5'>
-        <p style={{height: '10px'}}> Adult(s)</p>
-        <div style={{ display: 'flex',  gap: '0px' }}>
-      <button onClick={handleDecrement} className={style["numberdecrement"]}>
-        -
+        {rooms.map((room) => (
+        <div
+          key={room.id}
+          className="d-flex flex-row justify-content-between col-12"
+        >
+          <div className="me-xl-0 me-lg-5 me-5">
+            <p>Room {room.id}</p>
+          </div>
+          <div className="me-xl-0 me-lg-5 me-5">
+            <p style={{ height: '10px' }}>Adult(s)</p>
+            <div style={{ display: 'flex', gap: '0px' }}>
+            <button onClick={() => handleDecrement(room.id, 'adults')} className={style["numberdecrement"]} >
+                -
+              </button>
+              <span
+                style={{
+                  padding: '5px 10px',
+                  fontSize: '20px',
+                  border: '1px solid',
+                }}
+              >
+                {room.adults}
+              </span>
+              <button onClick={() => handleIncrement(room.id, 'adults')} className={style["numberincrement"]}>
+                +
+              </button>
+            </div>
+            <p className="date_right_para">(12+ years)</p>
+          </div>
+          <div>
+            <p style={{ height: '10px' }}>children</p>
+            <div style={{ display: 'flex', gap: '0px' }}>
+              <button onClick={() => handleDecrement(room.id, 'children')} className={style["numberdecrement"]} >
+                -
+              </button>
+              <span
+                style={{
+                  padding: '5px 10px',
+                  fontSize: '20px',
+                  border: '1px solid',
+                }}
+              >
+                {room.children}
+              </span>
+              <button onClick={() => handleIncrement(room.id, 'children')} className={style["numberincrement"]}>
+                +
+              </button>
+            </div>
+            <p className="date_right_para">(Below 12 years)</p>
+          </div>
+        </div>
+      ))}
+      <button
+        className="bg-white col-12"
+        style={{ border: 'none', color: '#3C99DC' }}
+        onClick={handleAddRoom}
+      >
+        + Add another room
       </button>
-      <span style={{ padding: '5px 10px', fontSize: '20px', border: '1px solid'  }}>{number}</span>
-      <button onClick={handleIncrement}  className={style["numberincrement"]}>
-        +
-      </button>
-    </div>
-    <p className={`${style["date_right_para"]}`}>(12+ years)</p>
-      </div>
-      <div >
-        <p style={{height: '10px'}}>children</p>
-        <div style={{ display: 'flex', gap: '0px' }}>
-      <button onClick={handleDecrement} className={style["numberdecrement"]}>
-        -
-      </button>
-      <span style={{ padding: '5px 10px', fontSize: '20px', border: '1px solid'  }}>{number}</span>
-      <button onClick={handleIncrement}  className={style["numberincrement"]}>
-        +
-      </button>
-    </div>
-    <p className={`${style["date_right_para"]}`}>(Below 12 years)</p>
 
-      </div>
-    </div>
-    <button className='bg-white col-12 ' style={{border: 'none', color: '#3C99DC'}}>+ Add another room</button>
     </div>
     <div className='my-md-4 my-1'>
       <label className='text-black fw-semibold'>Customer State*</label><br/>
