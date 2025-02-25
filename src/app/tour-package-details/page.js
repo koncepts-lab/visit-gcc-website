@@ -107,13 +107,6 @@ function Page() {
                         </div>
                         <div className='col-md-5'>
                             <div className={style['flex-package-details-right']}>
-                                <span className={style['min-w']}>
-                                    <p>Starting From</p>
-                                    <h3>₹6,599</h3>
-                                    <h4>
-                                        <del>₹28,599</del>
-                                    </h4>
-                                </span>
                                 <span>
                                     <button className={style['btn-one']} onClick={handleBookNowClick}>Book Now</button>
                                 </span>
