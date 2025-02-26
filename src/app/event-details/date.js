@@ -10,14 +10,45 @@ const DatePickerWithHover = ({ onClose }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [number, setNumber] = useState(0);
 
-  const handleIncrement = () => {
-    setNumber(number + 1);
+  const [rooms, setRooms] = useState([{ id: 1, adults: 1, children: 0, infant: 0 }]);
+  const [nextRoomId, setNextRoomId] = useState(2);
+
+  const handleIncrement = (roomId, type) => {
+    setRooms((prevRooms) =>
+      prevRooms.map((room) => {
+        if (room.id === roomId) {
+          if (room[type] < 3) { 
+            return {
+              ...room,
+              [type]: room[type] + 1,
+            };
+          }
+        }
+        return room; 
+      })
+    );
   };
 
-  const handleDecrement = () => {
-    setNumber(number - 1);
+  const handleDecrement = (roomId, type) => {
+    setRooms((prevRooms) =>
+      prevRooms.map((room) =>
+        room.id === roomId && room[type] > 0
+          ? {
+              ...room,
+              [type]: room[type] - 1,
+            }
+          : room
+      )
+    );
   };
 
+  const handleAddRoom = () => {
+    setRooms((prevRooms) => [
+      ...prevRooms,
+      { id: nextRoomId, adults: 1, children: 0 , infant: 0},
+    ]);
+    setNextRoomId(nextRoomId + 1);
+  };
   // Sample data - add more dates as needed
   const timeSlots = {
     '2025-02-10': [
@@ -141,36 +172,6 @@ const DatePickerWithHover = ({ onClose }) => {
 
   `;
 
-  const renderDayContents = (day, date) => {
-    const dateString = date.toISOString().split('T')[0];
-    const slots = timeSlots[dateString];
-
-    return (
-      <div className="date-cell">
-        {day}
-        {slots && (
-          <div className="time-slots">
-            <div className="font-bold mb-2">Available Times:</div>
-            {slots.map((slot, index) => (
-              <div key={index} className="time-slot">
-                <div className="flex justify-between">
-                  <span>{slot.time}</span>
-                  <span className="text-green-600">{slot.price}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    );
-  };
-
-  // Function to format the selected date
-  const formatDate = (date) => {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    return date.toLocaleDateString(undefined, options);
-  };
-
   return (
     <div className={`bg-white ${style["date-pick-container"]}`}>
 
@@ -184,47 +185,100 @@ const DatePickerWithHover = ({ onClose }) => {
       </div>
     <div className={`bg-white rounded-lg shadow-xl p-lg-6 p-2 ${style["date-pick"]}`}>
 
-      <div className={style["date-right"]}>
-        <div className='d-flex flex-column overflow-auto justify-content-between'>
+    <div className={style["date-right"]}>
+        <div className='d-flex flex-xl-column flex-lg-row flex-md-row flex-column overflow-auto justify-content-between'>
           <div className=''>
         <h4 className="text-xl font-semibold">Rooms & Travellers:</h4>
-    <div className='d-flex flex-row justify-content-between col-12'>
-      <div className='me-xl-0 me-lg-5 me-5'>
-        <p>Room 1</p>
-      </div>
-      <div className='me-xl-0 me-lg-5 me-5'>
-        <p style={{height: '10px'}}> Adult(s)</p>
-        <div style={{ display: 'flex',  gap: '0px' }}>
-      <button onClick={handleDecrement} className={style["numberdecrement"]}>
-        -
-      </button>
-      <span style={{ padding: '5px 10px', fontSize: '20px', border: '1px solid'  }}>{number}</span>
-      <button onClick={handleIncrement}  className={style["numberincrement"]}>
-        +
-      </button>
-    </div>
-    <p className={`${style["date_right_para"]}`}>(12+ years)</p>
-      </div>
-      <div >
-        <p style={{height: '10px'}}>children</p>
-        <div style={{ display: 'flex', gap: '0px' }}>
-      <button onClick={handleDecrement} className={style["numberdecrement"]}>
-        -
-      </button>
-      <span style={{ padding: '5px 10px', fontSize: '20px', border: '1px solid'  }}>{number}</span>
-      <button onClick={handleIncrement}  className={style["numberincrement"]}>
-        +
-      </button>
-    </div>
-    <p className={`${style["date_right_para"]}`}>(Below 12 years)</p>
+        {rooms.map((room) => (
+        <div
+          key={room.id}
+          className="d-flex flex-row justify-content-between col-12"
+        >
+          <div className="me-xl-0 me-lg-5 me-5">
+            <p>Room {room.id}</p>
+          </div>
+        <div className='d-flex flex-column'>
+          <div className="me-xl-0 me-lg-5 me-5">
+            <p style={{ height: '10px' }}>Adult(s)</p>
+            <div style={{ display: 'flex', gap: '0px' }}>
+            <button onClick={() => handleDecrement(room.id, 'adults')} className={style["numberdecrement"]} >
+                -
+              </button>
+              <span
+                style={{
+                  padding: '5px 10px',
+                  fontSize: '20px',
+                  border: '1px solid',
+                }}
+              >
+                {room.adults}
+              </span>
+              <button onClick={() => handleIncrement(room.id, 'adults')} className={style["numberincrement"]}>
+                +
+              </button>
+            </div>
+            <p className="date_right_para">(12+ years)</p>
+          </div>
 
-      </div>
-    </div>
-    <button className='bg-white col-12 ' style={{border: 'none', color: '#3C99DC'}}>+ Add another room</button>
+          <div>
+            <p style={{ height: '10px' }}>Infant</p>
+            <div style={{ display: 'flex', gap: '0px' }}>
+              <button onClick={() => handleDecrement(room.id, 'infant')} className={style["numberdecrement"]} >
+                -
+              </button>
+              <span
+                style={{
+                  padding: '5px 10px',
+                  fontSize: '20px',
+                  border: '1px solid',
+                }}
+              >
+                {room.infant}
+              </span>
+              <button onClick={() => handleIncrement(room.id, 'infant')} className={style["numberincrement"]}>
+                +
+              </button>
+            </div>
+            <p className="date_right_para">(Below 2 years)</p>
+          </div>
+
+          </div>
+          <div>
+            <p style={{ height: '10px' }}>children</p>
+            <div style={{ display: 'flex', gap: '0px' }}>
+              <button onClick={() => handleDecrement(room.id, 'children')} className={style["numberdecrement"]} >
+                -
+              </button>
+              <span
+                style={{
+                  padding: '5px 10px',
+                  fontSize: '20px',
+                  border: '1px solid',
+                }}
+              >
+                {room.children}
+              </span>
+              <button onClick={() => handleIncrement(room.id, 'children')} className={style["numberincrement"]}>
+                +
+              </button>
+            </div>
+            <p className="date_right_para">(Below 12 years)</p>
+          </div>
+          <br/>
+        </div>
+      ))}
+      <button
+        className="bg-white col-12"
+        style={{ border: 'none', color: '#3C99DC' }}
+        onClick={handleAddRoom}
+      >
+        + Add another room
+      </button>
+
     </div>
     <div className='my-md-4 my-1'>
       <label className='text-black fw-semibold'>Customer State*</label><br/>
-      <select className='col-11 fw-semibold' style={{height: '35px'}}>
+      <select className='col-xl-11 col-lg-12 col-12 fw-semibold my-1' style={{height: '35px'}}>
         <option>New Delhi</option>
         <option>Delhi</option>
         <option>Chennai</option>
@@ -245,7 +299,7 @@ const DatePickerWithHover = ({ onClose }) => {
         Proceed
         </button>
         </Link>
-      </div>
+      </div> 
       </div>
       </div>
     </div>

@@ -75,6 +75,8 @@ function Page() {
     const handleClosePopup = () => {
       setIsPopupOpen(false);
     };
+
+
     return (
         <>
             <Banner />
@@ -105,15 +107,8 @@ function Page() {
                                 </span>
                             </div>
                         </div>
-                        <div className='col-md-5'>
+                        <div className='col-md-6 col-lg-5'>
                             <div className={style['flex-package-details-right']}>
-                                <span className={style['min-w']}>
-                                    <p>Starting From</p>
-                                    <h3>₹6,599</h3>
-                                    <h4>
-                                        <del>₹28,599</del>
-                                    </h4>
-                                </span>
                                 <span>
                                     <button className={style['btn-one']} onClick={handleBookNowClick}>Book Now</button>
                                 </span>
@@ -340,16 +335,12 @@ function Page() {
                                     <button>ASK QUESTION</button>
                                 </div>
                             </div>
-
-
-
-
-
                         </div>
                     </div>
                 </div>
-
             </section>
+
+
             {isPopupOpen && (
         <div className={style["popup-overlay"]}>
           <EnhancedDatePicker onClose={handleClosePopup} />
