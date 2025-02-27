@@ -12,9 +12,13 @@ import Accordion from '../../../components/accordion/accordion';
 import EventsExploreTab from '../../../components/tour-package/events-explore';
 import { RiInformationLine } from "react-icons/ri";
 import { IoIosArrowDown } from "react-icons/io";
-import { FaUser } from "react-icons/fa6";
-import { FaPlus } from "react-icons/fa";
-
+import { FaUser , FaRegHeart} from "react-icons/fa6";
+import { FaPlus ,FaBaby } from "react-icons/fa";
+import { BiSolidPlusCircle } from "react-icons/bi";
+import { PiMinusCircleFill } from "react-icons/pi";
+import { GiPerson } from "react-icons/gi";
+import { MdOutlineBoy } from "react-icons/md";
+import { GoShare } from "react-icons/go";
 
 
 const Checkout = () => {
@@ -89,8 +93,24 @@ const Checkout = () => {
         const toggleAccordion = () => {
           setIsOpen(!isOpen); 
         };
-
-
+   
+        const [guests, setGuests] = useState({
+          adults: 1,
+          children: 0,
+          infants: 0,
+        });
+      
+        const updateGuestCount = (type, change) => {
+          setGuests((prevGuests) => {
+            const newValue = prevGuests[type] + change;
+      
+            if (newValue >= 0 && newValue <= 3) {
+              return { ...prevGuests, [type]: newValue };
+            }
+            return prevGuests;
+          });
+        };
+       
   const pakageDetailsOtherPackages = [
     {
       id: 1,
@@ -139,13 +159,13 @@ const Checkout = () => {
             <div className={`container ${style["checkout-package-details"]}`}>
           <div className="row pt-5">
           <div className="col-md-8">
-                <h3 className='d-flex justify-content-between'>
-                  4 DAYS IN SALALAH
+                <h2 className='d-flex justify-content-between'>
+                Tour Package Booking Checkout
                   <button className='rounded-2 fw-semibold fs-6 py-2 px-2 bg-white' style={{ border: '4px solid #5ab2b3', color: '#5ab2b3' }}>
                     Customizable
                   </button>
-                </h3>
-                <p style={{ fontSize: '14px' }}>Discover the Coastal Charms of Oman </p>
+                </h2>
+                <p style={{ fontSize: '14px' }}>Guest Signup - Tour Package Booking </p>
                 <p className='fs-6'>
                   <Link href="#">
                     <span style={{ color: '#3C99DC' }} className='fs-6'> Register or Sign in</span>
@@ -153,7 +173,7 @@ const Checkout = () => {
                 </p>
 
                 <div>
-                  <h1 className='m-3 ms-0'>Traveller Info</h1>
+                  <h1 className='m-3 ms-0'>Personal Information</h1>
                   <form className='col-xxl-10 col-xl-12'>
                   {travellers.map((traveller) => (
                       <div key={traveller.id} className='pt-3'>
@@ -170,7 +190,7 @@ const Checkout = () => {
                           Traveller <span className="fs-4 fw-bold">{traveller.id}</span>
                         </p>
                         <div className="">
-                          <div className="col-12">
+                          <div className="col-12 pt-2">
                             <input
                               className={`${style['promo_input']} col-xl-5 col-lg-6 col-12 `}
                               placeholder="LastName (in English)*"
@@ -190,7 +210,7 @@ const Checkout = () => {
                             />
                             <br />
                           </div>
-                          <div className="col-12">
+                          <div className="col-12 pt-2">
                             <input
                               className={`${style['promo_input']} col-xl-5 col-lg-6 col-12`}
                               placeholder="ID type"
@@ -236,7 +256,7 @@ const Checkout = () => {
                                 backgroundColor:
                                   traveller.gender === 'female' ? '#5ab2b3' : 'white',
                                 color: traveller.gender === 'female' ? 'white' : '#686767',
-                                padding: '5px 45px',
+                                padding: '5px 42px',
                                 border: '#e2e2e2 2px solid',
                                 borderRadius: '5px',
                               }}
@@ -264,17 +284,54 @@ const Checkout = () => {
                           <label className="my-3 text-black-50">*Adult-Should be Above 18 Years</label>
                         </div>
 
-                      {/* single line */}
-                      <div className='col-12 text' style={{ height: '1.5px', background: '#e2e2e2' }} />
 
-                      <h1 className='m-3 ms-0'>Additional Info</h1>
-                      <label className=''>pickup point</label><br />
-                      <select className={`${style["promo_select"]} col-8`}>
+                        <div className="d-flex flex-lg-row flex-md-column flex-column gap-xl-5 gap-lg-2 gap-3 justify-content-between col-12 align-items-center py-3" style={{ fontFamily: 'sans-serif' }}>
+                          {['adults', 'children', 'infants'].map((type) => (
+                            <div key={type} className="d-flex align-items-center me-3 px-1" style={{background: '#f6f6f6'}}> 
+                            <div className="d-flex align-items-center">
+                                  <span className="me-1">
+                                    {type === 'adults' ? <GiPerson size={23} color="#5ab2b3"/> : type === 'children' ? <MdOutlineBoy color="#5ab2b3" size={21}/> : <FaBaby color="#5ab2b3" size={18} />}
+                                  </span>
+                                </div>
+                              <div className="d-flex flex-column" >
+                              <span className="fw-bold  me-xl-5 me-lg-4 me-5" style={{fontSize: '13.5px', height: '15px'}}>{type.charAt(0).toUpperCase() + type.slice(1)}</span>
+                                <span className="small text-muted" style={{fontSize: '11px'}}>
+                                  {type === 'adults' ? '16+ years' : type === 'children' ? '2-15 years' : 'Under 2'}
+                                </span>
+                              </div>
+                              < PiMinusCircleFill color="#5ab2b3"
+                                onClick={() => updateGuestCount(type, -1)}
+                                disabled={guests[type] === 0}
+                                  size={22}/ >
+                       
+                              <span className={`fw-bold ${style["count"]} px-2`} style={{ minWidth: '20px', textAlign: 'center' }}>
+                                {guests[type]}
+                              </span>
+                              <BiSolidPlusCircle color="#5ab2b3"
+                                onClick={() => updateGuestCount(type, 1)}
+                                size={22}   /  >
+                         
+                            </div>
+                          ))}
+                        </div>
+
+                    <div>
+                      <h1 className='m-3 ms-0'>Travel Details</h1>
+                      <label >pickup point</label><br />
+                      <select className={`${style["promo_select"]} col-12`}>
                         <option>Please select pick-up point*</option>
                       </select>
 
-                      <h1 className='m-3 ms-0'>Contact Info</h1>
-                      <div className='d-flex flex-lg-row flex-md-column flex-column justify-content-between col-12 gap-xl-5 gap-lg-3'>
+                      <label className='pe-0 me-0 pt-3'>Special Requests</label><br />
+                        <textarea className={`${style["promo_input"]} my-2 col-12`} placeholder='Please enter Special Requests' />
+
+                        <label className=''>Package Addons</label><br />
+                      <select className={`${style["promo_select"]} col-12`}>
+                        <option>Add travel medical insurance details if required</option>
+                      </select>
+
+                      <h1 className='m-3 ms-0 py-3'>Contact Info</h1>
+                      <div className='d-flex flex-xl-row flex-md-column flex-column justify-content-between col-12 gap-xl-5 gap-lg-3'>
                         <div className='col-xl-6 col-12' >
                           <label className=''>Contact Name</label><br />
                           <input className={`${style["promo_input"]} my-2 col-12`} placeholder='Please enter contact name *' />
@@ -292,13 +349,7 @@ const Checkout = () => {
                         <input className={`${style["promo_input"]} my-2 col-12`} placeholder='All important updates will be send to this email ID*' />
                       </div>
 
-                      <h1 className='m-3 ms-0'>Special Requests</h1>
-                        <label className='pe-0 me-0'>Special Requests</label><br />
-                        <textarea className={`${style["promo_input"]} my-2 col-12`} placeholder='Please enter Special Requests' />
-
-                      <h1 className='m-3 ms-0'>Package Add-Ons</h1>
-                        <label className='pe-0 me-0'>Travel + Medical Insurace</label><br />
-                        <input className={`${style["promo_input"]} my-2 col-12`} placeholder='Please enter ' />
+                      </div>
                   </form>
                 </div>
             </div>
@@ -317,7 +368,20 @@ const Checkout = () => {
                         </span>
                       </div>
                     </div>
-                    <p className="col-lg-12 col-xl-11 col-12">
+
+                    <label className='text-black fw-semibold fs-4'>Package Price</label><br />
+                    <div className='col-11 text-black-50 my-2' style={{ height: '2px', borderTop: '3px dashed #e2e2e2' }} />
+
+                    <div className='col-11' style={{borderBottom: '2px solid #e2e2e2'}}>
+                 
+                    <h5 className='pt-2 d-flex pb-2 justify-content-between col-11'><span><b>Price</b></span><span>AED 121.00</span></h5> 
+                            <p>2 Adult </p>
+                            <p>1 Children</p>
+                            <h5 className='pt-2 d-flex pb-1 justify-content-between col-11'><span><b>Total</b></span><span><b>AED 121.00</b></span></h5> 
+                    </div>              
+
+
+                    <p className="col-lg-12 col-xl-11 col-12 pt-5">
                       By proceeding, I acknowledge that I have read and agree to visitgcc.com's Terms & Conditions and Privacy Statement.
                     </p>
                     <button
@@ -364,6 +428,34 @@ const Checkout = () => {
                             <span style={{ fontSize: '12px' }}>mins</span>
                           </h1>
                         </div>
+                      </div>
+
+
+                      <div className='pt-4 d-flex flex-xl-row flex-md-column flex-column '>
+                        <div className='col-lg-8 col-12 '>
+                          <label className='text-black fw-semibold fs-4'>Loyalty Rewards</label><br />
+                          <p>Enroll in our loyalty program <br className='d-lg-block d-none' /> to earn travel rewards on future bookings</p>
+                        </div>
+                        <div className='align-content-center' >
+                        <button
+                          className={`${style["btn-one"]} my-lg-0 my-md-1 my-2`}
+                          style={{ padding: '6px 10px' }}
+                        >
+                          Learn More
+                        </button>                 
+                               </div>
+                      </div>
+
+                      <div className='pt-4'>
+                        <div>
+                          <label className='text-black fw-semibold fs-4'>Social Sharing Incentive</label><br />
+                          <label className=' fw-normal pt-1'> Share your registration on social media for<br className='d-lg-block d-none' />
+                          a chance to win VIP upgrades </label>
+                          <div className='d-flex gap-3 pt-2'>
+                            <button className={`${style["ordinary_button"]}`}><GoShare size={21}/> Share</button>
+                            <button className={`${style["ordinary_button"]}`}><FaRegHeart size={20}/> Save</button>
+                          </div>
+                        </div>         
                       </div>
                     </div>
                </div>
