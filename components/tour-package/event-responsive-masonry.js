@@ -78,7 +78,7 @@ const images = [
 
 
 
-const ExploreEventsContainer = ({ breakPoints }) => {
+const ExploreEventsContainer = ({ }) => {
     const [expandedItems, setExpandedItems] = useState([]); // To track which items are expanded
 
     // Toggle function for expanding/collapsing the ul
@@ -91,7 +91,7 @@ const ExploreEventsContainer = ({ breakPoints }) => {
     };
 
     return (
-        <ResponsiveMasonry columnsCountBreakPoints={breakPoints}>
+        <ResponsiveMasonry>
             <Masonry>
                 {images.map((image, i) => (
                     <div key={i} className="masonry-item">

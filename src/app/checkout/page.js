@@ -95,7 +95,7 @@ const Checkout = () => {
         };
    
         const [guests, setGuests] = useState({
-          adults: 1,
+          adults: 0,
           children: 0,
           infants: 0,
         });
@@ -161,19 +161,19 @@ const Checkout = () => {
           <div className="col-md-8">
                 <h2 className='d-flex justify-content-between'>
                 Tour Package Booking Checkout
-                  <button className='rounded-2 fw-semibold fs-6 py-2 px-2 bg-white' style={{ border: '4px solid #5ab2b3', color: '#5ab2b3' }}>
+                  <button className='rounded-2 fw-semibold fs-6 px-1 bg-white' style={{ border: '4px solid #5ab2b3', color: '#5ab2b3', height: '39px' }}>
                     Customizable
                   </button>
                 </h2>
                 <p style={{ fontSize: '14px' }}>Guest Signup - Tour Package Booking </p>
                 <p className='fs-6'>
                   <Link href="#">
-                    <span style={{ color: '#3C99DC' }} className='fs-6'> Register or Sign in</span>
+                    <span style={{ color: "#5ab2b3" }} className='fs-6'> Register or Sign in</span>
                   </Link> to Visitgcc.com to manage your bookings with ease!
                 </p>
 
                 <div>
-                  <h1 className='m-3 ms-0'>Personal Information</h1>
+                  <h1 className='m-3 ms-0 pt-3'>Personal Information</h1>
                   <form className='col-xxl-10 col-xl-12'>
                   {travellers.map((traveller) => (
                       <div key={traveller.id} className='pt-3'>
@@ -187,8 +187,7 @@ const Checkout = () => {
                             color="#5ab2b3"
                             style={{ marginTop: '-11px' }}
                           />
-                          Traveller <span className="fs-4 fw-bold">{traveller.id}</span>
-                        </p>
+                          Adult </p>
                         <div className="">
                           <div className="col-12 pt-2">
                             <input
@@ -222,7 +221,7 @@ const Checkout = () => {
                             <br className="d-xl-none d-lg-block" />
                             <input
                               className={`${style['promo_input']} ms-xxl-5 ms-xl-5 ms-md-0 col-xl-4 col-lg-6 col-12 `}
-                              placeholder="Id number*"
+                              placeholder="ID number*"
                               value={traveller.idNumber}
                               onChange={(e) =>
                                 handleInputChange(traveller.id, 'idNumber', e.target.value)
@@ -240,6 +239,7 @@ const Checkout = () => {
                                   traveller.gender === 'male' ? '#5ab2b3' : 'white',
                                 color: traveller.gender === 'male' ? 'white' : '#686767',
                                 padding: '5px 45px',
+                                fontSize: '15px',
                                 border: '#e2e2e2 2px solid',
                                 borderRadius: '5px',
                               }}
@@ -257,6 +257,7 @@ const Checkout = () => {
                                   traveller.gender === 'female' ? '#5ab2b3' : 'white',
                                 color: traveller.gender === 'female' ? 'white' : '#686767',
                                 padding: '5px 42px',
+                                fontSize: '15px',
                                 border: '#e2e2e2 2px solid',
                                 borderRadius: '5px',
                               }}
@@ -341,7 +342,7 @@ const Checkout = () => {
                           <select className={`${style["promo_select"]} my-2` } style={{width: '68px'}}>
                             <option>+918</option>
                           </select>
-                          <input className={`${style["promo_input"]} my-2 ms-xl-3 ms-lg-1 ms-2`} style={{width: '240px'}} placeholder='Mobile Number*' />
+                          <input className={`${style["promo_input"]} my-2 ms-xl-1 ms-lg-1 ms-2`} style={{width: '240px'}} placeholder='Mobile Number*' />
                         </div>
                       </div>
                       <div className='my-3'>
@@ -356,8 +357,8 @@ const Checkout = () => {
 
             <div className="col-md-4 my-md-0 my-5">
                     <div className={style["flex-checkout-details-right"]}>
-                      <div className='d-flex flex-lg-row flex-md-column flex-row ms-lg-0 ms-3'>
-                        <span>
+                      <div className='d-flex flex-lg-row flex-md-column flex-row ms-xxl-5 ps-0 ps-lg-5 ms-3'>
+                        <span className='ms-xxl-5 ms-0'>
                           <button className={style["btn-one"]}>Pay Now</button>
                         </span>
                         <span>
@@ -380,13 +381,12 @@ const Checkout = () => {
                             <h5 className='pt-2 d-flex pb-1 justify-content-between col-11'><span><b>Total</b></span><span><b>AED 121.00</b></span></h5> 
                     </div>              
 
-
                     <p className="col-lg-12 col-xl-11 col-12 pt-5">
                       By proceeding, I acknowledge that I have read and agree to visitgcc.com's Terms & Conditions and Privacy Statement.
                     </p>
                     <button
                       className='bg-white col-11 d-flex justify-content-between'
-                      style={{ border: 'none', color: '#3C99DC' }}
+                      style={{ border: 'none', color: "#5ab2b3" }}
                       onClick={toggleAccordion}
                     >
                       <span>Cancellation & <br className='d-lg-none d-md-block d-none' /> Date Change </span>
@@ -401,7 +401,7 @@ const Checkout = () => {
                     </button>
 
                     <div className='my-4'>
-                      <label className='text-black fw-semibold fs-4'>Promotion</label><br />
+                      <label className='text-black fw-semibold fs-4'>Promotions</label><br />
                       <label className=''>Promo code</label><br />
                       <div>
                         <input
@@ -412,7 +412,7 @@ const Checkout = () => {
                           className={`${style["btn-one"]} my-lg-0 my-md-1 my-2`}
                           style={{ padding: '6px 10px' }}
                         >
-                          Apply Now
+                          Apply
                         </button>
                       </div>
                       <div className='pt-4 d-flex flex-xl-row flex-lg-column flex-column'>
@@ -420,7 +420,7 @@ const Checkout = () => {
                           <label className='text-black fw-semibold fs-4'>Complete Booking In</label><br />
                           <p> &nbsp; The package price will refresh<br className='d-lg-block d-none' /> &nbsp; After</p>
                         </div>
-                        <div className='rounded-pill align-content-center' style={{ height: '85px', width: '85px', border: '4px solid #5ab2b3' }}>
+                        <div className='rounded-pill align-content-center ms-3' style={{ height: '85px', width: '85px', border: '4px solid #5ab2b3' }}>
                           <h1 className='align-items-center align-self-center d-flex flex-column ms-2 my-1 text-black-50'>
                             <span style={{ fontSize: '23px' }}>
                               {minutes < 10 ? `0${minutes}` : minutes}:{seconds < 10 ? `0${seconds}` : seconds}
@@ -465,7 +465,13 @@ const Checkout = () => {
             </div>
               <div className="container">
                 <img src="/images/blank.png" className='w-100' style={{height: '400px',borderRadius: '15px'}} alt="Banner" />
+                <div className='d-flex justify-content-between px-4' style={{marginTop: '-33px'}}>
+                  <p className='text-black-50 '>Date: <span className='text-white'>19- JAN-2017</span></p>
+                  <p className='text-black-50 '>Tag: <span className='text-white'> Business</span></p>
+
+                </div>
               </div>
+
             <div className="container">
               <div className="row">
                 <div className="col-md-12 pt-5 d-flex justify-content-center" >

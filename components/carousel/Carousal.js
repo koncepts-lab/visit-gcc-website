@@ -8,6 +8,7 @@ import SingleHomeBlog from "../home/blog/blog";
 import TabSlider from "../countries/tab-slider";
 import CountryExperiance from "../countries/country-experiance";
 import SingleBestPicked from "../tour-package/best-picked";
+import UpcomingEvents from "../tour-package/upcoming-events";
 import Singlewonders from "../tour-package/wonders";
 import SinglePackageContainerReview from "../tour-package-details/package-container-review";
 import SinglePackageContainerReviewImage from "../tour-package-details/package-details-review";
@@ -46,14 +47,15 @@ function Carousal({
       type !== "home-package" &&
       type !== "home-event" &&
       type !== "home-experience" &&
-      type !== "home-blog",
+      type !== "home-blog" && 
+      type !== "upcoming-events",
     infinite: true,
     speed: 500,
     slidesToShow: count,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 3000,
-    arrows: type !== "media-page-full-carosul" && type !== "event-page-scroll",
+    arrows: type !== "media-page-full-carosul" && type !== "event-page-scroll" && type !== "upcoming-events",
     responsive: [
       {
         breakpoint: 1024,
@@ -65,7 +67,8 @@ function Carousal({
             type !== "home-package" &&
             type !== "home-event" &&
             type !== "home-experience" &&
-            type !== "home-blog",
+            type !== "home-blog"
+             && type !== "tour-bestPicked",
         },
       },
       {
@@ -295,21 +298,25 @@ function Carousal({
               description={eventScrollData.description}
               link={eventScrollData.link}
           />
-        ))}
+        ))}   
 
-
-        
-
-        {type === "upcoming-events" &&
+        {/* {type === "upcoming-events" &&
           bestPicked.map((bestPicked) => (
-            <SingleBestPicked
+            <UpcomingEvents
               key={bestPicked.id}
               image={bestPicked.image}
               heading={bestPicked.heading}
               description={bestPicked.description}
               link={bestPicked.link}
+              provider = {bestPicked.provider}
+              date = {bestPicked.date}
+              type = {bestPicked.type}
+              startDate={bestPicked.startDate} 
+              startMonth={bestPicked.startMonth}
+              endDate={bestPicked.endDate} 
+              endMonth={bestPicked.endMonth} 
             />
-          ))}
+          ))} */}
 
           {type === "past-events" &&
             wonders.map((wonders) => (
