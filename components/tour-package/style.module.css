@@ -590,7 +590,6 @@ background: linear-gradient(0deg, rgba(2,0,36,1) 54%, rgba(0,0,0,0) 100%);
 
   }
 
-
   .btn-plus{
     background: #009496;
     border: none;
@@ -751,16 +750,21 @@ background: linear-gradient(0deg, rgba(2,0,36,1) 54%, rgba(0,0,0,0) 100%);
       }
       
       .dot {
-        width: 10px;
-        height: 10px;
+        width: 6px;
+        height: 6px;
         border-radius: 50%;
-        background-color: #ccc;
-        margin: 0 5px;
+        background-color: #5ab2b3;
+        margin: 0 8px;
         cursor: pointer;
+        opacity: 0.3;
       }
       
       .dot.active {
-        background-color: #007bff; /* Or your preferred active color */
+        background-color: #5ab2b3; /* Or your preferred active color */
+        opacity: 1;
+        width: 6.2px;
+        height: 6.2px;
+
       }
   
     
