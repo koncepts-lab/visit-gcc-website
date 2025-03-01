@@ -50,11 +50,16 @@ background-color: white;
 margin-top: 8px;
 }
 
+.promo_select{
+  font-size: 14px;
+}
+
 .ordinary_button{
   padding: 5px 18px;
   background-color: white;
   border-radius: 8px;
   font-size: 15px;
+  font-weight: 600;
 }
 
 .promo_input::placeholder  {

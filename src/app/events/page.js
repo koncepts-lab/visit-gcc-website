@@ -9,6 +9,8 @@ import Banner from '../../../components/banner/banner';
 import Carousal from '../../../components/carousel/Carousal'; 
 import Accordion from '../../../components/accordion/accordion';
 import EventsExploreTab from '../../../components/tour-package/events-explore';
+import UpcomingEvents from "../../../components/tour-package/upcoming-events";
+
 
 const eventScrollData = [
   {
@@ -98,14 +100,18 @@ const Country = () => {
         items: ['Adults only', 'Family-friendly events', 'Childrens events']
     }
 ];
+
+
 const bestPickedData = [
-  { id: 1, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/best-picked/01.jpg" },
-  { id: 2, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/best-picked/02.jpg" },
-  { id: 3, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/best-picked/03.jpg", },
-  { id: 4, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/best-picked/01.jpg" },
-  { id: 5, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/best-picked/02.jpg" },
-  { id: 6, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/best-picked/03.jpg", },
+  { id: 1, heading: 'Pellentesque molestie ante vitae consectetur.', description: 'Lorem Ipsum is dummy text Lorem Ipsum is dummy text vLorem Ipsum is dummy text', image: "/images/best-picked/01.jpg", provider: "Admin", date: "02-Nov-2017", type: "Family", startDate: "15", startMonth: "Mar", endDate: "17", endMonth: "Mar" },
+  { id: 2, heading: 'Pellentesque molestie ante vitae consectetur.', description: 'Lorem Ipsum is dummy text Lorem Ipsum is dummy text vLorem Ipsum is dummy text Lorem Ipsum is dummy text vLorem Ipsum is dummy text', image: "/images/best-picked/02.jpg", provider: "Admin", date: "02-Nov-2017", type: "Workshop", startDate: "20", startMonth: "Apr", endDate: "22", endMonth: "Apr" },
+  { id: 3, heading: 'Pellentesque molestie ante vitae consectetur.', description: 'Lorem Ipsum is dummy text Lorem Ipsum is dummy text vLorem Ipsum is dummy text', image: "/images/best-picked/03.jpg", provider: "Admin", date: "02-Nov-2017", type: "Workshop", startDate: "10", startMonth: "May", endDate: "12", endMonth: "May" },
+  { id: 4, heading: 'Pellentesque molestie ante vitae consectetur.', description: 'Lorem Ipsum is dummy text Lorem Ipsum is dummy text vLorem Ipsum is dummy text', image: "/images/best-picked/01.jpg", provider: "Admin", date: "02-Nov-2017", type: "Workshop", startDate: "05", startMonth: "Jun", endDate: "07", endMonth: "Jun" },
+  { id: 5, heading: 'Pellentesque molestie ante vitae consectetur.', description: 'Lorem Ipsum is dummy text Lorem Ipsum is dummy text vLorem Ipsum is dummy text', image: "/images/best-picked/02.jpg", provider: "Admin", date: "02-Nov-2017", type: "Workshop", startDate: "25", startMonth: "Jul", endDate: "27", endMonth: "Jul" },
+  { id: 6, heading: 'Pellentesque molestie ante vitae consectetur.', description: 'Lorem Ipsum is dummy text Lorem Ipsum is dummy text vLorem Ipsum is dummy text', image: "/images/best-picked/03.jpg", provider: "Admin", date: "02-Nov-2017", type: "Workshop", startDate: "01", startMonth: "Aug", endDate: "03", endMonth: "Aug" },
 ];
+
+
 const wondersData = [
   { id: 1, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/wonders/01.jpg" },
   { id: 2, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/wonders/02.jpg" },
@@ -235,7 +241,7 @@ const wondersData = [
                       </div>
                       <div className="col-md-12">
                         <div className="upcoming-events-picked">
-                          <Carousal bestPicked={bestPickedData} count={2} type="upcoming-events" />
+                          <UpcomingEvents/>
                         </div>
                       </div>
                     </div>

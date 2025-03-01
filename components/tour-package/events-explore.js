@@ -50,7 +50,7 @@ const images = [
 
 
 ];
-const EventsExploreTab = ({ breakPoints }) => {
+const EventsExploreTab = ({  }) => {
     const countryExplore = [
         { id: 1, heading: 'Destination Heading', description: 'Luxury', image: "/images/blog/01.jpg" },
         { id: 2, heading: 'Destination Heading', description: 'Culture', image: "/images/blog/02.jpg" },
@@ -58,9 +58,6 @@ const EventsExploreTab = ({ breakPoints }) => {
         { id: 4, heading: 'Destination Heading', description: 'History', image: "/images/blog/04.jpg" },
         { id: 5, heading: 'Destination Heading', description: 'Events', image: "/images/blog/01.jpg" },
     ];
-
-
-
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -186,19 +183,21 @@ const EventsExploreTab = ({ breakPoints }) => {
                                             <div className='container-fluid'>
                                                 <div className='row'>
                                                     <div className='col-md-12 p-0'>
-
-                                                        <ExploreEventsContainer breakPoints={breakPoints} />
+                                                        <ExploreEventsContainer />
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+
+{/*                                     
                                     <div
                                         className="tab-pane fade"
                                         id="UAE"
                                         role="tabpanel"
                                         aria-labelledby="UAE-tab"
                                     >
+
                                         <div className={style['documentation-container']}>
                                             <div className='container'>
                                                 <div className='row'>
@@ -238,13 +237,12 @@ const EventsExploreTab = ({ breakPoints }) => {
                                                 <div className='row'>
                                                     <div className='col-md-12'>
                                                         <h4>New Activities</h4>
-                                                        {/* <MyWrapper /> */}
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div
+                                    </div> */}
+                                    {/* <div
                                         className="tab-pane fade"
                                         id="Oman"
                                         role="tabpanel"
@@ -260,7 +258,7 @@ const EventsExploreTab = ({ breakPoints }) => {
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                         </div>
