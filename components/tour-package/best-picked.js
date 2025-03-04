@@ -14,7 +14,6 @@ function SingleBestPicked(props) {
                         <h4>{props.heading}</h4>
                         <p>{props.description}</p>
                     </span>
-
                 </div>
             </div>
         </>

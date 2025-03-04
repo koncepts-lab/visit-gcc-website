@@ -59,21 +59,21 @@ const DatePickerWithHover = ({ onClose }) => {
 
     // Sample data - add more dates as needed
     const timeSlots = {
-        '2025-02-24': [
+        '2025-03-04': [
             { time: '09:00 AM', price: '₹6,599' },
             { time: '02:00 PM', price: '₹7,299' },
             { time: '05:00 PM', price: '₹6,999' }
         ],
-        '2025-02-27': [
+        '2025-03-05': [
             { time: '10:00 AM', price: '₹6,799' },
             { time: '03:00 PM', price: '₹7,099' }
         ],
-        '2025-02-02': [
+        '2025-03-06': [
             { time: '09:00 AM', price: '₹6,599' },
             { time: '02:00 PM', price: '₹7,299' },
             { time: '05:00 PM', price: '₹6,999' }
         ],
-        '2025-02-07': [
+        '2025-03-07': [
             { time: '10:00 AM', price: '₹6,799' },
             { time: '03:00 PM', price: '₹7,099' }
         ]

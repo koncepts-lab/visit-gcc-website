@@ -83,7 +83,7 @@ function Carousal({
         },
       },
     ],
-  };
+  }; 
 
   const countryExperiance = [
     {
@@ -149,6 +149,7 @@ function Carousal({
             />
           </div>
         ))} 
+
       {type === "home-experience" &&
         experiences.map((experience) => (
           <SingleHomeExperience
@@ -234,6 +235,7 @@ function Carousal({
             link={bestPicked.link}
           />
         ))}
+        
       {type === "tour-wonders" &&
         wonders.map((wonders) => (
           <Singlewonders
