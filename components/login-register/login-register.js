@@ -4,7 +4,8 @@ import React, { useState } from 'react';
 import styles from './style.module.css';
 import { Facebook, Twitter, Mail } from 'lucide-react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import axios from 'axios';  // Import Axios
+import axios from 'axios'; 
+import Link from 'next/link';
 
 const LoginRegisterTabs = () => {
   const [activeTab, setActiveTab] = useState('login');
@@ -20,6 +21,7 @@ const LoginRegisterTabs = () => {
     password_confirmation: '',
   });
   const [formErrors, setFormErrors] = useState({});
+  const [isloading, setIsLoading] = useState(false)
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
   const [registrationError, setRegistrationError] = useState('');
 
@@ -90,6 +92,7 @@ const LoginRegisterTabs = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     if (!validateForm()) {
       return; 
@@ -131,7 +134,9 @@ const LoginRegisterTabs = () => {
         setFormErrors(error.response.data.errors || {});
         setRegistrationError(error.response.data.message || 'Registration failed.');
       }
-    }
+    } finally {
+    setIsLoading(false);
+  }
   };
 
   return (
@@ -156,12 +161,6 @@ const LoginRegisterTabs = () => {
         >
           Register
         </button>
-        {/* <button
-          className={`flex-fill py-2 ${activeTab === 'register' ? 'active' : ''}`}
-          onClick={() => setActiveTab('verify')}
-        >
-          Verify Code
-        </button> */}
       </div>
 
       {/* Login Form */}
@@ -353,33 +352,12 @@ const LoginRegisterTabs = () => {
               I agree to the <a href="#">Terms and Conditions</a>
             </label>
           </div>
-
-          <button type="submit" className={`btn btn-success w-100 ${styles['btn-custom']}`}>
-            Create Account
+        <button type="submit"  className={`btn btn-success w-100 ${styles['btn-custom']}`} disabled={isloading}>
+            {isloading? 'Creating...': 'Create Account'}
           </button>
           <SocialLoginButtons />
         </form>
       )}
-          {/* {activeTab === 'verify' && (
-        <form>
-
-          <div className="mb-3">
-            <label htmlFor="login-password" className="form-label">Enter Verification Code</label>
-            <input
-              type="password"
-              id="login-password"
-              className={`form-control ${styles['form-control']}`}
-              placeholder="Enter your password"
-              required
-            />
-          </div>
-
-          <button type="submit" className={`btn btn-success w-100 ${styles['btn-custom']}`}>
-           submit
-          </button>
-          <SocialLoginButtons />
-        </form>
-      )} */}
     </div>
   );
 };

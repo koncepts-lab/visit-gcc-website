@@ -112,16 +112,28 @@ const DatePickerWithHover = ({ onClose }) => {
       border-bottom: none;
     }
 
-  .react-datepicker__day:hover {
-    background-color: #f0f9ff;
-    border: none;
-  }
+.react-datepicker__day--highlighted {
+    background-color: #dbf0e9 !important; /* Ensure highlighted dates have the same background color */
+    color: black !important; /* Text color white for better contrast */
+    border: none !important;
+    font-weight: 600
+}
 
-  .react-datepicker__day--selected {
-    color: white !important;
-    background-color: blue !important;
-    border: none;
-  }
+.react-datepicker__day--selected {
+    background-color: #dbf0e9 !important; /* Set selected date background color */
+    color: black !important;
+    border: none !important;
+        font-weight: 600
+
+}
+
+.react-datepicker__day--in-range {
+    background-color: #dbf0e9 !important; /* Ensure in-range dates also have the same background */
+    color: black !important;
+    border: none !important;
+        font-weight: 600
+
+}
 
   .react-datepicker__day-name {
     width: 90px !important;
@@ -143,8 +155,8 @@ const DatePickerWithHover = ({ onClose }) => {
   .react-datepicker__year-text--in-range:hover {
     border: none;
     border-radius: 0px;
-    background-color: blue !important;
-    color: white !important;
+    background-color: #dbf0e9 !important;
+    color: black !important;
   }
 
   @media (max-width: 1200px) {
