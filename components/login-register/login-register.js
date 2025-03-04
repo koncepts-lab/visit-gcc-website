@@ -4,9 +4,24 @@ import React, { useState } from 'react';
 import styles from './style.module.css';
 import { Facebook, Twitter, Mail } from 'lucide-react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import axios from 'axios';  // Import Axios
 
 const LoginRegisterTabs = () => {
   const [activeTab, setActiveTab] = useState('login');
+  const [registerFormData, setRegisterFormData] = useState({
+    first_name: '',
+    last_name: '',
+    email: '',
+    phone: '',
+    date_of_birth: '',
+    gender: '',
+    user_type: '',
+    password: '',
+    password_confirmation: '',
+  });
+  const [formErrors, setFormErrors] = useState({});
+  const [registrationSuccess, setRegistrationSuccess] = useState(false);
+  const [registrationError, setRegistrationError] = useState('');
 
   const SocialLoginButtons = () => (
     <div className="mt-4">
@@ -26,6 +41,98 @@ const LoginRegisterTabs = () => {
       </div>
     </div>
   );
+
+  const validateForm = () => {
+    let errors = {};
+    if (!registerFormData.first_name) {
+      errors.first_name = 'First Name is required';
+    }
+    if (!registerFormData.last_name) {
+      errors.last_name = 'Last Name is required';
+    }
+    if (!registerFormData.email) {
+      errors.email = 'Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(registerFormData.email)) {
+      errors.email = 'Email is invalid';
+    }
+    if (!registerFormData.phone) {
+      errors.phone = 'Phone is required';
+    }
+    if (!registerFormData.date_of_birth) {
+      errors.date_of_birth = 'Date of Birth is required';
+    }
+    if (!registerFormData.gender) {
+      errors.gender = 'Gender is required';
+    }
+    if (!registerFormData.user_type) {
+      errors.user_type = 'User Type is required';
+    }
+    if (!registerFormData.password) {
+      errors.password = 'Password is required';
+    } else if (registerFormData.password.length < 6) {
+      errors.password = 'Password must be at least 6 characters';
+    }
+    if (registerFormData.password !== registerFormData.password_confirmation) {
+      errors.password_confirmation = 'Passwords do not match';
+    }
+
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;  
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setRegisterFormData({
+      ...registerFormData,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!validateForm()) {
+      return; 
+    }
+
+    try {
+      const response = await axios.post('http://127.0.0.1:8000/api/app/register', registerFormData);
+
+      if (response.status === 200 || response.status === 201) {
+        // Assuming a successful response returns a 200 or 201 status
+        console.log('Registration successful:', response.data);
+        setRegistrationSuccess(true);
+        setRegistrationError('');
+        // Optionally, reset the form after successful registration
+        setRegisterFormData({
+          first_name: '',
+          last_name: '',
+          email: '',
+          phone: '',
+          date_of_birth: '',
+          gender: '',
+          user_type: '',
+          password: '',
+          password_confirmation: '',
+        });
+        setFormErrors({});
+      } else {
+        console.error('Registration failed:', response.data);
+        setRegistrationError('Registration failed. Please try again.');
+        setRegistrationSuccess(false);
+      }
+    } catch (error) {
+      console.error('Error during registration:', error);
+      setRegistrationError('An error occurred. Please check your connection and try again.');
+      setRegistrationSuccess(false);
+
+      if (error.response && error.response.data) {
+        // If the API returns validation errors, display them
+        setFormErrors(error.response.data.errors || {});
+        setRegistrationError(error.response.data.message || 'Registration failed.');
+      }
+    }
+  };
 
   return (
     <div className={`${styles.container} mx-auto`}>
@@ -49,6 +156,12 @@ const LoginRegisterTabs = () => {
         >
           Register
         </button>
+        {/* <button
+          className={`flex-fill py-2 ${activeTab === 'register' ? 'active' : ''}`}
+          onClick={() => setActiveTab('verify')}
+        >
+          Verify Code
+        </button> */}
       </div>
 
       {/* Login Form */}
@@ -93,17 +206,29 @@ const LoginRegisterTabs = () => {
 
       {/* Register Form */}
       {activeTab === 'register' && (
-        <form>
+        <form onSubmit={handleSubmit}>
+          {registrationSuccess && (
+            <div className="alert alert-success" role="alert">
+              Registration successful!
+            </div>
+          )}
+          {registrationError && (
+            <div className="alert alert-danger" role="alert">
+              {registrationError}
+            </div>
+          )}
           <div className="mb-3">
             <label htmlFor="register-firstname" className="form-label">First Name</label>
             <input
               type="text"
-              name='first_name'
+              name="first_name"
               id="register-firstname"
               className={`form-control ${styles['form-control']}`}
               placeholder="Enter your first name"
-              required
+              value={registerFormData.first_name}
+              onChange={handleInputChange}
             />
+            {formErrors.first_name && <div className="text-danger">{formErrors.first_name}</div>}
           </div>
 
           <div className="mb-3">
@@ -111,11 +236,13 @@ const LoginRegisterTabs = () => {
             <input
               type="text"
               id="register-lastname"
-              name='last_name'
+              name="last_name"
               className={`form-control ${styles['form-control']}`}
               placeholder="Enter your last name"
-              required
+              value={registerFormData.last_name}
+              onChange={handleInputChange}
             />
+            {formErrors.last_name && <div className="text-danger">{formErrors.last_name}</div>}
           </div>
 
           <div className="mb-3">
@@ -123,11 +250,13 @@ const LoginRegisterTabs = () => {
             <input
               type="email"
               id="register-email"
-              name='email'
+              name="email"
               className={`form-control ${styles['form-control']}`}
               placeholder="Enter your email"
-              required
+              value={registerFormData.email}
+              onChange={handleInputChange}
             />
+            {formErrors.email && <div className="text-danger">{formErrors.email}</div>}
           </div>
 
           <div className="mb-3">
@@ -135,11 +264,13 @@ const LoginRegisterTabs = () => {
             <input
               type="tel"
               id="register-phone"
-              name='phone'
+              name="phone"
               className={`form-control ${styles['form-control']}`}
               placeholder="Phone number"
-              required
+              value={registerFormData.phone}
+              onChange={handleInputChange}
             />
+            {formErrors.phone && <div className="text-danger">{formErrors.phone}</div>}
           </div>
 
           <div className="mb-3">
@@ -147,29 +278,45 @@ const LoginRegisterTabs = () => {
             <input
               type="date"
               id="register-dob"
-              name='date_of_birth'
+              name="date_of_birth"
               className={`form-control ${styles['form-control']}`}
-              required
+              value={registerFormData.date_of_birth}
+              onChange={handleInputChange}
             />
+            {formErrors.date_of_birth && <div className="text-danger">{formErrors.date_of_birth}</div>}
           </div>
 
           <div className="mb-3">
             <label htmlFor="register-gender" className="form-label">Gender</label>
-            <select id="register-gender" name='gender' className={`form-select ${styles['form-control']}`} required>
+            <select
+              id="register-gender"
+              name="gender"
+              className={`form-select ${styles['form-control']}`}
+              value={registerFormData.gender}
+              onChange={handleInputChange}
+            >
               <option value="">Select Gender</option>
               <option value="male">Male</option>
               <option value="female">Female</option>
             </select>
+            {formErrors.gender && <div className="text-danger">{formErrors.gender}</div>}
           </div>
 
           <div className="mb-3">
             <label htmlFor="register-user-type" className="form-label">User Type</label>
-            <select id="register-user-type" name='user_type' className={`form-select ${styles['form-control']}`} required>
+            <select
+              id="register-user-type"
+              name="user_type"
+              className={`form-select ${styles['form-control']}`}
+              value={registerFormData.user_type}
+              onChange={handleInputChange}
+            >
               <option value="">Select User Type</option>
               <option value="admin">Admin</option>
               <option value="user">User</option>
               <option value="vendor">Vendor</option>
             </select>
+            {formErrors.user_type && <div className="text-danger">{formErrors.user_type}</div>}
           </div>
 
           <div className="mb-3">
@@ -180,8 +327,10 @@ const LoginRegisterTabs = () => {
               id="register-password"
               className={`form-control ${styles['form-control']}`}
               placeholder="Create a password"
-              required
+              value={registerFormData.password}
+              onChange={handleInputChange}
             />
+            {formErrors.password && <div className="text-danger">{formErrors.password}</div>}
           </div>
 
           <div className="mb-3">
@@ -192,8 +341,10 @@ const LoginRegisterTabs = () => {
               name="password_confirmation"
               className={`form-control ${styles['form-control']}`}
               placeholder="Confirm your password"
-              required
+              value={registerFormData.password_confirmation}
+              onChange={handleInputChange}
             />
+            {formErrors.password_confirmation && <div className="text-danger">{formErrors.password_confirmation}</div>}
           </div>
 
           <div className="form-check mb-3">
@@ -209,6 +360,26 @@ const LoginRegisterTabs = () => {
           <SocialLoginButtons />
         </form>
       )}
+          {/* {activeTab === 'verify' && (
+        <form>
+
+          <div className="mb-3">
+            <label htmlFor="login-password" className="form-label">Enter Verification Code</label>
+            <input
+              type="password"
+              id="login-password"
+              className={`form-control ${styles['form-control']}`}
+              placeholder="Enter your password"
+              required
+            />
+          </div>
+
+          <button type="submit" className={`btn btn-success w-100 ${styles['btn-custom']}`}>
+           submit
+          </button>
+          <SocialLoginButtons />
+        </form>
+      )} */}
     </div>
   );
 };
