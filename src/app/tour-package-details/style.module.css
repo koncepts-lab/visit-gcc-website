@@ -345,7 +345,7 @@
 }
 
 .numberincrement {
-    padding: 8px 10px;
+    padding: 5px 8px;
     font-size: 16px;
     cursor: pointer;
     border: 1px solid;
@@ -353,7 +353,7 @@
     background-color: white;
   }
   .numberdecrement {
-    padding: 8px 10px;
+    padding: 5px 8px;
     font-size: 16px;
     cursor: pointer;
     border: 1px solid;
