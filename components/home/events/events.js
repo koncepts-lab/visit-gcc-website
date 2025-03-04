@@ -8,7 +8,7 @@ const ArrowIcon = () => <FaArrowRightLong />;
 function SingleHomeEvents({ image, date, heading, description }) {
     console.log(date); // Debugging line
     return (
-        <Link href="#0" className={`item ${style['item-padding']}`}>
+        <Link href="event-details" className={`item ${style['item-padding']}`}>
             <div className={style['event-box']}>
                 <img src={image} className='w-100' alt={heading} />
                 <div className={style['date']}>{date}</div>

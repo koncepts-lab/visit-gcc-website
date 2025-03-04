@@ -196,7 +196,7 @@ function Header() {
                 </Link>
               </li>
               <li  className={`nav-item ${style["navbar_sticky_hide"]}`}>
-                <Link className="nav-link" href="/packages">
+                <Link className="nav-link" href="/">
                   <img
                     src="/images/GCC-one-visa.png"
                     className={style["img-top-logo"]}

@@ -5,14 +5,18 @@ import Banner from '../../components/banner/banner';
 import Countries from '../../components/countries/countries';
 import Carousal from '../../components/carousel/Carousal';
 
-function Home() {
+function Home() {  
   const packagesData = [
-    { id: 1, heading: '9-day itinerary', description: 'Dubai, Abu Dhabi, Riyadh, Manama', image: "/images/package/01.jpg" },
-    { id: 2, heading: 'Package 2', description: 'Description of package 2', image: "/images/package/02.jpg" },
-    { id: 3, heading: 'Package 3', description: 'Description of package 3', image: "/images/package/03.jpg" },
-    { id: 4, heading: 'Package 4', description: 'Description of package 1', image: "/images/package/01.jpg" },
-    { id: 5, heading: 'Package 5', description: 'Description of package 2', image: "/images/package/02.jpg" },
-    { id: 6, heading: 'Package 6', description: 'Description of package 3', image: "/images/package/03.jpg" },
+    { id: 1, heading: '4 day itinerary Qatar', link: '4-day-itinerary-qatar',  description: 'Discover the heritage of Muscat, Doha, Riyadh, and Manama on this 9-day luxury journey. ', image: "/images/package/01.jpg" },
+    { id: 2, heading: '7-day itinerary for UAE, Oman, Qatar', link: '7-day-itinerary-for-uae-oman-qatar',  description: '7-day itinerary for UAE, Oman, Qatar', image: "/images/package/02.jpg" },
+    { id: 3, heading: '7-Day Itinerary Saudi Arabia, Bahrain, Qatar', link: '7-day-itinerary-saudi-arabia-bahrain-qatar',  description: '7-Day Itinerary Saudi Arabia, Bahrain, Qatar', image: "/images/package/03.jpg" },
+    { id: 4, heading: '9-day heritage itinerary', link: '9-day-heritage-itinerary',  description: 'Discover the heritage of Muscat, Doha, Riyadh, and Manama on this 9-day luxury journey. ', image: "/images/package/01.jpg" },
+    { id: 5, heading: '7-Day Itinerary Saudi Arabia, Bahrain, Qatar', link: '7-day-itinerary-saudi-arabia-bahrain-qatar',  description: '7-Day Itinerary Saudi Arabia, Bahrain, Qatar', image: "/images/package/02.jpg" },
+    { id: 6, heading: '4-day itinerary UAE', link: '4-day-itinerary-uae',  description: '4-day itinerary UAE', image: "/images/package/03.jpg" },
+    { id: 7, heading: '9-day itinerary', link: '9-day-itinerary',  description: 'Experience a luxurious 9-day journey through Dubai, Abu Dhabi, Riyadh, and Manama. ', image: "/images/package/03.jpg" },
+    { id: 8, heading: '10 days itinerary luxury Umrah package with AlUla, Saudi Arabia', link: '10-days-itinerary-luxury-umrah-package-with-alula-saudi-arabia',  description: '10 days itinerary luxury Umrah package with AlUla, Saudi Arabia', image: "/images/package/03.jpg" },
+    { id: 9, heading: '12 Day Itinerary Uae Qatar Saudi Arabia Bahrain Kuwait', link: '12-day-itinerary-uae-qatar-saudi-arabia-bahrain-kuwait',  description: '12 Day Itinerary Uae Qatar Saudi Arabia Bahrain Kuwait', image: "/images/package/03.jpg" },
+    // { id: 10, heading: 'Package', link: 'qatar',  description: 'Description', image: "/images/package/03.jpg" },
   ];
  
   const eventsData = [
@@ -88,7 +92,7 @@ function Home() {
               <h3>What to experience</h3>
             </div>
             <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-4 col-sm-3 col-3 text-right">
-              <Link href="#0" className='float-right'>View All</Link>
+              <Link href="tour-package" className='float-right'>View All</Link>
             </div>
             <Carousal experiences={experienceData} count={4} type="home-experience" />
           </div>

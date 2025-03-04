@@ -24,7 +24,7 @@ import EventScroll from "../events/event-scroll";
 const SlickCarousel = dynamic(() => import("react-slick"), {
   ssr: false,
 });
- 
+  
 function Carousal({
   packages,
   events,
