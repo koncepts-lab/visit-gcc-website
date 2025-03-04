@@ -24,7 +24,7 @@ import EventScroll from "../events/event-scroll";
 const SlickCarousel = dynamic(() => import("react-slick"), {
   ssr: false,
 });
-  
+
 function Carousal({
   packages,
   events,
@@ -47,7 +47,7 @@ function Carousal({
       type !== "home-package" &&
       type !== "home-event" &&
       type !== "home-experience" &&
-      type !== "home-blog" && 
+      type !== "home-blog" &&
       type !== "upcoming-events",
     infinite: true,
     speed: 500,
@@ -55,7 +55,11 @@ function Carousal({
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 3000,
-    arrows: type !== "media-page-full-carosul" && type !== "event-page-scroll" && type !== "upcoming-events" && type !== "pakage-details-other-packages",
+    arrows:
+      type !== "media-page-full-carosul" &&
+      type !== "event-page-scroll" &&
+      type !== "upcoming-events" &&
+      type !== "pakage-details-other-packages",
 
     responsive: [
       {
@@ -68,8 +72,8 @@ function Carousal({
             type !== "home-package" &&
             type !== "home-event" &&
             type !== "home-experience" &&
-            type !== "home-blog"
-             && type !== "tour-bestPicked"
+            type !== "home-blog" &&
+            type !== "tour-bestPicked",
         },
       },
       {
@@ -84,7 +88,7 @@ function Carousal({
         },
       },
     ],
-  }; 
+  };
 
   const countryExperiance = [
     {
@@ -135,24 +139,23 @@ function Carousal({
       {...Responsive}
       className={type === "country-tab" ? "custom-country-tab-class" : ""}
     >
-   
-   {type === "home-package" &&
-  packages.map((pkg) => (
-    <div key={pkg.id} className="home-package-item">
-      <SingleHomePackage
-        photo_url={pkg?.photo_urls?.[0] || ''}
-        name={pkg.name}
-        description={pkg.description}
-        link={pkg.id.toString()} 
-      />
-    </div>
-  ))}
+      {type === "home-package" &&
+        packages.map((pkg) => (
+          <div key={pkg.id} className="home-package-item">
+            <SingleHomePackage
+              photo_url={pkg?.image || ""}
+              name={pkg.name}
+              description={pkg.description}
+              link={pkg.id.toString()}
+            />
+          </div>
+        ))}
 
       {type === "home-experience" &&
         experiences.map((experience) => (
           <SingleHomeExperience
             key={experience.id}
-            photo_urls={experience?.photo_urls?.[0] || ''}
+            photo_urls={experience?.photo_urls?.[0] || ""}
             name={experience.name}
             description={experience.description}
             link={experience.id.toString()}
@@ -173,7 +176,7 @@ function Carousal({
         events.map((event) => (
           <SingleHomeEvents
             key={event.id}
-            event_photo_urls={event?.event_photo_urls?.[0] || ''}
+            event_photo_urls={event?.image || ""}
             name={event.name}
             date={event.date}
             description={event.description}
@@ -233,7 +236,7 @@ function Carousal({
             link={bestPicked.link}
           />
         ))}
-        
+
       {type === "tour-wonders" &&
         wonders.map((wonders) => (
           <Singlewonders
@@ -290,17 +293,17 @@ function Carousal({
         ))}
 
       {type === "event-page-scroll" &&
-        eventScroll.map((eventScrollData,index) => (
+        eventScroll.map((eventScrollData, index) => (
           <EventScroll
-              key={index}
-              image={eventScrollData.image}
-              heading={eventScrollData.heading}
-              description={eventScrollData.description}
-              link={eventScrollData.link}
+            key={index}
+            image={eventScrollData.image}
+            heading={eventScrollData.heading}
+            description={eventScrollData.description}
+            link={eventScrollData.link}
           />
-        ))}   
+        ))}
 
-        {/* {type === "upcoming-events" &&
+      {/* {type === "upcoming-events" &&
           bestPicked.map((bestPicked) => (
             <UpcomingEvents
               key={bestPicked.id}
@@ -318,16 +321,16 @@ function Carousal({
             />
           ))} */}
 
-          {type === "past-events" &&
-            wonders.map((wonders) => (
-              <Singlewonders
-                key={wonders.id}
-                image={wonders.image}
-                heading={wonders.heading}
-                description={wonders.description}
-                link={wonders.link}
-              />
-            ))}
+      {type === "past-events" &&
+        wonders.map((wonders) => (
+          <Singlewonders
+            key={wonders.id}
+            image={wonders.image}
+            heading={wonders.heading}
+            description={wonders.description}
+            link={wonders.link}
+          />
+        ))}
 
       {type === "media-page-full-carosul" &&
         pakageDetailsOtherPackages.map((pakageDetailsOtherPackages) => (

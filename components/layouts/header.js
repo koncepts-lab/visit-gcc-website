@@ -48,25 +48,30 @@ function Header() {
   }, [lastScrollPos]);
 
   const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
+    const newState = !menuOpen;
+    setMenuOpen(newState);
+
+    if (newState) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
   };
 
   return (
-    <div className={`${style.headerWrapper} ${hideOnScroll ? style.hidden : ""}`}>
+    <div
+      className={`${style.headerWrapper} ${hideOnScroll ? style.hidden : ""}`}
+    >
       <nav
         className={`navbar navbar-expand-sm navbar-light ${style.navbar} ${
           scrolled ? style.scrolled : ""
         }`}
         id="navbar"
       >
-
-        <div className="container">
-
-
-        
-              {/*only mobile stiky */}
-<div  className={style['navbar_sticky_mobile_container']}>
-              <div className={`nav-item ${style["navbar_sticky_mobile"]}`}>
+        <div className="container position-relative">
+          {/*only mobile stiky */}
+          <div className={style["navbar_sticky_mobile_container"]}>
+            <div className={`nav-item ${style["navbar_sticky_mobile"]}`}>
               <Link className="nav-link active" href="/country">
                 <img
                   src="../images/01.png"
@@ -76,7 +81,7 @@ function Header() {
                 Explore
               </Link>
             </div>
-            <div  className={`nav-item ${style["navbar_sticky_mobile"]}`}>
+            <div className={`nav-item ${style["navbar_sticky_mobile"]}`}>
               <Link className="nav-link active" href="/">
                 <img
                   src="../images/02.png"
@@ -86,7 +91,7 @@ function Header() {
                 Plan
               </Link>
             </div>
-            <div  className={`nav-item ${style["navbar_sticky_mobile"]}`}>
+            <div className={`nav-item ${style["navbar_sticky_mobile"]}`}>
               <Link className="nav-link active" href="/">
                 <img
                   src="../images/03.png"
@@ -96,7 +101,7 @@ function Header() {
                 Book
               </Link>
             </div>
-            <div  className={`nav-item ${style["navbar_sticky_mobile"]}`}>
+            <div className={`nav-item ${style["navbar_sticky_mobile"]}`}>
               <Link className="nav-link active" href="/">
                 <img
                   src="../images/04.png"
@@ -106,10 +111,8 @@ function Header() {
                 Experience
               </Link>
             </div>
-            </div>
-              {/*only mobile stiky */}
-
-
+          </div>
+          {/*only mobile stiky */}
 
           <Link className={`navbar-brand ${style["navbar_logo"]}`} href="/">
             <img src="/images/logo.svg" alt="" />
@@ -130,14 +133,96 @@ function Header() {
             )}
           </button>
           <div
-  className={`collapse navbar-collapse justify-content-end ${style["stiky_time"]} ${
-    menuOpen ? "show" : ""
-  }`}
-  id="collapsibleNavbar"
->
-            <ul className={`navbar-nav ${style["navbar-nav-c"]}`}>
+            className={`collapse navbar-collapse justify-content-end ${
+              style["stiky_time"]
+            } ${menuOpen ? "show" : ""}`}
+            id="collapsibleNavbar"
+          >
+            <ul
+              className={`navbar-nav ${style["navbar-nav-c"]} position-absolute top-0 start-0 bg-white vh-100 w-100 p-0 d-sm-none`}
+              style={{
+                alignItems: "initial",
+                justifyContent: "start",
+                marginTop: "-8px",
+              }}
+            >
+              {/* Header Section */}
+              <li
+                className="py-4 px-2 d-flex align-items-center justify-content-between text-white w-100"
+                style={{ backgroundColor: "#169496" }}
+              >
+                <div className="d-flex align-items-center justify-content-between gap-2">
+                  <img
+                    src="/images/icons/placeholder.jpg"
+                    alt="User"
+                    className="rounded-circle"
+                    style={{ width: "40px", height: "40px" }}
+                  />
+                  <div>
+                    <div className="fw-bold">Login/Sign-up now</div>
+                    <div className="small">Login for best deals & offers</div>
+                  </div>
+                </div>
+                <button
+                  className="btn text-white p-0"
+                  style={{ fontSize: "2rem" }}
+                  onClick={toggleMenu}
+                >
+                  ×
+                </button>
+              </li>
 
-            <li className={`nav-item ${style["navbar_sticky"]}`}>
+              {/* Settings Header */}
+              <li className="mb-0 px-2 pt-2 border-bottom">
+                <h6
+                  className="mb-0  pb-2 fw-bold"
+                  style={{
+                    display: "inline-block",
+                    borderBottom: "3px solid #169496",
+                  }}
+                >
+                  Settings
+                </h6>
+              </li>
+
+              {/* Menu Items */}
+              {["Country", "Contact Support", "Help Center"].map(
+                (item, index) => (
+                  <li key={index} className="mb-0 px-2 py-3 border-bottom">
+                    <a
+                      href="#"
+                      className="d-flex justify-content-between text-dark text-decoration-none"
+                    >
+                      {item}
+                      <span>&gt;</span>
+                    </a>
+                  </li>
+                )
+              )}
+              <li className="mb-0 px-2  py-3 border-bottom">
+                <img src="/images/Partner.png" alt="Partner with us" />
+              </li>
+              {/* Social Footer */}
+              <li className="mb-0 px-2  py-3 d-flex justify-content-between border-bottom">
+                <div className="mb-2">Show us love & Follow</div>
+                <div className="d-flex gap-2">
+                  {["linkedin", "facebook", "apple", "google", "x"].map(
+                    (icon, i) => (
+                      <a href="#" key={i}>
+                        <img
+                          src={`/images/icons/${icon}.png`}
+                          alt={icon}
+                          style={{ width: "28px", height: "28px" }}
+                          className="rounded-circle border p-1"
+                        />
+                      </a>
+                    )
+                  )}
+                </div>
+              </li>
+            </ul>
+            <ul className={`navbar-nav ${style["navbar-nav-c"]}`}>
+              <li className={`nav-item ${style["navbar_sticky"]}`}>
                 <Link className="nav-link active" href="/country">
                   <img
                     src="../images/01.png"
@@ -147,7 +232,7 @@ function Header() {
                   Explore
                 </Link>
               </li>
-              <li  className={`nav-item ${style["navbar_sticky"]}`}>
+              <li className={`nav-item ${style["navbar_sticky"]}`}>
                 <Link className="nav-link active" href="/">
                   <img
                     src="../images/02.png"
@@ -157,7 +242,7 @@ function Header() {
                   Plan
                 </Link>
               </li>
-              <li  className={`nav-item ${style["navbar_sticky"]}`}>
+              <li className={`nav-item ${style["navbar_sticky"]}`}>
                 <Link className="nav-link active" href="/">
                   <img
                     src="../images/03.png"
@@ -167,7 +252,7 @@ function Header() {
                   Book
                 </Link>
               </li>
-              <li  className={`nav-item ${style["navbar_sticky"]}`}>
+              <li className={`nav-item ${style["navbar_sticky"]}`}>
                 <Link className="nav-link active" href="/">
                   <img
                     src="../images/04.png"
@@ -178,11 +263,7 @@ function Header() {
                 </Link>
               </li>
 
-
-
-
-
-              <li  className={`nav-item ${style["navbar_sticky_hide"]}`}>
+              <li className={`nav-item ${style["navbar_sticky_hide"]}`}>
                 <Link className="nav-link active" href="invest-in-gcc">
                   <img
                     src="/images/inv-gcc.png"
@@ -191,7 +272,7 @@ function Header() {
                   />
                 </Link>
               </li>
-              <li  className={`nav-item ${style["navbar_sticky_hide"]}`}>
+              <li className={`nav-item ${style["navbar_sticky_hide"]}`}>
                 <Link className="nav-link" href="/">
                   <img
                     src="/images/GCC-one-visa.png"
@@ -200,9 +281,9 @@ function Header() {
                   />
                 </Link>
               </li>
-              <li  className={`nav-item ${style["navbar_sticky_hide"]}`}>
+              <li className={`nav-item ${style["navbar_sticky_hide"]}`}>
                 <Link className="nav-link" href="/partner-with-us">
-                  <img 
+                  <img
                     src="/images/Partner.png"
                     alt=""
                     className={style["img-top-logo"]}
@@ -219,30 +300,29 @@ function Header() {
               </li>
 
               {/* <li
-                className={`nav-item dropdown ${style["dropdown-right"]} ${style["view-pc"]} ${style["navbar_sticky_hide"]}`}
-              >
-                <ReactFlagsSelect
-                  countries={["US", "GB", "FR", "DE", "IT"]}
-                  customLabels={{ US: "", GB: "", FR: "", DE: "", IT: "" }}
-                  selected={selected}
-                  onSelect={(code) => setSelected(code)}
-                  placeholder="US"
-                  showSelectedLabel={false}
-                  showOptionLabel={false}
-                />
-              </li> */}
+    className={`nav-item dropdown ${style["dropdown-right"]} ${style["view-pc"]} ${style["navbar_sticky_hide"]}`}
+  >
+    <ReactFlagsSelect
+      countries={["US", "GB", "FR", "DE", "IT"]}
+      customLabels={{ US: "", GB: "", FR: "", DE: "", IT: "" }}
+      selected={selected}
+      onSelect={(code) => setSelected(code)}
+      placeholder="US"
+      showSelectedLabel={false}
+      showOptionLabel={false}
+    />
+  </li> */}
             </ul>
           </div>
 
           <div className={`nav-item ${style["navbar_sticky"]}`}>
-                <Link
-                  className={`nav-link ${style["login_profile"]}`}
-                  href="/login"
-                >
-                <CgProfile /> <span>Leonardo DiCaprio</span>
-                </Link>
-              </div>
-
+            <Link
+              className={`nav-link ${style["login_profile"]}`}
+              href="/login"
+            >
+              <CgProfile /> <span>Leonardo DiCaprio</span>
+            </Link>
+          </div>
         </div>
       </nav>
 
