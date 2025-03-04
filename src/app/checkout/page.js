@@ -402,7 +402,7 @@ const Checkout = () => {
 
                     <div className='my-4'>
                       <label className='text-black fw-semibold fs-4'>Promotions</label><br />
-                      <label className=''>Promo code</label><br />
+                      <label className='fw-semibold'>Promo code</label><br />
                       <div>
                         <input
                           className={`${style["promo_input"]} col-xl-8 col-lg-7 col-md-10`}
@@ -432,9 +432,9 @@ const Checkout = () => {
 
 
                       <div className='pt-3 d-flex flex-xl-row flex-md-column flex-column '>
-                        <div className='col-lg-8 col-12 '>
+                        <div className='col-lg-7 col-12 '>
                           <label className='text-black fw-semibold fs-4'>Loyalty Rewards</label><br />
-                          <p>Enroll in our loyalty program <br className='d-lg-block d-none' /> to earn travel rewards on future bookings</p>
+                          <p>Enroll in our loyalty program <br className='d-lg-block d-none' /> to earn travel rewards on <br className='d-lg-block d-none' />  future bookings</p>
                         </div>
                         <div className='align-content-center' >
                         <button
