@@ -452,7 +452,7 @@ const Checkout = () => {
                           <p className=' fw-normal pt-1'> Travel & Save! Share your tour booking and
                           <br className='d-lg-block d-none' />
                           unlock exclusive travel perks!</p>
-                          <div className='d-flex gap-3 pt-1'>
+                          <div className='d-flex gap-3'>
                             <button className={`${style["ordinary_button"]}`}><GoShare size={21}/> Share</button>
                             <button className={`${style["ordinary_button"]}`}><FaRegHeart size={20}/> Save</button>
                           </div>
