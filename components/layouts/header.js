@@ -187,7 +187,7 @@ function Header() {
 
 
               <li  className={`nav-item ${style["navbar_sticky_hide"]}`}>
-                <Link className="nav-link active" href="/">
+                <Link className="nav-link active" href="invest-in-gcc">
                   <img
                     src="/images/inv-gcc.png"
                     className={style["img-top-logo"]}

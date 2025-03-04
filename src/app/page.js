@@ -14,7 +14,7 @@ function Home() {
     { id: 5, heading: 'Package 5', description: 'Description of package 2', image: "/images/package/02.jpg" },
     { id: 6, heading: 'Package 6', description: 'Description of package 3', image: "/images/package/03.jpg" },
   ];
-
+ 
   const eventsData = [
     { id: 1, heading: 'Event 1', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', image: "/images/events/01.jpg", date: 'March 8' },
     { id: 2, heading: 'Event 2', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', image: "/images/events/02.jpg", date: 'April 9' },
