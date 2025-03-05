@@ -176,7 +176,7 @@ const Checkout = () => {
                   <h1 className='m-3 ms-0 pt-3 fw-bolder'>Personal Information</h1>
                   <form className='col-xxl-10 col-xl-12'>
                   {travellers.map((traveller) => (
-                      <div key={traveller.id} className='pt-3'>
+                      <div key={traveller.id} className='pt-1'>
                         <p
                           className="align-items-center  fw-semibold"
                           style={{ color: '#5ab2b3', height: '12px' }}
@@ -189,7 +189,7 @@ const Checkout = () => {
                           />
                           Adult </p>
                         <div className="">
-                          <div className="col-12 pt-2">
+                          <div className="col-12">
                             <input
                               className={`${style['promo_input']} col-xl-5 col-lg-6 col-12 `}
                               placeholder="LastName (in English)*"
@@ -317,7 +317,7 @@ const Checkout = () => {
                         </div>
 
                     <div>
-                      <h1 className='m-3 ms-0 fw-bolder'>Travel Details</h1>
+                      <h1 className='m-2 pt-2 pb-2 ms-0 fw-bolder'>Travel Details</h1>
                       <label >Pick-up point*</label><br />
                       <select className={`${style["promo_select"]} col-12`}>
                         <option>Please select pick-up point*</option>
@@ -326,12 +326,12 @@ const Checkout = () => {
                       <label className='pe-0 me-0 pt-3'>Special Requests</label><br />
                         <input className={`${style["promo_input"]} my-2 col-12`} placeholder='Please enter Special Requests' />
 
-                        <label className=''>Package Addons</label><br />
+                        <label className='pt-2'>Package Addons</label><br />
                       <select className={`${style["promo_select"]} col-12`}>
                         <option>Add travel medical insurance details if required</option>
                       </select>
 
-                      <h1 className='m-3 ms-0 py-2 fw-bolder'>Contact Info</h1>
+                      <h1 className='m-3 ms-0 pt-1 fw-bolder'>Contact Info</h1>
                       <div className='d-flex flex-xl-row flex-md-column flex-column justify-content-between col-12 gap-xl-5 gap-lg-3'>
                         <div className='col-xl-6 col-12' >
                           <label className=''>Contact Name</label><br />
@@ -345,7 +345,7 @@ const Checkout = () => {
                           <input className={`${style["promo_input"]} my-2 ms-xl-1 ms-lg-1 ms-2`} style={{width: '240px'}} placeholder='Mobile Number*' />
                         </div>
                       </div>
-                      <div className='my-3'>
+                      <div className='my-2'>
                         <label className='pe-0 me-0'>Email Address</label><br />
                         <input className={`${style["promo_input"]} my-2 col-12`} placeholder='All important updates will be send to this email ID*' />
                       </div>
@@ -374,7 +374,7 @@ const Checkout = () => {
                     <label className='text-black fw-semibold fs-4'>Package Price</label><br />
                     <div className='col-11 text-black-50 my-2' style={{ height: '2px', borderTop: '3px dashed #e2e2e2' }} />
 
-                    <div className='col-11 text-black' style={{borderBottom: '2px solid #e2e2e2'}}>
+                    <div className='col-11 text-black pt-3' style={{borderBottom: '2px solid #e2e2e2'}}>
                  
                     <h5 className='pt-2 d-flex pb-2 justify-content-between col-11'><span><b>Price</b></span><span>AED 121.00</span></h5> 
                             <p className='text-black'>2 Adult </p>
@@ -382,9 +382,10 @@ const Checkout = () => {
                             <h5 className='pt-2 d-flex pb-1 justify-content-between col-11'><span><b>Total</b></span><span><b>AED 121.00</b></span></h5> 
                     </div>              
 
-                    <p className="col-lg-12 col-xl-11 col-12 pt-5">
-                      By proceeding, I acknowledge that I have read and agree to visitgcc.com's Terms & Conditions and Privacy Statement.
-                    </p>
+                    <p className="col-lg-12 col-xl-12 col-12 pt-4 my-2">
+                    By proceeding, I acknowledge that I have<br className='d-lg-block d-none'/>
+read and agree to the Company Terms & <br className='d-lg-block d-none'/>
+Conditions and Privacy Statement.                    </p>
                     <button
                       className='bg-white col-11 d-flex justify-content-between'
                       style={{ border: 'none', color: "#5ab2b3" }}
@@ -401,9 +402,9 @@ const Checkout = () => {
                       />
                     </button>
 
-                    <div className='my-4'>
+                    <div className='my-2'>
                       <label className='text-black fw-semibold fs-4'>Promotions</label><br />
-                      <label className=''>Promo code</label><br />
+                      <label className='pt-1'>Promo code</label><br />
                       <div>
                         <input
                           className={`${style["promo_input"]} col-xl-8 col-lg-7 col-md-10`}
@@ -418,7 +419,7 @@ const Checkout = () => {
                       </div>
                       <div className='pt-4 d-flex flex-xl-row flex-lg-column flex-column'>
                         <div>
-                          <label className='text-black fw-semibold fs-4'>Complete Booking In</label><br />
+                          <label className='text-black fw-semibold' style={{fontSize: '1.42rem'}} >Complete Booking In</label><br />
                           <p> &nbsp; The package price will refresh<br className='d-lg-block d-none' /> &nbsp; After</p>
                         </div>
                         <div className='rounded-pill align-content-center ms-3' style={{ height: '85px', width: '85px', border: '4px solid #5ab2b3' }}>
