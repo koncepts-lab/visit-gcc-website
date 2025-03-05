@@ -357,16 +357,17 @@ const Checkout = () => {
 
             <div className="col-md-4 my-md-0 my-5">
                     <div className={style["flex-checkout-details-right"]}>
-                      <div className='d-flex flex-lg-row flex-md-column flex-row ms-xxl-5 ps-0 ps-lg-5 ms-3'>
-                        <span className='ms-xxl-5 ms-0'>
+                      <div className='d-flex flex-lg-row flex-md-column flex-row ms-xxl-5 ps-0 ps-lg-5 ms-3 col-12'>
+                        <span className='ms-xxl-5 ms-lg-4 ms-0'>
                           <button className={style["btn-one"]}>Pay Now</button>
                         </span>
                         <span>
                           <button className={style["btn-two"]}>Contact Seller</button>
-                          <p className="col-xl-9 col-12" style={{ fontSize: '9px' }}>
-                            You can now directly communicate with the Seller of this package
+                          <p className="col-12" style={{ fontSize: '9px' }}>
+                            You can now directly communicate<br className='d-xl-block d-none'/> with the Seller of this package
                           </p>
                         </span>
+                     
                       </div>
                     </div>
 
