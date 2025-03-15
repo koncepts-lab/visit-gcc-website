@@ -286,7 +286,7 @@ const Checkout = () => {
                         </div> */}
 
 
-                        <div className="d-flex flex-lg-row flex-md-column flex-column gap-xl-5 gap-lg-2 gap-3 justify-content-between col-12 align-items-center py-3" style={{ fontFamily: 'sans-serif' }}>
+                        {/* <div className="d-flex flex-lg-row flex-md-column flex-column gap-xl-5 gap-lg-2 gap-3 justify-content-between col-12 align-items-center py-3" style={{ fontFamily: 'sans-serif' }}>
                           {['adults', 'children', 'infants'].map((type) => (
                             <div key={type} className="d-flex align-items-center me-3 px-1" style={{background: '#f6f6f6'}}> 
                             <div className="d-flex align-items-center">
@@ -314,7 +314,7 @@ const Checkout = () => {
                          
                             </div>
                           ))}
-                        </div>
+                        </div> */}
 
                     <div>
                       <h1 className='m-2 pt-2 pb-2 ms-0 fw-bolder'>Travel Details</h1>
@@ -339,7 +339,7 @@ const Checkout = () => {
                         </div>
                         <div className='col-xl-6 col-lg-8 col-md-12 col-12'>
                           <label className=''>Contact Number</label><br />
-                          <select className={`${style["promo_select"]} my-2` } style={{width: '68px'}}>
+                          <select className={`${style["promo_select"]} my-2` } style={{width: '68px', paddingLeft: '5px'}}>
                             <option>+918</option>
                           </select>
                           <input className={`${style["promo_input"]} my-2 ms-xl-1 ms-lg-1 ms-2`} style={{width: '240px'}} placeholder='Mobile Number*' />
@@ -356,11 +356,9 @@ const Checkout = () => {
             </div>
 
             <div className="col-md-4 my-md-0 my-5">
-                    <div className={style["flex-checkout-details-right"]}>
+                    {/* <div className={style["flex-checkout-details-right"]}>
                       <div className='d-flex flex-lg-row flex-md-column flex-row ms-xxl-5 ps-0 ps-lg-5 ms-3 col-12'>
-                        <span className='ms-xxl-5 ms-lg-4 ms-0'>
-                          <button className={style["btn-one"]}>Pay Now</button>
-                        </span>
+                   
                         <span>
                           <button className={style["btn-two"]}>Contact Seller</button>
                           <p className="col-12" style={{ fontSize: '9px' }}>
@@ -369,7 +367,8 @@ const Checkout = () => {
                         </span>
                      
                       </div>
-                    </div>
+                    </div> */}
+
 
                     <label className='text-black fw-semibold fs-4'>Package Price</label><br />
                     <div className='col-11 text-black-50 my-2' style={{ height: '2px', borderTop: '3px dashed #e2e2e2' }} />
@@ -380,12 +379,16 @@ const Checkout = () => {
                             <p className='text-black'>2 Adult </p>
                             <p className='text-black'>1 Children</p>
                             <h5 className='pt-2 d-flex pb-1 justify-content-between col-11'><span><b>Total</b></span><span><b>AED 121.00</b></span></h5> 
-                    </div>              
+                    </div> 
+                     <span className='col-10 ps-1 pt-2 d-flex justify-content-end'>
+                          <button className={style["btn-one"]}>Pay Now</button>
+                        </span>             
 
                     <p className="col-lg-12 col-xl-12 col-12 pt-4 my-2">
                     By proceeding, I acknowledge that I have<br className='d-lg-block d-none'/>
-read and agree to the Company Terms & <br className='d-lg-block d-none'/>
-Conditions and Privacy Statement.                    </p>
+                    read and agree to the Company Terms & <br className='d-lg-block d-none'/>
+                    Conditions and Privacy Statement.           
+                    </p>
                     <button
                       className='bg-white col-11 d-flex justify-content-between'
                       style={{ border: 'none', color: "#5ab2b3" }}

@@ -7,8 +7,7 @@ const Search = () => {
     <>
       <div className={`input-group mb-3 ${style['banner-search']}`}>
       <button className="btn btn-primary" type="button"><LuSearch /></button>
-        <input type="text" className="form-control" placeholder="" aria-label="Enter text" />
-        
+        <input type="text" className="form-control" placeholder="" aria-label="Enter text" />       
       </div>
     </>
   )

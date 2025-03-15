@@ -228,7 +228,7 @@ const wondersData = [
                 </div>
               </div>
 
-              <div className="col-md-7">
+              <div className="col-md-8">
                 <h3>Explore the Latest Events and Happenings</h3>
                 <EventsExploreTab />
 
