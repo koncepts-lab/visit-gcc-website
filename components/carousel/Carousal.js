@@ -55,7 +55,7 @@ function Carousal({
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 3000,
-    arrows: type !== "media-page-full-carosul" && type !== "event-page-scroll" && type !== "upcoming-events",
+    arrows: type !== "media-page-full-carosul" && type !== "event-page-scroll" && type !== "upcoming-events" && type !== "pakage-details-other-packages",
     responsive: [
       {
         breakpoint: 1024,

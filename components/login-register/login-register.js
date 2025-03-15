@@ -3,9 +3,14 @@
 import React, { useState } from 'react';
 import styles from './style.module.css';
 import { Facebook, Twitter, Mail } from 'lucide-react';
+import { FaFacebook } from "react-icons/fa";
+import { FaTwitter } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
+
 import 'bootstrap/dist/css/bootstrap.min.css';
-import axios from 'axios'; 
+import axios from 'axios';
 import Link from 'next/link';
+import { useSnackbar } from 'notistack';
 
 const LoginRegisterTabs = () => {
   const [activeTab, setActiveTab] = useState('login');
@@ -17,32 +22,38 @@ const LoginRegisterTabs = () => {
     date_of_birth: '',
     gender: '',
     user_type: '',
-    password: '',
-    password_confirmation: '',
+    pan_number: '', 
   });
   const [formErrors, setFormErrors] = useState({});
-  const [isloading, setIsLoading] = useState(false)
-  const [registrationSuccess, setRegistrationSuccess] = useState(false);
-  const [registrationError, setRegistrationError] = useState('');
+  const [loginEmail, setloginEmail] = useState("");
+  const [isloading, setIsLoading] = useState(false);
+  const [loginError, setLoginError] = useState('');
+  const [loginFormError, setLoginFormError] = useState('');
+  const { enqueueSnackbar } = useSnackbar();
 
-  const SocialLoginButtons = () => (
-    <div className="mt-4">
-      <div className={`${styles['social-buttons']} mt-3`}>
-        <button className="btn-facebook">
-          <Facebook size={18} className="me-2" />
-          Facebook
-        </button>
-        <button className="btn-twitter">
-          <Twitter size={18} className="me-2" />
-          Twitter
-        </button>
-        <button className="btn-google">
-          <Mail size={18} className="me-2" />
-          Google
-        </button>
-      </div>
-    </div>
-  );
+  // const SocialLoginButtons = () => (
+  //   <div className="mt-4">
+  //     <div className={`${styles['social-buttons']} mt-3`}>
+  //       <button className="btn-facebook">
+  //         <FaFacebook size={18} className="me-2" />
+  //         Facebook
+  //       </button>
+  //       <button className="btn-twitter">
+  //         <FaTwitter size={18} className="me-2" />
+  //         Twitter
+  //       </button>
+  //       <button className="btn-google text-black" style={{ border: '1px black solid' }}>
+  //         <FcGoogle size={18} className="me-2" />
+  //         Google
+  //       </button>
+  //     </div>
+  //   </div>
+  // );
+
+  const validatePanNumber = (pan) => {
+    const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/; 
+    return panRegex.test(pan);
+  };
 
   const validateForm = () => {
     let errors = {};
@@ -69,17 +80,15 @@ const LoginRegisterTabs = () => {
     if (!registerFormData.user_type) {
       errors.user_type = 'User Type is required';
     }
-    if (!registerFormData.password) {
-      errors.password = 'Password is required';
-    } else if (registerFormData.password.length < 6) {
-      errors.password = 'Password must be at least 6 characters';
-    }
-    if (registerFormData.password !== registerFormData.password_confirmation) {
-      errors.password_confirmation = 'Passwords do not match';
+
+    if (registerFormData.user_type === 'vendor' && !registerFormData.pan_number) {
+      errors.pan_number = 'PAN number is required for vendors';
+    } else if (registerFormData.user_type === 'vendor' && !validatePanNumber(registerFormData.pan_number)) {
+      errors.pan_number = 'PAN number is invalid';
     }
 
     setFormErrors(errors);
-    return Object.keys(errors).length === 0;  
+    return Object.keys(errors).length === 0;
   };
 
   const handleInputChange = (e) => {
@@ -90,23 +99,63 @@ const LoginRegisterTabs = () => {
     });
   };
 
+  const handleLoginSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    const isEmailValid = /\S+@\S+\.\S+/.test(loginEmail);
+
+    if (!isEmailValid) {
+      setLoginFormError("Please enter a valid email address");
+      setIsLoading(false); 
+      return;
+    } else {
+      setLoginFormError(''); 
+    }
+
+    try {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}app/login`, {
+        email: loginEmail,
+      });
+
+      if (response.status === 200 || response.status === 201) {
+        console.log('Login successful', response.data);
+        setloginEmail('');
+        enqueueSnackbar("Login Successfull!", { variant: 'success' });
+
+      } else {
+        console.error('Login failed', response.data);
+        enqueueSnackbar("Login Failed!", { variant: 'error' });
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      enqueueSnackbar("Login Failed!", { variant: 'error' });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
 
     if (!validateForm()) {
-      return; 
+      return;
+    }
+    if (registerFormData.user_type === 'vendor' && registerFormData.pan_number) {
+      localStorage.setItem('vendor_pan_number', registerFormData.pan_number);
+      console.log('PAN number saved to localStorage:', registerFormData.pan_number);  
     }
 
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/app/register', registerFormData);
+      const { pan_number, ...registrationData } = registerFormData; 
+
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}app/register`, registrationData);
+      console.log('PAN number saved to localStorage:', registerFormData.pan_number); 
 
       if (response.status === 200 || response.status === 201) {
-        // Assuming a successful response returns a 200 or 201 status
         console.log('Registration successful:', response.data);
-        setRegistrationSuccess(true);
-        setRegistrationError('');
-        // Optionally, reset the form after successful registration
+        enqueueSnackbar("Registration Successful!", { variant: 'success' });
         setRegisterFormData({
           first_name: '',
           last_name: '',
@@ -115,39 +164,35 @@ const LoginRegisterTabs = () => {
           date_of_birth: '',
           gender: '',
           user_type: '',
-          password: '',
-          password_confirmation: '',
+          pan_number: '',
         });
+
         setFormErrors({});
       } else {
         console.error('Registration failed:', response.data);
-        setRegistrationError('Registration failed. Please try again.');
-        setRegistrationSuccess(false);
+        enqueueSnackbar("Registration Failed!", { variant: 'error' });
       }
     } catch (error) {
       console.error('Error during registration:', error);
-      setRegistrationError('An error occurred. Please check your connection and try again.');
-      setRegistrationSuccess(false);
+      enqueueSnackbar("Registration Failed!", { variant: 'error' });
 
       if (error.response && error.response.data) {
-        // If the API returns validation errors, display them
         setFormErrors(error.response.data.errors || {});
-        setRegistrationError(error.response.data.message || 'Registration failed.');
+        console.log(error.response.data.message || 'Registration failed.');
+        enqueueSnackbar("Registration Failed!", { variant: 'error' });
       }
     } finally {
-    setIsLoading(false);
-  }
+      setIsLoading(false);
+    }
   };
 
   return (
     <div className={`${styles.container} mx-auto`}>
-      {/* Header */}
       <div className="text-center mb-4">
         <h2 className="fw-bold">Welcome!</h2>
         <p className="text-muted">Sign in or create a new account</p>
       </div>
 
-      {/* Tab Buttons */}
       <div className={`${styles['tab-buttons']} d-flex mb-4`}>
         <button
           className={`flex-fill py-2 ${activeTab === 'login' ? 'active' : ''}`}
@@ -163,59 +208,30 @@ const LoginRegisterTabs = () => {
         </button>
       </div>
 
-      {/* Login Form */}
       {activeTab === 'login' && (
-        <form>
+        <form onSubmit={handleLoginSubmit}>
           <div className="mb-3">
             <label htmlFor="login-email" className="form-label">Email Address</label>
             <input
               type="email"
               id="login-email"
+              value={loginEmail}
+              onChange={(e) => setloginEmail(e.target.value)}
               className={`form-control ${styles['form-control']}`}
               placeholder="Enter your email"
               required
             />
+            {loginFormError && <div className="text-danger">{loginFormError}</div>}
           </div>
-
-          <div className="mb-3">
-            <label htmlFor="login-password" className="form-label">Password</label>
-            <input
-              type="password"
-              id="login-password"
-              className={`form-control ${styles['form-control']}`}
-              placeholder="Enter your password"
-              required
-            />
-          </div>
-
-          <div className="d-flex justify-content-between align-items-center mb-3">
-            <div className="form-check">
-              <input type="checkbox" className="form-check-input" id="remember-me" />
-              <label className="form-check-label" htmlFor="remember-me">Remember me</label>
-            </div>
-            <button className="btn btn-link p-0 text-decoration-none">Forgot password?</button>
-          </div>
-
-          <button type="submit" className={`btn btn-success w-100 ${styles['btn-custom']}`}>
-            Sign In
+          <button type="submit" className={`btn btn-success w-100 rounded-pill ${styles['btn-custom']}`} disabled={isloading}>
+            {isloading ? 'Logging in...' : 'Sign In'}
           </button>
-          <SocialLoginButtons />
+          {/* <SocialLoginButtons /> */}
         </form>
       )}
 
-      {/* Register Form */}
       {activeTab === 'register' && (
         <form onSubmit={handleSubmit}>
-          {registrationSuccess && (
-            <div className="alert alert-success" role="alert">
-              Registration successful!
-            </div>
-          )}
-          {registrationError && (
-            <div className="alert alert-danger" role="alert">
-              {registrationError}
-            </div>
-          )}
           <div className="mb-3">
             <label htmlFor="register-firstname" className="form-label">First Name</label>
             <input
@@ -290,20 +306,21 @@ const LoginRegisterTabs = () => {
             <select
               id="register-gender"
               name="gender"
-              className={`form-select ${styles['form-control']}`}
+              className={`form-control ${styles['form-control']}`}
               value={registerFormData.gender}
               onChange={handleInputChange}
             >
               <option value="">Select Gender</option>
               <option value="male">Male</option>
               <option value="female">Female</option>
+              <option value="other">Other</option>
             </select>
             {formErrors.gender && <div className="text-danger">{formErrors.gender}</div>}
           </div>
 
           <div className="mb-3">
-            <label htmlFor="register-user-type" className="form-label">User Type</label>
-            <select
+            <label htmlFor="register-user_type" className="form-label">User Type</label>
+           <select
               id="register-user-type"
               name="user_type"
               className={`form-select ${styles['form-control']}`}
@@ -318,44 +335,25 @@ const LoginRegisterTabs = () => {
             {formErrors.user_type && <div className="text-danger">{formErrors.user_type}</div>}
           </div>
 
-          <div className="mb-3">
-            <label htmlFor="register-password" className="form-label">Password</label>
-            <input
-              type="password"
-              name="password"
-              id="register-password"
-              className={`form-control ${styles['form-control']}`}
-              placeholder="Create a password"
-              value={registerFormData.password}
-              onChange={handleInputChange}
-            />
-            {formErrors.password && <div className="text-danger">{formErrors.password}</div>}
-          </div>
+          {registerFormData.user_type === 'vendor' && (
+            <div className="mb-3">
+              <label htmlFor="register-pan_number" className="form-label">PAN Number</label>
+              <input
+                type="text"
+                id="register-pan_number"
+                name="pan_number"
+                className={`form-control ${styles['form-control']}`}
+                placeholder="Enter PAN Number"
+                value={registerFormData.pan_number}
+                onChange={handleInputChange}
+              />
+              {formErrors.pan_number && <div className="text-danger">{formErrors.pan_number}</div>}
+            </div>
+          )}
 
-          <div className="mb-3">
-            <label htmlFor="confirm-password" className="form-label">Confirm Password</label>
-            <input
-              type="password"
-              id="confirm-password"
-              name="password_confirmation"
-              className={`form-control ${styles['form-control']}`}
-              placeholder="Confirm your password"
-              value={registerFormData.password_confirmation}
-              onChange={handleInputChange}
-            />
-            {formErrors.password_confirmation && <div className="text-danger">{formErrors.password_confirmation}</div>}
-          </div>
-
-          <div className="form-check mb-3">
-            <input type="checkbox" className="form-check-input" id="terms" required />
-            <label className="form-check-label terms" htmlFor="terms">
-              I agree to the <a href="#">Terms and Conditions</a>
-            </label>
-          </div>
-        <button type="submit"  className={`btn btn-success w-100 ${styles['btn-custom']}`} disabled={isloading}>
-            {isloading? 'Creating...': 'Create Account'}
+          <button type="submit" className={`btn btn-success w-100 rounded-pill ${styles['btn-custom']}`} disabled={isloading}>
+            {isloading ? 'Registering...' : 'Register'}
           </button>
-          <SocialLoginButtons />
         </form>
       )}
     </div>

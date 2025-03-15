@@ -5,6 +5,15 @@ import style from './style.module.css';
 import Search from '../search/search';
 
 const Banner = () => {
+
+  const handleScroll = () => {
+    // Scroll the window 200px down from the current position
+    window.scrollBy({
+      top: 250, // Scrolls 200px down
+      behavior: 'smooth' // Smooth scroll
+    });
+  };
+
   
 
   return (
@@ -20,13 +29,15 @@ const Banner = () => {
 
 
               <div className={style['banner-box']}>
-                <div> 
-                  <img src="../images/01.png" alt="Explore Bahrain" />
-                  <h4>Explore</h4>
-                </div>
+              <div onClick={handleScroll} style={{ cursor: 'pointer' }}>
+                <img src="../images/01.png" alt="Explore Bahrain" />
+                <h4>Explore</h4>
+              </div>
                 <div>
+                <Link href="/tour-package">
                   <img src="../images/02.png" alt="Plan Bahrain" />
                   <h4>Plan</h4>
+                  </Link>
                 </div>
                 <div>
                   <img src="../images/03.png" alt="Book Bahrain" />
