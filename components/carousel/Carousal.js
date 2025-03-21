@@ -56,6 +56,7 @@ function Carousal({
     autoplay: true,
     autoplaySpeed: 3000,
     arrows: type !== "media-page-full-carosul" && type !== "event-page-scroll" && type !== "upcoming-events" && type !== "pakage-details-other-packages",
+
     responsive: [
       {
         breakpoint: 1024,
@@ -68,7 +69,7 @@ function Carousal({
             type !== "home-event" &&
             type !== "home-experience" &&
             type !== "home-blog"
-             && type !== "tour-bestPicked",
+             && type !== "tour-bestPicked"
         },
       },
       {
@@ -134,30 +135,27 @@ function Carousal({
       {...Responsive}
       className={type === "country-tab" ? "custom-country-tab-class" : ""}
     >
-      {type === "home-package" &&
-        packages.map((pkg) => (
-          <div key={pkg.id} className="home-package-item">
-            <SingleHomePackage
-              image={pkg.image}
-              heading={pkg.heading}
-              description={pkg.description}
-              location={pkg.location}
-              price={pkg.price}
-              priceOld={pkg.priceOld}
-              currency={pkg.currency}
-              link={pkg.link}
-            />
-          </div>
-        ))} 
+   
+   {type === "home-package" &&
+  packages.map((pkg) => (
+    <div key={pkg.id} className="home-package-item">
+      <SingleHomePackage
+        photo_url={pkg?.photo_urls?.[0] || ''}
+        name={pkg.name}
+        description={pkg.description}
+        link={pkg.id.toString()} 
+      />
+    </div>
+  ))}
 
       {type === "home-experience" &&
         experiences.map((experience) => (
           <SingleHomeExperience
             key={experience.id}
-            image={experience.image}
-            heading={experience.heading}
+            photo_urls={experience?.photo_urls?.[0] || ''}
+            name={experience.name}
             description={experience.description}
-            link={experience.link}
+            link={experience.id.toString()}
           />
         ))}
       {type === "home-blog" &&
@@ -175,8 +173,8 @@ function Carousal({
         events.map((event) => (
           <SingleHomeEvents
             key={event.id}
-            image={event.image}
-            heading={event.heading}
+            event_photo_urls={event?.event_photo_urls?.[0] || ''}
+            name={event.name}
             date={event.date}
             description={event.description}
             link={event.link}

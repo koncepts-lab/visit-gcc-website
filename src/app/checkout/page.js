@@ -19,6 +19,8 @@ import { PiMinusCircleFill } from "react-icons/pi";
 import { GiPerson } from "react-icons/gi";
 import { MdOutlineBoy } from "react-icons/md";
 import { GoShare } from "react-icons/go";
+import Ask_ur_questions from '@components/ask_ur_questions/ask_ur_questions';
+
 
 
 const Checkout = () => {
@@ -470,8 +472,8 @@ const Checkout = () => {
             </div>
             </div>
               <div className="container">
-                <img src="/images/blank.png" className='w-100' style={{height: '400px',borderRadius: '15px'}} alt="Banner" />
-                <div className='d-flex justify-content-between px-4' style={{marginTop: '-33px'}}>
+              <img src="/images/blank.png" className='w-100' style={{height: '400px',borderRadius: '15px'}} alt="Banner" />
+              <div className='d-flex justify-content-between px-4' style={{marginTop: '-33px'}}>
                   <p className='text-black-50 '>Date: <span className='text-white'>19- JAN-2017</span></p>
                   <p className='text-black-50 '>Tag: <span className='text-white'> Business</span></p>
 
@@ -497,6 +499,9 @@ const Checkout = () => {
               </div>
             </div>
           </div>
+        </div>
+        <div>
+          <Ask_ur_questions />
         </div>
     </div>
   );
