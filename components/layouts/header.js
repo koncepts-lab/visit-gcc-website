@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Link from "next/link";
 import style from "./style.module.css";
-import ReactFlagsSelect from "react-flags-select";
+// import ReactFlagsSelect from "react-flags-select";
 import { CgProfile } from "react-icons/cg";
 
 function Header() {
@@ -60,10 +60,6 @@ function Header() {
         id="navbar"
       >
 
-
-
-
-
         <div className="container">
 
 
@@ -71,7 +67,7 @@ function Header() {
               {/*only mobile stiky */}
 <div  className={style['navbar_sticky_mobile_container']}>
               <div className={`nav-item ${style["navbar_sticky_mobile"]}`}>
-              <Link className="nav-link active" href="/">
+              <Link className="nav-link active" href="/country">
                 <img
                   src="../images/01.png"
                   className={style["img-top-logo"]}
@@ -142,7 +138,7 @@ function Header() {
             <ul className={`navbar-nav ${style["navbar-nav-c"]}`}>
 
             <li className={`nav-item ${style["navbar_sticky"]}`}>
-                <Link className="nav-link active" href="/">
+                <Link className="nav-link active" href="/country">
                   <img
                     src="../images/01.png"
                     className={style["img-top-logo"]}
@@ -222,7 +218,7 @@ function Header() {
                 </Link>
               </li>
 
-              <li
+              {/* <li
                 className={`nav-item dropdown ${style["dropdown-right"]} ${style["view-pc"]} ${style["navbar_sticky_hide"]}`}
               >
                 <ReactFlagsSelect
@@ -234,7 +230,7 @@ function Header() {
                   showSelectedLabel={false}
                   showOptionLabel={false}
                 />
-              </li>
+              </li> */}
             </ul>
           </div>
 
@@ -250,7 +246,7 @@ function Header() {
         </div>
       </nav>
 
-      <div
+      {/* <div
         className={`nav-item dropdown ${style["dropdown-right"]} ${style["view-mobile"]}`}
       >
         <ReactFlagsSelect
@@ -263,7 +259,7 @@ function Header() {
           showOptionLabel={false}
           className={style["custom-flag-select"]}
         />
-      </div>
+      </div> */}
     </div>
   );
 }

@@ -557,7 +557,9 @@ body{
   background-color:#1DA1F2 ;
 }
 .btn-google{
-  background-color:#db4a39  ;
+  background-color:white ;
+  color: black;
+  
 }
 
 .scrolled .stiky_time{

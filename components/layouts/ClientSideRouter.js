@@ -1,10 +1,11 @@
-// components/ClientSideRouter.js
 "use client";
 
 import { useEffect, useState } from 'react';
 import { usePathname } from "next/navigation";
 import Footer from './footer';
 import Header from './header';
+import { SnackbarProvider } from "notistack";
+
 
 const ClientSideRouter = ({ children }) => {
     const [currentPath, setCurrentPath] = useState('');
@@ -13,7 +14,9 @@ const ClientSideRouter = ({ children }) => {
     return (
         <>
             <Header currentPath={pathName} />
-            {children}
+                <SnackbarProvider>
+                    {children}
+                </SnackbarProvider>
             <Footer />
         </>
     );
