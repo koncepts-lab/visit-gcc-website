@@ -1,36 +1,180 @@
-import React from 'react';
+"use client";
+
+import React , {useState, useEffect } from 'react';
 import Link from 'next/link';
 import style from './style.module.css';
 import Banner from '../../components/banner/banner';
 import Countries from '../../components/countries/countries';
 import Carousal from '../../components/carousel/Carousal';
+import axios from 'axios';
+
 
 function Home() {  
-  const packagesData = [
-    { id: 1, heading: '4 day itinerary Qatar', link: '4-day-itinerary-qatar',  description: 'Discover the heritage of Muscat, Doha, Riyadh, and Manama on this 9-day luxury journey. ', image: "/images/package/01.jpg" },
-    { id: 2, heading: '7-day itinerary for UAE, Oman, Qatar', link: '7-day-itinerary-for-uae-oman-qatar',  description: '7-day itinerary for UAE, Oman, Qatar', image: "/images/package/02.jpg" },
-    { id: 3, heading: '7-Day Itinerary Saudi Arabia, Bahrain, Qatar', link: '7-day-itinerary-saudi-arabia-bahrain-qatar',  description: '7-Day Itinerary Saudi Arabia, Bahrain, Qatar', image: "/images/package/03.jpg" },
-    { id: 4, heading: '9-day heritage itinerary', link: '9-day-heritage-itinerary',  description: 'Discover the heritage of Muscat, Doha, Riyadh, and Manama on this 9-day luxury journey. ', image: "/images/package/01.jpg" },
-    { id: 5, heading: '7-Day Itinerary Saudi Arabia, Bahrain, Qatar', link: '7-day-itinerary-saudi-arabia-bahrain-qatar',  description: '7-Day Itinerary Saudi Arabia, Bahrain, Qatar', image: "/images/package/02.jpg" },
-    { id: 6, heading: '4-day itinerary UAE', link: '4-day-itinerary-uae',  description: '4-day itinerary UAE', image: "/images/package/03.jpg" },
-    { id: 7, heading: '9-day itinerary', link: '9-day-itinerary',  description: 'Experience a luxurious 9-day journey through Dubai, Abu Dhabi, Riyadh, and Manama. ', image: "/images/package/03.jpg" },
-    { id: 8, heading: '10 days itinerary luxury Umrah package with AlUla, Saudi Arabia', link: '10-days-itinerary-luxury-umrah-package-with-alula-saudi-arabia',  description: '10 days itinerary luxury Umrah package with AlUla, Saudi Arabia', image: "/images/package/03.jpg" },
-    { id: 9, heading: '12 Day Itinerary Uae Qatar Saudi Arabia Bahrain Kuwait', link: '12-day-itinerary-uae-qatar-saudi-arabia-bahrain-kuwait',  description: '12 Day Itinerary Uae Qatar Saudi Arabia Bahrain Kuwait', image: "/images/package/03.jpg" },
-    // { id: 10, heading: 'Package', link: 'qatar',  description: 'Description', image: "/images/package/03.jpg" },
-  ];
- 
-  const eventsData = [
-    { id: 1, heading: 'Event 1', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', image: "/images/events/01.jpg", date: 'March 8' },
-    { id: 2, heading: 'Event 2', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', image: "/images/events/02.jpg", date: 'April 9' },
-    { id: 3, heading: 'Event 3', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', image: "/images/events/03.jpg", date: 'April 13' },
-  ];
+  const [packages, setPackages] = useState([]);
+  const [events, setEvents] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [headings, setHeadings] = useState([]);
+  const [banners, setBanners] = useState([]);
+  const [experiences, setExperiences] = useState([]);
 
-  const experienceData = [
-    { id: 1, heading: 'Experience 1', image: "/images/experience/01.jpg", description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.' },
-    { id: 2, heading: 'Experience 2', image: "/images/experience/02.jpg", description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.' },
-    { id: 3, heading: 'Experience 3', image: "/images/experience/03.jpg", description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.' },
-    { id: 4, heading: 'Experience 4', image: "/images/experience/04.jpg", description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.' },
-  ];
+
+
+  useEffect(() => {
+    const fetchPackages = async () => {
+      try {
+        const authToken = localStorage.getItem("auth_token_register");
+  
+        if (!authToken) {
+          setError("Authentication token not found");
+          setIsLoading(false);
+          return;
+        }
+  
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}packages`, {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          }
+        }); 
+        const allPackages = response.data.data || response.data || []; 
+  
+        console.log("All Packages:", allPackages); 
+        setPackages(allPackages);
+        setIsLoading(false);
+  
+      } catch (err) {
+        setIsLoading(false);
+        setError("Failed to fetch packages. Please try again.");
+        console.error("Error fetching packages:", err);
+      }
+    };
+  
+    fetchPackages();
+  }, []);
+
+  useEffect(() => {
+    const fetchExperience = async () => {
+      try {
+        const authToken = localStorage.getItem("auth_token_register");
+  
+        if (!authToken) {
+          setError("Authentication token not found");
+          setIsLoading(false);
+          return;
+        }
+  
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}packages/get-top-packages`, {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          }
+        }); 
+        const featuredPackages = response.data.data || response.data || []; 
+  
+        console.log("Featured Packages:", featuredPackages); 
+        setExperiences(featuredPackages);
+        setIsLoading(false);
+  
+      } catch (err) {
+        setIsLoading(false);
+        setError("Failed to fetch packages. Please try again.");
+        console.error("Error fetching packages:", err);
+      }
+    };
+  
+    fetchExperience();
+  }, []);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        // Get the token from localStorage (or wherever it is stored)
+          const authToken = localStorage.getItem("auth_token_register");
+
+        if (!authToken) {
+          setError("Authentication token not found");
+          setIsLoading(false);
+          return;
+        }
+
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}events`, {
+          headers: {
+            Authorization: `Bearer ${authToken}`, 
+          }
+        });
+
+        console.log(response.data)
+        setEvents(response.data); 
+        setIsLoading(false); 
+      } catch (err) {
+        setIsLoading(false);
+        setError("Failed to fetch packages. Please try again.");
+        console.error("Error fetching packages:", err); 
+      }
+    };
+
+    fetchEvents();
+  }, []);
+
+  useEffect(() => {
+    const fetchHeadings = async () => {
+      try {
+          const authToken = localStorage.getItem("auth_token_register");
+
+        if (!authToken) {
+          setError("Authentication token not found");
+          setIsLoading(false);
+          return;
+        }
+
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}home-page-heading`, {
+          headers: {
+            Authorization: `Bearer ${authToken}`, 
+          }
+        });
+
+        console.log(response.data)
+        setHeadings(response.data); 
+        setIsLoading(false); 
+      } catch (err) {
+        setIsLoading(false);
+        setError("Failed to fetch Headings. Please try again.");
+        console.error("Error fetching Headings:", err); 
+      }
+    };
+
+    fetchHeadings();
+  }, []);
+
+  useEffect(() => {
+    const fetchBanners = async () => {
+      try {
+          const authToken = localStorage.getItem("auth_token_register");
+
+        if (!authToken) {
+          setError("Authentication token not found");
+          setIsLoading(false);
+          return;
+        }
+
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}home-page-photo`, {
+          headers: {
+            Authorization: `Bearer ${authToken}`, 
+          }
+        });
+
+        console.log(response.data)
+        setBanners(response.data); 
+        setIsLoading(false);
+      } catch (err) {
+        setIsLoading(false);
+        setError("Failed to fetch Headings. Please try again.");
+        console.error("Error fetching Headings:", err); 
+      }
+    };
+
+    fetchBanners();
+  }, []);
+ 
 
   const blogData = [
     { id: 1, heading: 'Blog Post 1', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', image: "/images/blog/01.jpg" },
@@ -51,10 +195,10 @@ function Home() {
         <div className='container'>
           <div className='row'>
             <div className='col-md-12'>
-              <h3>GCC Packages</h3>
+            <h3>{headings[1]?.heading_content || "Loading..."}</h3>
             </div>
-            <Carousal packages={packagesData} count={3} type="home-package" />
-          </div>
+            {isLoading ? <p>Loading...</p> : <Carousal packages={packages} count={3} type="home-package" />}
+            </div>
         </div>
       </div>
       {/* home-packages end */}
@@ -62,8 +206,8 @@ function Home() {
       <div className={`container ${style['home-add-banner']}`}>
         <div className="row">
           <div className="col-md-12 pdb-3">
-            <img src="/images/banner-02.jpg" className='lap-view' alt="Banner" />
-            <img src="/images/banner-03.jpg" className='mobile-view' alt="Banner" />
+          <img src={banners[0]?.url } className='lap-view' alt="Banner" />
+          <img src={banners[1]?.url}className='mobile-view' alt="Banner" />
           </div>
         </div>
       </div>
@@ -73,12 +217,12 @@ function Home() {
         <div className='container'>
           <div className="row">
             <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-8 col-sm-9 col-9 pdb-3">
-              <h3>Upcoming events in April</h3>
+            <h3>{headings[2]?.heading_content || "Loading..."}</h3>
             </div>
             <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-4 col-sm-3 col-3 pdb-3 text-right">
               <Link href="/events" className='float-right'>View All</Link>
             </div>
-            <Carousal events={eventsData} count={3} type="home-event" />
+            <Carousal events={events} count={3} type="home-event" />
           </div>
         </div>
       </div>
@@ -89,12 +233,12 @@ function Home() {
         <div className='container'>
           <div className="row">
             <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-8 col-sm-9 col-9 pdb-3">
-              <h3>What to experience</h3>
+            <h3>{headings[3]?.heading_content || "Loading..."}</h3>
             </div>
             <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-4 col-sm-3 col-3 text-right">
               <Link href="tour-package" className='float-right'>View All</Link>
             </div>
-            <Carousal experiences={experienceData} count={4} type="home-experience" />
+            <Carousal experiences={experiences} count={4} type="home-experience" />
           </div>
         </div>
       </div>
@@ -103,8 +247,8 @@ function Home() {
       <div className={`container ${style['home-add-banner']}`}>
         <div className="row">
           <div className="col-md-12 pdb-3">
-            <img src="/images/banner-02.jpg" className='lap-view' alt="Banner" />
-            <img src="/images/banner-03.jpg" className='mobile-view' alt="Banner" />
+            <img src={banners[2]?.url } className='lap-view' alt="Banner" />
+            <img src={banners[3]?.url}className='mobile-view' alt="Banner" />
           </div>
         </div>
       </div>
@@ -114,7 +258,7 @@ function Home() {
         <div className='container'>
           <div className="row">
             <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-8 col-sm-9 col-9 pdb-3">
-              <h3>Latest Blog Posts</h3>
+            <h3>{headings[4]?.heading_content || "Loading..."}</h3>
             </div>
             <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-4 col-sm-3 col-3 pdb-3 text-right">
               <Link href="#0" className='float-right'>View All</Link>

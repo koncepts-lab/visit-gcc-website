@@ -8,10 +8,10 @@ const ArrowIcon = () => <FaArrowRightLong />;
 function SingleHomeExperience(props) {
     return (
         <>
-        <Link href="tour-package-details"  className={`item ${style['item-padding']}`}>
+        <Link href={`/tour-package/${props.link}`}  className={`item ${style['item-padding']}`}>
                 <div className={style['experience-box']}>
-                    <img src={props.image} className='w-100' alt="" />
-                    <h4>{props.heading}</h4>
+                    <img src={props.photo_urls} className='w-100' alt="" />
+                    <h4>{props.name}</h4>
                 </div>
             </Link>
         </>
