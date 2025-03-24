@@ -3,7 +3,7 @@
 
 import React, {useState} from 'react'
 import style from'./style.module.css'
-import Banner from '../../../components/banner/banner';
+import Banner from '@components/banner/banner';
 import Link from 'next/link';
 import { FaFacebookSquare } from "react-icons/fa";
 import { FaSquareXTwitter } from "react-icons/fa6";
@@ -380,7 +380,14 @@ function page() {
                         {comment.likedByUser ? <FaHeart size={12} color="red" /> : <FaRegHeart size={12} />} {comment.likes}
                       </button>
                       <button
-                        onClick={() => setReplyingTo({blogId: activeCommentBlogId, commentId: comment.id})}
+                        onClick={() =>
+                          setReplyingTo((prev) =>
+                            prev.blogId === activeCommentBlogId && prev.commentId === comment.id
+                              ? { blogId: null, commentId: null }
+                              : { blogId: activeCommentBlogId, commentId: comment.id }
+                          )
+                        }
+
                         className={style["reply-btn"]}
                       >
                         Reply

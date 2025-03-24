@@ -6,16 +6,15 @@ import Search from '../search/search';
 
 const Banner = () => {
 
+
   const handleScroll = () => {
-    // Scroll the window 200px down from the current position
     window.scrollBy({
-      top: 250, // Scrolls 200px down
-      behavior: 'smooth' // Smooth scroll
+      top: 250, 
+      behavior: 'smooth' 
     });
   };
 
-  
-
+ 
   return (
     <section className={`${style['banner']}`}>
       <div className='container'>
