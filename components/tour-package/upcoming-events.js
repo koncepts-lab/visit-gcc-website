@@ -27,13 +27,21 @@ function UpcomingEvents() {
         return description.substring(0, maxLength) + "...";
     };
 
+    const truncateHeading = (heading, maxLength) => {
+        if (!heading) return "";
+        if (heading.length <= maxLength) {
+            return heading;
+        }
+        return heading.substring(0, maxLength) + "...";
+    };
+
     const eventsData = [
-        { id: 1, heading: 'Pellentesque molestie ante vitae consectetur.', description: 'Lorem Ipsum is dummy text', image: "/images/best-picked/01.jpg", provider: "Admin", date: "02-Nov-2017", type: "Family", startDate: "15", startMonth: "Mar", endDate: "17", endMonth: "Mar" },
-        { id: 2, heading: 'Pellentesque molestie ante vitae consectetur.', description: 'Lorem Ipsum is dummy text', image: "/images/best-picked/02.jpg", provider: "Admin", date: "02-Nov-2017", type: "Workshop", startDate: "20", startMonth: "Apr", endDate: "22", endMonth: "Apr" },
-        { id: 3, heading: 'Pellentesque molestie ante vitae consectetur.', description: 'Lorem Ipsum is dummy text', image: "/images/best-picked/03.jpg", provider: "Admin", date: "02-Nov-2017", type: "Workshop", startDate: "10", startMonth: "May", endDate: "12", endMonth: "May" },
-        { id: 4, heading: 'Pellentesque molestie ante vitae consectetur.', description: 'Lorem Ipsum is dummy text', image: "/images/best-picked/01.jpg", provider: "Admin", date: "02-Nov-2017", type: "Workshop", startDate: "05", startMonth: "Jun", endDate: "07", endMonth: "Jun" },
-        { id: 5, heading: 'Pellentesque molestie ante vitae consectetur.', description: 'Lorem Ipsum is dummy text', image: "/images/best-picked/02.jpg", provider: "Admin", date: "02-Nov-2017", type: "Workshop", startDate: "25", startMonth: "Jul", endDate: "27", endMonth: "Jul" },
-        { id: 6, heading: 'Pellentesque molestie ante vitae consectetur.', description: 'Lorem Ipsum is dummy text', image: "/images/best-picked/03.jpg", provider: "Admin", date: "02-Nov-2017", type: "Workshop", startDate: "01", startMonth: "Aug", endDate: "03", endMonth: "Aug" },
+        { id: 1, heading: 'Pellentesque molestie ante vitae consectetur  Pellentesque molestie ante vitae consectetur', description: 'Lorem Ipsum is dummy text Pellentesque molestie ante vitae consectetur Pellentesque molestie ante vitae consectetur', image: "/images/best-picked/01.jpg", provider: "Admin", date: "02-Nov-2017", type: "Family", startDate: "15", startMonth: "Mar", endDate: "17", endMonth: "Mar" },
+        { id: 2, heading: 'Pellentesque molestie ante vitae consectetur  Pellentesque molestie ante vitae consectetur', description: 'Lorem Ipsum is dummy text Pellentesque molestie ante vitae consectetur Pellentesque molestie ante vitae consectetur', image: "/images/best-picked/02.jpg", provider: "Admin", date: "02-Nov-2017", type: "Workshop", startDate: "20", startMonth: "Apr", endDate: "22", endMonth: "Apr" },
+        { id: 3, heading: 'Pellentesque molestie ante vitae consectetur.', description: 'Lorem Ipsum is dummy text Pellentesque molestie ante vitae consectetur Pellentesque molestie ante vitae consectetur', image: "/images/best-picked/03.jpg", provider: "Admin", date: "02-Nov-2017", type: "Workshop", startDate: "10", startMonth: "May", endDate: "12", endMonth: "May" },
+        { id: 4, heading: 'Pellentesque molestie ante vitae consectetur.', description: 'Lorem Ipsum is dummy text Pellentesque molestie ante vitae consectetur Pellentesque molestie ante vitae consectetur', image: "/images/best-picked/01.jpg", provider: "Admin", date: "02-Nov-2017", type: "Workshop", startDate: "05", startMonth: "Jun", endDate: "07", endMonth: "Jun" },
+        { id: 5, heading: 'Pellentesque molestie ante vitae consectetur.', description: 'Lorem Ipsum is dummy text Pellentesque molestie ante vitae consectetur Pellentesque molestie ante vitae consectetur', image: "/images/best-picked/02.jpg", provider: "Admin", date: "02-Nov-2017", type: "Workshop", startDate: "25", startMonth: "Jul", endDate: "27", endMonth: "Jul" },
+        { id: 6, heading: 'Pellentesque molestie ante vitae consectetur.', description: 'Lorem Ipsum is dummy text Pellentesque molestie ante vitae consectetur Pellentesque molestie ante vitae consectetur', image: "/images/best-picked/03.jpg", provider: "Admin", date: "02-Nov-2017", type: "Workshop", startDate: "01", startMonth: "Aug", endDate: "03", endMonth: "Aug" },
     ];
 
     const handleImageClick = (id) => {
@@ -162,8 +170,13 @@ function UpcomingEvents() {
                                             </Link>
                                             <div className={style['event-scroll-text']}>
                                                 <span>
-                                                    <h4>{event.heading}</h4>
-                                                    <p className='text-black-50'>{truncateDescription(event.description, 80)}</p>
+                                                <span>
+                                                    <h4>{isExpanded ? truncateHeading(event.heading, 100) : truncateHeading(event.heading, 50)}</h4>
+                                                    <p className='text-black-50 d-lg-block d-none'>{isExpanded ? truncateDescription(event.description, 100) :truncateDescription(event.description, 50)} </p>
+                                                    <p className='text-black-50 d-lg-none d-block'>{truncateDescription(event.description, 120)} </p>
+
+                                                </span>
+                                                
                                                 </span>
                                             </div>
                                             <div className='border-top col-12 pt-3 pb-1'>
@@ -187,7 +200,7 @@ function UpcomingEvents() {
                                                 <button className={style['btn-plus']} style={{ marginTop: '-35px', right: '20px' }} onClick={toggleExpand}>
                                                     <FiPlus />
                                                 </button>
-                                                <div className={` ${style['provider-date']} ps-lg-${isExpanded ? '4' : '1'} ps-4 d-flex flex-xl-row flex-lg-${isExpanded ? 'row' : 'column'}`} >
+                                                <div className={` ${style['provider-date']} ps-xl-3 ps-lg-4 ps-4 d-flex flex-xl-row flex-lg-${isExpanded ? 'row' : 'column'}`} >
                                                     <p  className={`pe-lg-${isExpanded ? '3' : '1'} pe-3`} >
                                                         <span className={`pe-${isExpanded ? '3' : '1'} pe-3`}>
                                                             <FaUserCircle size={27} color='grey' />
@@ -195,8 +208,8 @@ function UpcomingEvents() {
                                                         <span className='fw-semibold text-black-50 col-12'>BY: </span>
                                                         {event.provider}
                                                     </p>
-                                                    <span className={`pe-3 d-lg-${isExpanded ? 'block' : 'none'}`} >|</span>
-                                                    <p>{event.date}</p>
+                                                    <span className={`pe-3 d-xl-${isExpanded ? 'block' : 'none'} d-lg-${isExpanded ? 'block' : 'none'}`} >|</span>
+                                                    <p className={` d-block d-lg-${isExpanded ? 'block' : 'none'}`}>{event.date}</p>
                                                 </div>
                                             </div>
                                         </div>

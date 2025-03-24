@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState } from 'react';
 import style from './style.module.css';
 import Banner from '@components/banner/banner'; 
@@ -7,6 +8,7 @@ import { FaSquareXTwitter } from "react-icons/fa6";
 import { FaLinkedin } from "react-icons/fa";
 import { FaSearch } from "react-icons/fa";
 import { IoMdSend } from "react-icons/io";
+import { FaRegHeart, FaHeart } from "react-icons/fa";
 import { ImQuotesLeft, ImQuotesRight } from "react-icons/im";
 import AccordionItem from './accordion';
 import Carousal from '@components/carousel/Carousal'; 

@@ -5,13 +5,14 @@ import { FaArrowRightLong } from "react-icons/fa6";
 
 const ArrowIcon = () => <FaArrowRightLong />;
 
-function SingleHomePackage({ link = "#", image, heading, description }) {
+
+function SingleHomePackage({ link , photo_url, name, description }) {
     return (
-        <Link href={link || "#"} className={`item ${style['item-padding']}`}>
+        <Link href={`/tour-package/${link}`} className={`item ${style['item-padding']}`}>
             <div className={style['bg-black-shade']}></div>
-            <img src={image} className="w-100" alt={heading || "Package Image"} />
+            <img src={photo_url} className="w-100" alt={ name } />
             <div className={style['home-packages-text']}>
-                <h4>{heading}</h4>
+                <h4>{name}</h4>
                 <p>{description}</p>
                 <ArrowIcon />
             </div>

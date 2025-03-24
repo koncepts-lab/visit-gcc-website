@@ -387,6 +387,7 @@ function page() {
                               : { blogId: activeCommentBlogId, commentId: comment.id }
                           )
                         }
+
                         className={style["reply-btn"]}
                       >
                         Reply
