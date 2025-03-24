@@ -5,7 +5,6 @@ import style from './style.module.css';
 import Search from '../search/search';
 
 const Banner = () => {
-  
 
   return (
     <section className={`${style['banner']}`}>
