@@ -12,7 +12,7 @@ import { MdDownhillSkiing } from "react-icons/md";
 import { IoBusOutline } from "react-icons/io5";
 import { GiSailboat } from "react-icons/gi";
 
-const images = [
+const masonarys = [
     {
         src: "/images/demo/01.jpg",
         title: "Beautiful Yas Island and Dubai",
@@ -56,7 +56,6 @@ const images = [
         rating: 3
     },
 
-
 ];
 
 class MyWrapper extends React.Component {
@@ -67,24 +66,24 @@ class MyWrapper extends React.Component {
                 columnsCountBreakPoints={breakPoints}
             >
                 <Masonry> 
-                    {images.map((image, i) => (
+                    {masonarys.map((masonary, i) => (
                         <div key={i} className="masonry-item">
                             <img
-                                src={image.src}
+                                src={masonary.src}
                                 style={{ width: "100%", display: "block" }}
-                                alt={image.title}
+                                alt={masonary.title}
                             />
                             <div className="tour-pakage-masonry-item-content">
-                                <h5>{image.title}</h5>
+                                <h5>{masonary.title}</h5>
                                 <div className={style['provider-date']}>
-                                    <p>{image.provider}</p> &nbsp; | &nbsp;
-                                    <p>{image.date}</p>
+                                    <p>{masonary.provider}</p> &nbsp; | &nbsp;
+                                    <p>{masonary.date}</p>
                                 </div>
                                 <div className={style['star-section']}>
                                     <div className={style['star']}>
                                         <Rating
                                             count={5}
-                                            value={image.rating}
+                                            value={masonary.rating}
                                             size={24}
                                             activeColor="#ffd700"
                                             edit={false} // Set to true if you want it to be editable

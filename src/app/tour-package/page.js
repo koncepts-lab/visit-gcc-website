@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import style from './style.module.css';
 import Banner from '../../../components/banner/banner';
 import Countries from '../../../components/countries/countries';
@@ -11,13 +11,26 @@ import Accordion from '../../../components/accordion/accordion';
 import TourPackageTab from '../../../components/tour-package/tour-package-tab';
 import { LuMenu } from "react-icons/lu";
 import { IoIosCloseCircleOutline } from "react-icons/io";
+import axios from 'axios';
+import FeaturedIntegratedTravel from '@components/tour-package/featured-integrated-travel';
 
-const Country = () => {
-    const [priceRange, setPriceRange] = useState([30, 3900]);
+const TourPackage = () => {
+    const [packages, setPackages] = useState([]);
+    const [allPackages, setAllPackages] = useState([]);
+    const [tour_category, setTour_category] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [priceRange, setPriceRange] = useState([30, 8000]);
     const [durationRange, setDurationRange] = useState([1, 10]);
     const [isToggled, setIsToggled] = useState(false);
     const firstBreakPoints = { 350: 1, 750: 2, 1200: 2, 1500: 4 };
     const secondBreakPoints = { 350: 1, 750: 2, 1200: 2, 1500: 3 };
+    const [filteredPackages, setFilteredPackages] = useState([]);
+    const [selectedItems, setSelectedItems] = useState({});
+    const [filteredByAccordion, setFilteredByAccordion] = useState([]);
+    const [bestPicked,setBestpicked] = useState([]);
+    const [lesserWonders,setLesserWonders] = useState([]);
+    const [noResultsFound, setNoResultsFound] = useState(false)
 
     const handleToggle = () => {
         setIsToggled(!isToggled);
@@ -31,64 +44,398 @@ const Country = () => {
         setDurationRange(values);
     };
 
+    // Clear price range filter
+    const clearPriceFilter = () => {
+        setPriceRange([30, 8000]);
+        applyAllFilters(); // Apply filters immediately after clearing
+    };
 
+    // Clear duration range filter
+    const clearDurationFilter = () => {
+        setDurationRange([1, 10]);
+        applyAllFilters(); // Apply filters immediately after clearing
+    };
 
-    
-    const accordionData = [
+    // Apply filters whenever price or duration range changes
+    useEffect(() => {
+        if (allPackages.length > 0) {
+            applyAllFilters();
+        }
+    }, [priceRange, durationRange]);
+
+    const [accordionData, setAccordionData] = useState([
         {
             title: 'ACTIVITIES',
-            items: ['Hiking', 'Camping', 'Wildlife Watching', 'Water Sports']
+            items: [],
+            apiEndpoint: 'activities',
+            filterEndpoint: 'activities/activity/get-by-activity?activity_ids[]=',
         },
         {
             title: 'CULTURAL ACTIVITIES',
-            items: ['Sightseeing', 'Museums', 'Historical Sites', 'Festivals', 'Food and Wine Tours']
+            items: [],
+            apiEndpoint: 'cultural-activities',
+            filterEndpoint: 'cultural-activities/activity/get-by-activity?activity_ids[]=',
         },
         {
             title: 'RELAXATION AND REJUVENATION',
-            items: ['Spas', 'Wellness Retreats', 'Yoga Sessions', 'Meditation']
+            items: [],
+            apiEndpoint: 'relaxation-rejuvenations',
+            filterEndpoint: 'relaxation-rejuvenations/rejuvenation/get-by-rejuvenation?rejuvenation_ids[]=',
         },
         {
             title: 'FILTER BY STAY',
-            items: ['Budget-Friendly Motels', 'Luxurious Five-Star Resorts', 'Apartments', 'Private Villas', 'Homestays', 'Boutique Hotels', 'Tents']
+            items: [],
+            apiEndpoint: 'stay-type',
+            filterEndpoint: 'stay-type/stay/get-by-staytype?stay_type_ids[]=',
         },
         {
             title: 'TRAVEL STYLE',
-            items: ['Luxury', 'Adventure', 'Family-Friendly', 'Couple', 'Group Tour', 'Budget Friendly']
+            items: [],
+            apiEndpoint: 'travel-style',
+            filterEndpoint: 'travel-style/travel/get-by-travelstyle?travel_style_ids[]=',
         },
         {
             title: 'GEOGRAPHY',
-            items: ['Coastal', 'Desert', 'Mountain', 'Nature', 'Sea', 'Forest']
+            items: [],
+            apiEndpoint: 'geographies',
+            filterEndpoint: 'geographies/geographies/get-by-geography?geography_ids[]=',
+        },
+    ]);
+
+    useEffect(() => {
+        const fetchAccordionItems = async (index) => {
+            const section = accordionData[index];
+            if (!section.apiEndpoint) {
+                return;
+            }
+
+            setIsLoading(true);
+            try {
+                const registerToken = localStorage.getItem("auth_token_register");
+              const loginToken = localStorage.getItem("auth_token_login");
+              let authToken = null;
+        
+             if (loginToken) {
+                authToken = loginToken;
+                console.log("Using login token for fetching packages.");
+              }
+              else if (registerToken) {
+                authToken = registerToken;
+                console.log("Using register token for fetching packages.");
+              } 
+        
+              if (!authToken) {
+                setError("Authentication token not found");
+                setIsLoading(false);
+                return;
+              }
+          
+                const response = await axios.get(
+                    `${process.env.NEXT_PUBLIC_API_URL}${section.apiEndpoint}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${authToken}`,
+                        },
+                    }
+                );
+
+                const items = response.data.data || response.data || [];
+                setAccordionData((prevData) => {
+                    const newData = [...prevData];
+                    newData[index].items = items.map((item) => ({
+                        title: item.title,
+                        id: item.id,
+                    }));
+                    return newData;
+                });
+                setIsLoading(false);
+            } catch (err) {
+                setError(`Failed to fetch ${section.title}. Please try again.`);
+                setIsLoading(false);
+            }
+        };
+
+        accordionData.forEach((section, index) => {
+            if (section.apiEndpoint) {
+                fetchAccordionItems(index);
+            }
+        });
+    }, []);
+
+
+    useEffect(() => {
+        const fetchBestpicked = async () => {
+            try {
+                const registerToken = localStorage.getItem("auth_token_register");
+              const loginToken = localStorage.getItem("auth_token_login");
+              let authToken = null;
+        
+             if (loginToken) {
+                authToken = loginToken;
+                console.log("Using login token for fetching packages.");
+              }
+              else if (registerToken) {
+                authToken = registerToken;
+                console.log("Using register token for fetching packages.");
+              } 
+        
+              if (!authToken) {
+                setError("Authentication token not found");
+                setIsLoading(false);
+                return;
+              }
+          
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}packages/get-top-rated-packages`, {
+                    headers: {
+                        Authorization: `Bearer ${authToken}`,
+                    },
+                });
+                const fetchedBestpicked = response.data.data || response.data || [];
+                setBestpicked(fetchedBestpicked);
+                setIsLoading(false);
+            } catch (err) {
+                setIsLoading(false);
+                setError("Failed to fetch packages. Please try again.");
+            }
+        };
+        fetchBestpicked();
+    }, []);
+
+    useEffect(() => {
+        const fetchLesserWonders = async () => {
+            try {
+                const registerToken = localStorage.getItem("auth_token_register");
+              const loginToken = localStorage.getItem("auth_token_login");
+              let authToken = null;
+        
+             if (loginToken) {
+                authToken = loginToken;
+                console.log("Using login token for fetching packages.");
+              }
+              else if (registerToken) {
+                authToken = registerToken;
+                console.log("Using register token for fetching packages.");
+              } 
+        
+              if (!authToken) {
+                setError("Authentication token not found");
+                setIsLoading(false);
+                return;
+              }
+          
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}packages/get-lesser-known-packages`, {
+                    headers: {
+                        Authorization: `Bearer ${authToken}`,
+                    },
+                });
+                const fetchedLesserWonders = response.data.data || response.data || [];
+                setLesserWonders(fetchedLesserWonders);
+                setIsLoading(false);
+            } catch (err) {
+                setIsLoading(false);
+                setError("Failed to fetch packages. Please try again.");
+            }
+        };
+        fetchLesserWonders();
+    }, []);
+
+    useEffect(() => {
+        const fetchPackages = async () => {
+            try {
+                const registerToken = localStorage.getItem("auth_token_register");
+              const loginToken = localStorage.getItem("auth_token_login");
+              let authToken = null;
+        
+             if (loginToken) {
+                authToken = loginToken;
+                console.log("Using login token for fetching packages.");
+              }
+              else if (registerToken) {
+                authToken = registerToken;
+                console.log("Using register token for fetching packages.");
+              } 
+        
+              if (!authToken) {
+                setError("Authentication token not found");
+                setIsLoading(false);
+                return;
+              }
+          
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}packages`, {
+                    headers: {
+                        Authorization: `Bearer ${authToken}`,
+                    },
+                });
+                const fetchedPackages = response.data.data || response.data || [];
+                setPackages(fetchedPackages);
+                setAllPackages(fetchedPackages);
+                setIsLoading(false);
+            } catch (err) {
+                setIsLoading(false);
+                setError("Failed to fetch packages. Please try again.");
+            }
+        };
+        fetchPackages();
+    }, []);
+
+    useEffect(() => {
+        const fetchTour_category = async () => {
+            try {
+                const registerToken = localStorage.getItem("auth_token_register");
+              const loginToken = localStorage.getItem("auth_token_login");
+              let authToken = null;
+        
+             if (loginToken) {
+                authToken = loginToken;
+                console.log("Using login token for fetching packages.");
+              }
+              else if (registerToken) {
+                authToken = registerToken;
+                console.log("Using register token for fetching packages.");
+              } 
+        
+              if (!authToken) {
+                setError("Authentication token not found");
+                setIsLoading(false);
+                return;
+              }        
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}tour-categories`, {
+                    headers: {
+                        Authorization: `Bearer ${authToken}`,
+                    },
+                });
+                const allTour_category = response.data.data || response.data || [];
+                setTour_category(allTour_category);
+                setIsLoading(false);
+            } catch (err) {
+                setIsLoading(false);
+                setError("Failed to fetch packages. Please try again.");
+            }
+        };
+        fetchTour_category();
+    }, []);
+
+    const handleAccordionItemClick = async (sectionIndex, itemId) => {
+        const newSelectedItems = { ...selectedItems };
+        const sectionTitle = accordionData[sectionIndex].title;
+
+        if (newSelectedItems[sectionTitle]) {
+            if (newSelectedItems[sectionTitle].includes(itemId)) {
+                newSelectedItems[sectionTitle] = newSelectedItems[sectionTitle].filter((id) => id !== itemId);
+                if (newSelectedItems[sectionTitle].length === 0) {
+                    delete newSelectedItems[sectionTitle];
+                }
+            } else {
+                newSelectedItems[sectionTitle].push(itemId);
+            }
+        } else {
+            newSelectedItems[sectionTitle] = [itemId];
         }
-    ];
 
-    const bestPickedData = [
-        { id: 1, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/best-picked/01.jpg" },
-        { id: 2, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/best-picked/02.jpg" },
-        { id: 3, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/best-picked/03.jpg", },
-        { id: 4, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/best-picked/01.jpg" },
-        { id: 5, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/best-picked/02.jpg" },
-        { id: 6, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/best-picked/03.jpg", },
-    ];
+        setSelectedItems(newSelectedItems);
+        await filterPackagesByAccordion(newSelectedItems);
+    };
 
-    const wondersData = [
-        { id: 1, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/wonders/01.jpg" },
-        { id: 2, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/wonders/02.jpg" },
-        { id: 3, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/wonders/03.jpg", },
-        { id: 4, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/wonders/01.jpg" },
-        { id: 5, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/wonders/02.jpg" },
-        { id: 6, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/wonders/03.jpg", },
-    ];
+    const filterPackagesByAccordion = async (selectedItemsToFilter) => {
+        if (Object.keys(selectedItemsToFilter).length === 0) {
+            setFilteredByAccordion([]);
+            applyAllFilters();
+            return;
+        }
 
+        setIsLoading(true);
+        try {
+            const registerToken = localStorage.getItem("auth_token_register");
+          const loginToken = localStorage.getItem("auth_token_login");
+          let authToken = null;
+    
+         if (loginToken) {
+            authToken = loginToken;
+            console.log("Using login token for fetching packages.");
+          }
+          else if (registerToken) {
+            authToken = registerToken;
+            console.log("Using register token for fetching packages.");
+          } 
+    
+          if (!authToken) {
+            setError("Authentication token not found");
+            setIsLoading(false);
+            return;
+          }    
+            let allFilteredPackages = [];
+            for (const sectionTitle in selectedItemsToFilter) {
+                const section = accordionData.find((item) => item.title === sectionTitle);
+                if (section && section.filterEndpoint) {
+                    for (const itemId of selectedItemsToFilter[sectionTitle]) {
+                        const response = await axios.get(
+                            `${process.env.NEXT_PUBLIC_API_URL}${section.filterEndpoint}${itemId}`,
+                            {
+                                headers: {
+                                    Authorization: `Bearer ${authToken}`,
+                                },
+                            }
+                        );
+                        allFilteredPackages = [...allFilteredPackages, ...(response.data.data || response.data || [])];
+                    }
+                }
+            }
+            const uniquePackages = allFilteredPackages.filter((v, i, a) => a.findIndex(t => (t.id === v.id)) === i);
+            setFilteredByAccordion(uniquePackages);
+            setIsLoading(false);
+            applyAllFilters(uniquePackages);
+        } catch (err) {
+            setError("Failed to fetch filtered packages.");
+            setIsLoading(false);
+        }
+    };
 
+    const applyAllFilters = (basePackages = null) => {
+        let packagesToFilter = basePackages;
+        
+        if (!packagesToFilter) {
+            packagesToFilter = filteredByAccordion.length > 0 ? filteredByAccordion : allPackages;
+        }
+        
+        const filtered = packagesToFilter.filter((pkg) => {
+            const adultPrice = parseFloat(pkg.adult_price);
+            const duration = pkg.number_of_days;
+            return (
+                adultPrice >= priceRange[0] &&
+                adultPrice <= priceRange[1] &&
+                duration >= durationRange[0] &&
+                duration <= durationRange[1]
+            );
+        });
+        
+        setNoResultsFound(filtered.length === 0);
+        setFilteredPackages(filtered);
+    };
+
+    const handleSearch = () => {
+        applyAllFilters();
+        if (isToggled) {
+            setIsToggled(false);
+        }
+    };
+
+    const clearAllFilters = () => {
+        setPriceRange([30, 8000]);
+        setDurationRange([1, 10]);
+        setSelectedItems({}); // This will clear the selected items
+        setFilteredByAccordion([]);
+        setFilteredPackages([]);
+        setNoResultsFound(false);
+        applyAllFilters(); 
+    };
+
+    const displayPackages = filteredPackages.length > 0 ? filteredPackages : packages;
 
     return (
         <>
             <Banner />
-         
-
             <section className={style['tour-package-page']}>
                 <div className={`container-fluid ${style['tour-package-page-container']}`}>
-
 
                     <div className={style['tour-packagebtn-container']}>
                         <button className={style['btn-toggle']} onClick={handleToggle}><LuMenu /> &nbsp; FILTER</button>
@@ -99,47 +446,39 @@ const Country = () => {
                         {/* left */}
                         <div className={`${style['left']} ${isToggled ? `${style['highlight']}` : ''}`}>
                             <div className={style['package-filter']}>
-                                <h4 className='pt-2'>Price Range</h4>
+                                <div className={style['filter-header']}>
+                                    <h4 className='pt-2'>Price Range</h4>
+                                </div>
                                 <div className={style['price-range']}>
                                     <Range
                                         step={1}
                                         min={30}
-                                        max={3900}
+                                        max={8000}
                                         values={priceRange}
                                         onChange={handlePriceRangeChange}
                                         renderTrack={({ props, children }) => (
-                                            <div
-                                                {...props}
-                                                style={{
-                                                    ...props.style,
-                                                    height: '6px',
-                                                    width: '100%',
-                                                    backgroundColor: '#ccc'
-                                                }}
-                                            >
+                                            <div {...props} style={{ ...props.style, height: '6px', width: '100%', backgroundColor: '#ccc' }}>
                                                 {children}
                                             </div>
                                         )}
                                         renderThumb={({ props }) => (
-                                            <div
-                                                {...props}
-                                                style={{
-                                                    ...props.style,
-                                                    height: '24px',
-                                                    width: '24px',
-                                                    borderRadius: '50%',
-                                                    border: 'solid 3px #41a6ab',
-                                                    backgroundColor: '#fff'
-                                                }}
-                                            />
+                                            <div {...props} style={{ ...props.style, height: '24px', width: '24px', borderRadius: '50%', border: 'solid 3px #41a6ab', backgroundColor: '#fff' }} />
                                         )}
                                     />
-                                    <div>
+                                    <div className='d-flex'>
                                         <p>Price Range: ${priceRange[0]} — ${priceRange[1]}</p>
+                                        <button 
+                                            onClick={clearPriceFilter}
+                                            className="btn btn-link text-primary"
+                                        >
+                                            Clear
+                                        </button>
                                     </div>
                                 </div>
 
-                                <h4>Duration</h4>
+                                <div className={style['filter-header']}>
+                                    <h4>Duration</h4>
+                                </div>
                                 <div className={style['duration-range']}>
                                     <Range
                                         step={1}
@@ -148,121 +487,74 @@ const Country = () => {
                                         values={durationRange}
                                         onChange={handleDurationRangeChange}
                                         renderTrack={({ props, children }) => (
-                                            <div
-                                                {...props}
-                                                style={{
-                                                    ...props.style,
-                                                    height: '6px',
-                                                    width: '100%',
-                                                    backgroundColor: '#ccc'
-                                                }}
-                                            >
+                                            <div {...props} style={{ ...props.style, height: '6px', width: '100%', backgroundColor: '#ccc' }}>
                                                 {children}
                                             </div>
                                         )}
                                         renderThumb={({ props }) => (
-                                            <div
-                                                {...props}
-                                                style={{
-                                                    ...props.style,
-                                                    height: '24px',
-                                                    width: '24px',
-                                                    borderRadius: '50%',
-                                                    border: 'solid 3px #41a6ab',
-                                                    backgroundColor: '#fff'
-                                                }}
-                                            />
+                                            <div {...props} style={{ ...props.style, height: '24px', width: '24px', borderRadius: '50%', border: 'solid 3px #41a6ab', backgroundColor: '#fff' }} />
                                         )}
                                     />
-                                    <div>
+                                    <div className='d-flex'>
                                         <p>Days: {durationRange[0]} — {durationRange[1]} Days</p>
+                                        <button 
+                                            onClick={clearDurationFilter}
+                                            className="btn btn-link text-primary"
+                                        >
+                                            Clear
+                                        </button>
                                     </div>
                                 </div>
 
                                 <div className={style['accordion-range']}>
                                     {accordionData.map((accordion, index) => (
-                                        <Accordion key={index} title={accordion.title} items={accordion.items} isOpenInitially={true} />
+                                        <Accordion
+                                            key={index}
+                                            title={accordion.title}
+                                            items={accordion.items}
+                                            isOpenInitially={true}
+                                            onItemClick={(itemId) => handleAccordionItemClick(index, itemId)}
+                                            selectedItems={selectedItems[accordion.title] || []}
+                                        />
                                     ))}
                                 </div>
 
+                                <div className={style['filter-buttons']}>
+                                    <button className={`${style['btn-one']} mt-3`} onClick={clearAllFilters}>
+                                        Clear Filters
+                                    </button>
+                                </div>
+
                                 <button className={`${style['btn-toggle']} ${style['btn-close']}`} onClick={handleToggle}>
-                                <IoIosCloseCircleOutline />
-                              </button>
-
+                                    <IoIosCloseCircleOutline />
+                                </button>
                             </div>
-
-                            <button className={`${style['btn-one']} ${style['btn-mobile']}`} onClick={handleToggle}>
-                            Search
-                              </button>
-
-                           
-
-
+                            <button className={`${style['btn-one']} ${style['btn-mobile']}`} onClick={handleSearch}>
+                                Search
+                            </button>
                         </div>
                         {/* left end */}
 
                         {/* right */}
                         <div className={`${style['right']}  ${isToggled ? `${style['filter-full-width']}` : ''}`}>
-                            <h3>Tour Packages</h3>
-                            <TourPackageTab
-                                breakPoints={isToggled ? firstBreakPoints : secondBreakPoints}
-                            />
-
-
-                            {/* TourPackageTab Start */}
-                            {/* TourPackageTab End */}
-
-
-
-
-
-
-
-
-                            {/* <section className={style['cta-section']}>
-                                <div className={style['cta-section-container']}>
-                                    <div className='container'>
-                                        <div className='row'>
-                                            <div className={`col-xxl-6 col-xl-6  col-lg-12  col-md-12  col-sm-12  col-12 mt-3 ${style['cta-half-left']}`}>
-
-                                                <div className={`container ${style['cta-half-container']}`}>
-                                                    <div className='row'>
-                                                        <div className='col-md-6'>
-                                                            <div className={style['cta-section-left']}>
-                                                                <span><CiMobile3 /></span>
-                                                                <span><h5>CALL NOW</h5><p>for free consultation</p></span>
-                                                            </div>
-                                                        </div>
-                                                        <div className='col-md-6'>
-                                                            <div className={style['cta-section-right']}>
-                                                                <a href='tel:+5866 958 5545'>: +5866 958 5545</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div className='col-xxl-6 col-xl-6  col-lg-12  col-md-12  col-sm-12  col-12 mt-3'>
-                                                <div className='container'>
-                                                    <div className='row'>
-                                                        <div className='col-md-6 '>
-                                                            <div className={style['cta-section-left']}>
-                                                                <span><CiMobile3 /></span>
-                                                                <span><h5>MAIL US NOW</h5><p>for free consultation</p></span>
-                                                            </div>
-                                                        </div>
-                                                        <div className='col-md-6'>
-                                                            <div className={style['cta-section-right']}>
-                                                                <a href='mailto:info@consultaid.com'>:info@consultaid.com</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                            <h3>Tour Packages</h3>                            
+                            {noResultsFound ? (
+                                <div className={style['no-results']}>
+                                    <h4>No packages found with the selected filters</h4>
+                                    <p>Please try adjusting your price range, duration, or activity selections</p>
+                                    <button className={style['btn-one']} onClick={clearAllFilters}>Clear All Filters</button>
                                 </div>
-                            </section> */}
+                            ) : (
+                                <TourPackageTab 
+                                    tour_category={tour_category}
+                                    packages={displayPackages}
+                                    breakPoints={isToggled ? firstBreakPoints : secondBreakPoints} 
+                                />
+                            )}
+
+                            <div>
+                                <FeaturedIntegratedTravel />
+                            </div>
 
                             {/* best picked for you */}
                             <section className={style['pakage-bes-picked']}>
@@ -272,7 +564,7 @@ const Country = () => {
                                             <h3 className='pb-3'>Best picked for you</h3>
                                         </div>
                                         <div className='col-md-12'>
-                                            <Carousal bestPicked={bestPickedData} count={4} type="tour-bestPicked" />
+                                            <Carousal bestPicked={bestPicked} count={4} type="tour-bestPicked" />
                                         </div>
                                     </div>
                                 </div>
@@ -288,7 +580,7 @@ const Country = () => {
                                             <p className='text-center'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. <br />Lorem Ipsum has been the industry's standard dummy text</p>
                                         </div>
                                         <div className='col-md-12'>
-                                            <Carousal wonders={wondersData} count={3} type="tour-wonders" />
+                                            <Carousal wonders={lesserWonders} count={3} type="tour-wonders" />
                                         </div>
                                     </div>
                                 </div>
@@ -324,4 +616,4 @@ const Country = () => {
     );
 }
 
-export default Country;
+export default TourPackage;

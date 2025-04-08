@@ -14,6 +14,7 @@ import SinglePackageContainerReview from "../tour-package-details/package-contai
 import SinglePackageContainerReviewImage from "../tour-package-details/package-details-review";
 import RatingCarousel from "../tour-package-details/RatingCarousel";
 import PakageDetailsOtherPackages from "../tour-package-details/pakage-details-other-packages";
+import OtherBlogs from "@components/tour-package-details/other-blogs";
 import CountryInspiration from "../countries/country-inspiration";
 // Import Slick Carousel and styles
 import "slick-carousel/slick/slick.css";
@@ -34,6 +35,7 @@ function Carousal({
   blog,
   userRatingsCarosul,
   pakageDetailsOtherPackages,
+  otherBlogs,
   count,
   type,
   bestPicked,
@@ -55,7 +57,7 @@ function Carousal({
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 3000,
-    arrows: type !== "media-page-full-carosul" && type !== "event-page-scroll" && type !== "upcoming-events" && type !== "pakage-details-other-packages",
+    arrows: type !== "media-page-full-carosul" && type !== "event-page-scroll" && type !== "upcoming-events" && type !== "pakage-details-other-packages" && type !== "other-blogs",
 
     responsive: [
       {
@@ -161,11 +163,11 @@ function Carousal({
       {type === "home-blog" &&
         blog.map((b) => (
           <SingleHomeBlog
-            key={b.id}
-            image={b.image}
+            key={b.uuid_id}
+            image={b.main_image_url}
             heading={b.heading}
-            description={b.description}
-            link={b.link}
+            description={b.description1}
+            link={b.uuid_id}
           />
         ))}
 
@@ -216,10 +218,10 @@ function Carousal({
         featuredTravel.map((featuredTravel) => (
           <FeaturedTravel
             key={featuredTravel.id}
-            image={featuredTravel.image}
-            heading={featuredTravel.heading}
+            image={featuredTravel?.photo_urls?.[0] || ''}
+            name={featuredTravel.name}
             description={featuredTravel.description}
-            link={featuredTravel.link}
+            link={featuredTravel.id.toString()}
           />
         ))}
 
@@ -227,10 +229,10 @@ function Carousal({
         bestPicked.map((bestPicked) => (
           <SingleBestPicked
             key={bestPicked.id}
-            image={bestPicked.image}
-            heading={bestPicked.heading}
+            image={bestPicked.photo_urls?.[0] || ''}
+            heading={bestPicked.name}
             description={bestPicked.description}
-            link={bestPicked.link}
+            link={bestPicked.uuid_id}
           />
         ))}
         
@@ -238,21 +240,23 @@ function Carousal({
         wonders.map((wonders) => (
           <Singlewonders
             key={wonders.id}
-            image={wonders.image}
-            heading={wonders.heading}
+            image={wonders.photo_urls?.[0] || ''}
+            heading={wonders.name}
             description={wonders.description}
-            link={wonders.link}
+            link={wonders.id}
           />
         ))}
-      {type === "tour-package-details-reviews" &&
-        packageDetailsReview.map((review) => (
-          <SinglePackageContainerReview
-            key={review.id}
-            image={review.image}
-            heading={review.heading}
-            description={review.description}
-          />
-        ))}
+
+{type === "tour-package-details-reviews" &&
+  packageDetailsReview.map((item, index) => (
+    <SinglePackageContainerReview
+      key={index}
+      image={item.image}
+      heading={item.heading}
+      description={item.description}
+    />
+  ))}
+
       {type === "tour-package-details-reviews-img" &&
         packageDetailsReviewImage.map((reviewImage) => (
           <SinglePackageContainerReviewImage
@@ -263,7 +267,7 @@ function Carousal({
           />
         ))}
 
-      {type === "user-ratings-carosul" &&
+      {/* {type === "user-ratings-carosul" &&
         userRatingsCarosul.map((userRatingsCarosul) => (
           <RatingCarousel
             key={userRatingsCarosul.id}
@@ -274,18 +278,27 @@ function Carousal({
             description={userRatingsCarosul.description}
             link={userRatingsCarosul.link}
           />
-        ))}
+        ))} */}
 
       {type === "pakage-details-other-packages" &&
         pakageDetailsOtherPackages?.map((pakageDetailsOtherPackages) => (
           <PakageDetailsOtherPackages
             key={pakageDetailsOtherPackages.id}
-            image={pakageDetailsOtherPackages.image}
-            headingIcon={pakageDetailsOtherPackages.headingIcon}
-            heading={pakageDetailsOtherPackages.heading}
-            date={pakageDetailsOtherPackages.date}
+            image={pakageDetailsOtherPackages.photo_urls?.[0] || ''}
+            heading={pakageDetailsOtherPackages.name}
             description={pakageDetailsOtherPackages.description}
             link={pakageDetailsOtherPackages.link}
+          />
+        ))}
+
+      {type === "other-blogs" &&
+        otherBlogs?.map((otherblogs) => (
+          <OtherBlogs
+            key={otherblogs.uuid_id}
+            image={otherblogs.main_image_url}
+            heading={otherblogs.heading}
+            description={otherblogs.description1}
+            link={otherblogs.uuid_id}
           />
         ))}
 
