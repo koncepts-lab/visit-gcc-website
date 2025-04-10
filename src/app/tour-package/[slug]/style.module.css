@@ -85,6 +85,29 @@
 }
 .p-color{ color: #309da2; font-weight: 600;}
 
+.inclusion-icon,
+.theme-icon {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  margin-right: 10px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.inclusions span {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.inclusions span img {
+  flex-shrink: 0;
+}
+
+.inclusions span .clearfix {
+  display: none;
+}
 
 .ask-your-questions{
     background-color:#ecf1f7;

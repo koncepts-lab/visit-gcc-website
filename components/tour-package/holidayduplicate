@@ -1,0 +1,155 @@
+"use client";
+import React, { useEffect } from "react";
+import Link from "next/link";
+import style from "./style.module.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { FaFacebookF, FaTwitter, FaGooglePlusG } from "react-icons/fa";
+
+const HolidaysTab = () => {
+  const tabsData = [
+    { id: "All-offer", name: "All Offers", description: "Explore all offers" },
+    { id: "Honeymoon", name: "Honeymoon", description: "Romantic destinations for couples" },
+    { id: "Pilgrimage", name: "Pilgrimage", description: "Sacred journeys and spiritual retreats" },
+    { id: "Camping", name: "Camping", description: "Outdoor adventures and camping spots" },
+    { id: "Cruise-Vacations", name: "Cruise Vacations", description: "Luxury cruises and sea voyages" },
+    { id: "Beach", name: "Beach", description: "Relaxing beach destinations" },
+    { id: "Luxury", name: "Luxury", description: "High-end luxury experiences" },
+  ];
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      require("bootstrap/dist/js/bootstrap.bundle.min.js");
+    }
+  }, []);
+
+  const renderTabContent = (description) => (
+    <div className={`${style["documentation-container"]} p-0`}>
+      <div className="container">
+        <div className="row">
+          <div className="col-md-3 p-0">
+            <img
+              src="../images/tour/358-608.jpg"
+              className={style["img-Holidays"]}
+              alt="Destination"
+            />
+          </div>
+          <div className={`col-md-3 p-0 ${style["vertical-center"]}`}>
+            <div className={style["tour-holidays-text"]}>
+              <h5>Destination</h5>
+              <h6>UAE</h6>
+              <span className={style["line"]}></span>
+              <p>{description}</p>
+              <ul>
+                <li>
+                  <Link href="#0" className={style["fb"]}>
+                    <FaFacebookF />
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#0" className={style["tw"]}>
+                    <FaTwitter />
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#0" className={style["gp"]}>
+                    <FaGooglePlusG />
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Additional content */}
+          <div className="col-md-3">
+            <div className={style["tour-holidays-box"]}>
+              <img src="../images/tour/269-273.jpg" className="w-100" alt="Destination" />
+              <span>
+                <h6>Destination</h6>
+                <p>Saudi</p>
+              </span>
+            </div>
+
+            <div className={`mb-0 ${style["tour-holidays-box"]} ${style["mobile-pb"]}`}>
+              <img src="../images/tour/02.jpg" className="w-100" alt="Destination" />
+              <span>
+                <h6>Destination</h6>
+                <p>Saudi</p>
+              </span>
+            </div>
+          </div>
+
+          {/* More content */}
+          <div className="col-md-3">
+            <div className={style["tour-holidays-box"]}>
+              <img src="../images/tour/03.jpg" className="w-100" alt="Destination" />
+              <span>
+                <h6>Destination</h6>
+                <p>Saudi</p>
+              </span>
+            </div>
+
+            <div className={`mb-0 ${style["tour-holidays-box"]}`}>
+              <img src="../images/tour/04.jpg" className="w-100" alt="Destination" />
+              <span>
+                <h6>Destination</h6>
+                <p>Saudi</p>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <section className={style.innerpage}>
+                    <div className={`container-fluid ${style['pr-0']}`}>
+                <div className="row pb-2">
+                    <div className="col-md-12">
+                        <div className={`pr-0 ${style['country-container-box']}`}>
+                            <div className={style['country-container']}></div>
+    
+      <ul
+        className={`nav nav-tabs border-0 ${style["country-nav-tabs"]}`}
+        id="myTab"
+        role="tablist"
+      >
+        {tabsData.map((tab, index) => (
+          <li key={tab.id} className={`nav-item ${style["country-nav-item"]}`} role="presentation">
+            <button
+              className={`nav-link border-0 ${style["country-nav-link"]} ${
+                index === 0 ? style["active-tab"] : ""
+              }`}
+              id={`${tab.id}-tab`}
+              data-bs-toggle="tab"
+              data-bs-target={`#${tab.id}`}
+              type="button"
+              role="tab"
+              aria-controls={tab.id}
+              aria-selected={index === 0}
+            >
+              {tab.name}
+            </button>
+          </li>
+        ))}
+      </ul>
+
+      {/* Tab Content */}
+      <div className="tab-content" id="myTabContent">
+        {tabsData.map((tab, index) => (
+          <div
+            key={tab.id}
+            className={`tab-pane fade ${index === 0 ? "show active" : ""}`}
+            id={tab.id}
+            role="tabpanel"
+            aria-labelledby={`${tab.id}-tab`}
+          >
+            {renderTabContent(tab.description)}
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+};
+
+export default HolidaysTab;

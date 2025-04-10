@@ -1,34 +1,182 @@
-"use client"; // Ensure this component is a Client Component
+"use client";
 
-import React, { useState } from 'react';
-import style from './style.module.css'; // Ensure correct path for styles
+import React, { useState, useEffect } from 'react';
+import style from './style.module.css';
 import { HiOutlineArrowLongRight } from "react-icons/hi2";
-function HighlightTab() {
-    // State to keep track of the active tab
-    const [activeTab, setActiveTab] = useState('Highlight');
+import axios from 'axios';
 
-    // Tab names 
+function HighlightTab({ packageId }) {
+    const [activeTab, setActiveTab] = useState('Highlight');
+    const [activeAccordion, setActiveAccordion] = useState(null);
+    const [highlightData, setHighlightData] = useState([]);
+    const [itineraryData, setItineraryData] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState('');
+
+    useEffect(() => {
+        const fetchHighlights = async () => {
+            try {
+                const registerToken = localStorage.getItem("auth_token_register");
+              const loginToken = localStorage.getItem("auth_token_login");
+              let authToken = null;
+        
+             if (loginToken) {
+                authToken = loginToken;
+                console.log("Using login token for fetching packages.");
+              }
+              else if (registerToken) {
+                authToken = registerToken;
+                console.log("Using register token for fetching packages.");
+              } 
+        
+              if (!authToken) {
+                setError("Authentication token not found");
+                setIsLoading(false);
+                return;
+              }
+          
+                setIsLoading(true);
+                setError('');
+                const response = await axios.get(
+                    `${process.env.NEXT_PUBLIC_API_URL}package-highlights/${packageId}/get-highlights`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${authToken}`,
+                        },
+                    }
+                );
+                console.log("highlights:", response.data);
+        
+                const formattedData = response.data.map(item => ({
+                    name: `${item.day}`, 
+                    content: item.description,
+                }));
+                setHighlightData(formattedData);
+        
+            } catch (err) {
+                console.error("Error fetching highlights:", err);
+                setError("Failed to fetch highlights.");
+            } finally {
+                setIsLoading(false); // This line is missing in your original code
+            }
+        };
+        const fetchItinerary = async () => {
+            try {
+                const registerToken = localStorage.getItem("auth_token_register");
+              const loginToken = localStorage.getItem("auth_token_login");
+              let authToken = null;
+        
+             if (loginToken) {
+                authToken = loginToken;
+                console.log("Using login token for fetching packages.");
+              }
+              else if (registerToken) {
+                authToken = registerToken;
+                console.log("Using register token for fetching packages.");
+              } 
+        
+              if (!authToken) {
+                setError("Authentication token not found");
+                setIsLoading(false);
+                return;
+              }
+          
+                setIsLoading(true);
+                setError('');
+                const response = await axios.get(
+                    `${process.env.NEXT_PUBLIC_API_URL}itineraries/package/get-by-package?package_id=${packageId}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${authToken}`,
+                        },
+                    }
+                );
+                console.log("itenearary:", response.data);
+
+                const formattedData = response.data.map(item => ({
+                    name: `${item.day} - ${item.title}`,
+                    content: item.description,
+                }));
+                setItineraryData(formattedData);
+            } catch (err) {
+                console.error("Error fetching itinerary:", err);
+                setError("Failed to fetch itinerary.");
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        if (packageId) {
+            setIsLoading(true); // Set loading at the start of tab change
+            setError('');
+            if (activeTab === 'Highlight') {
+                fetchHighlights();
+            } else if (activeTab === 'Itinerary') {
+                fetchItinerary();
+            }
+        }
+    }, [packageId, activeTab]);
+
     const tabs = [
-        { name: 'Highlight', label: 'Highlight' },
-        { name: 'Itinerary', label: 'Itinerary' },
-        { name: 'InclusionsExclusions', label: 'Package Inclusions & Exclusions' },
-        { name: 'Note', label: 'Note' }
+        {
+            name: 'Highlight',
+            label: 'Highlight',
+        },
+        {
+            name: 'Itinerary',
+            label: 'Itinerary',
+        },
     ];
 
-    // Render tab content based on active tab
     const renderTabContent = () => {
-        switch (activeTab) {
-            case 'Highlight':
-                return <HighlightContent />;
-            case 'Itinerary':
-                return <ItineraryContent />;
-            case 'InclusionsExclusions':
-                return <InclusionsExclusionsContent />;
-            case 'Note':
-                return <NoteContent />;
-            default:
-                return null;
+        if (isLoading) {
+            return <div className="text-center">Loading...</div>;
         }
+
+        if (error) {
+            return <div className="text-danger text-center">{error}</div>;
+        }
+
+        let currentTabData;
+        let heading;
+
+        if (activeTab === 'Highlight') {
+            currentTabData = highlightData;
+            heading = 'Highlight';
+        } else if (activeTab === 'Itinerary') {
+            currentTabData = itineraryData;
+            heading = 'Itinerary';
+        }
+
+        return (
+            <>
+                <h3>{heading}</h3>
+                <div>
+                    {currentTabData && currentTabData.length > 0 ? ( // Ensure data exists before mapping
+                        currentTabData.map((tab, index) => (
+                            <div key={index} className={style.accordion}>
+                                <div
+                                    className={`${style.accordionTab} ${activeAccordion === index ? style.activeAccordion : ''}`}
+                                    onClick={() => setActiveAccordion(activeAccordion === index ? null : index)}
+                                >
+                                    <h4><HiOutlineArrowLongRight /> {tab.name}</h4>
+                                    <span className={style.accordionIcon}>
+                                        {activeAccordion === index ? '-' : '+'}
+                                    </span>
+                                </div>
+                                {activeAccordion === index && (
+                                    <div className={style.accordionContent}>
+                                        <p>{tab.content}</p>
+                                    </div>
+                                )}
+                            </div>
+                        ))
+                    ) : (
+                        <div>No data available for this tab.</div>
+                    )}
+                </div>
+            </>
+        );
     };
 
     return (
@@ -38,7 +186,10 @@ function HighlightTab() {
                     <button
                         key={tab.name}
                         className={`${style.tabButton} ${activeTab === tab.name ? style.active : ''}`}
-                        onClick={() => setActiveTab(tab.name)}
+                        onClick={() => {
+                            setActiveTab(tab.name);
+                            setActiveAccordion(null);
+                        }}
                     >
                         {tab.label}
                     </button>
@@ -50,112 +201,5 @@ function HighlightTab() {
         </div>
     );
 }
-
-// Accordion content component
-const HighlightContent = () => {
-    // State to manage which accordion panel is open
-    const [activeAccordion, setActiveAccordion] = useState(null);
-
-    // List of accordion tabs and their content
-    const accordionTabs = [
-        {
-            name: 'Day 1 - Arrival in Salalah',
-            content: (
-                <>
-                    <p> 
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                    </p>
-                </>
-            ),
-        },
-        {
-            name: 'Day 2 - Salalah City Tour Discover the Cultural Delights of Salalah',
-            content: (
-                <>
-                    <p>
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                    </p>
-                </>
-            ),
-        },
-        {
-            name: "Day 3 - East Salalah Tour Discover Nature's Wonders and Ancient Treasures",
-            content: (
-                <>
-                    <p>
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                    </p>
-                </>
-            ),
-        },
-        {
-            name: 'Day 4 - Farewell Salalah',
-            content: (
-                <>
-                    <p>
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                    </p>
-                </>
-            ),
-        },
-    ];
-
-    // Toggle the active accordion panel
-    const toggleAccordion = (index) => {
-        setActiveAccordion(activeAccordion === index ? null : index);
-    };
-
-    return (
-        <>
-            <h3>Highlight</h3>
-            <p>
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged
-            </p>
-            <div>
-                {accordionTabs.map((tab, index) => (
-                    <div key={index} className={style.accordion}>
-                        <div
-                            className={`${style.accordionTab} ${activeAccordion === index ? style.activeAccordion : ''
-                                }`}
-                            onClick={() => toggleAccordion(index)}
-                        >
-                            <h4><HiOutlineArrowLongRight /> {tab.name}</h4>
-                            <span className={style.accordionIcon}>
-                                {activeAccordion === index ? '-' : '+'}
-                            </span>
-                        </div>
-                        {activeAccordion === index && (
-                            <div className={style.accordionContent}>
-                                {tab.content}
-                            </div>
-                        )}
-                    </div>
-                ))}
-            </div>
-        </>
-    );
-};
-
-const ItineraryContent = () => (
-    <div>
-        <h4>Itinerary</h4>
-    </div>
-);
-
-const InclusionsExclusionsContent = () => (
-    <div>
-        <h4>Package Inclusions & Exclusions</h4>
-    </div>
-);
-
-const NoteContent = () => (
-    <div>
-        <h4>Important Note</h4>
-    </div>
-);
-
-
-
-
 
 export default HighlightTab;

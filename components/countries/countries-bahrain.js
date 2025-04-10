@@ -31,7 +31,7 @@ const CountriesBahrain = () => {
             >
               <Link href={country.link}>
                 <img
-                  src={pathname === country.link ? country.activeImage : country.image} // Dynamically change the image
+                  src={pathname === country.link ? country.activeImage : country.image} 
                   alt={country.heading}
                   className={`${index === 5 ? style['highlighted-image'] : ''}`}
                 />

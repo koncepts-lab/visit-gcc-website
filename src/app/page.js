@@ -17,19 +17,74 @@ function Home() {
   const [headings, setHeadings] = useState([]);
   const [banners, setBanners] = useState([]);
   const [experiences, setExperiences] = useState([]);
-
-
+        const [blogs, setBlogs] = useState([]);
+ 
+          useEffect(() => {
+                const fetchAllBlog = async () => {
+                  try {
+                    const registerToken = localStorage.getItem("auth_token_register");
+                  const loginToken = localStorage.getItem("auth_token_login");
+                  let authToken = null;
+            
+                 if (loginToken) {
+                    authToken = loginToken;
+                    console.log("Using login token for fetching packages.");
+                  }
+                  else if (registerToken) {
+                    authToken = registerToken;
+                    console.log("Using register token for fetching packages.");
+                  } 
+            
+                  if (!authToken) {
+                    setError("Authentication token not found");
+                    setIsLoading(false);
+                    return;
+                  }         
+          
+                  const blogResponse = await axios.get(
+                    `${process.env.NEXT_PUBLIC_API_URL}blog`,
+                    {
+                      headers: {
+                        Authorization: `Bearer ${authToken}`,
+                      },
+                    }
+                  );
+          
+                  const Blogdata = blogResponse.data.data || blogResponse.data || [];
+                  console.log("Blog Data:", Blogdata);
+                  setBlogs(Blogdata);
+                  setIsLoading(false);
+                } catch (err) {
+                  setIsLoading(false);
+                  setError("Failed to fetch All Blogs. Please try again.");
+                  console.error("Error fetching data:", err);
+                }
+              };
+          
+              fetchAllBlog();
+            }, []);
 
   useEffect(() => {
     const fetchPackages = async () => {
       try {
-        const authToken = localStorage.getItem("auth_token_register");
-  
-        if (!authToken) {
-          setError("Authentication token not found");
-          setIsLoading(false);
-          return;
-        }
+        const registerToken = localStorage.getItem("auth_token_register");
+      const loginToken = localStorage.getItem("auth_token_login");
+      let authToken = null;
+
+     if (loginToken) {
+        authToken = loginToken;
+        console.log("Using login token for fetching packages.");
+      }
+      else if (registerToken) {
+        authToken = registerToken;
+        console.log("Using register token for fetching packages.");
+      } 
+
+      if (!authToken) {
+        setError("Authentication token not found");
+        setIsLoading(false);
+        return;
+      }
   
         const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}packages`, {
           headers: {
@@ -55,13 +110,24 @@ function Home() {
   useEffect(() => {
     const fetchExperience = async () => {
       try {
-        const authToken = localStorage.getItem("auth_token_register");
-  
-        if (!authToken) {
-          setError("Authentication token not found");
-          setIsLoading(false);
-          return;
-        }
+        const registerToken = localStorage.getItem("auth_token_register");
+      const loginToken = localStorage.getItem("auth_token_login");
+      let authToken = null;
+
+     if (loginToken) {
+        authToken = loginToken;
+        console.log("Using login token for fetching packages.");
+      }
+      else if (registerToken) {
+        authToken = registerToken;
+        console.log("Using register token for fetching packages.");
+      } 
+
+      if (!authToken) {
+        setError("Authentication token not found");
+        setIsLoading(false);
+        return;
+      }
   
         const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}packages/get-top-packages`, {
           headers: {
@@ -87,15 +153,25 @@ function Home() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        // Get the token from localStorage (or wherever it is stored)
-          const authToken = localStorage.getItem("auth_token_register");
+        const registerToken = localStorage.getItem("auth_token_register");
+      const loginToken = localStorage.getItem("auth_token_login");
+      let authToken = null;
 
-        if (!authToken) {
-          setError("Authentication token not found");
-          setIsLoading(false);
-          return;
-        }
+     if (loginToken) {
+        authToken = loginToken;
+        console.log("Using login token for fetching packages.");
+      }
+      else if (registerToken) {
+        authToken = registerToken;
+        console.log("Using register token for fetching packages.");
+      } 
 
+      if (!authToken) {
+        setError("Authentication token not found");
+        setIsLoading(false);
+        return;
+      }
+  
         const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}events`, {
           headers: {
             Authorization: `Bearer ${authToken}`, 
@@ -118,14 +194,24 @@ function Home() {
   useEffect(() => {
     const fetchHeadings = async () => {
       try {
-          const authToken = localStorage.getItem("auth_token_register");
+        const registerToken = localStorage.getItem("auth_token_register");
+      const loginToken = localStorage.getItem("auth_token_login");
+      let authToken = null;
 
-        if (!authToken) {
-          setError("Authentication token not found");
-          setIsLoading(false);
-          return;
-        }
+     if (loginToken) {
+        authToken = loginToken;
+        console.log("Using login token for fetching packages.");
+      }
+      else if (registerToken) {
+        authToken = registerToken;
+        console.log("Using register token for fetching packages.");
+      } 
 
+      if (!authToken) {
+        setError("Authentication token not found");
+        setIsLoading(false);
+        return;
+      }
         const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}home-page-heading`, {
           headers: {
             Authorization: `Bearer ${authToken}`, 
@@ -148,14 +234,24 @@ function Home() {
   useEffect(() => {
     const fetchBanners = async () => {
       try {
-          const authToken = localStorage.getItem("auth_token_register");
+        const registerToken = localStorage.getItem("auth_token_register");
+      const loginToken = localStorage.getItem("auth_token_login");
+      let authToken = null;
 
-        if (!authToken) {
-          setError("Authentication token not found");
-          setIsLoading(false);
-          return;
-        }
+     if (loginToken) {
+        authToken = loginToken;
+        console.log("Using login token for fetching packages.");
+      }
+      else if (registerToken) {
+        authToken = registerToken;
+        console.log("Using register token for fetching packages.");
+      } 
 
+      if (!authToken) {
+        setError("Authentication token not found");
+        setIsLoading(false);
+        return;
+      }
         const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}home-page-photo`, {
           headers: {
             Authorization: `Bearer ${authToken}`, 
@@ -175,15 +271,6 @@ function Home() {
     fetchBanners();
   }, []);
  
-
-  const blogData = [
-    { id: 1, heading: 'Blog Post 1', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', image: "/images/blog/01.jpg" },
-    { id: 2, heading: 'Blog Post 2', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', image: "/images/blog/02.jpg" },
-    { id: 3, heading: 'Blog Post 3', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', image: "/images/blog/03.jpg" },
-    { id: 4, heading: 'Blog Post 4', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', image: "/images/blog/01.jpg" },
-    { id: 5, heading: 'Blog Post 5', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', image: "/images/blog/02.jpg" },
-    { id: 6, heading: 'Blog Post 6', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', image: "/images/blog/03.jpg" },
-  ];
 
   return (
     <>
@@ -263,7 +350,7 @@ function Home() {
             <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-4 col-sm-3 col-3 pdb-3 text-right">
               <Link href="#0" className='float-right'>View All</Link>
             </div>
-            <Carousal blog={blogData} count={4} type="home-blog" />
+            <Carousal blog={blogs} count={4} type="home-blog" />
           </div>
         </div>
       </div>

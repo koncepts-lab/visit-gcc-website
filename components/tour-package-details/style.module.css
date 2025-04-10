@@ -51,7 +51,14 @@
     line-height: 18px;
 }
 
-
+.promo_input{
+    height: 43px;
+    border: #e2e2e2 2px solid;
+    border-radius: 5px;
+    background-color: white;
+    color: #989b9e;
+    padding-left: 10px;
+    }
 
 .tabContainer {
     border-radius: 8px;
@@ -304,7 +311,15 @@ border:none;
     border-radius:5px;
     padding: 15px;
 }
+.country-explore-item .country-explore-text{
+height: 200px;
+}
+.p-color{ color: #309da2; font-weight: 600;}
+
+
 .country-explore{ overflow: hide;}
+
+
 .PakageDetailsOtherPackages{
     border:solid 1px #ccc;
 }
@@ -334,9 +349,6 @@ border:none;
         overflow: hidden;
         padding-bottom: 10px;
     }
-
-
-
 
     @media only screen and (max-width: 991px) {
     .tabButtons {

@@ -19,6 +19,45 @@ import Link from 'next/link';
 import Newsletter from '../newsletter';
 
 
+const pakageDetailsOtherPackages = [
+  {
+    id: 1,
+    heading: "Project Heading",
+    description: "Industry Name",
+    image: "/images/other-packages/01.jpg",
+  },
+  {
+    id: 2,
+    heading: "Project Heading",
+    description: "Industry Name",
+    image: "/images/other-packages/02.jpg",
+  },
+  {
+    id: 3,
+    heading: "Project Heading",
+    description: "Industry Name",
+    image: "/images/other-packages/03.jpg",
+  },
+  {
+    id: 4,
+    heading: "Project Heading",
+    description: "Industry Name",
+    image: "/images/other-packages/04.jpg",
+  },
+  {
+    id: 5,
+    heading: "Project Heading",
+    description: "Industry Name",
+    image: "/images/other-packages/05.jpg",
+  },
+  {
+    id: 6,
+    heading: "Project Heading",
+    description: "Industry Name",
+    image: "/images/other-packages/06.jpg",
+  },
+];
+
 function Page() {
   const [commentOpen, setCommentOpen] = useState(false);
   const [comments, setComments] = useState([]);
@@ -31,116 +70,61 @@ function Page() {
       const [isLoading, setIsLoading] = useState(true);
       const [error, setError] = useState(null);      
       const [categories,setCategories ] = useState([]);
-      const [categoriesWithCounts, setCategoriesWithCounts] = useState([]);
       const [featured, setFeatured] = useState([]);
       const [tags, setTags] = useState([]);
     const [likedBlogs, setLikedBlogs] = useState({});
     const [commentReplies, setCommentReplies] = useState({});
-      const [isCategoryPopupOpen, setIsCategoryPopupOpen] = useState(false);
-    
-    const toggleCategoryPopup = () => {
-      setIsCategoryPopupOpen(!isCategoryPopupOpen);
-    };
-    
 
       const params = useParams();
       const slug = params?.slug;
 
-      useEffect(() => {
-        const fetchCategoriesAndCounts = async () => {
-          try {
-            const registerToken = localStorage.getItem("auth_token_register");
-          const loginToken = localStorage.getItem("auth_token_login");
-          let authToken = null;
-    
-         if (loginToken) {
-            authToken = loginToken;
-            console.log("Using login token for fetching packages.");
-          }
-          else if (registerToken) {
-            authToken = registerToken;
-            console.log("Using register token for fetching packages.");
-          } 
+
+
+    useEffect(() => {
+      const fetchCategories = async () => {
+        try {
+          const authToken = localStorage.getItem("auth_token_register");
     
           if (!authToken) {
             setError("Authentication token not found");
             setIsLoading(false);
             return;
           }
-      
-            // First, fetch categories
-            const categoriesResponse = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}category`, {
-              headers: {
-                Authorization: `Bearer ${authToken}`,
-              }
-            }); 
-            const allCategories = categoriesResponse.data.data || categoriesResponse.data || []; 
     
-            // Fetch blog counts for each category concurrently
-            const categoriesWithBlogCounts = await Promise.all(
-              allCategories.map(async (category) => {
-                try {
-                  const countResponse = await axios.get(
-                    `${process.env.NEXT_PUBLIC_API_URL}blog/${category.uuid_id}/get-blogs-by-category`, 
-                    {
-                      headers: {
-                        Authorization: `Bearer ${authToken}`,
-                      },
-                    }
-                  );
-                  
-                  const categoryBlogs = countResponse.data.data || countResponse.data || [];
-                  return {
-                    ...category,
-                    blogCount: categoryBlogs.length
-                  };
-                } catch (blogError) {
-                  console.error(`Error fetching blogs for category ${category.uuid_id}:`, blogError);
-                  return {
-                    ...category,
-                    blogCount: 0
-                  };
-                }
-              })
-            );
+          const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}category`, {
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+            }
+          }); 
+          const allCategories = response.data.data || response.data || []; 
     
-            setCategories(allCategories);
-            setCategoriesWithCounts(categoriesWithBlogCounts);
-            setIsLoading(false);
-        
-          } catch (err) {
-            setIsLoading(false);
-            setError("Failed to fetch categories. Please try again.");
-            console.error("Error fetching categories:", err);
-          }
-        };  
-        fetchCategoriesAndCounts();
-      }, []);
+          console.log("All categories:", allCategories); 
+          setCategories(allCategories);
+          setIsLoading(false);
+    
+        } catch (err) {
+          setIsLoading(false);
+          setError("Failed to fetch categories. Please try again.");
+          console.error("Error fetching categories:", err);
+        }
+      };  
+      fetchCategories();
+    }, []);
   
     useEffect(() => {
       if (!slug) return; 
   
       const fetchBlogData = async () => {
         try {
-          const registerToken = localStorage.getItem("auth_token_register");
-        const loginToken = localStorage.getItem("auth_token_login");
-        let authToken = null;
+          const authToken = localStorage.getItem("auth_token_register");
   
-       if (loginToken) {
-          authToken = loginToken;
-          console.log("Using login token for fetching packages.");
-        }
-        else if (registerToken) {
-          authToken = registerToken;
-          console.log("Using register token for fetching packages.");
-        } 
+          if (!authToken) {
+            setError("Authentication token not found");
+            setIsLoading(false);
+            return;
+          }
   
-        if (!authToken) {
-          setError("Authentication token not found");
-          setIsLoading(false);
-          return;
-        }
-    
+          // Fetch blog data
           const blogResponse = await axios.get(
             `${process.env.NEXT_PUBLIC_API_URL}blog/${slug}`,
             {
@@ -154,6 +138,7 @@ function Page() {
           console.log("Blog Data:", singleBlogData);
           setSlugBlogs(singleBlogData);
   
+          // Fetch FAQ data
           const faqResponse = await axios.get(
             `${process.env.NEXT_PUBLIC_API_URL}blog-faq/${slug}/get-blogfaqs`,
             {
@@ -176,91 +161,29 @@ function Page() {
   
       fetchBlogData();
     }, [slug]);
-
-    useEffect(() => {
-        const fetchAllBlog = async () => {
-          try {
-            const registerToken = localStorage.getItem("auth_token_register");
-          const loginToken = localStorage.getItem("auth_token_login");
-          let authToken = null;
-    
-         if (loginToken) {
-            authToken = loginToken;
-            console.log("Using login token for fetching packages.");
-          }
-          else if (registerToken) {
-            authToken = registerToken;
-            console.log("Using register token for fetching packages.");
-          } 
-    
-          if (!authToken) {
-            setError("Authentication token not found");
-            setIsLoading(false);
-            return;
-          }
-      
-  
-          // Fetch blog data
-          const blogResponse = await axios.get(
-            `${process.env.NEXT_PUBLIC_API_URL}blog`,
-            {
-              headers: {
-                Authorization: `Bearer ${authToken}`,
-              },
-            }
-          );
-  
-          const Blogdata = blogResponse.data.data || blogResponse.data || [];
-          console.log("Blog Data:", Blogdata);
-          setBlogs(Blogdata);
-          setIsLoading(false);
-        } catch (err) {
-          setIsLoading(false);
-          setError("Failed to fetch All Blogs. Please try again.");
-          console.error("Error fetching data:", err);
-        }
-      };
-  
-      fetchAllBlog();
-    }, []);
       
       useEffect(() => {
         const fetchFeatured = async () => {
           try {
-            const registerToken = localStorage.getItem("auth_token_register");
-          const loginToken = localStorage.getItem("auth_token_login");
-          let authToken = null;
-    
-         if (loginToken) {
-            authToken = loginToken;
-            console.log("Using login token for fetching packages.");
-          }
-          else if (registerToken) {
-            authToken = registerToken;
-            console.log("Using register token for fetching packages.");
-          } 
-    
-          if (!authToken) {
-            setError("Authentication token not found");
-            setIsLoading(false);
-            return;
-          }
+            const authToken = localStorage.getItem("auth_token_register");
       
+            if (!authToken) {
+              setError("Authentication token not found");
+              setIsLoading(false);
+              return;
+            }
       
             const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}blog/get-featured-blogs`, {
               headers: {
                 Authorization: `Bearer ${authToken}`,
               }
-              ,
-              params: {
-                limit: 3 
-              }
             }); 
             const allFeatured = response.data.data || response.data || []; 
       
             console.log("All Featured:", allFeatured); 
-            setFeatured(allFeatured.slice(0, 3));
+            setFeatured(allFeatured);
             setIsLoading(false);
+      
           } catch (err) {
             setIsLoading(false);
             setError("Failed to fetch Featured. Please try again.");
@@ -273,24 +196,12 @@ function Page() {
       useEffect(() => {
         const fetchTags = async () => {
           try {
-            const registerToken = localStorage.getItem("auth_token_register");
-          const loginToken = localStorage.getItem("auth_token_login");
-          let authToken = null;
-    
-         if (loginToken) {
-            authToken = loginToken;
-            console.log("Using login token for fetching packages.");
-          }
-          else if (registerToken) {
-            authToken = registerToken;
-            console.log("Using register token for fetching packages.");
-          } 
-    
-          if (!authToken) {
-            setError("Authentication token not found");
-            setIsLoading(false);
-            return;
-          }
+            const authToken = localStorage.getItem("auth_token_register");   
+            if (!authToken) {
+              setError("Authentication token not found");
+              setIsLoading(false);
+              return;
+            }
       
             const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}tag`, {
               headers: {
@@ -317,99 +228,42 @@ function Page() {
 
   const fetchComments = async () => {
     try {
-      const registerToken = localStorage.getItem("auth_token_register");
-    const loginToken = localStorage.getItem("auth_token_login");
-    let authToken = null;
+        const authToken = localStorage.getItem("auth_token_register");
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}blogs/${slug}/comments`, {
+            headers: { Authorization: `Bearer ${authToken}` },
+        });
+        const commentsData = response.data.comments || [];
+        setComments(commentsData);
 
-   if (loginToken) {
-      authToken = loginToken;
-      console.log("Using login token for fetching packages.");
-    }
-    else if (registerToken) {
-      authToken = registerToken;
-      console.log("Using register token for fetching packages.");
-    } 
+        for (const comment of commentsData) {
+            await fetchReplies(comment.uuid_id);
+        }
 
-    if (!authToken) {
-      setError("Authentication token not found");
-      setIsLoading(false);
-      return;
-    }
-
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}blogs/${slug}/comments`, {
-        headers: { Authorization: `Bearer ${authToken}` },
-      });
-      const commentsData = response.data.comments || [];
-      setComments(commentsData);
-
-      // Fetch replies for each comment
-      for (const comment of commentsData) {
-        await fetchReplies(comment.uuid_id);
-      }
     } catch (err) {
-      console.error("Error fetching comments:", err);
+        console.error("Error fetching comments:", err);
     }
-  };
+};
 
 const fetchReplies = async (commentId) => {
   try {
-    const registerToken = localStorage.getItem("auth_token_register");
-  const loginToken = localStorage.getItem("auth_token_login");
-  let authToken = null;
-
- if (loginToken) {
-    authToken = loginToken;
-    console.log("Using login token for fetching packages.");
-  }
-  else if (registerToken) {
-    authToken = registerToken;
-    console.log("Using register token for fetching packages.");
-  } 
-
-  if (!authToken) {
-    setError("Authentication token not found");
-    setIsLoading(false);
-    return;
-  }
-
-    const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}comments/${commentId}/replies`, {
-      headers: { Authorization: `Bearer ${authToken}` },
-    });
-    
-    console.log(`Replies for comment ${commentId}:`, response.data);
-
-    setCommentReplies(prev => ({
-      ...prev,
-      [commentId]: response.data.replies || [], 
-    }));
+      const authToken = localStorage.getItem("auth_token_register");
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}comments/${commentId}/replies`, {
+          headers: { Authorization: `Bearer ${authToken}` },
+      });
+      setCommentReplies(prev => ({
+          ...prev,
+          [commentId]: response.data || [],
+      }));
   } catch (err) {
-    console.error(`Error fetching replies for comment ${commentId}:`, err);
+      console.error(`Error fetching replies for comment ${commentId}:`, err);
   }
 };
-
 
 
   const addComment = async () => {
     if (newComment.trim() !== "") {
       try {
-        const registerToken = localStorage.getItem("auth_token_register");
-      const loginToken = localStorage.getItem("auth_token_login");
-      let authToken = null;
-
-     if (loginToken) {
-        authToken = loginToken;
-        console.log("Using login token for fetching packages.");
-      }
-      else if (registerToken) {
-        authToken = registerToken;
-        console.log("Using register token for fetching packages.");
-      } 
-
-      if (!authToken) {
-        setError("Authentication token not found");
-        setIsLoading(false);
-        return;
-      }
+        const authToken = localStorage.getItem("auth_token_register");
         const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}comments`, {
           blog_id: slugblog.uuid_id,
           comment: newComment,
@@ -428,24 +282,7 @@ const fetchReplies = async (commentId) => {
   const addReply = async (commentId) => {
     if (replyText.trim() !== "") {
       try {
-        const registerToken = localStorage.getItem("auth_token_register");
-      const loginToken = localStorage.getItem("auth_token_login");
-      let authToken = null;
-
-     if (loginToken) {
-        authToken = loginToken;
-        console.log("Using login token for fetching packages.");
-      }
-      else if (registerToken) {
-        authToken = registerToken;
-        console.log("Using register token for fetching packages.");
-      } 
-
-      if (!authToken) {
-        setError("Authentication token not found");
-        setIsLoading(false);
-        return;
-      }
+        const authToken = localStorage.getItem("auth_token_register");
         const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}replies`, {
           comment_id: commentId,
           comment: replyText,
@@ -455,6 +292,7 @@ const fetchReplies = async (commentId) => {
         console.log("Add Reply Response:", response.data);
         setComments(prev => prev.map(comment => {
           if (comment.uuid_id === commentId) {
+            // Ensure comment.replies is always an array
             const updatedReplies = comment.replies ? [...comment.replies, response.data] : [response.data];
             return { ...comment, replies: updatedReplies };
           } else {
@@ -488,27 +326,18 @@ const fetchReplies = async (commentId) => {
 
   const handleLikeBlog = async (blogUuid) => {
     try {
-      const registerToken = localStorage.getItem("auth_token_register");
-    const loginToken = localStorage.getItem("auth_token_login");
-    let authToken = null;
-
-   if (loginToken) {
-      authToken = loginToken;
-      console.log("Using login token for fetching packages.");
-    }
-    else if (registerToken) {
-      authToken = registerToken;
-      console.log("Using register token for fetching packages.");
-    } 
-
-    if (!authToken) {
-      setError("Authentication token not found");
-      setIsLoading(false);
-      return;
-    }
-
+      const authToken = localStorage.getItem("auth_token_register");
+  
+      if (!authToken) {
+        enqueueSnackbar("Authentication token not found", { variant: "error" });
+        return;
+      }
+  
+      // Check current like status
       const currentLikeStatus = likedBlogs[blogUuid]?.isLiked || false;
-        const response = await axios.put(
+  
+      // Send like/unlike request to the backend
+      const response = await axios.put(
         `${process.env.NEXT_PUBLIC_API_URL}blog/${blogUuid}/like`,
         {},
         {
@@ -559,9 +388,10 @@ const fetchReplies = async (commentId) => {
       <Banner />
       <section className={style["blogs-page"]}>
         <div className="">
-          <div key={slugblog.uuid_id} className="row">
+          <div className="row">
             <div className="d-flex justify-content-center">
-              <img src={slugblog.banner_image_url} className='col-12 lap-view object-fit-cover' alt="Banner" />
+              <img src="/images/banner-02.jpg" className='col-12 lap-view object-fit-cover' alt="Banner" />
+              <img src="/images/banner-03.jpg" className='mobile-view' alt="Banner" />
             </div>
           </div>
         </div>
@@ -653,37 +483,38 @@ const fetchReplies = async (commentId) => {
                   <div className={style["comment-content"]}>
                     {/* Replies Section */}
                     {commentReplies[comment.uuid_id] && commentReplies[comment.uuid_id].length > 0 && (
-          <div className={style["replies-section"]}>
-            {commentReplies[comment.uuid_id].map((reply) => (
-              <div key={reply.uuid_id} className={`${style["reply-item"]}`}>
+    <div className={style["replies-section"]}>
+        {commentReplies[comment.uuid_id].map((reply) => (
+            <div key={reply.uuid_id} className={`${style["reply-item"]}`}>
                 <img src="https://i.pravatar.cc/40?img=4" alt="User Avatar" className={style["user-avatar"]} />
                 <strong style={{ fontSize: '14px', color: 'black' }}>{reply.user || "Anonymous"}</strong>
                 <p>{new Date(reply.created_at).toLocaleString()}</p>
                 <div>
-                  <p style={{ fontSize: '14px' }}>{reply.comment}</p>
+                    <p style={{ fontSize: '14px' }}>{reply.comment}</p>
                 </div>
-              </div>
-            ))}
-          </div>
-        )}
+            </div>
+        ))}
+    </div>
+)}
+
 
                     {/* Reply Input Box */}
                     {replyingTo === comment.uuid_id && (
-                        <div className={`${style["comment-input"]} d-flex`}>
-                          <textarea
-                            type="text"
-                            className={`${style['']} col-12`} placeholder="Enter your reply..."
-                            value={replyText}
-                            onChange={(e) => setReplyText(e.target.value)}
-                          />
-                          <button
-                            className={`${style["send-btn"]} col-1`} style={{ height: '32px' }}
-                            onClick={() => addReply(comment.uuid_id)}
-                          >
-                            <IoMdSend size={20} />
-                          </button>
-                        </div>
-                      )}
+  <div className={`${style["comment-input"]} d-flex`}>
+    <textarea
+      type="text"
+      className={`${style['']} col-12`} placeholder="Enter your reply..."
+      value={replyText}
+      onChange={(e) => setReplyText(e.target.value)}
+    />
+    <button
+      className={`${style["send-btn"]} col-1`} style={{ height: '32px' }}
+      onClick={() => addReply(comment.uuid_id)} // Pass comment.uuid_id
+    >
+      <IoMdSend size={20} />
+    </button>
+  </div>
+)}
                   </div>
                 </div>
               ))}
@@ -708,53 +539,17 @@ const fetchReplies = async (commentId) => {
             <div className='col-lg-4 col-12'>
                           <div className='col-11 ms-4'>
                           <input type='text' placeholder='Search' className={`${style['promo_input']} col-12`} /> <span className='bg-white' style={{marginLeft: '-34px', paddingRight: '32px'}}><FaSearch size={18} color='black' className='position-absolute bg-white' style={{marginTop: '13px',cursor: 'pointer'}} /></span>
-                          <p className={`${style["all-title"]} pt-5 d-lg-block d-none`}>Categories</p>
-                            <div className={`${style["categories"]} d-lg-block d-none`}>
-                                      {categoriesWithCounts.map((cat) => (
-
-                                          <Link 
-                                            href="/blogs"
-                                            key={cat.uuid_id}
-                                          >
-                                            <button 
-                                              className={`col-12 d-flex justify-content-between`}
-                                            >
-                                              {cat.category} 
-                                              <span className=''>
-                                                {cat.blogCount}
-                                              </span>
-                                            </button>
-                                          </Link>
-                                        ))}                     
-                            </div>
-
-                            <div className={`${style["categories"]} d-lg-none d-block pt-3`}>
-                            <p className={`${style["title_category"]}`} onClick={toggleCategoryPopup}>Categories</p>
-                            {isCategoryPopupOpen && (
-                                <div className={`${style["category-popup"]} d-lg-none d-block container`}>
-                                  
-                                  <div className={`${style["category-popup-inner"]}`}>
-                                    <button className={`ms-auto fs-4 text-white col-12 d-flex justify-content-end`} onClick={() => setIsCategoryPopupOpen(false)}>X</button>
-                                    {categoriesWithCounts.map((cat) => (
-                                          <Link 
-                                            href="/blogs"
-                                            key={cat.uuid_id}
-                                            className="text-decoration-none"
-                                          >
-                                            <button 
-                                              className={`col-12 d-flex justify-content-between btn btn-light mb-2`}
-                                            >
-                                              {cat.category} 
-                                              <span className=''>
-                                                {cat.blogCount}
-                                              </span>
-                                            </button>
-                                          </Link>
-                                        ))}
-
-                                  </div>
-                                </div>
-                              )}
+                          <p className={`${style["all-title"]} pt-5`}>Categories</p>
+                            <div className={`${style["categories"]}`}>
+                            {categories.map((cat) => (
+                                <button 
+                                    className={`col-12 d-flex justify-content-between `} 
+                                    key={cat.uuid_id}
+                                >
+                                    {cat.category} <span className='pe-1'>15</span>
+                                </button>
+                            ))}
+               
                             </div>
                             <div className="d-flex flex-lg-column flex-md-row flex-column gap-lg-0 gap-md-4 gap-0">
                               <div className='col-lg-12 col-md-8 col-12'>
@@ -780,15 +575,13 @@ const fetchReplies = async (commentId) => {
                             <p className={`${style["all-title"]} pt-lg-4 my-lg-2 my-0 pt-5`}>Tags</p>
                             <div className={`${style["tags"]} row position-relative gap-2 pb-lg-0 pb-3`}>
                             {tags.map((tag) => (
-                              <Link href="/blogs">
                                 <button className={`position-relative `} style={{width:'100%', maxWidth: '170px'}} 
-                                key={tag.uuid_id} >{tag.tag}</button>
-                                </Link>
+                                key={tag.uuid_id}onClick={() => fetchBlogsByTag(tag.uuid_id)}>{tag.tag}</button>
                             ))}
                             </div>
                             </div>
                             </div>
-                            <div className='col-12 d-lg-block d-none pt-5 pb-5' style={{marginLeft:'-10px'}}>
+                            <div className='col-12 d-lg-block d-none pt-5'>
                               <Newsletter />
                             </div>
                          </div>
@@ -800,8 +593,8 @@ const fetchReplies = async (commentId) => {
                    <Newsletter />
                  </div>
                     </div>
-                          <div key={slugblog.uuid_id} className="container">
-                            <img src={slugblog.footer_image_url} className='w-100' style={{height: '400px',borderRadius: '10px'}} alt="Banner" />
+                          <div className="container">
+                            <img src="/images/blank.png" className='w-100' style={{height: '400px',borderRadius: '10px'}} alt="Banner" />
                             <div className='d-flex justify-content-between px-4' style={{marginTop: '-33px'}}>
                                 <p className='text-black-50 '>Date: <span className='text-white'>19- JAN-2017</span></p>
                                 <p className='text-black-50 '>Tag: <span className='text-white'> Business</span></p>
@@ -813,9 +606,9 @@ const fetchReplies = async (commentId) => {
                                         <div className="row pt-2 pb-1">
                                           <div className="col-md-12">
                                             <Carousal
-                                              otherBlogs={blogs}
+                                              pakageDetailsOtherPackages={pakageDetailsOtherPackages}
                                               count={5}
-                                              type="other-blogs"
+                                              type="pakage-details-other-packages"
                                             />
                                           </div>
                                         </div>

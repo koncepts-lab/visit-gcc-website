@@ -1,0 +1,128 @@
+"use client";
+import React, { useState } from 'react';
+import Link from 'next/link';
+import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
+import Rating from "react-rating-stars-component";
+import style from './style.module.css';
+import { 
+    IoChatbubbleOutline, 
+    IoTicketOutline, 
+    IoBusOutline 
+} from "react-icons/io5";
+import { 
+    FaRegLightbulb 
+} from "react-icons/fa6";
+import { 
+    MdOutlineDinnerDining, 
+    MdOutlineEmojiPeople, 
+    MdDownhillSkiing 
+} from "react-icons/md";
+import { GiSailboat } from "react-icons/gi";
+
+const TourPackageTab = ({ 
+    packages, 
+    tabs = [
+        { title: "All", tag_id: 0 },
+        { title: "Season", tag_id: 1 },
+        { title: "Trending", tag_id: 2 },
+        { title: "New Activities", tag_id: 3 },
+        { title: "Combo Offers", tag_id: 4 }
+    ],
+    breakPoints = { 350: 1, 750: 2, 1200: 2, 1500: 4 }
+}) => {
+    const [activeTab, setActiveTab] = useState(0);
+
+    // Filter packages based on active tab
+    const filteredPackages = activeTab === 0 
+        ? packages 
+        : packages.filter(pkg => pkg.tag_id === activeTab);
+
+    return (
+        <section className={style.innerpage}>
+            <div className={`container-fluid ${style['pr-0']}`}>
+                <div className="row pb-2">
+                    <div className="col-md-12">
+                        <div className={`pr-0 ${style['country-container-box']}`}>
+                            <div className={style['country-container']}>
+                                {/* Dynamic Tabs */}
+                                <ul className={`nav nav-tabs border-0 ${style['country-nav-tabs']}`} id="tourPackageTab" role="tablist">
+                                    {tabs.map((tab) => (
+                                        <li 
+                                            key={tab.tag_id} 
+                                            className={`nav-item ${style['country-nav-item']}`} 
+                                            role="presentation"
+                                        >
+                                            <button
+                                                className={`nav-link border-0 ${style['country-nav-link']} 
+                                                    ${activeTab === tab.tag_id ? style['active-tab'] : ''}`}
+                                                onClick={() => setActiveTab(tab.tag_id)}
+                                                type="button"
+                                                role="tab"
+                                            >
+                                                {tab.title}
+                                            </button>
+                                        </li>
+                                    ))}
+                                </ul>
+
+                                {/* Masonry Grid */}
+                                <ResponsiveMasonry columnsCountBreakPoints={breakPoints}>
+                                    <Masonry>
+                                        {filteredPackages.map((pkg) => (
+                                            <div key={pkg.id} className="masonry-item">
+                                                <img
+                                                    src={pkg.src}
+                                                    style={{ width: "100%", display: "block" }}
+                                                    alt={pkg.title}
+                                                />
+                                                <div className="tour-pakage-masonry-item-content">
+                                                    <h5>{pkg.title}</h5>
+                                                    <div className={style['provider-date']}>
+                                                        <p>{pkg.provider}</p> &nbsp; | &nbsp;
+                                                        <p>{pkg.date}</p>
+                                                    </div>
+                                                    <div className={style['star-section']}>
+                                                        <div className={style['star']}>
+                                                            <Rating
+                                                                count={5}
+                                                                value={pkg.rating}
+                                                                size={24}
+                                                                activeColor="#ffd700"
+                                                                edit={false}
+                                                            />
+                                                        </div>
+                                                        <div><IoChatbubbleOutline /></div>
+                                                        <div><FaRegLightbulb /></div>
+                                                    </div>
+
+                                                    <ul className={style['pakages-ul']}>
+                                                        <li><GiSailboat /> Boating</li>
+                                                        <li><IoTicketOutline /> Ticket</li>
+                                                        <li><MdOutlineDinnerDining /> Meals</li>
+                                                        <li><MdOutlineEmojiPeople /> Guide</li>
+                                                        <li><MdDownhillSkiing /> Activities</li>
+                                                        <li><IoBusOutline /> Transfers</li>
+                                                    </ul>
+
+                                                    <Link href="#0" className={style['r-button']}>Read More</Link>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </Masonry>
+                                </ResponsiveMasonry>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className='row'>
+                    <div className='col-md-12 text-center mt-4 mb-5'>
+                        <button className={style['btn-one']}>Show Me More</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
+};
+
+export default TourPackageTab;

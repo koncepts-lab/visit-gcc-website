@@ -7,8 +7,7 @@ function TabSlider(props) {
     return (
         <>
         <Link href="#0" className="item">
-                <div className={style['bg-black-shade']}></div>
-                <img src={props.image} className='w-100' alt="" />
+                <img src={props.image} className={`${style["tabslider_img"]}`} alt="" />
                 <div className={style['country-tabslide-text']}>
                     <h4>{props.heading}</h4>
                     {/* <h5>{props.subHeading}</h5> */}
