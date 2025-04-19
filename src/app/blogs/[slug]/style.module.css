@@ -43,18 +43,60 @@ font-weight: 600;
 }
 
 .categories button{
-    background-color: transparent;
-    color: #989b9e;
-    margin-top: 8px;
-    border:none;
-    font-weight: 500;
-    padding-bottom: 8px;
-    border-bottom: 1.5px solid #e2e2e2;
+  background-color: transparent;
+  color: #989b9e;
+  padding-top: 8px;
+  border:none;
+  font-weight: 500;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #130808;
 }
 
 .categories button:focus{
     color: black;
     font-weight: 700;
+}
+
+.category-popup {
+  position: fixed;
+  top: 50%;  
+  left: 50%; 
+  transform: translate(-50%, -50%);  
+  background: rgba(4, 4, 4, 0.765);
+  padding: 20px;
+  border-radius: 10px;
+  z-index: 9999;
+  animation: fadeIn 0.3s ease-out;
+  margin-left: auto;
+}
+
+.category-popup-inner{
+  background:transparent;
+  padding: 20px;
+  width: 100%;
+  color: white;
+}
+
+.title_category{
+  border: #e2e2e2 2px solid;
+  border-radius: 5px;
+  background-color: #189597;
+  color: white;
+  padding: 5px;
+}
+.category-popup-inner button.active-filter {
+  color: #189597;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .tags button{
@@ -72,18 +114,6 @@ font-weight: 600;
     color: white;
   }
 
-.newsletter {
-background: #189597;
-padding: 28px 28px;
-}
-
-.newsletter button{
-  background-color: black;
-  color: #e2e2e2;
-  padding: 10px ;
-  height: 43px;
-border: none;
-}
 
 .categories button:last-child{
     border-bottom:none;
@@ -127,6 +157,32 @@ border: none;
 .author-div  img{
     height: 159px;
     width: 148px;
+}
+
+
+.no-comments-design {
+  height: 350px;             /* Fixed height to fill space */
+  display: flex;             /* Flexbox to center the content */
+  align-items: center;       /* Vertically center the content */
+  justify-content: center;   /* Horizontally center the content */
+  background-color: #f5f5f5; /* Light background color */
+  border-radius: 10px;       /* Optional: rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: shadow effect */
+  margin-top: 20px;          /* Space between the comment section and the rest of the content */
+  text-align: center;        /* Center the text */
+}
+
+.no-comments p {
+  font-size: 16px;
+  font-weight: 500;
+  color: #0286fa;
+}
+
+.no-comments svg {
+  margin-bottom: 16px;   /* Space between the icon and the text */
+  width: 100px;          /* Set width of the icon */
+  height: 100px;         /* Set height of the icon */
+  color: #6c757d;        /* Muted color for the icon */
 }
 
 

@@ -31,7 +31,7 @@ const GettingAroundTab = () => {
                                                 aria-controls="tour-unique"
                                                 aria-selected="true"
                                             >
-                                                <FaBusAlt />
+                                                <FaBusAlt size={25} />
                                             </button>
                                         </li>
                                         <li className={`nav-item ${style['country-nav-item']}`} role="presentation">
@@ -45,7 +45,7 @@ const GettingAroundTab = () => {
                                                 aria-controls="train-unique"
                                                 aria-selected="false"
                                             >
-                                                <FaTrainSubway />
+                                                <FaTrainSubway size={25}/>
                                             </button>
                                         </li>
                                         <li className={`nav-item ${style['country-nav-item']}`} role="presentation">
@@ -59,7 +59,7 @@ const GettingAroundTab = () => {
                                                 aria-controls="plane-unique"
                                                 aria-selected="false"
                                             >
-                                                <MdAirplanemodeActive />
+                                                <MdAirplanemodeActive size={25}/>
                                             </button>
                                         </li>
                                         <li className={`nav-item ${style['country-nav-item']}`} role="presentation">
@@ -72,7 +72,7 @@ const GettingAroundTab = () => {
                                                 aria-controls="boat-unique"
                                                 aria-selected="false"
                                             >
-                                                <IoMdBoat />
+                                                <IoMdBoat size={25}/>
                                             </button>
                                         </li>
                                     </ul>

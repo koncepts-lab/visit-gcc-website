@@ -102,16 +102,6 @@ const Country = () => {
 ];
 
 
-const bestPickedData = [
-  { id: 1, heading: 'Pellentesque molestie ante vitae consectetur.', description: 'Lorem Ipsum is dummy text Lorem Ipsum is dummy text vLorem Ipsum is dummy text', image: "/images/best-picked/01.jpg", provider: "Admin", date: "02-Nov-2017", type: "Family", startDate: "15", startMonth: "Mar", endDate: "17", endMonth: "Mar" },
-  { id: 2, heading: 'Pellentesque molestie ante vitae consectetur.', description: 'Lorem Ipsum is dummy text Lorem Ipsum is dummy text vLorem Ipsum is dummy text Lorem Ipsum is dummy text vLorem Ipsum is dummy text', image: "/images/best-picked/02.jpg", provider: "Admin", date: "02-Nov-2017", type: "Workshop", startDate: "20", startMonth: "Apr", endDate: "22", endMonth: "Apr" },
-  { id: 3, heading: 'Pellentesque molestie ante vitae consectetur.', description: 'Lorem Ipsum is dummy text Lorem Ipsum is dummy text vLorem Ipsum is dummy text', image: "/images/best-picked/03.jpg", provider: "Admin", date: "02-Nov-2017", type: "Workshop", startDate: "10", startMonth: "May", endDate: "12", endMonth: "May" },
-  { id: 4, heading: 'Pellentesque molestie ante vitae consectetur.', description: 'Lorem Ipsum is dummy text Lorem Ipsum is dummy text vLorem Ipsum is dummy text', image: "/images/best-picked/01.jpg", provider: "Admin", date: "02-Nov-2017", type: "Workshop", startDate: "05", startMonth: "Jun", endDate: "07", endMonth: "Jun" },
-  { id: 5, heading: 'Pellentesque molestie ante vitae consectetur.', description: 'Lorem Ipsum is dummy text Lorem Ipsum is dummy text vLorem Ipsum is dummy text', image: "/images/best-picked/02.jpg", provider: "Admin", date: "02-Nov-2017", type: "Workshop", startDate: "25", startMonth: "Jul", endDate: "27", endMonth: "Jul" },
-  { id: 6, heading: 'Pellentesque molestie ante vitae consectetur.', description: 'Lorem Ipsum is dummy text Lorem Ipsum is dummy text vLorem Ipsum is dummy text', image: "/images/best-picked/03.jpg", provider: "Admin", date: "02-Nov-2017", type: "Workshop", startDate: "01", startMonth: "Aug", endDate: "03", endMonth: "Aug" },
-];
-
-
 const wondersData = [
   { id: 1, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/wonders/01.jpg" },
   { id: 2, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/wonders/02.jpg" },

@@ -3,16 +3,16 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import style from "./style.module.css"; // Ensure correct path for styles
-import Banner from "../../../components/banner/banner"; // Ensure correct path
+import Banner from "@components/banner/banner"; // Ensure correct path
 import { FaCircle } from "react-icons/fa";
 import { PiSealCheckFill } from "react-icons/pi";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import { MdIosShare } from "react-icons/md";
 import { FaRegHeart } from "react-icons/fa";
-import Carousal from "../../../components/carousel/Carousal"; // Ensure correct path
+import Carousal from "@components/carousel/Carousal"; // Ensure correct path
 import { IoIosStar } from "react-icons/io";
-import StarRatingBar from "../../../components/tour-package-details/StarRatingBar";
-import EventHighlightTab from "../../../components/event-details/highlight-tab";
+import StarRatingBar from "@components/tour-package-details/StarRatingBar";
+import EventHighlightTab from "@components/event-details/highlight-tab";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Ask_ur_questions from "@components/ask_ur_questions/ask_ur_questions";

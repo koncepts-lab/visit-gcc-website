@@ -1,9 +1,9 @@
-'use client'; // Add this directive to make the component a Client Component
+'use client'; 
 
 import React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation'; // Import usePathname from next/navigation
-import style from './style.module.css'; // Import CSS module
+import { usePathname } from 'next/navigation'; 
+import style from './style.module.css'; 
 
 const countriesData = [
   { id: 6, link: '/country/uae', heading: 'UAE', image: "/images/countries/06.jpg", activeImage: "/images/countries/04.jpg" },
@@ -15,8 +15,7 @@ const countriesData = [
 ];
 
 const CountriesBahrain = () => {
-  const pathname = usePathname(); // Get the current path
-
+  const pathname = usePathname(); 
   return (
     <div className={style['home-countries']}>
       <div className="container">

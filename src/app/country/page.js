@@ -4,7 +4,6 @@ import React from 'react'
 function page() {
   return (
     <div>
-      88888888888
     </div>
   )
 }

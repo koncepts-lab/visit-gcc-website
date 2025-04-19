@@ -31,6 +31,7 @@ import { GiCruiser } from "react-icons/gi";
 import { FaFerry } from "react-icons/fa6";
 import { IoIosAirplane ,IoIosCloudyNight} from "react-icons/io";
 import { FaTrain } from "react-icons/fa";
+import RatingCarousel from '@components/tour-package-details/RatingCarousel';
 
 function Page() {
     const tourPackageDetailsReviewsImageData = [
@@ -48,13 +49,13 @@ function Page() {
     const maxRating = 5;
     const totalReviews = 3.5;
 
-    const userRatingsCarosul = [
-        { id: 1, headingIcon: 'M', date: '29 July 2024', heading: 'Marta C', description: 'Amazing experience in Varanasi! No to be missed. The tour starts in late afternoon, with a both trip on the river, you can enjoy a beautiful...' },
-        { id: 2, headingIcon: 'M', date: '15 July 2024', heading: 'Michael P', description: 'Amazing experience in Varanasi! No to be missed. The tour starts in late afternoon, with a both trip on the river, you can enjoy a beautiful...' },
-        { id: 3, headingIcon: 'M', date: '18 July 2024', heading: 'Marta C', description: 'Amazing experience in Varanasi! No to be missed. The tour starts in late afternoon, with a both trip on the river, you can enjoy a beautiful...' },
-        { id: 4, headingIcon: 'M', date: '05 July 2024', heading: 'Michael P', description: 'Amazing experience in Varanasi! No to be missed. The tour starts in late afternoon, with a both trip on the river, you can enjoy a beautiful...' },
-        { id: 5, headingIcon: 'M', date: '04 July 2024', heading: 'Marta C', description: 'Amazing experience in Varanasi! No to be missed. The tour starts in late afternoon, with a both trip on the river, you can enjoy a beautiful...' },
-    ];
+    // const userRatingsCarosul = [
+    //     { id: 1, headingIcon: 'M', date: '29 July 2024', heading: 'Marta C', description: 'Amazing experience in Varanasi! No to be missed. The tour starts in late afternoon, with a both trip on the river, you can enjoy a beautiful...' },
+    //     { id: 2, headingIcon: 'M', date: '15 July 2024', heading: 'Michael P', description: 'Amazing experience in Varanasi! No to be missed. The tour starts in late afternoon, with a both trip on the river, you can enjoy a beautiful...' },
+    //     { id: 3, headingIcon: 'M', date: '18 July 2024', heading: 'Marta C', description: 'Amazing experience in Varanasi! No to be missed. The tour starts in late afternoon, with a both trip on the river, you can enjoy a beautiful...' },
+    //     { id: 4, headingIcon: 'M', date: '05 July 2024', heading: 'Michael P', description: 'Amazing experience in Varanasi! No to be missed. The tour starts in late afternoon, with a both trip on the river, you can enjoy a beautiful...' },
+    //     { id: 5, headingIcon: 'M', date: '04 July 2024', heading: 'Marta C', description: 'Amazing experience in Varanasi! No to be missed. The tour starts in late afternoon, with a both trip on the river, you can enjoy a beautiful...' },
+    // ];
 
     const pakageDetailsOtherPackages = [
         { id: 1, heading: 'Project Heading', description: 'Industry Name', image: "/images/other-packages/01.jpg" },
@@ -247,45 +248,13 @@ function Page() {
 
                 </div>
 
-                <div className='container'>
-                    <div className='row pt-5'>
-                        <div className='col-md-12'>
-                            <h4>User ratings</h4>
-                            <p className='mb-0'><IoIosStar color="#FDCC0D" />  4.2. Very good (13 reviews) <Link href='#0'>See all reviews</Link></p>
-                        </div>
-                    </div>
-
-                    <div className='row'>
-                        <div className='col-md-4'>
-                            <StarRatingBar rating={rating} maxRating={maxRating} totalReviews={totalReviews} />
-                        </div>
-                        <div className='col-md-4'>
-                            <StarRatingBar rating={rating} maxRating={maxRating} totalReviews={totalReviews} />
-                        </div>
-                    </div>
-                    <div className='row'>
-                        <div className='col-md-4'>
-                            <StarRatingBar rating={rating} maxRating={maxRating} totalReviews={totalReviews} />
-                        </div>
-                        <div className='col-md-4'>
-                            <StarRatingBar rating={rating} maxRating={maxRating} totalReviews={totalReviews} />
-                        </div>
-                    </div>
-                    <div className='row pt-5'>
-                        <div className='col-md-4 col-8'>
-                            <h4>What guests loved most</h4>
-                        </div>
-                        <div className='col-md-4 col-4'>
-                            <Link className='float-right' href='#0'>See all reviews</Link>
-                        </div>
-                    </div>
+                <div className='container'>             
                     <div className='row pt-3'>
                         <div className='col-md-8'>
-                            <Carousal userRatingsCarosul={userRatingsCarosul} count={2} type="user-ratings-carosul" />
+                            <RatingCarousel />
                         </div>
                     </div>
                 </div>
-
 
                 <div className='container'>
                     <div className='row pt-5'>

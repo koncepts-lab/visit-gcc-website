@@ -1,8 +1,7 @@
-// Accordion.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './Accordion.module.css';
 
-const Accordion = ({ title, items, isOpenInitially }) => {
+const Accordion = ({ title, items, isOpenInitially, onItemClick, selectedItems = [] }) => {
     const [isOpen, setIsOpen] = useState(isOpenInitially);
 
     const toggleAccordion = () => {
@@ -18,15 +17,17 @@ const Accordion = ({ title, items, isOpenInitially }) => {
             {isOpen && (
                 <div className={styles.accordionContent}>
                     <ul>
-                        {items.map((item, index) => (
-                            <li key={index} className={styles.listItem}>
+                        {items.map((item) => (
+                            <li key={item.id} className={styles.listItem}>
                                 <input
                                     type='checkbox'
-                                    id={`checkbox-${title}-${index}`}
+                                    id={`checkbox-${title}-${item.id}`}
                                     className={styles.checkbox}
+                                    checked={selectedItems.includes(item.id)}
+                                    onChange={() => onItemClick(item.id)}
                                 />
-                                <label htmlFor={`checkbox-${title}-${index}`} className={styles.label}>
-                                    {item}
+                                <label htmlFor={`checkbox-${title}-${item.id}`} className={styles.label}>
+                                    {item.title}
                                 </label>
                             </li>
                         ))}

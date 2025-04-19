@@ -8,28 +8,13 @@ import axios from 'axios';
 
 const DatePickerWithHover = ({ onClose, packageId }) => {
     const [selectedDates, setSelectedDates] = useState([]);
+    const [selectedPrice, setSelectedPrice] = useState({});
+    const [rooms, setRooms] = useState([{ id: 1, adults: 0, children: 0, infant: 0 }]);
+    const [nextRoomId, setNextRoomId] = useState(2);
     const [slugPackage, setSlugPackage] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
     const [customDateRange, setCustomDateRange] = useState(false);
-    const [rooms, setRooms] = useState([{ id: 1, adults: 0, children: 0, infant: 0 }]);
-    const [nextRoomId, setNextRoomId] = useState(2);
-    const [showRoomAlert, setShowRoomAlert] = useState(false);
-
-    // Function to get all dates between start and end date
-    const getDatesInRange = (startDate, endDate) => {
-        const dates = [];
-        const currentDate = new Date(startDate);
-        const lastDate = new Date(endDate);
-        
-        // Use <= to include both start and end dates
-        while (currentDate <= lastDate) {
-            dates.push(new Date(currentDate));
-            currentDate.setDate(currentDate.getDate() + 1);
-        }
-        
-        return dates;
-    };
 
     // Fetch package data from API
     useEffect(() => {
@@ -52,7 +37,8 @@ const DatePickerWithHover = ({ onClose, packageId }) => {
                 setError("Authentication token not found");
                 setIsLoading(false);
                 return;
-              }        
+              }       
+        
                 const response = await axios.get(
                     `${process.env.NEXT_PUBLIC_API_URL}packages/${packageId}`,
                     {
@@ -69,14 +55,6 @@ const DatePickerWithHover = ({ onClose, packageId }) => {
                 // Check if package has null dates and set custom date range flag
                 if (!singlePackageData.start_date || !singlePackageData.end_date) {
                     setCustomDateRange(true);
-                } else {
-                    // If start and end dates are provided, select all dates in the range
-                    const startDate = new Date(singlePackageData.start_date);
-                    const endDate = new Date(singlePackageData.end_date);
-                    
-                    // Get all dates between start and end (inclusive)
-                    const dateRange = getDatesInRange(startDate, endDate);
-                    setSelectedDates(dateRange);
                 }
                 
                 setIsLoading(false);
@@ -139,42 +117,23 @@ const DatePickerWithHover = ({ onClose, packageId }) => {
 
     const timeSlots = slugPackage ? generateTimeSlots() : {};
 
-    // Check if a date is already selected
-    const isDateSelected = (date) => {
-        return selectedDates.some(selectedDate => 
-            selectedDate.getDate() === date.getDate() &&
-            selectedDate.getMonth() === date.getMonth() &&
-            selectedDate.getFullYear() === date.getFullYear()
-        );
-    };
-
     const handleIncrement = (roomId, type) => {
         setRooms((prevRooms) => {
             const updatedRooms = prevRooms.map((room) => {
                 if (room.id === roomId) {
-                    // For infant, limit is 3 regardless of other counts
-                    if (type === 'infant' && room.infant < 3) {
+                    // Check the total count of adults and children
+                    const currentTotal = type === 'adults' 
+                        ? room.adults + room.children + 1
+                        : type === 'children' 
+                            ? room.adults + room.children + 1 
+                            : room.adults + room.children;
+                            
+                    // Only increment if total will be <= 3 or if incrementing infant
+                    if (type === 'infant' || (currentTotal <= 3 && room[type] < 3)) {
                         return {
                             ...room,
-                            infant: room.infant + 1,
+                            [type]: room[type] + 1,
                         };
-                    } 
-                    // For adults and children, check combined total
-                    else if (type !== 'infant') {
-                        // Check the total count of adults and children
-                        const currentTotal = room.adults + room.children;
-                        
-                        // Only increment if total will be <= 3
-                        if (currentTotal < 3 && room[type] < 3) {
-                            return {
-                                ...room,
-                                [type]: room[type] + 1,
-                            };
-                        } else {
-                            // Show alert to add a new room
-                            setShowRoomAlert(true);
-                            setTimeout(() => setShowRoomAlert(false), 3000);
-                        }
                     }
                 }
                 return room;
@@ -194,10 +153,6 @@ const DatePickerWithHover = ({ onClose, packageId }) => {
                     : room
             )
         );
-        // Hide alert if showing
-        if (showRoomAlert) {
-            setShowRoomAlert(false);
-        }
     };
 
     const handleAddRoom = () => {
@@ -206,10 +161,6 @@ const DatePickerWithHover = ({ onClose, packageId }) => {
             { id: nextRoomId, adults: 0, children: 0, infant: 0 },
         ]);
         setNextRoomId(nextRoomId + 1);
-        // Hide alert if showing
-        if (showRoomAlert) {
-            setShowRoomAlert(false);
-        }
     };
 
     const handleRemoveRoom = (roomId) => {
@@ -238,9 +189,10 @@ const DatePickerWithHover = ({ onClose, packageId }) => {
           border-radius: 4px;
           padding: 8px;
           z-index: 1000;
-          margin-left: -20px;
+              margin-left: -20px;
         }
     
+
       .time-slot {
           padding: 0px 4px;
           width: 150px;
@@ -283,125 +235,119 @@ const DatePickerWithHover = ({ onClose, packageId }) => {
       font-size: 20px;
     }
 
-    .react-datepicker__day {
+       .react-datepicker__day {
       width: 92px !important;
-      cursor: pointer;
+ 
+    }
+
+       .react-datepicker__day-names {
+    margin-bottom: -20px;
+  }
+
+
+        .react-datepicker__day {
+      font-weight: 550
+      }
+ @media (max-width: 1200px) {
+    .react-datepicker__day {
+      width: 76px !important;
+      padding: 7px 0;
+      font-size: 15px;
+      color: #797979 !important;
+    }
+
+       .react-datepicker__day-names {
+    margin-bottom: -10px;
+  }
+
+   .react-datepicker__day-name {
+    width: 76px !important;
+    padding: 7px 0;
+    font-size: 18px;
+  }
+       .react-datepicker__day:nth-child(7n+1) .time-slots,
+      .react-datepicker__day:nth-child(7n+2) .time-slots,
+      .react-datepicker__day:nth-child(7n+3) .time-slots,
+      .react-datepicker__day:nth-child(7n+4) .time-slots {
+        margin-left: 0px;
+
+      }
+      
+      .react-datepicker__day:nth-child(7n+5) .time-slots,
+      .react-datepicker__day:nth-child(7n+6) .time-slots,
+      .react-datepicker__day:nth-child(7n) .time-slots {
+        margin-left: -100px;
+      }
+  }
+
+   @media (max-width: 600px) {
+    .react-datepicker__day {
+      width: 65px !important;
+
+    }
+
+    .react-datepicker__day-name {
+      width:65px !important;
+
+    }
+}
+
+  @media (max-width: 520px) {
+    .react-datepicker__day {
+      width: 42px !important;
+      padding: 4px 0;
+      font-size: 15px;
+      color: #797979 !important;
+    }
+
+    .react-datepicker__day-name {
+      width:42px !important;
+      padding: 4px 0;
+      font-size: 18px;
     }
 
     .react-datepicker__day-names {
-      margin-bottom: -20px;
+      margin-bottom: -10px;
     }
 
-    .react-datepicker__day {
-      font-weight: 550
-    }
-    
-    .room-alert {
-      background-color: #f8d7da;
-      color: #721c24;
-      padding: 10px;
-      border-radius: 4px;
-      margin-top: 10px;
-      font-size: 14px;
-      text-align: center;
-    }
-    
-    @media (max-width: 1200px) {
-      .react-datepicker__day {
-        width: 76px !important;
-        padding: 7px 0;
-        font-size: 15px;
-        color: #797979 !important;
-      }
-
-      .react-datepicker__day-names {
-        margin-bottom: -10px;
-      }
-
-      .react-datepicker__day-name {
-        width: 76px !important;
-        padding: 7px 0;
-        font-size: 18px;
-      }
-      
-      .react-datepicker__day:nth-child(7n+1) .time-slots,
-      .react-datepicker__day:nth-child(7n+2) .time-slots,
-      .react-datepicker__day:nth-child(7n+3) .time-slots,
-      .react-datepicker__day:nth-child(7n+4) .time-slots {
-        margin-left: 0px;
-      }
-      
-      .react-datepicker__day:nth-child(7n+5) .time-slots,
-      .react-datepicker__day:nth-child(7n+6) .time-slots,
-      .react-datepicker__day:nth-child(7n) .time-slots {
-        margin-left: -100px;
-      }
+    .react-datepicker__current-month {
+      padding-bottom: 15px !important;
+      margin-top: -10px !important;
     }
 
-    @media (max-width: 600px) {
-      .react-datepicker__day {
-        width: 65px !important;
-      }
-
-      .react-datepicker__day-name {
-        width: 65px !important;
-      }
-    }
-
-    @media (max-width: 520px) {
-      .react-datepicker__day {
-        width: 42px !important;
-        padding: 4px 0;
-        font-size: 15px;
-        color: #797979 !important;
-      }
-
-      .react-datepicker__day-name {
-        width: 42px !important;
-        padding: 4px 0;
-        font-size: 18px;
-      }
-
-      .react-datepicker__day-names {
-        margin-bottom: -10px;
-      }
-
-      .react-datepicker__current-month {
-        padding-bottom: 15px !important;
-        margin-top: -10px !important;
-      }
-
-      .time-slot {
-        padding: 4px 8px;
-        width: 120px;
-      }
-
-      .react-datepicker__day:nth-child(7n+1) .time-slots,
-      .react-datepicker__day:nth-child(7n+2) .time-slots,
-      .react-datepicker__day:nth-child(7n+3) .time-slots,
-      .react-datepicker__day:nth-child(7n+4) .time-slots {
-        margin-left: 0px;
-        width: 140px;
-      }
-      
-      .react-datepicker__day:nth-child(7n+5) .time-slots,
-      .react-datepicker__day:nth-child(7n+6) .time-slots,
-      .react-datepicker__day:nth-child(7n) .time-slots {
-        margin-left: -100px;
-        width: 140px;
-      }
-    }
-
-    .custom-date-range-badge {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background-color: #5bb3b5;
-      color: white;
+    .time-slot {
       padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 12px;
+             width: 120px;
     }
+
+      .react-datepicker__day:nth-child(7n+1) .time-slots,
+      .react-datepicker__day:nth-child(7n+2) .time-slots,
+      .react-datepicker__day:nth-child(7n+3) .time-slots,
+      .react-datepicker__day:nth-child(7n+4) .time-slots {
+        margin-left: 0px;
+         width: 140px;
+
+      }
+      
+      .react-datepicker__day:nth-child(7n+5) .time-slots,
+      .react-datepicker__day:nth-child(7n+6) .time-slots,
+      .react-datepicker__day:nth-child(7n) .time-slots {
+        margin-left: -100px;
+       width: 140px;
+
+      }
+  }
+
+  .custom-date-range-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #5bb3b5;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+  }
   `;
 
     const renderDayContents = (day, date) => {
@@ -414,6 +360,9 @@ const DatePickerWithHover = ({ onClose, packageId }) => {
         // Check if this date has available time slots
         const hasTimeSlots = !!slots;
         
+        // Check if date has any selected time slots
+        const hasSelectedTimeSlots = selectedPrice[dateString] && selectedPrice[dateString].length > 0;
+
         // Apply opacity style to dates without time slots
         const dateStyle = hasTimeSlots ? {} : { opacity: 0.5, pointerEvents: 'none' };
 
@@ -426,19 +375,31 @@ const DatePickerWithHover = ({ onClose, packageId }) => {
                         <div className="time-slot">
                             <div className="d-flex justify-content-between">
                                 <span className="text-green-600">Adult: ₹{parseFloat(slugPackage.adult_price).toLocaleString()}</span>
-                                {/* Checkbox removed as requested */}
+                                <input style={{marginTop: "-10px"}}
+                                    type="checkbox"
+                                    checked={selectedPrice[dateString]?.includes(`Adult: ₹${parseFloat(slugPackage.adult_price).toLocaleString()}`)}
+                                    onChange={(e) => handlePriceSelect(dateString, `Adult: ₹${parseFloat(slugPackage.adult_price).toLocaleString()}`, e.target.checked, date)}
+                                />
                             </div>
                         </div>
                         <div className="time-slot">
                             <div className="d-flex justify-content-between">
                                 <span className="text-green-600">Child: ₹{parseFloat(slugPackage.child_price).toLocaleString()}</span>
-                                {/* Checkbox removed as requested */}
+                                <input style={{marginTop: "-10px"}}
+                                    type="checkbox"
+                                    checked={selectedPrice[dateString]?.includes(`Child: ₹${parseFloat(slugPackage.child_price).toLocaleString()}`)}
+                                    onChange={(e) => handlePriceSelect(dateString, `Child: ₹${parseFloat(slugPackage.child_price).toLocaleString()}`, e.target.checked, date)}
+                                />
                             </div>
                         </div>
                         <div className="time-slot">
                             <div className="d-flex justify-content-between">
                                 <span className="text-green-600">Infant: ₹{parseFloat(slugPackage.infant_price).toLocaleString()}</span>
-                                {/* Checkbox removed as requested */}
+                                <input style={{marginTop: "-10px"}}
+                                    type="checkbox"
+                                    checked={selectedPrice[dateString]?.includes(`Infant: ₹${parseFloat(slugPackage.infant_price).toLocaleString()}`)}
+                                    onChange={(e) => handlePriceSelect(dateString, `Infant: ₹${parseFloat(slugPackage.infant_price).toLocaleString()}`, e.target.checked, date)}
+                                />
                             </div>
                         </div>
                     </div>
@@ -460,21 +421,10 @@ const DatePickerWithHover = ({ onClose, packageId }) => {
         return date.toLocaleDateString(undefined, options);
     };
 
-    // Modified to handle direct date selection
+    // Modified to do nothing when clicking on a date directly
     const handleDateChange = (date) => {
-        if (isDateSelected(date)) {
-            // If date is already selected, remove it
-            setSelectedDates(prevDates => 
-                prevDates.filter(d => 
-                    !(d.getDate() === date.getDate() &&
-                      d.getMonth() === date.getMonth() &&
-                      d.getFullYear() === date.getFullYear())
-                )
-            );
-        } else {
-            // If date is not selected, add it
-            setSelectedDates(prevDates => [...prevDates, date]);
-        }
+        // Selection is managed through time slot selection only
+        return;
     };
 
     const filterAvailableDates = (date) => {
@@ -495,29 +445,100 @@ const DatePickerWithHover = ({ onClose, packageId }) => {
         return !!timeSlots[dateString];
     };
 
+    // Modified to handle date selection based on time slot selections
+    const handlePriceSelect = (dateString, price, isChecked, date) => {
+        if (isChecked) {
+            // Add the price to the selected prices
+            setSelectedPrice((prevPrices) => {
+                const datePrices = prevPrices[dateString] || [];
+                if (!datePrices.includes(price)) {
+                    return {
+                        ...prevPrices,
+                        [dateString]: [...datePrices, price],
+                    };
+                }
+                return prevPrices;
+            });
+            
+            // Add date to selectedDates if not already there
+            if (!selectedDates.some(d => {
+                const selYear = d.getFullYear();
+                const selMonth = String(d.getMonth() + 1).padStart(2, '0');
+                const selDayOfMonth = String(d.getDate()).padStart(2, '0');
+                return `${selYear}-${selMonth}-${selDayOfMonth}` === dateString;
+            })) {
+                setSelectedDates(prevDates => [...prevDates, date]);
+            }
+        } else {
+            setSelectedPrice((prevPrices) => {
+                const datePrices = prevPrices[dateString] || [];
+                const updatedPrices = datePrices.filter(p => p !== price);
+                
+                // If no more prices selected for this date
+                if (updatedPrices.length === 0) {
+                    const newPrices = { ...prevPrices };
+                    delete newPrices[dateString];
+                    
+                    // Remove date from selectedDates when no time slots are selected
+                    setSelectedDates(prevDates => prevDates.filter(d => {
+                        const selYear = d.getFullYear();
+                        const selMonth = String(d.getMonth() + 1).padStart(2, '0');
+                        const selDayOfMonth = String(d.getDate()).padStart(2, '0');
+                        return `${selYear}-${selMonth}-${selDayOfMonth}` !== dateString;
+                    }));
+                    
+                    return newPrices;
+                }
+                
+                return {
+                    ...prevPrices,
+                    [dateString]: updatedPrices,
+                };
+            });
+        }
+    };
+
     const displaySelectedDateAndTime = () => {
         if (selectedDates.length === 0) {
             return 'No date selected';
         }
 
-        // Sort dates chronologically
-        const sortedDates = [...selectedDates].sort((a, b) => a - b);
-        
-        // If there are many dates selected (e.g., a full week or more), display a range
-        if (sortedDates.length > 3) {
-            return `${formatDate(sortedDates[0])} to ${formatDate(sortedDates[sortedDates.length - 1])}`;
-        }
-        
-        // Otherwise show individual dates
-        const dateElements = sortedDates.map((date, index) => {
-            const formattedDate = formatDate(date);
-            return <span key={index}>{formattedDate}<span style={{marginLeft: '15px'}}></span></span>;
+        const dateTimeMap = {};
+
+        selectedDates.forEach(date => {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const dayOfMonth = String(date.getDate()).padStart(2, '0');
+            const dateString = `${year}-${month}-${dayOfMonth}`;
+
+            if (selectedPrice[dateString] && selectedPrice[dateString].length > 0) {
+                dateTimeMap[dateString] = {
+                    formattedDate: formatDate(date),
+                    prices: selectedPrice[dateString]
+                };
+            } else if (!dateTimeMap[dateString]) {
+                dateTimeMap[dateString] = {
+                    formattedDate: formatDate(date),
+                    prices: []
+                };
+            }
+        });
+
+        const dateElements = Object.entries(dateTimeMap).map(([dateString, data]) => {
+            let displayString = data.formattedDate;
+
+            if (data.prices.length > 0) {
+                displayString += ` (${data.prices.join(', ')})`;
+            }
+
+            return <span key={dateString}>{displayString}<span style={{marginLeft: '15px'}}></span></span>;
         });
 
         return dateElements.length > 0 
             ? dateElements 
             : 'No date selected';
     };
+
 
     if (isLoading) {
         return <p>Loading...</p>;
@@ -646,11 +667,6 @@ const DatePickerWithHover = ({ onClose, packageId }) => {
                                     <br />
                                 </div>
                             ))}
-                            {showRoomAlert && (
-                                <div className="room-alert">
-                                    Maximum of 3 guests (excluding infants) reached. Please add a new room.
-                                </div>
-                            )}
                             <button
                                 className="bg-white col-12"
                                 style={{ border: 'none', color: '#3C99DC' }}
