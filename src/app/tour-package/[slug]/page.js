@@ -37,6 +37,7 @@ import { FaBridge } from "react-icons/fa6";
 import { FaToiletsPortable } from "react-icons/fa6";
 import { FaBottleWater } from "react-icons/fa6";
 import { FaSailboat } from "react-icons/fa6";
+import EnquiryForm from "@components/enquiry-form";
 
 import { useParams } from "next/navigation"; // Use next/navigation instead of next/router
 function Page() {
@@ -404,6 +405,7 @@ Explore the heart-shaped route or meander through the lit nightscapes, full-size
 
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [isFormOpen, setIsFormOpen] = useState(false);
 
   const handleBookNowClick = () => {
     setIsPopupOpen(true);
@@ -460,12 +462,21 @@ Explore the heart-shaped route or meander through the lit nightscapes, full-size
                   </button>
                 </span>
                 <span>
-                  <button className={style["btn-two"]}>Contact Seller</button>
+                  <button
+                    className={style["btn-two"]}
+                    onClick={() => setIsFormOpen(true)}
+                  >
+                    Contact Seller
+                  </button>
                   <p className="lap-view">
                     You can now directly communicate with the Seller of this
                     package
                   </p>
                 </span>
+                <EnquiryForm
+                  isOpen={isFormOpen}
+                  onClose={() => setIsFormOpen(false)}
+                />{" "}
               </div>
             </div>
           </div>
