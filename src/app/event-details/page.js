@@ -16,12 +16,12 @@ import EventHighlightTab from "../../../components/event-details/highlight-tab";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import EnhancedDatePicker from "./date";
+import EnquiryForm from "@components/enquiry-form";
 
 function Page() {
-
-  
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [isFormOpen, setIsFormOpen] = useState(false);
 
   const handleBookNowClick = () => {
     setIsPopupOpen(true);
@@ -190,14 +190,28 @@ function Page() {
             <div className="col-md-5">
               <div className={style["flex-package-details-right"]}>
                 <span>
-                  <button className={style["btn-one"]} onClick={handleBookNowClick}>Book Now</button>
+                  <button
+                    className={style["btn-one"]}
+                    onClick={handleBookNowClick}
+                  >
+                    Book Now
+                  </button>
                 </span>
                 <span>
-                  <button className={style["btn-two"]}>Contact Seller</button>
+                  <button
+                    className={style["btn-two"]}
+                    onClick={() => setIsFormOpen(true)}
+                  >
+                    Contact Seller
+                  </button>
                   <p className="lap-view">
                     You can now directly communicate with the Seller of this
                     package
                   </p>
+                  <EnquiryForm
+                    isOpen={isFormOpen}
+                    onClose={() => setIsFormOpen(false)}
+                  />
                 </span>
               </div>
             </div>
@@ -382,7 +396,6 @@ function Page() {
           <EnhancedDatePicker onClose={handleClosePopup} />
         </div>
       )}
-      
     </>
   );
 }
