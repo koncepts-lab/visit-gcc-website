@@ -165,7 +165,8 @@ function Page() {
       provider: "DoJoin",
       providerLink: "",
       rating: 5,
-      bookNowLink: "",
+      bookNowLink:
+        "https://www.dojoin.com/en/content/12559/global-village-dubai?_src=103&_ref=59",
       photos: [],
       subHeading: "Global village",
       inclusion: [
@@ -401,24 +402,25 @@ Explore the heart-shaped route or meander through the lit nightscapes, full-size
       ),
     },
     {
-      id: 6,
-      name: "Formula 1 Qatar Airways Qatar Grand Prix 2025",
-      provider: "Discover Qatar",
-      providerLink: "https://www.discoverqatar.qa",
-      rating: 4.9,
-      bookNowLink: "https://www.discoverqatar.qa/formula1andmotogp/",
+      id: 5,
+      name: "Sky Views Observatory",
+      provider: "DoJoin",
+      providerLink: "https://www.dojoin.com",
+      rating: 4,
+      bookNowLink:
+        "https://www.dojoin.com/en/content/12685/sky-views-observatory",
       photos: [
-        "/images/formula1-qatar/01.jpg",
-        "/images/formula1-qatar/02.jpg",
-        "/images/formula1-qatar/03.jpg",
+        "/images/sky-views-observatory/01.jpg",
+        "/images/sky-views-observatory/02.jpg",
+        "/images/sky-views-observatory/03.jpg",
       ],
-      subHeading: "Thrilling Night Race",
+      subHeading: "Panoramic City Vistas",
       inclusion: [
         {
-          name: "Grand Prix Ticket",
+          name: "Entry Ticket",
           icon: null,
           description:
-            "Access to the Formula 1 Qatar Airways Qatar Grand Prix 2025 at Lusail International Circuit.",
+            "Access to the Sky Views Observatory at 219.5 meters above Downtown Dubai.",
         },
       ],
       exclusion: [
@@ -428,11 +430,65 @@ Explore the heart-shaped route or meander through the lit nightscapes, full-size
         },
       ],
       overview:
-        "Experience the thrill of the FORMULA 1 QATAR AIRWAYS QATAR GRAND PRIX 2025, taking place from November 28 to 30, 2025, at the state-of-the-art Lusail International Circuit. Witness high-octane racing under the floodlights as top drivers like Verstappen chase a third win, Hamilton pursues an eighth championship, and McLaren defends its constructor’s title. Earlier this year, the 2025 MotoGP Grand Prix of Qatar also electrified the same circuit, with Marc Marquez of Ducati Lenovo Team taking first place, followed by Francesco Bagnaia and Franco Morbidelli. Book your tickets through Discover Qatar to enjoy world-class motorsport and Qatar’s renowned hospitality.",
-      highlight: [],
+        "Across from Burj Khalifa in Downtown Dubai, you'll find the futuristic-looking Sky Views podium. It connects the top of The Address Sky View, a pair of 50-story elliptical dual towers (237.45 and 260.85 meters in height, respectively), which rise from a curved plinth. The Sky Views observatory, perched 219.5 meters above Dubai, boasts a breathtaking 25-meter-long glass floor at the cantilevered level, offering breathtaking views of the city and the Burj Khalifa. Guests may also take in the views from a panoramic elevator that is encased in glass on three sides, as well as the Panorama 52 restaurant. An outdoor glass slide, contained in a clear tube, propels guests from level 53, at 219.5 m, to level 52, at 215.5 m, providing an adrenaline-inducing experience that is unique to Sky Views and the region.",
+      highlight: [
+        "Discover a thrilling new attraction in the heart of Downtown Dubai",
+        "Slide down from the 53rd floor of a high-rise building within a glass capsule",
+        "Look down (if you dare) as you slide through a suspended transparent tube",
+        "Take in the breathtaking views from the stunning 25-meter long glass floor",
+      ],
       location: (
         <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3610.567890123456!2d51.4547!3d25.4900!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e45d7b9c9c9c9c9%3A0x2e3c3e3c3e3c3e3c!2sLusail%20International%20Circuit!5e0!3m2!1sen!2sus!4v1745659740!5m2!1sen!2sus"
+          src="https://www.google.com/maps/embed?pb=!1m13!1m8!1m3!1d14440.31614327333!2d55.270368000000005!3d25.200557!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMjXCsDEyJzAyLjAiTiA1NcKwMTYnMTMuMyJF!5e0!3m2!1sen!2sus!4v1745583933667!5m2!1sen!2sus"
+          width="600"
+          height="450"
+          style={{ border: "0", width: "100%" }}
+          allowfullscreen=""
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+        ></iframe>
+      ),
+    },
+    {
+      id: 6,
+      name: "IMG Worlds of Adventure + AYA Universe Combo",
+      provider: "DoJoin",
+      providerLink: "https://www.dojoin.com",
+      rating: 4,
+      bookNowLink:
+        "http://dojoin.com/en/combo/42/img-worlds-of-adventure-aya-universe",
+      photos: [
+        "/images/img-aya-combo/01.jpg",
+        "/images/img-aya-combo/02.jpg",
+        "/images/img-aya-combo/03.jpg",
+      ],
+      subHeading: "Thrills and Futuristic Wonders",
+      inclusion: [
+        {
+          name: "Combo Ticket",
+          icon: null,
+          description:
+            "Access to IMG Worlds of Adventure and AYA Universe on the same or different days, depending on ticket validity.",
+        },
+      ],
+      exclusion: [
+        {
+          name: "Food and Beverages",
+          description: "",
+        },
+      ],
+      overview:
+        "Dubai is the city where imaginations end and become reality, especially for kids. IMG Worlds of Adventure, which is located at Sheikh Mohammed Bin Zayed Road, near Arabian Ranches, next to Global Village, is a theme park that every kid dreams of. At this amusement park, which has six zones, visitors have the chance to see their beloved Marvel superheroes come to life. Since this place is on a land area bigger than 28 football fields, we highly recommend that you wear suitable shoes. It doesn't matter which cartoon you are interested in; having all kinds of themes helps your kids have fun with different options. For example, at Lost Valley Zone, activities related to Jurassic Park are available, and you have the chance to live your dream theme with your kids. Whether you are in love with Iron Man or you want to have some pictures at the Avengers: Battle of Ultron theme, at this park, everything is prepared for you.",
+      highlight: [
+        "Explore IMG Worlds of Adventure, the world’s largest indoor theme park, with 22 rides across six zones like Marvel, Cartoon Network, and Lost Valley.",
+        "Ride the Velociraptor rollercoaster at IMG, reaching 100 km/h in just 2.5 seconds.",
+        "Meet your favorite Marvel superheroes and Cartoon Network characters with live shows and meet-and-greets.",
+        "Immerse yourself in AYA Universe’s 12 interactive zones, featuring bioluminescent gardens in Flora and a robotic light show in Harmonia.",
+        "Experience cutting-edge technology at AYA Universe with virtual reality and multisensory exhibits across 40,000 square feet.",
+      ],
+      location: (
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3610.987654321098!2d55.3323!3d25.1205!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f5c4a2b9e9e1d%3A0x2e3c3e3c3e3c3e3c!2sIMG%20Worlds%20of%20Adventure!5e0!3m2!1sen!2sus!4v1745659740!5m2!1sen!2sus"
           width="600"
           height="450"
           style={{ border: "0", width: "100%" }}
@@ -496,19 +552,22 @@ Explore the heart-shaped route or meander through the lit nightscapes, full-size
             <div className="col-md-6 col-lg-5">
               <div className={style["flex-package-details-right"]}>
                 <span>
-                  <button
+                  {/* <button
                     className={style["btn-one"]}
                     onClick={handleBookNowClick}
                   >
                     Book Now
-                  </button>
+                  </button> */}
+                  <Link href={packageDetail.bookNowLink} target="_blank">
+                    <button className={style["btn-one"]}>Book Now</button>
+                  </Link>
                 </span>
                 <span>
                   <button
                     className={style["btn-two"]}
                     onClick={() => setIsFormOpen(true)}
                   >
-                    Contact Seller
+                    Buy Tickets
                   </button>
                   <p className="lap-view">
                     You can now directly communicate with the Seller of this
