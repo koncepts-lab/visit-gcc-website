@@ -816,7 +816,7 @@ Explore the heart-shaped route or meander through the lit nightscapes, full-size
               />
             </div>
           </div>
-          <div className="row pt-5">
+          {/* <div className="row pt-5">
             <div className="col-md-4 col-8">
               <h4>What guests loved most</h4>
             </div>
@@ -834,7 +834,7 @@ Explore the heart-shaped route or meander through the lit nightscapes, full-size
                 type="user-ratings-carosul"
               />
             </div>
-          </div>
+          </div> */}
         </div>
 
         <div className="container">
