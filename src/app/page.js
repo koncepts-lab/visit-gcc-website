@@ -41,27 +41,27 @@ function Home() {
   const eventsData = [
     {
       id: 1,
-      heading: "Event 1",
-      description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-      image: "/images/events/01.jpg",
-      date: "March 8",
+      heading: "Travis Scott | CIRCUS MAXIMUS TOUR",
+      description: "Ahmad Bin Ali Stadium",
+      image: "/images/events/01.webp",
+      date: "16 May, 2025",
+      link: "/1",
     },
     {
       id: 2,
-      heading: "Event 2",
-      description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-      image: "/images/events/02.jpg",
-      date: "April 9",
+      heading: "FORMULA 1 QATAR AIRWAYS QATAR GRAND PRIX 2025",
+      description: "Lusail International Circuit",
+      image: "/images/events/02.webp",
+      date: "28 November, 2025",
+      link: "/2",
     },
     {
       id: 3,
-      heading: "Event 3",
-      description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-      image: "/images/events/03.jpg",
-      date: "April 13",
+      heading: "FIFA Arab Cup 2025",
+      description: "Across different stadiums in Qatar",
+      image: "/images/events/03.webp",
+      date: "1 December, 2025",
+      link: "/3",
     },
   ];
 
