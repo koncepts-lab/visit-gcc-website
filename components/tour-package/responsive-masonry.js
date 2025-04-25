@@ -45,6 +45,22 @@ const images = [
     rating: 4,
     link: "/4",
   },
+  {
+    src: "/images/package/05.jpg",
+    title: "Sky Views Observatory",
+    provider: "DoJoin",
+    date: "04 July 2024",
+    rating: 4,
+    link: "/5",
+  },
+  {
+    src: "/images/package/06.jpg",
+    title: "IMG Worlds of Adventure + AYA Universe",
+    provider: "DoJoin",
+    date: "04 July 2024",
+    rating: 4,
+    link: "/6",
+  },
 ];
 
 class MyWrapper extends React.Component {

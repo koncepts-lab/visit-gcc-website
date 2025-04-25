@@ -277,6 +277,139 @@ function Page() {
         ></iframe>
       ),
     },
+    {
+      id: 4,
+      name: "Qatar TotalEnergies Open",
+      provider: "Qatar Tennis Federation",
+      providerLink: "https://www.qatartennis.org",
+      rating: 4,
+      bookNowLink:
+        "https://www.qatartennis.org/competitions/qatar-totalenergies-open",
+      photos: [
+        "/images/qatar-totalenergies-open/01.jpg",
+        "/images/qatar-totalenergies-open/02.jpg",
+        "/images/qatar-totalenergies-open/03.jpg",
+      ],
+      subHeading: "Elite Women’s Tennis",
+      inclusion: [
+        {
+          name: "Tournament Ticket",
+          icon: null,
+          description:
+            "Access to matches at the Khalifa International Tennis Complex from February 9–15, 2025.",
+        },
+      ],
+      exclusion: [
+        {
+          name: "Food and Beverages",
+          description: "",
+        },
+      ],
+      overview:
+        "The Qatar TotalEnergies Open, a prestigious WTA 1000 tournament, returns from February 9 to 15, 2025, at the Khalifa International Tennis Complex in Doha, Qatar. Featuring a prize money of $597,000, this outdoor hard-court event showcases the world’s top female tennis stars, continuing a legacy that began in 2001. Known for hosting legendary champions like Iga Swiatek, Maria Sharapova, and Victoria Azarenka, the tournament promises thrilling matches and a vibrant atmosphere for up to 7,000 spectators.",
+      highlight: [
+        "Witness world-class women’s tennis with a prize money of $597,000 at the WTA 1000 level.",
+        "Enjoy matches on outdoor hard courts at the iconic Khalifa International Tennis Complex.",
+        "Experience the legacy of champions like Iga Swiatek, who has won multiple titles here.",
+        "See top players compete, with a capacity for 7,000 spectators creating an electric atmosphere.",
+      ],
+      location: (
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3610.567890123456!2d51.4256!3d25.2387!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e45d7b9c9c9c9c9%3A0x2e3c3e3c3e3c3e3c!2sKhalifa%20International%20Tennis%20and%20Squash%20Complex!5e0!3m2!1sen!2sus!4v1745659740!5m2!1sen!2sus"
+          width="600"
+          height="450"
+          style={{ border: "0", width: "100%" }}
+          allowfullscreen=""
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+        ></iframe>
+      ),
+    },
+    {
+      id: 5,
+      name: "Qatar ExxonMobil Open 2025",
+      provider: "Qatar Tennis Federation",
+      providerLink: "https://www.qatartennis.org",
+      rating: 4,
+      bookNowLink:
+        "https://www.qatartennis.org/competitions/qatar-exxonmobil-open",
+      photos: [
+        "/images/qatar-exxonmobil-open/01.jpg",
+        "/images/qatar-exxonmobil-open/02.jpg",
+        "/images/qatar-exxonmobil-open/03.jpg",
+      ],
+      subHeading: "Premier Men’s Tennis",
+      inclusion: [
+        {
+          name: "Tournament Ticket",
+          icon: null,
+          description:
+            "Access to matches at the Khalifa International Tennis Complex from February 17–22, 2025.",
+        },
+      ],
+      exclusion: [
+        {
+          name: "Food and Beverages",
+          description: "",
+        },
+      ],
+      overview:
+        "The Qatar ExxonMobil Open 2025, an ATP 250 tournament, takes place from February 17 to 22, 2025, at the Khalifa International Tennis Complex in Doha, Qatar. With a prize money of $1,000,000, this outdoor hard-court event attracts top male tennis players, continuing a tradition since 1993. Known for its world-class facilities and competitive matches, the tournament has previously crowned champions like Andy Murray, Rafael Nadal, and Daniil Medvedev.",
+      highlight: [],
+      location: (
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3610.567890123456!2d51.4256!3d25.2387!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e45d7b9c9c9c9c9%3A0x2e3c3e3c3e3c3e3c!2sKhalifa%20International%20Tennis%20and%20Squash%20Complex!5e0!3m2!1sen!2sus!4v1745659740!5m2!1sen!2sus"
+          width="600"
+          height="450"
+          style={{ border: "0", width: "100%" }}
+          allowfullscreen=""
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+        ></iframe>
+      ),
+    },
+    {
+      id: 6,
+      name: "Al Shaqab Equestrian Centre",
+      provider: "Qatar Foundation",
+      providerLink: "https://alshaqab.com",
+      rating: 4,
+      bookNowLink: "https://alshaqab.com/en",
+      photos: [
+        "/images/al-shaqab/01.jpg",
+        "/images/al-shaqab/02.jpg",
+        "/images/al-shaqab/03.jpg",
+      ],
+      subHeading: "Heritage and Equestrian Excellence",
+      inclusion: [
+        {
+          name: "Guided Tour Ticket",
+          icon: null,
+          description:
+            "Access to a guided tour of Al Shaqab, including stables and training facilities.",
+        },
+      ],
+      exclusion: [
+        {
+          name: "Food and Beverages",
+          description: "",
+        },
+      ],
+      overview:
+        "Al Shaqab Equestrian Centre, established in 1992 and part of Qatar Foundation, is a premier destination in Education City, Doha, dedicated to preserving the Arabian horse heritage. Spanning 980,000 square meters, it offers guided tours where visitors can witness the beauty of over 700 Arabian horses, explore state-of-the-art facilities, and learn about the center’s breeding and training programs. Mark your calendar for the 12th CHI Al Shaqab, a world-class equestrian event, scheduled for February 20–22, 2025, at the Longines Arena.",
+      highlight: [],
+      location: (
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3610.567890123456!2d51.4256!3d25.2387!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e45d7b9c9c9c9c9%3A0x2e3c3e3c3e3c3e3c!2sAl%20Shaqab!5e0!3m2!1sen!2sus!4v1745659740!5m2!1sen!2sus"
+          width="600"
+          height="450"
+          style={{ border: "0", width: "100%" }}
+          allowfullscreen=""
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+        ></iframe>
+      ),
+    },
   ];
   const eventDetail = eventDetails.find((event) => event.id === Number(slug));
 
@@ -322,19 +455,22 @@ function Page() {
             <div className="col-md-5">
               <div className={style["flex-package-details-right"]}>
                 <span>
-                  <button
+                  {/* <button
                     className={style["btn-one"]}
                     onClick={handleBookNowClick}
                   >
                     Book Now
-                  </button>
+                  </button> */}
+                  <Link href={eventDetail.bookNowLink} target="_blank">
+                    <button className={style["btn-one"]}>Book Now</button>
+                  </Link>
                 </span>
                 <span>
                   <button
                     className={style["btn-two"]}
                     onClick={() => setIsFormOpen(true)}
                   >
-                    Contact Seller
+                    Book Tickets
                   </button>
                   <p className="lap-view">
                     You can now directly communicate with the Seller of this
@@ -433,7 +569,7 @@ function Page() {
               />
             </div>
           </div>
-          <div className="row pt-5">
+          {/* <div className="row pt-5">
             <div className="col-md-4 col-8">
               <h4>What guests loved most</h4>
             </div>
@@ -451,7 +587,7 @@ function Page() {
                 type="user-ratings-carosul"
               />
             </div>
-          </div>
+          </div> */}
         </div>
 
         <div className="container">

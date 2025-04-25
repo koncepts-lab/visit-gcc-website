@@ -50,6 +50,42 @@ const images = [
     rating: 3,
     link: "/3",
   },
+  {
+    src: "/images/demo/04.jpg",
+    title: "Qatar TotalEnergies Open 2026",
+    provider: "Discover Qatar",
+    description:
+      "Qatar TotalEnergies Open - a WTA 1000 event, is an unforgettable tennis experience – where world-class players compete.",
+    startDate: "08",
+    endDate: "14",
+    date: "8 February 2026",
+    rating: 4,
+    link: "/4",
+  },
+  {
+    src: "/images/demo/05.jpg",
+    title: "Qatar ExxonMobil Open 2026",
+    provider: "Discover Qatar",
+    description:
+      "Experience the most exhilarating ATP 500 men's professional tennis tournaments being hosted in Qatar with world’s best players competing.",
+    startDate: "16",
+    endDate: "21",
+    date: "16 February 2026",
+    rating: 4,
+    link: "/5",
+  },
+  {
+    src: "/images/demo/06.jpg",
+    title: "Equestrian Tours Qatar 2026",
+    provider: "Discover Qatar",
+    description:
+      "The annual equestrian events include the Doha International Equestrian Tour 2026, CHI Al Shaqab, and the Longines Global Champions Tour.",
+    startDate: "01",
+    endDate: "05",
+    date: "01 January 2026",
+    rating: 4,
+    link: "/6",
+  },
   //   {
   //     src: "/images/demo/04.jpg",
   //     title: "Dubai Miracle Garden",

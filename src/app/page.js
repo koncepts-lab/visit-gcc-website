@@ -36,6 +36,20 @@ function Home() {
       description: "Dubai Marina Tour",
       image: "/images/package/01.jpg",
     },
+    {
+      id: 5,
+      name: "Sky Views Observatory",
+      link: "sky-views-observatory",
+      description: "Sky Views",
+      image: "/images/package/02.jpg",
+    },
+    {
+      id: 6,
+      name: "IMG Worlds of Adventure + AYA Universe",
+      link: "img-worlds-of-adventure-aya-universe",
+      description: "IMG Worlds of Adventure + AYA Universe",
+      image: "/images/package/03.jpg",
+    },
   ];
 
   const eventsData = [
@@ -62,6 +76,30 @@ function Home() {
       image: "/images/events/03.webp",
       date: "1 December, 2025",
       link: "/3",
+    },
+    {
+      id: 4,
+      heading: "Qatar TotalEnergies Open 2026",
+      description: "Khalifa Tennis and Squash Complex",
+      image: "/images/events/04.webp",
+      date: "8 February, 2026",
+      link: "/4",
+    },
+    {
+      id: 5,
+      heading: "Qatar ExxonMobil Open 2026",
+      description: "Khalifa Tennis and Squash Complex",
+      image: "/images/events/05.webp",
+      date: "16 February, 2026",
+      link: "/5",
+    },
+    {
+      id: 6,
+      heading: "Equestrian Tours Qatar 2026",
+      description: "Al Shaqab Equestrian Center",
+      image: "/images/events/06.webp",
+      date: "01 January, 2026",
+      link: "/6",
     },
   ];
 
