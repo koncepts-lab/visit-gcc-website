@@ -400,6 +400,48 @@ Explore the heart-shaped route or meander through the lit nightscapes, full-size
         ></iframe>
       ),
     },
+    {
+      id: 6,
+      name: "Formula 1 Qatar Airways Qatar Grand Prix 2025",
+      provider: "Discover Qatar",
+      providerLink: "https://www.discoverqatar.qa",
+      rating: 4.9,
+      bookNowLink: "https://www.discoverqatar.qa/formula1andmotogp/",
+      photos: [
+        "/images/formula1-qatar/01.jpg",
+        "/images/formula1-qatar/02.jpg",
+        "/images/formula1-qatar/03.jpg",
+      ],
+      subHeading: "Thrilling Night Race",
+      inclusion: [
+        {
+          name: "Grand Prix Ticket",
+          icon: null,
+          description:
+            "Access to the Formula 1 Qatar Airways Qatar Grand Prix 2025 at Lusail International Circuit.",
+        },
+      ],
+      exclusion: [
+        {
+          name: "Food and Beverages",
+          description: "",
+        },
+      ],
+      overview:
+        "Experience the thrill of the FORMULA 1 QATAR AIRWAYS QATAR GRAND PRIX 2025, taking place from November 28 to 30, 2025, at the state-of-the-art Lusail International Circuit. Witness high-octane racing under the floodlights as top drivers like Verstappen chase a third win, Hamilton pursues an eighth championship, and McLaren defends its constructor’s title. Earlier this year, the 2025 MotoGP Grand Prix of Qatar also electrified the same circuit, with Marc Marquez of Ducati Lenovo Team taking first place, followed by Francesco Bagnaia and Franco Morbidelli. Book your tickets through Discover Qatar to enjoy world-class motorsport and Qatar’s renowned hospitality.",
+      highlight: [],
+      location: (
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3610.567890123456!2d51.4547!3d25.4900!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e45d7b9c9c9c9c9%3A0x2e3c3e3c3e3c3e3c!2sLusail%20International%20Circuit!5e0!3m2!1sen!2sus!4v1745659740!5m2!1sen!2sus"
+          width="600"
+          height="450"
+          style={{ border: "0", width: "100%" }}
+          allowfullscreen=""
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+        ></iframe>
+      ),
+    },
   ];
   const packageDetail = packageDetails.find((pkg) => pkg.id === Number(slug));
 
