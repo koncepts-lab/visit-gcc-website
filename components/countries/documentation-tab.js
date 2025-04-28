@@ -45,13 +45,30 @@ const DocumentationTabs = () => {
                   >
                     <button
                       className={`nav-link active border-0 ${style["country-nav-link"]} ${style["active-tab"]}`}
-                      id="tour-tab"
+                      id="emergency-numbers-tab"
                       data-bs-toggle="tab"
-                      data-bs-target="#tour"
+                      data-bs-target="#emergency-numbers"
                       type="button"
                       role="tab"
-                      aria-controls="tour"
+                      aria-controls="emergency-numbers"
                       aria-selected="true"
+                    >
+                      Emergency Numbers
+                    </button>
+                  </li>
+                  <li
+                    className={`nav-item ${style["country-nav-item"]}`}
+                    role="presentation"
+                  >
+                    <button
+                      className={`nav-link border-0 ${style["country-nav-link"]}`}
+                      id="general-info-tab"
+                      data-bs-toggle="tab"
+                      data-bs-target="#general-info"
+                      type="button"
+                      role="tab"
+                      aria-controls="general-info"
+                      aria-selected="false"
                     >
                       General Information
                     </button>
@@ -62,12 +79,12 @@ const DocumentationTabs = () => {
                   >
                     <button
                       className={`nav-link border-0 ${style["country-nav-link"]}`}
-                      id="passport-tab"
+                      id="important-apps-tab"
                       data-bs-toggle="tab"
-                      data-bs-target="#passport"
+                      data-bs-target="#important-apps"
                       type="button"
                       role="tab"
-                      aria-controls="passport"
+                      aria-controls="important-apps"
                       aria-selected="false"
                     >
                       Important Apps
@@ -79,12 +96,12 @@ const DocumentationTabs = () => {
                   >
                     <button
                       className={`nav-link border-0 ${style["country-nav-link"]}`}
-                      id="other-tab"
+                      id="emergency-services-tab"
                       data-bs-toggle="tab"
-                      data-bs-target="#other"
+                      data-bs-target="#emergency-services"
                       type="button"
                       role="tab"
-                      aria-controls="other"
+                      aria-controls="emergency-services"
                       aria-selected="false"
                     >
                       Emergency Services
@@ -94,9 +111,9 @@ const DocumentationTabs = () => {
                 <div className="tab-content" id="myTabContent">
                   <div
                     className="tab-pane fade show active"
-                    id="tour"
+                    id="emergency-numbers"
                     role="tabpanel"
-                    aria-labelledby="tour-tab"
+                    aria-labelledby="emergency-numbers-tab"
                   >
                     <div className={style["documentation-container"]}>
                       <div className="container">
@@ -105,12 +122,126 @@ const DocumentationTabs = () => {
                             {/* <h4 className="pb-2">Important Contact Numbers</h4> */}
                           </div>
                         </div>
+                        <div className="row">
+                          <div className="col-md-4">
+                            <div className={style["important_numbers"]}>
+                              <span>
+                                <img
+                                  src="../images/icons/01.png"
+                                  alt="Bahrain"
+                                  className="img-center"
+                                />
+                              </span>
+                              <span>
+                                <p>Police</p>
+                                <p>999</p>
+                              </span>
+                            </div>
+                          </div>
+                          <div className="col-md-4">
+                            <div className={style["important_numbers"]}>
+                              <span>
+                                <img
+                                  src="../images/icons/02.png"
+                                  alt="Bahrain"
+                                  className="img-center"
+                                />
+                              </span>
+                              <span>
+                                <p>Ambulance</p>
+                                <p>998</p>
+                              </span>
+                            </div>
+                          </div>
+                          <div className="col-md-4">
+                            <div className={style["important_numbers"]}>
+                              <span>
+                                <img
+                                  src="../images/icons/03.png"
+                                  alt="Bahrain"
+                                  className="img-center"
+                                />
+                              </span>
+                              <span>
+                                <p>Fire Department</p>
+                                <p>997</p>
+                              </span>
+                            </div>
+                          </div>
+                          <div className="col-md-4">
+                            <div className={style["important_numbers"]}>
+                              <span>
+                                <img
+                                  src="../images/icons/04.png"
+                                  alt="Bahrain"
+                                  className="img-center"
+                                />
+                              </span>
+                              <span>
+                                <p>Tourism Call Centre</p>
+                                <p>800 555</p>
+                              </span>
+                            </div>
+                          </div>
+                          <div className="col-md-4">
+                            <div className={style["important_numbers"]}>
+                              <span>
+                                <img
+                                  src="../images/icons/05.png"
+                                  alt="Bahrain"
+                                  className="img-center"
+                                />
+                              </span>
+                              <span>
+                                <p>International Tourism Call Centre</p>
+                                <p>+971 4 555 5555</p>
+                              </span>
+                            </div>
+                          </div>
+                          <div className="col-md-4">
+                            <div className={style["important_numbers"]}>
+                              <span>
+                                <img
+                                  src="../images/icons/06.png"
+                                  alt="Bahrain"
+                                  className="img-center"
+                                />
+                              </span>
+                              <span>
+                                <p>Road Assistance</p>
+                                <p>
+                                  800 4330
+                                  <br />
+                                  <small>
+                                    (Dubai Roads and Transport Authority)
+                                  </small>
+                                </p>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    className="tab-pane fade"
+                    id="general-info"
+                    role="tabpanel"
+                    aria-labelledby="general-info-tab"
+                  >
+                    <div className={style["documentation-container"]}>
+                      <div className="container">
+                        <div className="row">
+                          <div className="col-md-12">
+                            {/* <h4 className="pb-2">General Information</h4> */}
+                          </div>
+                        </div>
                         <div className="row g-4">
                           <div className="col-md-4 d-flex gap-2">
                             <div
                               className="d-flex align-items-center justify-content-center rounded-2"
                               style={{
-                                backgroundColor: "#94CEBC", // Custom color
+                                backgroundColor: "#94CEBC",
                                 width: 40,
                                 height: 40,
                               }}
@@ -133,7 +264,7 @@ const DocumentationTabs = () => {
                             <div
                               className="d-flex align-items-center justify-content-center rounded-2"
                               style={{
-                                backgroundColor: "#94CEBC", // Custom color
+                                backgroundColor: "#94CEBC",
                                 width: 40,
                                 height: 40,
                               }}
@@ -156,7 +287,7 @@ const DocumentationTabs = () => {
                             <div
                               className="d-flex align-items-center justify-content-center rounded-2"
                               style={{
-                                backgroundColor: "#94CEBC", // Custom color
+                                backgroundColor: "#94CEBC",
                                 width: 40,
                                 height: 40,
                               }}
@@ -179,7 +310,7 @@ const DocumentationTabs = () => {
                             <div
                               className="d-flex align-items-center justify-content-center rounded-2"
                               style={{
-                                backgroundColor: "#94CEBC", // Custom color
+                                backgroundColor: "#94CEBC",
                                 width: 40,
                                 height: 40,
                               }}
@@ -202,7 +333,7 @@ const DocumentationTabs = () => {
                             <div
                               className="d-flex align-items-center justify-content-center rounded-2"
                               style={{
-                                backgroundColor: "#94CEBC", // Custom color
+                                backgroundColor: "#94CEBC",
                                 width: 40,
                                 height: 40,
                               }}
@@ -225,7 +356,7 @@ const DocumentationTabs = () => {
                             <div
                               className="d-flex align-items-center justify-content-center rounded-2"
                               style={{
-                                backgroundColor: "#94CEBC", // Custom color
+                                backgroundColor: "#94CEBC",
                                 width: 40,
                                 height: 40,
                               }}
@@ -250,9 +381,9 @@ const DocumentationTabs = () => {
                   </div>
                   <div
                     className="tab-pane fade"
-                    id="passport"
+                    id="important-apps"
                     role="tabpanel"
-                    aria-labelledby="passport-tab"
+                    aria-labelledby="important-apps-tab"
                   >
                     <div className={style["documentation-container"]}>
                       <div className="container">
@@ -261,7 +392,7 @@ const DocumentationTabs = () => {
                             <div
                               className="d-flex align-items-center justify-content-center rounded-2"
                               style={{
-                                backgroundColor: "#94CEBC", // Custom color
+                                backgroundColor: "#94CEBC",
                                 width: 40,
                                 height: 40,
                               }}
@@ -284,7 +415,7 @@ const DocumentationTabs = () => {
                             <div
                               className="d-flex align-items-center justify-content-center rounded-2"
                               style={{
-                                backgroundColor: "#94CEBC", // Custom color
+                                backgroundColor: "#94CEBC",
                                 width: 40,
                                 height: 40,
                               }}
@@ -307,7 +438,7 @@ const DocumentationTabs = () => {
                             <div
                               className="d-flex align-items-center justify-content-center rounded-2"
                               style={{
-                                backgroundColor: "#94CEBC", // Custom color
+                                backgroundColor: "#94CEBC",
                                 width: 40,
                                 height: 40,
                               }}
@@ -330,7 +461,7 @@ const DocumentationTabs = () => {
                             <div
                               className="d-flex align-items-center justify-content-center rounded-2"
                               style={{
-                                backgroundColor: "#94CEBC", // Custom color
+                                backgroundColor: "#94CEBC",
                                 width: 40,
                                 height: 40,
                               }}
@@ -353,7 +484,7 @@ const DocumentationTabs = () => {
                             <div
                               className="d-flex align-items-center justify-content-center rounded-2"
                               style={{
-                                backgroundColor: "#94CEBC", // Custom color
+                                backgroundColor: "#94CEBC",
                                 width: 40,
                                 height: 40,
                               }}
@@ -376,7 +507,7 @@ const DocumentationTabs = () => {
                             <div
                               className="d-flex align-items-center justify-content-center rounded-2"
                               style={{
-                                backgroundColor: "#94CEBC", // Custom color
+                                backgroundColor: "#94CEBC",
                                 width: 40,
                                 height: 40,
                               }}
@@ -399,7 +530,7 @@ const DocumentationTabs = () => {
                             <div
                               className="d-flex align-items-center justify-content-center rounded-2"
                               style={{
-                                backgroundColor: "#94CEBC", // Custom color
+                                backgroundColor: "#94CEBC",
                                 width: 40,
                                 height: 40,
                               }}
@@ -422,7 +553,7 @@ const DocumentationTabs = () => {
                             <div
                               className="d-flex align-items-center justify-content-center rounded-2"
                               style={{
-                                backgroundColor: "#94CEBC", // Custom color
+                                backgroundColor: "#94CEBC",
                                 width: 40,
                                 height: 40,
                               }}
@@ -447,9 +578,9 @@ const DocumentationTabs = () => {
                   </div>
                   <div
                     className="tab-pane fade"
-                    id="other"
+                    id="emergency-services"
                     role="tabpanel"
-                    aria-labelledby="other-tab"
+                    aria-labelledby="emergency-services-tab"
                   >
                     <div className={style["documentation-container"]}>
                       <div className="container">
@@ -458,7 +589,7 @@ const DocumentationTabs = () => {
                             <div
                               className="d-flex align-items-center justify-content-center rounded-2"
                               style={{
-                                backgroundColor: "#94CEBC", // Custom color
+                                backgroundColor: "#94CEBC",
                                 width: 40,
                                 height: 40,
                               }}
@@ -481,7 +612,7 @@ const DocumentationTabs = () => {
                             <div
                               className="d-flex align-items-center justify-content-center rounded-2"
                               style={{
-                                backgroundColor: "#94CEBC", // Custom color
+                                backgroundColor: "#94CEBC",
                                 width: 40,
                                 height: 40,
                               }}
@@ -504,7 +635,7 @@ const DocumentationTabs = () => {
                             <div
                               className="d-flex align-items-center justify-content-center rounded-2"
                               style={{
-                                backgroundColor: "#94CEBC", // Custom color
+                                backgroundColor: "#94CEBC",
                                 width: 40,
                                 height: 40,
                               }}
@@ -527,7 +658,7 @@ const DocumentationTabs = () => {
                             <div
                               className="d-flex align-items-center justify-content-center rounded-2"
                               style={{
-                                backgroundColor: "#94CEBC", // Custom color
+                                backgroundColor: "#94CEBC",
                                 width: 40,
                                 height: 40,
                               }}
@@ -550,7 +681,7 @@ const DocumentationTabs = () => {
                             <div
                               className="d-flex align-items-center justify-content-center rounded-2"
                               style={{
-                                backgroundColor: "#94CEBC", // Custom color
+                                backgroundColor: "#94CEBC",
                                 width: 40,
                                 height: 40,
                               }}
