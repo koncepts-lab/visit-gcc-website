@@ -14,7 +14,17 @@ export default function EnquiryForm({ isOpen, onClose }) {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState("");
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
 
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isOpen]);
   // Fetch country codes
   useEffect(() => {
     fetch("https://restcountries.com/v3.1/all")
