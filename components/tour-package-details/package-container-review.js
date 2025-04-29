@@ -7,12 +7,28 @@ const ArrowIcon = () => <FaArrowRightLong />;
 function SinglePackageContainerReview(props) {
   return (
     <>
+      <style>
+        {`
+          .responsive-image {
+            height: 540px;
+            width: 100%;
+            object-fit: cover;
+          }
+
+          @media (max-width: 768px) {
+            .responsive-image {
+              height: auto !important;
+            }
+          }
+        `}
+      </style>
+
       <div className="item">
         <div className={style["best-picked-box"]}>
           <img
             src={props.image}
-            className="w-full h-[540px] md:h-[540px] h-auto object-cover"
-            // style={{ height: "540px" }}
+            className="w-100 sm:h-auto responsive-image"
+            style={{ height: "540px" }}
             alt={props.heading}
           />
         </div>
