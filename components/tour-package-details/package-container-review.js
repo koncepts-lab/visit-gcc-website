@@ -11,8 +11,8 @@ function SinglePackageContainerReview(props) {
         <div className={style["best-picked-box"]}>
           <img
             src={props.image}
-            className="w-100"
-            style={{ height: "540px" }}
+            className="w-full h-[540px] md:h-[540px] h-auto object-cover"
+            // style={{ height: "540px" }}
             alt={props.heading}
           />
         </div>
