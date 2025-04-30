@@ -58,7 +58,7 @@ const Countries = () => {
       <div className="container">
         <div className="row">
           <div className="col-md-12">
-            <h3>Welcome to GCC Countries</h3>
+            <h3>Welcome to GCC</h3>
           </div>
           {countriesData.map((country) => (
             <div
@@ -80,7 +80,6 @@ const Countries = () => {
                     alt={country.heading}
                     className={style["country-image"]}
                   />
-                  <div className={style["country-name"]}>{country.heading}</div>
                 </div>
               </Link>
             </div>
