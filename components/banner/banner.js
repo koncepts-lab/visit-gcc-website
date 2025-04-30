@@ -19,9 +19,9 @@ const Banner = () => {
   const menuItems = [
     {
       id: 1,
-      title: "Events",
-      image: "../images/Event.svg",
-      hoverImage: "../images/Event Mouse Over.svg", // Assumed hover image path
+      title: "Explore",
+      image: "../images/Explore.svg",
+      hoverImage: "../images/Explore Mouse Over.svg", // Assumed hover image path
       onClick: handleScroll,
       isLink: false,
       link: "",
@@ -37,18 +37,18 @@ const Banner = () => {
     },
     {
       id: 3,
-      title: "Book",
-      image: "../images/Book.svg",
-      hoverImage: "../images/Book Mouse Over.svg", // Assumed hover image path
+      title: "Events",
+      image: "../images/Event.svg",
+      hoverImage: "../images/Event Mouse Over.svg", // Assumed hover image path
       onClick: null,
       isLink: false,
       link: "",
     },
     {
       id: 4,
-      title: "Experience",
-      image: "../images/Experiance.svg",
-      hoverImage: "../images/Experiance  Mouse Over.svg", // Assumed hover image path
+      title: "Book",
+      image: "../images/Book.svg",
+      hoverImage: "../images/Book Mouse Over.svg", // Assumed hover image path
       onClick: null,
       isLink: false,
       link: "",

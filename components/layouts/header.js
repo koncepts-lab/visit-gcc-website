@@ -57,6 +57,13 @@ function Header() {
       document.body.style.overflow = "auto";
     }
   };
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 576);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 576);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
     <div
@@ -68,13 +75,16 @@ function Header() {
         }`}
         id="navbar"
       >
-        <div className="container position-relative">
+        <div className="container position-relative ">
           {/*only mobile stiky */}
-          <div className={style["navbar_sticky_mobile_container"]}>
-            <div className={`nav-item ${style["navbar_sticky_mobile"]}`}>
+          <div
+            className={style["navbar_sticky_mobile_container"]}
+            style={{ width: "100%" }}
+          >
+            <div className={`nav-item ${style["navbar_sticky_mobile"]} `}>
               <Link className="nav-link active" href="/country">
                 <img
-                  src="../images/01.png"
+                  src="../images/Explore.svg"
                   className={style["img-top-logo"]}
                   alt=""
                 />
@@ -84,7 +94,7 @@ function Header() {
             <div className={`nav-item ${style["navbar_sticky_mobile"]}`}>
               <Link className="nav-link active" href="/">
                 <img
-                  src="../images/02.png"
+                  src="../images/Plan.svg"
                   className={style["img-top-logo"]}
                   alt=""
                 />
@@ -94,21 +104,21 @@ function Header() {
             <div className={`nav-item ${style["navbar_sticky_mobile"]}`}>
               <Link className="nav-link active" href="/">
                 <img
-                  src="../images/03.png"
+                  src="../images/Event.svg"
                   className={style["img-top-logo"]}
                   alt=""
                 />
-                Book
+                Events
               </Link>
             </div>
             <div className={`nav-item ${style["navbar_sticky_mobile"]}`}>
               <Link className="nav-link active" href="/">
                 <img
-                  src="../images/04.png"
+                  src="../images/Book.svg"
                   className={style["img-top-logo"]}
                   alt=""
                 />
-                Experience
+                Book
               </Link>
             </div>
           </div>
@@ -139,11 +149,12 @@ function Header() {
             id="collapsibleNavbar"
           >
             <ul
-              className={`navbar-nav ${style["navbar-nav-c"]} position-absolute top-0 start-0 bg-white vh-100 w-100 p-0 d-sm-none`}
+              className={`navbar-nav ${style["navbar-nav-c"]} position-absolute top-0 start-0 bg-white vh-100 w-100 p-0 d-sm-none d-flex`}
               style={{
                 alignItems: "initial",
                 justifyContent: "start",
                 marginTop: "-8px",
+                display: isMobile ? "flex !important" : "none !important",
               }}
             >
               {/* Header Section */}
@@ -199,25 +210,31 @@ function Header() {
                   </li>
                 )
               )}
-              <li className="mb-0 px-2  py-3 border-bottom">
+              {/* <li className="mb-0 px-2  py-3 border-bottom">
                 <img src="/images/Partner.png" alt="Partner with us" />
+              </li> */}
+              <li className="mb-0 px-2 py-3 border-bottom">
+                <a
+                  href="partner-with-us"
+                  className="d-flex justify-content-between text-dark text-decoration-none"
+                >
+                  Partner With Us
+                </a>
               </li>
               {/* Social Footer */}
               <li className="mb-0 px-2  py-3 d-flex justify-content-between border-bottom">
                 <div className="mb-2">Show us love & Follow</div>
                 <div className="d-flex gap-2">
-                  {["linkedin", "facebook", "apple", "google", "x"].map(
-                    (icon, i) => (
-                      <a href="#" key={i}>
-                        <img
-                          src={`/images/icons/${icon}.png`}
-                          alt={icon}
-                          style={{ width: "28px", height: "28px" }}
-                          className="rounded-circle border p-1"
-                        />
-                      </a>
-                    )
-                  )}
+                  {["linkedin", "facebook", "instagram"].map((icon, i) => (
+                    <a href="#" key={i}>
+                      <img
+                        src={`/images/icons/${icon}.png`}
+                        alt={icon}
+                        style={{ width: "28px", height: "28px" }}
+                        className="rounded-circle border p-1"
+                      />
+                    </a>
+                  ))}
                 </div>
               </li>
             </ul>
@@ -225,7 +242,7 @@ function Header() {
               <li className={`nav-item ${style["navbar_sticky"]}`}>
                 <Link className="nav-link active" href="/country">
                   <img
-                    src="../images/01.png"
+                    src="../images/Explore.svg"
                     className={style["img-top-logo"]}
                     alt=""
                   />
@@ -235,7 +252,7 @@ function Header() {
               <li className={`nav-item ${style["navbar_sticky"]}`}>
                 <Link className="nav-link active" href="/">
                   <img
-                    src="../images/02.png"
+                    src="../images/Plan.svg"
                     className={style["img-top-logo"]}
                     alt=""
                   />
@@ -245,44 +262,52 @@ function Header() {
               <li className={`nav-item ${style["navbar_sticky"]}`}>
                 <Link className="nav-link active" href="/">
                   <img
-                    src="../images/03.png"
+                    src="../images/Events.svg"
+                    className={style["img-top-logo"]}
+                    alt=""
+                  />
+                  Events
+                </Link>
+              </li>
+              <li className={`nav-item ${style["navbar_sticky"]}`}>
+                <Link className="nav-link active" href="/">
+                  <img
+                    src="../images/Book.svg"
                     className={style["img-top-logo"]}
                     alt=""
                   />
                   Book
                 </Link>
               </li>
-              <li className={`nav-item ${style["navbar_sticky"]}`}>
-                <Link className="nav-link active" href="/">
-                  <img
-                    src="../images/04.png"
-                    className={style["img-top-logo"]}
-                    alt=""
-                  />
-                  Experience
-                </Link>
-              </li>
 
               <li className={`nav-item ${style["navbar_sticky_hide"]}`}>
-                <Link className="nav-link active" href="invest-in-gcc">
+                <Link
+                  className="nav-link active d-sm-block d-none"
+                  href="invest-in-gcc"
+                >
                   <img
-                    src="/images/inv-gcc.png"
+                    src="/images/inv-gcc.svg"
                     className={style["img-top-logo"]}
                     alt=""
+                    height={40}
                   />
                 </Link>
               </li>
               <li className={`nav-item ${style["navbar_sticky_hide"]}`}>
-                <Link className="nav-link" href="/">
+                <Link className="nav-link d-sm-block d-none" href="/">
                   <img
-                    src="/images/GCC-one-visa.png"
+                    src="/images/one-visa.svg"
                     className={style["img-top-logo"]}
                     alt=""
+                    height={40}
                   />
                 </Link>
               </li>
               <li className={`nav-item ${style["navbar_sticky_hide"]}`}>
-                <Link className="nav-link" href="/partner-with-us">
+                <Link
+                  className="nav-link d-sm-block d-none"
+                  href="/partner-with-us"
+                >
                   <img
                     src="/images/Partner.png"
                     alt=""
@@ -292,7 +317,7 @@ function Header() {
               </li>
               <li className={`nav-item ${style["navbar_sticky_hide"]}`}>
                 <Link
-                  className={`nav-link ${style["login-link"]}`}
+                  className={`nav-link d-sm-block d-none ${style["login-link"]}`}
                   href="/login"
                 >
                   Login/Signup
