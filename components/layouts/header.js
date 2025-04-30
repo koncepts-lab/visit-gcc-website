@@ -225,10 +225,23 @@ function Header() {
               <li className="mb-0 px-2  py-3 d-flex justify-content-between border-bottom">
                 <div className="mb-2">Show us love & Follow</div>
                 <div className="d-flex gap-2">
-                  {["linkedin", "facebook", "instagram"].map((icon, i) => (
-                    <a href="#" key={i}>
+                  {[
+                    {
+                      name: "linkedin",
+                      link: "https://www.linkedin.com/company/visitgcc/",
+                    },
+                    {
+                      name: "facebook",
+                      link: "https://www.facebook.com/people/VisitGCC/100093838223257/?mibextid=wwXIfr&rdid=A2ON0Cas73P8KI33&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F18tJP4iNXp%2F%3Fmibextid%3DwwXIfr",
+                    },
+                    {
+                      name: "instagram",
+                      link: "https://www.instagram.com/visit.gcc/",
+                    },
+                  ].map((icon, i) => (
+                    <a href={icon.link} target="_blank" key={i}>
                       <img
-                        src={`/images/icons/${icon}.png`}
+                        src={`/images/icons/${icon.name}.png`}
                         alt={icon}
                         style={{ width: "28px", height: "28px" }}
                         className="rounded-circle border p-1"
@@ -262,7 +275,7 @@ function Header() {
               <li className={`nav-item ${style["navbar_sticky"]}`}>
                 <Link className="nav-link active" href="/">
                   <img
-                    src="../images/Events.svg"
+                    src="../images/Event.svg"
                     className={style["img-top-logo"]}
                     alt=""
                   />
@@ -283,7 +296,7 @@ function Header() {
               <li className={`nav-item ${style["navbar_sticky_hide"]}`}>
                 <Link
                   className="nav-link active d-sm-block d-none"
-                  href="invest-in-gcc"
+                  href="/invest-in-gcc"
                 >
                   <img
                     src="/images/inv-gcc.svg"

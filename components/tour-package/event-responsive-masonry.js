@@ -193,7 +193,7 @@ const ExploreEventsContainer = ({}) => {
               </ul>
 
               <Link
-                href={`/events/${image.link}`}
+                href={`/events${image.link}`}
                 className={`${style["event-detail-button"]} text-start`}
               >
                 SHOPPING & RETAIL
