@@ -524,7 +524,9 @@ Explore the heart-shaped route or meander through the lit nightscapes, full-size
               <p>
                 <Link href="#0">{packageDetail.provider}</Link>
               </p>
-              <div className={style["flex-package-details"]}>
+              <div
+                className={`${style["flex-package-details"]}  d-flex flex-column flex-sm-row`}
+              >
                 <span>
                   {[...Array(packageDetail.rating)].map((_, index) => (
                     <FaCircle
@@ -536,14 +538,14 @@ Explore the heart-shaped route or meander through the lit nightscapes, full-size
 
                   <p className="pt-2">2,471 reviews</p>
                 </span>
-                <span>
+                <span className="d-flex">
                   <PiSealCheckFill className={style["PiSealCheckFill"]} />{" "}
                   Recommended by 99% of travellers{" "}
                   <IoMdInformationCircleOutline
                     className={style["IoMdInformationCircleOutline"]}
                   />
                 </span>
-                <span>
+                <span className="my-2 my-sm-0">
                   <MdIosShare className={style["MdIosShare"]} />
                   <FaRegHeart className={style["FaRegHeart"]} />
                 </span>

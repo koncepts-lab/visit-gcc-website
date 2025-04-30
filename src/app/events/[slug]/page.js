@@ -416,7 +416,7 @@ function Page() {
   return (
     <>
       <Banner />
-      <section className={style["tour-package-details"]}>
+      <section className={`${style["tour-package-details"]} `}>
         <div className={`container ${style["container-package-details"]}`}>
           <div className="row">
             <div className="col-md-7">
@@ -424,7 +424,9 @@ function Page() {
               <p>
                 <Link href="#0">{eventDetail.provider}</Link>
               </p>
-              <div className={style["flex-package-details"]}>
+              <div
+                className={`${style["flex-package-details"]}  d-flex flex-column flex-sm-row`}
+              >
                 <span>
                   {[...Array(eventDetail.rating)].map((_, index) => (
                     <FaCircle
@@ -446,7 +448,7 @@ function Page() {
                     className={style["IoMdInformationCircleOutline"]}
                   />
                 </span>
-                <span>
+                <span className="my-2 my-sm-0">
                   <MdIosShare className={style["MdIosShare"]} />
                   <FaRegHeart className={style["FaRegHeart"]} />
                 </span>

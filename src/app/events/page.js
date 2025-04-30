@@ -1,16 +1,15 @@
-"use client";  // Ensure this is at the top of the file
+"use client"; // Ensure this is at the top of the file
 
-import React, { useState } from 'react';
-import { Range } from 'react-range';
-import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';  // Import Calendar styles
-import style from './style.module.css';
-import Banner from '../../../components/banner/banner';
-import Carousal from '../../../components/carousel/Carousal'; 
-import Accordion from '../../../components/accordion/accordion';
-import EventsExploreTab from '../../../components/tour-package/events-explore';
+import React, { useState } from "react";
+import { Range } from "react-range";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css"; // Import Calendar styles
+import style from "./style.module.css";
+import Banner from "../../../components/banner/banner";
+import Carousal from "../../../components/carousel/Carousal";
+import Accordion from "../../../components/accordion/accordion";
+import EventsExploreTab from "../../../components/tour-package/events-explore";
 import UpcomingEvents from "../../../components/tour-package/upcoming-events";
-
 
 const eventScrollData = [
   {
@@ -69,58 +68,193 @@ const Country = () => {
     setSelectedDate(date);
   };
 
-
   const accordionData = [
     {
-        title: 'DATE',
-        items: ['Upcoming Events (sorted by date)', 'Past Events (sorted by date)', 'Todays Events', 'This Weeks Events', 'This Months Events']
+      title: "DATE",
+      items: [
+        "Upcoming Events (sorted by date)",
+        "Past Events (sorted by date)",
+        "Todays Events",
+        "This Weeks Events",
+        "This Months Events",
+      ],
     },
     {
-        title: 'EVENT TYPE',
-        items: ['Festivals and Celebrations', 'Cultural Events', 'Sports and Fitness Events', 'Conferences and Exhibitions', 'Food and Beverage Events', 'Family and Entertainment', 'Events', 'Educational Events', 'Business and Economic']
+      title: "EVENT TYPE",
+      items: [
+        "Festivals and Celebrations",
+        "Cultural Events",
+        "Sports and Fitness Events",
+        "Conferences and Exhibitions",
+        "Food and Beverage Events",
+        "Family and Entertainment",
+        "Events",
+        "Educational Events",
+        "Business and Economic",
+      ],
     },
     {
-        title: 'EVENT LOCATION',
-        items: ['Dubai, UAE', 'Abu Dhabi, UAE', 'Bahrain', 'Kuwait', 'Oman', 'Saudi Arabia', 'Other locations']
+      title: "EVENT LOCATION",
+      items: [
+        "Dubai, UAE",
+        "Abu Dhabi, UAE",
+        "Bahrain",
+        "Kuwait",
+        "Oman",
+        "Saudi Arabia",
+        "Other locations",
+      ],
     },
     {
-        title: 'EVENT FORMAT',
-        items: ['Arabic', 'English', 'French', 'Other languages']
+      title: "EVENT FORMAT",
+      items: ["Arabic", "English", "French", "Other languages"],
     },
     {
-        title: 'LANGUAGE',
-        items: ['Luxury', 'Adventure', 'Family-Friendly', 'Couple', 'Group Tour', 'Budget Friendly']
+      title: "LANGUAGE",
+      items: [
+        "Luxury",
+        "Adventure",
+        "Family-Friendly",
+        "Couple",
+        "Group Tour",
+        "Budget Friendly",
+      ],
     },
     {
-        title: 'DURATION',
-        items: ['Half-day events', 'Full-day events', 'Multi-day events']
+      title: "DURATION",
+      items: ["Half-day events", "Full-day events", "Multi-day events"],
     },
     {
-        title: 'AGE GROUP',
-        items: ['Adults only', 'Family-friendly events', 'Childrens events']
-    }
-];
+      title: "AGE GROUP",
+      items: ["Adults only", "Family-friendly events", "Childrens events"],
+    },
+  ];
 
+  const bestPickedData = [
+    {
+      id: 1,
+      heading: "Pellentesque molestie ante vitae consectetur.",
+      description:
+        "Lorem Ipsum is dummy text Lorem Ipsum is dummy text vLorem Ipsum is dummy text",
+      image: "/images/best-picked/01.jpg",
+      provider: "Admin",
+      date: "02-Nov-2017",
+      type: "Family",
+      startDate: "15",
+      startMonth: "Mar",
+      endDate: "17",
+      endMonth: "Mar",
+    },
+    {
+      id: 2,
+      heading: "Pellentesque molestie ante vitae consectetur.",
+      description:
+        "Lorem Ipsum is dummy text Lorem Ipsum is dummy text vLorem Ipsum is dummy text Lorem Ipsum is dummy text vLorem Ipsum is dummy text",
+      image: "/images/best-picked/02.jpg",
+      provider: "Admin",
+      date: "02-Nov-2017",
+      type: "Workshop",
+      startDate: "20",
+      startMonth: "Apr",
+      endDate: "22",
+      endMonth: "Apr",
+    },
+    {
+      id: 3,
+      heading: "Pellentesque molestie ante vitae consectetur.",
+      description:
+        "Lorem Ipsum is dummy text Lorem Ipsum is dummy text vLorem Ipsum is dummy text",
+      image: "/images/best-picked/03.jpg",
+      provider: "Admin",
+      date: "02-Nov-2017",
+      type: "Workshop",
+      startDate: "10",
+      startMonth: "May",
+      endDate: "12",
+      endMonth: "May",
+    },
+    {
+      id: 4,
+      heading: "Pellentesque molestie ante vitae consectetur.",
+      description:
+        "Lorem Ipsum is dummy text Lorem Ipsum is dummy text vLorem Ipsum is dummy text",
+      image: "/images/best-picked/01.jpg",
+      provider: "Admin",
+      date: "02-Nov-2017",
+      type: "Workshop",
+      startDate: "05",
+      startMonth: "Jun",
+      endDate: "07",
+      endMonth: "Jun",
+    },
+    {
+      id: 5,
+      heading: "Pellentesque molestie ante vitae consectetur.",
+      description:
+        "Lorem Ipsum is dummy text Lorem Ipsum is dummy text vLorem Ipsum is dummy text",
+      image: "/images/best-picked/02.jpg",
+      provider: "Admin",
+      date: "02-Nov-2017",
+      type: "Workshop",
+      startDate: "25",
+      startMonth: "Jul",
+      endDate: "27",
+      endMonth: "Jul",
+    },
+    {
+      id: 6,
+      heading: "Pellentesque molestie ante vitae consectetur.",
+      description:
+        "Lorem Ipsum is dummy text Lorem Ipsum is dummy text vLorem Ipsum is dummy text",
+      image: "/images/best-picked/03.jpg",
+      provider: "Admin",
+      date: "02-Nov-2017",
+      type: "Workshop",
+      startDate: "01",
+      startMonth: "Aug",
+      endDate: "03",
+      endMonth: "Aug",
+    },
+  ];
 
-const bestPickedData = [
-  { id: 1, heading: 'Pellentesque molestie ante vitae consectetur.', description: 'Lorem Ipsum is dummy text Lorem Ipsum is dummy text vLorem Ipsum is dummy text', image: "/images/best-picked/01.jpg", provider: "Admin", date: "02-Nov-2017", type: "Family", startDate: "15", startMonth: "Mar", endDate: "17", endMonth: "Mar" },
-  { id: 2, heading: 'Pellentesque molestie ante vitae consectetur.', description: 'Lorem Ipsum is dummy text Lorem Ipsum is dummy text vLorem Ipsum is dummy text Lorem Ipsum is dummy text vLorem Ipsum is dummy text', image: "/images/best-picked/02.jpg", provider: "Admin", date: "02-Nov-2017", type: "Workshop", startDate: "20", startMonth: "Apr", endDate: "22", endMonth: "Apr" },
-  { id: 3, heading: 'Pellentesque molestie ante vitae consectetur.', description: 'Lorem Ipsum is dummy text Lorem Ipsum is dummy text vLorem Ipsum is dummy text', image: "/images/best-picked/03.jpg", provider: "Admin", date: "02-Nov-2017", type: "Workshop", startDate: "10", startMonth: "May", endDate: "12", endMonth: "May" },
-  { id: 4, heading: 'Pellentesque molestie ante vitae consectetur.', description: 'Lorem Ipsum is dummy text Lorem Ipsum is dummy text vLorem Ipsum is dummy text', image: "/images/best-picked/01.jpg", provider: "Admin", date: "02-Nov-2017", type: "Workshop", startDate: "05", startMonth: "Jun", endDate: "07", endMonth: "Jun" },
-  { id: 5, heading: 'Pellentesque molestie ante vitae consectetur.', description: 'Lorem Ipsum is dummy text Lorem Ipsum is dummy text vLorem Ipsum is dummy text', image: "/images/best-picked/02.jpg", provider: "Admin", date: "02-Nov-2017", type: "Workshop", startDate: "25", startMonth: "Jul", endDate: "27", endMonth: "Jul" },
-  { id: 6, heading: 'Pellentesque molestie ante vitae consectetur.', description: 'Lorem Ipsum is dummy text Lorem Ipsum is dummy text vLorem Ipsum is dummy text', image: "/images/best-picked/03.jpg", provider: "Admin", date: "02-Nov-2017", type: "Workshop", startDate: "01", startMonth: "Aug", endDate: "03", endMonth: "Aug" },
-];
-
-
-const wondersData = [
-  { id: 1, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/wonders/01.jpg" },
-  { id: 2, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/wonders/02.jpg" },
-  { id: 3, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/wonders/03.jpg", },
-  { id: 4, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/wonders/01.jpg" },
-  { id: 5, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/wonders/02.jpg" },
-  { id: 6, heading: 'Best Picked', description: 'Lorem Ipsum is dummy text', image: "/images/wonders/03.jpg", },
-];
-
+  const wondersData = [
+    {
+      id: 1,
+      heading: "Best Picked",
+      description: "Lorem Ipsum is dummy text",
+      image: "/images/wonders/01.jpg",
+    },
+    {
+      id: 2,
+      heading: "Best Picked",
+      description: "Lorem Ipsum is dummy text",
+      image: "/images/wonders/02.jpg",
+    },
+    {
+      id: 3,
+      heading: "Best Picked",
+      description: "Lorem Ipsum is dummy text",
+      image: "/images/wonders/03.jpg",
+    },
+    {
+      id: 4,
+      heading: "Best Picked",
+      description: "Lorem Ipsum is dummy text",
+      image: "/images/wonders/01.jpg",
+    },
+    {
+      id: 5,
+      heading: "Best Picked",
+      description: "Lorem Ipsum is dummy text",
+      image: "/images/wonders/02.jpg",
+    },
+    {
+      id: 6,
+      heading: "Best Picked",
+      description: "Lorem Ipsum is dummy text",
+      image: "/images/wonders/03.jpg",
+    },
+  ];
 
   return (
     <>
@@ -158,18 +292,22 @@ const wondersData = [
         <div className="container-fluid py-lg-5">
           <div className="row">
             <div className="col-md-12">
-              <Carousal eventScroll={eventScrollData} count={5} type="event-page-scroll" />
+              <Carousal
+                eventScroll={eventScrollData}
+                count={5}
+                type="event-page-scroll"
+              />
             </div>
           </div>
         </div>
 
-        <div className={style['explore-event-container']}>
+        <div className={style["explore-event-container"]}>
           <div className="container-fluid">
             <div className="row">
-              <div className="col-md-3">
-                <div className={style['event-left-container']}>
+              <div className="col-md-3 mb-4">
+                <div className={`$style['event-left-container'] p-3`}>
                   <h4 className="pt-2">Price Range</h4>
-                  <div className={style['price-range']}>
+                  <div className={style["price-range"]}>
                     <Range
                       step={1}
                       min={30}
@@ -181,9 +319,9 @@ const wondersData = [
                           {...props}
                           style={{
                             ...props.style,
-                            height: '6px',
-                            width: '100%',
-                            backgroundColor: '#ccc',
+                            height: "6px",
+                            width: "100%",
+                            backgroundColor: "#ccc",
                           }}
                         >
                           {children}
@@ -194,28 +332,31 @@ const wondersData = [
                           {...props}
                           style={{
                             ...props.style,
-                            height: '24px',
-                            width: '24px',
-                            borderRadius: '50%',
-                            border: 'solid 3px #41a6ab',
-                            backgroundColor: '#fff',
+                            height: "24px",
+                            width: "24px",
+                            borderRadius: "50%",
+                            border: "solid 3px #41a6ab",
+                            backgroundColor: "#fff",
                           }}
                         />
                       )}
                     />
                     <div>
-                      <p className={style['price-range-text']}>
+                      <p className={style["price-range-text"]}>
                         Price Range: ${priceRange[0]} — ${priceRange[1]}
                       </p>
                     </div>
                   </div>
 
-                  <div className={style['media-calendar']}>
+                  <div className={style["media-calendar"]}>
                     <h4 className="pt-2">Calendar</h4>
-                    <Calendar onChange={handleDateChange} value={selectedDate} />
+                    <Calendar
+                      onChange={handleDateChange}
+                      value={selectedDate}
+                    />
                   </div>
 
-                  <div className={style['accordion-range']}>
+                  <div className={style["accordion-range"]}>
                     {accordionData.map((accordion, index) => (
                       <Accordion
                         key={index}
@@ -233,15 +374,15 @@ const wondersData = [
                 <EventsExploreTab />
 
                 {/* Upcoming Events */}
-                <section className={style['pakage-bes-picked']}>
+                <section className={style["pakage-bes-picked"]}>
                   <div className="container-fluid">
                     <div className="row">
                       <div className="col-md-12">
-                        <h3 className="pb-3">Upcoming Events</h3> 
+                        <h3 className="pb-3">Upcoming Events</h3>
                       </div>
                       <div className="col-md-12">
                         <div className="upcoming-events-picked">
-                          <UpcomingEvents/>
+                          <UpcomingEvents />
                         </div>
                       </div>
                     </div>
@@ -249,7 +390,7 @@ const wondersData = [
                 </section>
 
                 {/* Lesser-known wonders */}
-                <section className={style['pakage-bes-picked']}>
+                <section className={style["pakage-bes-picked"]}>
                   <div className="container pt-5">
                     <div className="row">
                       <div className="col-md-12">
@@ -260,13 +401,15 @@ const wondersData = [
                         </p>
                       </div>
                       <div className="col-md-12">
-                        <Carousal wonders={wondersData} count={3} type="past-events" />
+                        <Carousal
+                          wonders={wondersData}
+                          count={3}
+                          type="past-events"
+                        />
                       </div>
                     </div>
                   </div>
                 </section>
-
-                
               </div>
             </div>
           </div>

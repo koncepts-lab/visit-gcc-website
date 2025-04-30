@@ -9,11 +9,11 @@ import "slick-carousel/slick/slick-theme.css";
 
 // Importing icons
 import { HiOutlineArrowLongRight } from "react-icons/hi2";
-import { IoLocationSharp, IoIosCloudyNight } from "react-icons/io";
+import { IoLocationSharp } from "react-icons/io5";
+import { IoIosCloudyNight, IoIosAirplane } from "react-icons/io";
 import { GoDotFill } from "react-icons/go";
 import { GiCruiser } from "react-icons/gi";
 import { FaFerry, FaTrain } from "react-icons/fa";
-import { IoIosAirplane } from "react-icons/io";
 
 // Main Tab Component
 const HighlightTab = () => {
@@ -164,7 +164,7 @@ const SponsorsAndPartnersContent = () => (
 
     <div className="container pt-2">
       <div className="row">
-        <div className="col-md-2 mb-4">
+        {/* <div className="col-md-2 mb-4">
           <img src="../images/logo.svg" />
         </div>
         <div className="col-md-2 mb-4">
@@ -199,7 +199,7 @@ const SponsorsAndPartnersContent = () => (
         </div>
         <div className="col-md-2 mb-4">
           <img src="../images/logo.svg" />
-        </div>
+        </div> */}
       </div>
     </div>
   </div>
@@ -248,12 +248,12 @@ const VenueInformationContent = () => (
                 Cruise
               </p>
             </li>
-            <li>
+            {/* <li>
               <p>
                 <FaFerry />
                 Ferry
               </p>
-            </li>
+            </li> */}
             <li>
               <p>
                 <IoIosAirplane />
