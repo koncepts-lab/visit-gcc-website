@@ -6,7 +6,7 @@
   background-position: center top;
   background-size: cover;
   padding-bottom: 50px;
-  }
+}
 /* .banner-container{  
   background: #f2f2f2e3;
   border-radius: 0px 0px 40px 40px;
@@ -18,53 +18,49 @@
   margin-bottom: 50px;
 } */
 
-.banner-container img{
+.banner-container img {
   width: 100%;
   max-width: 50px;
   margin: 0 auto;
   display: block;
-
 }
-.banner-container h4{
+.banner-container h4 {
   margin-top: 20px;
   text-transform: uppercase;
   font-weight: 700;
   font-size: 18px !important;
   text-align: center;
   color: #149699;
-  font-family: 'Gotham';
+  font-family: "Gotham";
 }
-.banner-search{
+.banner-search {
   max-width: 500px;
   margin: 0 auto;
-
 }
-.banner-search input{
+.banner-search input {
   height: 60px;
   background-color: #f8f8f8 !important;
 }
-.banner-search button{
+.banner-search button {
   background: #fff;
   border: none;
   color: #000;
   font-size: 20px;
   padding: 0 30px;
 }
-.banner-search button:hover{
+.banner-search button:hover {
   background: #135f74;
   color: #fff;
 }
 @media only screen and (max-width: 991px) {
   .banner-container img {
-      max-width:30px;
-
+    max-width: 30px;
   }
   .banner-container h4 {
-      margin-top: 10px;
-      font-size: 13px !important;
+    margin-top: 10px;
+    font-size: 13px !important;
   }
 }
-
 
 /* style.module.css */
 .banner-container {
@@ -83,10 +79,10 @@
   max-width: 50px;
   margin-bottom: 10px;
 }
-.only-stiky{
+.only-stiky {
   display: none;
 }
-.sticky .only-stiky{
+.sticky .only-stiky {
   display: block;
 }
 
@@ -101,8 +97,12 @@
   z-index: 10000;
   transition: all 0.3s ease; /* Smooth transition for background, padding, etc. */
 }
-.sticky .serch-div{ display: none;}
-.sticky .banner-container{ margin-bottom: 0;}
+.sticky .serch-div {
+  display: none;
+}
+.sticky .banner-container {
+  margin-bottom: 0;
+}
 .sticky .banner-box img {
   max-width: 25px;
   margin-bottom: 0;
@@ -122,7 +122,7 @@
   justify-content: center;
 } */
 
-.banner-box{
+.banner-box {
   background: #f2f2f2e3;
   border-radius: 0 0 40px 40px;
   display: flex;
@@ -133,19 +133,15 @@
   float: left;
   width: 100%;
 }
-.banner-box div{
-  width:25% ;
-}
 
-
-.sticky .banner-box{
+.sticky .banner-box {
   justify-content: center;
   width: auto;
   margin-bottom: 0;
-  background-color:#fff;
+  background-color: #fff;
   padding: 5px 0;
 }
-.sticky .banner-box div{
+.sticky .banner-box div {
   margin: 0 15px;
 }
 /* .sticky .only-stiky{ display: block;} */
@@ -154,36 +150,31 @@
   max-width: 25px !important;
   margin-right: 9px !important;
 }
-.banner-box-logo{
+.banner-box-logo {
   max-width: 200px !important;
 }
 
 @media only screen and (max-width: 991px) {
-  
   .banner-container img {
-      max-width: 30px !important;
-      margin-bottom: 10px;
-    }
-    .banner-box {
-      margin: 0 0 15px 0;
+    max-width: 30px !important;
+    margin-bottom: 10px;
+  }
+  .banner-box {
+    margin: 0 0 15px 0;
   }
   .only-stiky {
     display: none !important;
-}
-.banner-container {
-  justify-content: center;
-}
-.sticky {
-  display: none;
-}
-.banner {
-  margin-top: 87px;
-}
   }
-
-
-
-  @media (min-width:576px) and (max-width:991px) {
- 
- 
+  .banner-container {
+    justify-content: center;
   }
+  .sticky {
+    display: none;
+  }
+  .banner {
+    margin-top: 87px;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 991px) {
+}
