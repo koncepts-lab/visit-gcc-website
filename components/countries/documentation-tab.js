@@ -127,8 +127,9 @@ const DocumentationTabs = () => {
                             <div className={style["important_numbers"]}>
                               <span>
                                 <img
-                                  src="../images/icons/01.png"
-                                  alt="Bahrain"
+                                  src="../images/icons/emergency-numbers/Police.svg"
+                                  alt="Police"
+                                  height={45}
                                   className="img-center"
                                 />
                               </span>
@@ -142,8 +143,9 @@ const DocumentationTabs = () => {
                             <div className={style["important_numbers"]}>
                               <span>
                                 <img
-                                  src="../images/icons/02.png"
-                                  alt="Bahrain"
+                                  src="../images/icons/emergency-numbers/Ambulance.svg"
+                                  alt="Ambulance"
+                                  height={45}
                                   className="img-center"
                                 />
                               </span>
@@ -157,8 +159,9 @@ const DocumentationTabs = () => {
                             <div className={style["important_numbers"]}>
                               <span>
                                 <img
-                                  src="../images/icons/03.png"
-                                  alt="Bahrain"
+                                  src="../images/icons/emergency-numbers/Fire.svg"
+                                  alt="Fire"
+                                  height={45}
                                   className="img-center"
                                 />
                               </span>
@@ -172,8 +175,9 @@ const DocumentationTabs = () => {
                             <div className={style["important_numbers"]}>
                               <span>
                                 <img
-                                  src="../images/icons/04.png"
-                                  alt="Bahrain"
+                                  src="../images/icons/emergency-numbers/Tourist call center.svg"
+                                  alt="Tourist call center"
+                                  height={45}
                                   className="img-center"
                                 />
                               </span>
@@ -187,8 +191,9 @@ const DocumentationTabs = () => {
                             <div className={style["important_numbers"]}>
                               <span>
                                 <img
-                                  src="../images/icons/05.png"
-                                  alt="Bahrain"
+                                  src="../images/icons/emergency-numbers/International call center.svg"
+                                  alt="International call center"
+                                  height={45}
                                   className="img-center"
                                 />
                               </span>
@@ -202,8 +207,9 @@ const DocumentationTabs = () => {
                             <div className={style["important_numbers"]}>
                               <span>
                                 <img
-                                  src="../images/icons/06.png"
-                                  alt="Bahrain"
+                                  src="../images/icons/emergency-numbers/Road assistance.svg"
+                                  alt="Road assistance"
+                                  height={45}
                                   className="img-center"
                                 />
                               </span>
@@ -238,21 +244,14 @@ const DocumentationTabs = () => {
                         </div>
                         <div className="row g-4">
                           <div className="col-md-4 d-flex gap-2">
-                            <div
-                              className="d-flex align-items-center justify-content-center rounded-2"
-                              style={{
-                                backgroundColor: "#94CEBC",
-                                width: 40,
-                                height: 40,
-                              }}
-                            >
-                              <FaMoneyBillWave
-                                className="text-white"
-                                width={20}
-                                height={20}
-                                style={{ fontSize: "24px" }}
+                            <span>
+                              <img
+                                src="../images/icons/general-information/Currancy.svg"
+                                alt="Currency"
+                                height={45}
+                                className="img-center"
                               />
-                            </div>
+                            </span>
                             <div>
                               <b>Currency</b>
                               <p className="mb-0" style={{ color: "grey" }}>
@@ -261,21 +260,14 @@ const DocumentationTabs = () => {
                             </div>
                           </div>
                           <div className="col-md-4 d-flex gap-2">
-                            <div
-                              className="d-flex align-items-center justify-content-center rounded-2"
-                              style={{
-                                backgroundColor: "#94CEBC",
-                                width: 40,
-                                height: 40,
-                              }}
-                            >
-                              <FaClock
-                                className="text-white"
-                                width={20}
-                                height={20}
-                                style={{ fontSize: "24px" }}
+                            <span>
+                              <img
+                                src="../images/icons/general-information/Time Zone.svg"
+                                alt="Time Zone"
+                                height={45}
+                                className="img-center"
                               />
-                            </div>
+                            </span>
                             <div>
                               <b>Time zone</b>
                               <p className="mb-0" style={{ color: "grey" }}>
@@ -284,21 +276,14 @@ const DocumentationTabs = () => {
                             </div>
                           </div>
                           <div className="col-md-4 d-flex gap-2">
-                            <div
-                              className="d-flex align-items-center justify-content-center rounded-2"
-                              style={{
-                                backgroundColor: "#94CEBC",
-                                width: 40,
-                                height: 40,
-                              }}
-                            >
-                              <FaPhone
-                                className="text-white"
-                                width={20}
-                                height={20}
-                                style={{ fontSize: "24px" }}
+                            <span>
+                              <img
+                                src="../images/icons/general-information/Country Code.svg"
+                                alt="Country Code"
+                                height={45}
+                                className="img-center"
                               />
-                            </div>
+                            </span>
                             <div>
                               <b>Country Code</b>
                               <p className="mb-0" style={{ color: "grey" }}>
@@ -307,21 +292,14 @@ const DocumentationTabs = () => {
                             </div>
                           </div>
                           <div className="col-md-4 d-flex gap-2">
-                            <div
-                              className="d-flex align-items-center justify-content-center rounded-2"
-                              style={{
-                                backgroundColor: "#94CEBC",
-                                width: 40,
-                                height: 40,
-                              }}
-                            >
-                              <FaSimCard
-                                className="text-white"
-                                width={20}
-                                height={20}
-                                style={{ fontSize: "24px" }}
+                            <span>
+                              <img
+                                src="../images/icons/general-information/Sim Card.svg"
+                                alt="Sim Card"
+                                height={45}
+                                className="img-center"
                               />
-                            </div>
+                            </span>
                             <div>
                               <b>Etisalat/ Du</b>
                               <p className="mb-0" style={{ color: "grey" }}>
@@ -330,21 +308,14 @@ const DocumentationTabs = () => {
                             </div>
                           </div>
                           <div className="col-md-4 d-flex gap-2">
-                            <div
-                              className="d-flex align-items-center justify-content-center rounded-2"
-                              style={{
-                                backgroundColor: "#94CEBC",
-                                width: 40,
-                                height: 40,
-                              }}
-                            >
-                              <FaPlaneDeparture
-                                className="text-white"
-                                width={20}
-                                height={20}
-                                style={{ fontSize: "24px" }}
+                            <span>
+                              <img
+                                src="../images/icons/general-information/Airport.svg"
+                                alt="Airport"
+                                height={45}
+                                className="img-center"
                               />
-                            </div>
+                            </span>
                             <div>
                               <b>Airport (DXB)</b>
                               <p className="mb-0" style={{ color: "grey" }}>
@@ -353,21 +324,14 @@ const DocumentationTabs = () => {
                             </div>
                           </div>
                           <div className="col-md-4 d-flex gap-2">
-                            <div
-                              className="d-flex align-items-center justify-content-center rounded-2"
-                              style={{
-                                backgroundColor: "#94CEBC",
-                                width: 40,
-                                height: 40,
-                              }}
-                            >
-                              <FaCity
-                                className="text-white"
-                                width={20}
-                                height={20}
-                                style={{ fontSize: "24px" }}
+                            <span>
+                              <img
+                                src="../images/icons/general-information/Capital City.svg"
+                                alt="Capital City"
+                                height={45}
+                                className="img-center"
                               />
-                            </div>
+                            </span>
                             <div>
                               <b>Abu Dhabi</b>
                               <p className="mb-0" style={{ color: "grey" }}>
@@ -389,21 +353,14 @@ const DocumentationTabs = () => {
                       <div className="container">
                         <div className="row g-4">
                           <div className="col-md-4 d-flex gap-2">
-                            <div
-                              className="d-flex align-items-center justify-content-center rounded-2"
-                              style={{
-                                backgroundColor: "#94CEBC",
-                                width: 40,
-                                height: 40,
-                              }}
-                            >
-                              <FaBusAlt
-                                className="text-white"
-                                width={20}
-                                height={20}
-                                style={{ fontSize: "24px" }}
+                            <span>
+                              <img
+                                src="../images/icons/important-apps/Metro.svg"
+                                alt="Metro"
+                                height={45}
+                                className="img-center"
                               />
-                            </div>
+                            </span>
                             <div>
                               <b>Nol Card/ Hafilat Card</b>
                               <p className="mb-0" style={{ color: "grey" }}>
@@ -412,21 +369,14 @@ const DocumentationTabs = () => {
                             </div>
                           </div>
                           <div className="col-md-4 d-flex gap-2">
-                            <div
-                              className="d-flex align-items-center justify-content-center rounded-2"
-                              style={{
-                                backgroundColor: "#94CEBC",
-                                width: 40,
-                                height: 40,
-                              }}
-                            >
-                              <FaMapMarkedAlt
-                                className="text-white"
-                                width={20}
-                                height={20}
-                                style={{ fontSize: "24px" }}
+                            <span>
+                              <img
+                                src="../images/icons/important-apps/Route Planner.svg"
+                                alt="Route Planner"
+                                height={45}
+                                className="img-center"
                               />
-                            </div>
+                            </span>
                             <div>
                               <b>S’hail App</b>
                               <p className="mb-0" style={{ color: "grey" }}>
@@ -435,21 +385,14 @@ const DocumentationTabs = () => {
                             </div>
                           </div>
                           <div className="col-md-4 d-flex gap-2">
-                            <div
-                              className="d-flex align-items-center justify-content-center rounded-2"
-                              style={{
-                                backgroundColor: "#94CEBC",
-                                width: 40,
-                                height: 40,
-                              }}
-                            >
-                              <FaCar
-                                className="text-white"
-                                width={20}
-                                height={20}
-                                style={{ fontSize: "24px" }}
+                            <span>
+                              <img
+                                src="../images/icons/important-apps/Ride.svg"
+                                alt="Ride"
+                                height={45}
+                                className="img-center"
                               />
-                            </div>
+                            </span>
                             <div>
                               <b>Careem</b>
                               <p className="mb-0" style={{ color: "grey" }}>
@@ -458,21 +401,14 @@ const DocumentationTabs = () => {
                             </div>
                           </div>
                           <div className="col-md-4 d-flex gap-2">
-                            <div
-                              className="d-flex align-items-center justify-content-center rounded-2"
-                              style={{
-                                backgroundColor: "#94CEBC",
-                                width: 40,
-                                height: 40,
-                              }}
-                            >
-                              <FaCarSide
-                                className="text-white"
-                                width={20}
-                                height={20}
-                                style={{ fontSize: "24px" }}
+                            <span>
+                              <img
+                                src="../images/icons/important-apps/Udrive.svg"
+                                alt="Udrive"
+                                height={45}
+                                className="img-center"
                               />
-                            </div>
+                            </span>
                             <div>
                               <b>Udrive</b>
                               <p className="mb-0" style={{ color: "grey" }}>
@@ -481,21 +417,14 @@ const DocumentationTabs = () => {
                             </div>
                           </div>
                           <div className="col-md-4 d-flex gap-2">
-                            <div
-                              className="d-flex align-items-center justify-content-center rounded-2"
-                              style={{
-                                backgroundColor: "#94CEBC",
-                                width: 40,
-                                height: 40,
-                              }}
-                            >
-                              <FaShoppingBag
-                                className="text-white"
-                                width={20}
-                                height={20}
-                                style={{ fontSize: "24px" }}
+                            <span>
+                              <img
+                                src="../images/icons/important-apps/Grocery.svg"
+                                alt="Grocery"
+                                height={45}
+                                className="img-center"
                               />
-                            </div>
+                            </span>
                             <div>
                               <b>Noon minutes</b>
                               <p className="mb-0" style={{ color: "grey" }}>
@@ -504,21 +433,14 @@ const DocumentationTabs = () => {
                             </div>
                           </div>
                           <div className="col-md-4 d-flex gap-2">
-                            <div
-                              className="d-flex align-items-center justify-content-center rounded-2"
-                              style={{
-                                backgroundColor: "#94CEBC",
-                                width: 40,
-                                height: 40,
-                              }}
-                            >
-                              <FaSmile
-                                className="text-white"
-                                width={20}
-                                height={20}
-                                style={{ fontSize: "24px" }}
+                            <span>
+                              <img
+                                src="../images/icons/important-apps/Food App.svg"
+                                alt="Food"
+                                height={45}
+                                className="img-center"
                               />
-                            </div>
+                            </span>
                             <div>
                               <b>Smiles</b>
                               <p className="mb-0" style={{ color: "grey" }}>
@@ -527,21 +449,14 @@ const DocumentationTabs = () => {
                             </div>
                           </div>
                           <div className="col-md-4 d-flex gap-2">
-                            <div
-                              className="d-flex align-items-center justify-content-center rounded-2"
-                              style={{
-                                backgroundColor: "#94CEBC",
-                                width: 40,
-                                height: 40,
-                              }}
-                            >
-                              <FaMapMarkedAlt
-                                className="text-white"
-                                width={20}
-                                height={20}
-                                style={{ fontSize: "24px" }}
+                            <span>
+                              <img
+                                src="../images/icons/important-apps/Navigation.svg"
+                                alt="Navigation"
+                                height={45}
+                                className="img-center"
                               />
-                            </div>
+                            </span>
                             <div>
                               <b>Google Maps</b>
                               <p className="mb-0" style={{ color: "grey" }}>
@@ -550,21 +465,14 @@ const DocumentationTabs = () => {
                             </div>
                           </div>
                           <div className="col-md-4 d-flex gap-2">
-                            <div
-                              className="d-flex align-items-center justify-content-center rounded-2"
-                              style={{
-                                backgroundColor: "#94CEBC",
-                                width: 40,
-                                height: 40,
-                              }}
-                            >
-                              <FaShoppingBag
-                                className="text-white"
-                                width={20}
-                                height={20}
-                                style={{ fontSize: "24px" }}
+                            <span>
+                              <img
+                                src="../images/icons/important-apps/Shopping app.svg"
+                                alt="Shopping"
+                                height={45}
+                                className="img-center"
                               />
-                            </div>
+                            </span>
                             <div>
                               <b>Noon</b>
                               <p className="mb-0" style={{ color: "grey" }}>
@@ -586,21 +494,14 @@ const DocumentationTabs = () => {
                       <div className="container">
                         <div className="row g-4">
                           <div className="col-md-4 d-flex gap-2">
-                            <div
-                              className="d-flex align-items-center justify-content-center rounded-2"
-                              style={{
-                                backgroundColor: "#94CEBC",
-                                width: 40,
-                                height: 40,
-                              }}
-                            >
-                              <FaHospital
-                                className="text-white"
-                                width={20}
-                                height={20}
-                                style={{ fontSize: "24px" }}
+                            <span>
+                              <img
+                                src="../images/icons/emergency-services/Hospital.svg"
+                                alt="Hospital"
+                                height={45}
+                                className="img-center"
                               />
-                            </div>
+                            </span>
                             <div>
                               <b>Rashid Hospital</b>
                               <p className="mb-0" style={{ color: "grey" }}>
@@ -609,21 +510,14 @@ const DocumentationTabs = () => {
                             </div>
                           </div>
                           <div className="col-md-4 d-flex gap-2">
-                            <div
-                              className="d-flex align-items-center justify-content-center rounded-2"
-                              style={{
-                                backgroundColor: "#94CEBC",
-                                width: 40,
-                                height: 40,
-                              }}
-                            >
-                              <FaHospital
-                                className="text-white"
-                                width={20}
-                                height={20}
-                                style={{ fontSize: "24px" }}
+                            <span>
+                              <img
+                                src="../images/icons/emergency-services/Hospital.svg"
+                                alt="Hospital"
+                                height={45}
+                                className="img-center"
                               />
-                            </div>
+                            </span>
                             <div>
                               <b>Sheikh Khalifa Medical City</b>
                               <p className="mb-0" style={{ color: "grey" }}>
@@ -632,21 +526,14 @@ const DocumentationTabs = () => {
                             </div>
                           </div>
                           <div className="col-md-4 d-flex gap-2">
-                            <div
-                              className="d-flex align-items-center justify-content-center rounded-2"
-                              style={{
-                                backgroundColor: "#94CEBC",
-                                width: 40,
-                                height: 40,
-                              }}
-                            >
-                              <FaHospital
-                                className="text-white"
-                                width={20}
-                                height={20}
-                                style={{ fontSize: "24px" }}
+                            <span>
+                              <img
+                                src="../images/icons/emergency-services/Hospital.svg"
+                                alt="Hospital"
+                                height={45}
+                                className="img-center"
                               />
-                            </div>
+                            </span>
                             <div>
                               <b>American Hospital</b>
                               <p className="mb-0" style={{ color: "grey" }}>
@@ -655,21 +542,14 @@ const DocumentationTabs = () => {
                             </div>
                           </div>
                           <div className="col-md-4 d-flex gap-2">
-                            <div
-                              className="d-flex align-items-center justify-content-center rounded-2"
-                              style={{
-                                backgroundColor: "#94CEBC",
-                                width: 40,
-                                height: 40,
-                              }}
-                            >
-                              <FaCapsules
-                                className="text-white"
-                                width={20}
-                                height={20}
-                                style={{ fontSize: "24px" }}
+                            <span>
+                              <img
+                                src="../images/icons/emergency-services/Pharmacy.svg"
+                                alt="Pharmacy"
+                                height={45}
+                                className="img-center"
                               />
-                            </div>
+                            </span>
                             <div>
                               <b>Life Pharmacy</b>
                               <p className="mb-0" style={{ color: "grey" }}>
@@ -678,21 +558,14 @@ const DocumentationTabs = () => {
                             </div>
                           </div>
                           <div className="col-md-4 d-flex gap-2">
-                            <div
-                              className="d-flex align-items-center justify-content-center rounded-2"
-                              style={{
-                                backgroundColor: "#94CEBC",
-                                width: 40,
-                                height: 40,
-                              }}
-                            >
-                              <FaClinicMedical
-                                className="text-white"
-                                width={20}
-                                height={20}
-                                style={{ fontSize: "24px" }}
+                            <span>
+                              <img
+                                src="../images/icons/emergency-services/Clinic.svg"
+                                alt="Clinic"
+                                height={45}
+                                className="img-center"
                               />
-                            </div>
+                            </span>
                             <div>
                               <b>Aster Clinic</b>
                               <p className="mb-0" style={{ color: "grey" }}>
@@ -701,21 +574,14 @@ const DocumentationTabs = () => {
                             </div>
                           </div>
                           <div className="col-md-4 d-flex gap-2">
-                            <div
-                              className="d-flex align-items-center justify-content-center rounded-2"
-                              style={{
-                                backgroundColor: "#94CEBC",
-                                width: 40,
-                                height: 40,
-                              }}
-                            >
-                              <FaUserShield
-                                className="text-white"
-                                width={20}
-                                height={20}
-                                style={{ fontSize: "24px" }}
+                            <span>
+                              <img
+                                src="../images/icons/emergency-services/Travel insurance.svg"
+                                alt="Travel Insurance"
+                                height={45}
+                                className="img-center"
                               />
-                            </div>
+                            </span>
                             <div>
                               <b>Daman</b>
                               <p className="mb-0" style={{ color: "grey" }}>
