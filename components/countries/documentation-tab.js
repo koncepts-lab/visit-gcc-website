@@ -123,7 +123,7 @@ const DocumentationTabs = () => {
                           </div>
                         </div>
                         <div className="row">
-                          <div className="col-md-4">
+                          <div className="col-lg-4 px-0">
                             <div className={style["important_numbers"]}>
                               <span>
                                 <img
@@ -139,7 +139,7 @@ const DocumentationTabs = () => {
                               </span>
                             </div>
                           </div>
-                          <div className="col-md-4">
+                          <div className="col-lg-4 px-0">
                             <div className={style["important_numbers"]}>
                               <span>
                                 <img
@@ -155,7 +155,7 @@ const DocumentationTabs = () => {
                               </span>
                             </div>
                           </div>
-                          <div className="col-md-4">
+                          <div className="col-lg-4 px-0">
                             <div className={style["important_numbers"]}>
                               <span>
                                 <img
@@ -171,7 +171,7 @@ const DocumentationTabs = () => {
                               </span>
                             </div>
                           </div>
-                          <div className="col-md-4">
+                          <div className="col-lg-4 px-0">
                             <div className={style["important_numbers"]}>
                               <span>
                                 <img
@@ -187,7 +187,7 @@ const DocumentationTabs = () => {
                               </span>
                             </div>
                           </div>
-                          <div className="col-md-4">
+                          <div className="col-lg-4 px-0">
                             <div className={style["important_numbers"]}>
                               <span>
                                 <img
@@ -203,7 +203,7 @@ const DocumentationTabs = () => {
                               </span>
                             </div>
                           </div>
-                          <div className="col-md-4">
+                          <div className="col-lg-4 px-0">
                             <div className={style["important_numbers"]}>
                               <span>
                                 <img
@@ -243,7 +243,7 @@ const DocumentationTabs = () => {
                           </div>
                         </div>
                         <div className="row g-4">
-                          <div className="col-md-4 d-flex gap-2">
+                          <div className="col-lg-4 px-0 d-flex gap-2">
                             <span>
                               <img
                                 src="../images/icons/general-information/Currancy.svg"
@@ -259,7 +259,7 @@ const DocumentationTabs = () => {
                               </p>
                             </div>
                           </div>
-                          <div className="col-md-4 d-flex gap-2">
+                          <div className="col-lg-4 px-0 d-flex gap-2">
                             <span>
                               <img
                                 src="../images/icons/general-information/Time zone.svg"
@@ -275,7 +275,7 @@ const DocumentationTabs = () => {
                               </p>
                             </div>
                           </div>
-                          <div className="col-md-4 d-flex gap-2">
+                          <div className="col-lg-4 px-0 d-flex gap-2">
                             <span>
                               <img
                                 src="../images/icons/general-information/Country Code.svg"
@@ -291,7 +291,7 @@ const DocumentationTabs = () => {
                               </p>
                             </div>
                           </div>
-                          <div className="col-md-4 d-flex gap-2">
+                          <div className="col-lg-4 px-0 d-flex gap-2">
                             <span>
                               <img
                                 src="../images/icons/general-information/Sim card.svg"
@@ -307,7 +307,7 @@ const DocumentationTabs = () => {
                               </p>
                             </div>
                           </div>
-                          <div className="col-md-4 d-flex gap-2">
+                          <div className="col-lg-4 px-0 d-flex gap-2">
                             <span>
                               <img
                                 src="../images/icons/general-information/Airport.svg"
@@ -323,7 +323,7 @@ const DocumentationTabs = () => {
                               </p>
                             </div>
                           </div>
-                          <div className="col-md-4 d-flex gap-2">
+                          <div className="col-lg-4 px-0 d-flex gap-2">
                             <span>
                               <img
                                 src="../images/icons/general-information/Capital City.svg"
@@ -352,7 +352,7 @@ const DocumentationTabs = () => {
                     <div className={style["documentation-container"]}>
                       <div className="container">
                         <div className="row g-4">
-                          <div className="col-md-4 d-flex gap-2">
+                          <div className="col-lg-4 px-0 d-flex gap-2">
                             <span>
                               <img
                                 src="../images/icons/important-apps/Metro.svg"
@@ -368,7 +368,7 @@ const DocumentationTabs = () => {
                               </p>
                             </div>
                           </div>
-                          <div className="col-md-4 d-flex gap-2">
+                          <div className="col-lg-4 px-0 d-flex gap-2">
                             <span>
                               <img
                                 src="../images/icons/important-apps/Route Planner.svg"
@@ -384,7 +384,7 @@ const DocumentationTabs = () => {
                               </p>
                             </div>
                           </div>
-                          <div className="col-md-4 d-flex gap-2">
+                          <div className="col-lg-4 px-0 d-flex gap-2">
                             <span>
                               <img
                                 src="../images/icons/important-apps/Ride.svg"
@@ -400,7 +400,7 @@ const DocumentationTabs = () => {
                               </p>
                             </div>
                           </div>
-                          <div className="col-md-4 d-flex gap-2">
+                          <div className="col-lg-4 px-0 d-flex gap-2">
                             <span>
                               <img
                                 src="../images/icons/important-apps/Udrive.svg"
@@ -416,7 +416,7 @@ const DocumentationTabs = () => {
                               </p>
                             </div>
                           </div>
-                          <div className="col-md-4 d-flex gap-2">
+                          <div className="col-lg-4 px-0 d-flex gap-2">
                             <span>
                               <img
                                 src="../images/icons/important-apps/Grocery.svg"
@@ -432,7 +432,7 @@ const DocumentationTabs = () => {
                               </p>
                             </div>
                           </div>
-                          <div className="col-md-4 d-flex gap-2">
+                          <div className="col-lg-4 px-0 d-flex gap-2">
                             <span>
                               <img
                                 src="../images/icons/important-apps/Food App.svg"
@@ -448,7 +448,7 @@ const DocumentationTabs = () => {
                               </p>
                             </div>
                           </div>
-                          <div className="col-md-4 d-flex gap-2">
+                          <div className="col-lg-4 px-0 d-flex gap-2">
                             <span>
                               <img
                                 src="../images/icons/important-apps/Navigation.svg"
@@ -464,7 +464,7 @@ const DocumentationTabs = () => {
                               </p>
                             </div>
                           </div>
-                          <div className="col-md-4 d-flex gap-2">
+                          <div className="col-lg-4 px-0 d-flex gap-2">
                             <span>
                               <img
                                 src="../images/icons/important-apps/Shopping app.svg"
@@ -493,7 +493,7 @@ const DocumentationTabs = () => {
                     <div className={style["documentation-container"]}>
                       <div className="container">
                         <div className="row g-4">
-                          <div className="col-md-4 d-flex gap-2">
+                          <div className="col-lg-4 px-0 d-flex gap-2">
                             <span>
                               <img
                                 src="../images/icons/emergency-services/Hospital.svg"
@@ -509,7 +509,7 @@ const DocumentationTabs = () => {
                               </p>
                             </div>
                           </div>
-                          <div className="col-md-4 d-flex gap-2">
+                          <div className="col-lg-4 px-0 d-flex gap-2">
                             <span>
                               <img
                                 src="../images/icons/emergency-services/Hospital.svg"
@@ -525,7 +525,7 @@ const DocumentationTabs = () => {
                               </p>
                             </div>
                           </div>
-                          <div className="col-md-4 d-flex gap-2">
+                          <div className="col-lg-4 px-0 d-flex gap-2">
                             <span>
                               <img
                                 src="../images/icons/emergency-services/Hospital.svg"
@@ -541,7 +541,7 @@ const DocumentationTabs = () => {
                               </p>
                             </div>
                           </div>
-                          <div className="col-md-4 d-flex gap-2">
+                          <div className="col-lg-4 px-0 d-flex gap-2">
                             <span>
                               <img
                                 src="../images/icons/emergency-services/Pharmacy.svg"
@@ -557,7 +557,7 @@ const DocumentationTabs = () => {
                               </p>
                             </div>
                           </div>
-                          <div className="col-md-4 d-flex gap-2">
+                          <div className="col-lg-4 px-0 d-flex gap-2">
                             <span>
                               <img
                                 src="../images/icons/emergency-services/Clinic.svg"
@@ -573,7 +573,7 @@ const DocumentationTabs = () => {
                               </p>
                             </div>
                           </div>
-                          <div className="col-md-4 d-flex gap-2">
+                          <div className="col-lg-4 px-0 d-flex gap-2">
                             <span>
                               <img
                                 src="../images/icons/emergency-services/Travel insurance.svg"

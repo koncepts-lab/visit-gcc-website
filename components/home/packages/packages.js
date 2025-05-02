@@ -10,7 +10,7 @@ function SingleHomePackage({ link, photo_url, name, description }) {
     <Link
       href={`/tour-package/${link}`}
       className={`item ${style["item-padding"]}`}
-      style={{ height: "244px" }}
+      style={{ height: "auto" }}
     >
       <div className={style["bg-black-shade"]}></div>
       <img src={photo_url} className="w-100" alt={name} />
