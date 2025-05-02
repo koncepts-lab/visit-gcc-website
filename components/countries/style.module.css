@@ -462,3 +462,8 @@ span .h3,
     padding-left: 100px;
   }
 }
+@media (max-width: 991px) {
+  .documentation-container .col-md-4 {
+    width: auto !important;
+  }
+}

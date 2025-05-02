@@ -525,7 +525,7 @@ Explore the heart-shaped route or meander through the lit nightscapes, full-size
                 <Link href="#0">{packageDetail.provider}</Link>
               </p>
               <div
-                className={`${style["flex-package-details"]}  d-flex flex-column flex-sm-row`}
+                className={`${style["flex-package-details"]}  d-flex flex-column flex-lg-row`}
               >
                 <span>
                   {[...Array(packageDetail.rating)].map((_, index) => (
@@ -545,7 +545,7 @@ Explore the heart-shaped route or meander through the lit nightscapes, full-size
                     className={style["IoMdInformationCircleOutline"]}
                   />
                 </span>
-                <span className="my-2 my-sm-0">
+                <span className="my-2 my-lg-0">
                   <MdIosShare className={style["MdIosShare"]} />
                   <FaRegHeart className={style["FaRegHeart"]} />
                 </span>
@@ -585,7 +585,7 @@ Explore the heart-shaped route or meander through the lit nightscapes, full-size
           </div>
 
           <div className="row">
-            <div className="col-md-7">
+            <div className="col-lg-7">
               {/* best picked for you */}
               <section className={style["package-best-picked"]}>
                 <div className="container">
@@ -617,7 +617,7 @@ Explore the heart-shaped route or meander through the lit nightscapes, full-size
               {/* best picked for you END*/}
             </div>
 
-            <div className="col-md-5 align-items">
+            <div className="col-lg-5 align-items">
               <div className={style["mobile-mrb"]}>
                 <h3>{packageDetail.subHeading}</h3>
                 <p>{packageDetail.overview}</p>
@@ -626,7 +626,7 @@ Explore the heart-shaped route or meander through the lit nightscapes, full-size
           </div>
 
           <div className="row mt-5">
-            <div className={`col-md-7 ${style["border-right"]}`}>
+            <div className={`col-lg-7 ${style["border-right"]}`}>
               <h3 className="pt-2">Inclusions</h3>
               <div className={style["inclusions"]}>
                 {packageDetail.inclusion.map((item, index) => (
@@ -638,7 +638,7 @@ Explore the heart-shaped route or meander through the lit nightscapes, full-size
                 ))}
               </div>
             </div>
-            <div className="col-md-5">
+            <div className="col-lg-5">
               <h3 className="pt-2">Themes</h3>
               <div className={style["inclusions"]}>
                 <span>

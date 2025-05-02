@@ -425,7 +425,7 @@ function Page() {
                 <Link href="#0">{eventDetail.provider}</Link>
               </p>
               <div
-                className={`${style["flex-package-details"]}  d-flex flex-column flex-sm-row`}
+                className={`${style["flex-package-details"]}  d-flex flex-column flex-lg-row`}
               >
                 <span>
                   {[...Array(eventDetail.rating)].map((_, index) => (
@@ -448,7 +448,7 @@ function Page() {
                     className={style["IoMdInformationCircleOutline"]}
                   />
                 </span>
-                <span className="my-2 my-sm-0">
+                <span className="my-2 my-lg-0">
                   <MdIosShare className={style["MdIosShare"]} />
                   <FaRegHeart className={style["FaRegHeart"]} />
                 </span>
@@ -488,12 +488,12 @@ function Page() {
           </div>
 
           <div className="row">
-            <div className="col-md-7">
+            <div className="col-lg-7">
               {/* best picked for you */}
               <section className={style["package-best-picked"]}>
                 <div className="container">
                   <div className="row">
-                    <div className="col-md-12">
+                    <div className="col-lg-12">
                       <div className={style["review-img-container"]}>
                         <Carousal
                           packageDetailsReviewImage={
@@ -511,7 +511,7 @@ function Page() {
               {/* best picked for you END*/}
             </div>
 
-            <div className="col-md-5 align-items">
+            <div className="col-lg-5 align-items">
               <div className={style["mobile-mrb"]}>
                 <h3>{eventDetail.subHeading}</h3>
                 <p>{eventDetail.overview}</p>
