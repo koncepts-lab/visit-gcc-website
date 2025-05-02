@@ -262,7 +262,7 @@ const DocumentationTabs = () => {
                           <div className="col-md-4 d-flex gap-2">
                             <span>
                               <img
-                                src="../images/icons/general-information/Time Zone.svg"
+                                src="../images/icons/general-information/Time zone.svg"
                                 alt="Time Zone"
                                 height={45}
                                 className="img-center"
@@ -294,7 +294,7 @@ const DocumentationTabs = () => {
                           <div className="col-md-4 d-flex gap-2">
                             <span>
                               <img
-                                src="../images/icons/general-information/Sim Card.svg"
+                                src="../images/icons/general-information/Sim card.svg"
                                 alt="Sim Card"
                                 height={45}
                                 className="img-center"
