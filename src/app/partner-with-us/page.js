@@ -141,7 +141,7 @@ function page() {
                   <hr />
                   <div className="col-md-12">
                     <p className={style["form-text"]}>
-                      2024 visitgcc.com all right reserved
+                      2024 Visitgcc.com All Rights Reserved
                     </p>
                   </div>
                 </div>
