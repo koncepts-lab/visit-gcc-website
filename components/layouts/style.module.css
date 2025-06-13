@@ -48,7 +48,7 @@
     margin-bottom: 10px;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: end;
   }
   .img-top-logo {
     max-width: 55px;
@@ -58,7 +58,6 @@
     float: left;
     margin-left: 0;
     margin-right: 5px;
-    margin-bottom: 15px;
   }
   .invest-link {
     padding: 5px 5px !important;
@@ -118,7 +117,6 @@
   .navbar_sticky_mobile_container a {
     text-transform: uppercase;
     color: #149699 !important;
-    font-family: "Gotham";
     font-size: 13px;
   }
   .navbar_sticky_mobile_container img {
@@ -202,9 +200,9 @@
   align-items: center;
   text-transform: uppercase;
   font-weight: 700;
-  font-size: 14px !important;
+  font-size: 14px;
   text-align: center;
-  color: #149699 !important;
+  color: #149699;
   font-family: "Gotham";
 }
 
@@ -224,9 +222,9 @@
   align-items: center;
   text-transform: uppercase;
   font-weight: 700;
-  font-size: 11px !important;
+  font-size: 11px;
   text-align: center;
-  color: #149699 !important;
+  color: #149699;
   font-family: "Gotham";
 }
 

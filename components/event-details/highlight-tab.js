@@ -16,7 +16,7 @@ import { GiCruiser } from "react-icons/gi";
 import { FaFerry, FaTrain } from "react-icons/fa";
 
 // Main Tab Component
-const HighlightTab = () => {
+const HighlightTab = ({ highlight, photo, faq, ticket, sponsor, venue }) => {
   const [activeTab, setActiveTab] = useState("Highlight");
 
   const tabs = [
@@ -34,17 +34,19 @@ const HighlightTab = () => {
   const renderTabContent = () => {
     switch (activeTab) {
       case "Highlight":
-        return <HighlightContent />;
+        return <HighlightContent highlight={highlight} />;
       case "PhotoGalleryEventHighlights":
-        return <PhotoGalleryEventHighlightsContent />;
+        return <PhotoGalleryEventHighlightsContent photoGallery={photo} />;
       case "FAQSection":
-        return <FAQSectionContent />;
+        return <FAQSectionContent faq={faq} />;
       case "TicketInformation":
-        return <TicketInformationContent />;
+        return <TicketInformationContent ticket={ticket} />;
       case "SponsorsAndPartners":
-        return <SponsorsAndPartnersContent />;
+        return <SponsorsAndPartnersContent sponsors={sponsor} />;
       case "VenueInformation":
-        return <VenueInformationContent />;
+        return <VenueInformationContent venue={venue} />;
+        {
+        }
       default:
         return null;
     }
@@ -71,7 +73,7 @@ const HighlightTab = () => {
 };
 
 // Highlight Tab Content
-const HighlightContent = () => {
+const HighlightContent = ({ highlight }) => {
   const [activeAccordion, setActiveAccordion] = useState(null);
 
   const accordionTabs = [
@@ -88,28 +90,13 @@ const HighlightContent = () => {
   return (
     <div>
       <h3>Timeline</h3>
-      <p>
-        Lorem Ipsum is simply dummy text of the printing and typesetting
-        industry. Lorem ipsum has been the industry's standard dummy text ever
-        since the 1500s, when an unknown printer took a galley of type and
-        scrambled it to make a type specimen book. It has survived not only five
-        centuries, but also the leap into electronic typesetting, remaining
-        essentially unchanged.
-      </p>
-      <p>
-        Lorem Ipsum is simply dummy text of the printing and typesetting
-        industry. Lorem ipsum has been the industry's standard dummy text ever
-        since the 1500s, when an unknown printer took a galley of type and
-        scrambled it to make a type specimen book. It has survived not only five
-        centuries, but also the leap into electronic typesetting, remaining
-        essentially unchanged.
-      </p>
+      <p>{highlight}</p>
     </div>
   );
 };
 
 // Photo Gallery Tab Content
-const PhotoGalleryEventHighlightsContent = () => {
+const PhotoGalleryEventHighlightsContent = ({ photoGallery }) => {
   const carouselSettings = {
     dots: true, // Enable dot pagination
     infinite: true, // Loop slides infinitely
@@ -131,7 +118,7 @@ const PhotoGalleryEventHighlightsContent = () => {
     <div className="photoGalleryContainer">
       <h4>Photo Gallery / Event Highlights</h4>
       <Slider {...carouselSettings}>
-        {images.map((image, index) => (
+        {photoGallery.map((image, index) => (
           <div key={index} className={style.carouselSlide}>
             <img src={image} alt={`Slide ${index + 1}`} className="rounded-4" />
           </div>
@@ -142,28 +129,29 @@ const PhotoGalleryEventHighlightsContent = () => {
 };
 
 // FAQ Tab Content
-const FAQSectionContent = () => (
+const FAQSectionContent = ({ faq }) => (
   <div>
     <h4>FAQ Section</h4>
-    <p>Here are some frequently asked questions and answers.</p>
+    <p>{faq}</p>
   </div>
 );
 
 // Ticket Information Tab Content
-const TicketInformationContent = () => (
+const TicketInformationContent = ({ ticket }) => (
   <div>
     <h4>Ticket Information</h4>
-    <p>Details about ticket booking and prices.</p>
+    <p>{ticket}</p>
   </div>
 );
 
 // Sponsors Tab Content
-const SponsorsAndPartnersContent = () => (
+const SponsorsAndPartnersContent = ({ sponsers }) => (
   <div>
     <h4>Sponsors and Partners</h4>
 
     <div className="container pt-2">
       <div className="row">
+        <p>{sponsers}</p>
         {/* <div className="col-md-2 mb-4">
           <img src="../images/logo.svg" />
         </div>

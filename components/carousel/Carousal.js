@@ -20,6 +20,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import FeaturedTravel from "../tour-package/featured-travel";
 import EventScroll from "../events/event-scroll";
+import EventDetailsOtherEvents from "@components/tour-package-details/event-details-other-events";
 
 const SlickCarousel = dynamic(() => import("react-slick"), {
   ssr: false,
@@ -143,7 +144,7 @@ function Carousal({
         packages.map((pkg) => (
           <div key={pkg.id} className="home-package-item">
             <SingleHomePackage
-              photo_url={pkg?.image || ""}
+              photo_url={pkg?.photo_urls?.[0] || ""}
               name={pkg.name}
               description={pkg.description}
               link={pkg.id.toString()}
@@ -164,11 +165,11 @@ function Carousal({
       {type === "home-blog" &&
         blog.map((b) => (
           <SingleHomeBlog
-            key={b.id}
-            image={b.image}
+            key={b.uuid_id}
+            image={b.main_image_url}
             heading={b.heading}
-            description={b.description}
-            link={b.link}
+            description={b.description1}
+            link={b.uuid_id}
           />
         ))}
 
@@ -176,11 +177,11 @@ function Carousal({
         events.map((event) => (
           <SingleHomeEvents
             key={event.id}
-            event_photo_urls={event?.image || ""}
+            event_photo_urls={event?.event_photo_urls?.[0] || ""}
             name={event.name}
             date={event.date}
             description={event.description}
-            link={event.link}
+            link={event.id.toString()}
           />
         ))}
       {type === "country-tab" &&
@@ -219,10 +220,10 @@ function Carousal({
         featuredTravel.map((featuredTravel) => (
           <FeaturedTravel
             key={featuredTravel.id}
-            image={featuredTravel.image}
-            heading={featuredTravel.heading}
+            image={featuredTravel.photo_urls[0]}
+            heading={featuredTravel.name}
             description={featuredTravel.description}
-            link={featuredTravel.link}
+            id={featuredTravel.id}
           />
         ))}
 
@@ -249,12 +250,7 @@ function Carousal({
         ))}
       {type === "tour-package-details-reviews" &&
         packageDetailsReview.map((review) => (
-          <SinglePackageContainerReview
-            key={review.id}
-            image={review.image}
-            heading={review.heading}
-            description={review.description}
-          />
+          <SinglePackageContainerReview image={review} />
         ))}
       {type === "tour-package-details-reviews-img" &&
         packageDetailsReviewImage.map((reviewImage) => (
@@ -281,25 +277,21 @@ function Carousal({
 
       {type === "pakage-details-other-packages" &&
         pakageDetailsOtherPackages?.map((pakageDetailsOtherPackages) => (
-          <PakageDetailsOtherPackages
-            key={pakageDetailsOtherPackages.id}
-            image={pakageDetailsOtherPackages.image}
-            headingIcon={pakageDetailsOtherPackages.headingIcon}
-            heading={pakageDetailsOtherPackages.heading}
-            date={pakageDetailsOtherPackages.date}
-            description={pakageDetailsOtherPackages.description}
-            link={pakageDetailsOtherPackages.link}
-          />
+          <PakageDetailsOtherPackages packages={pakageDetailsOtherPackages} />
+        ))}
+      {type === "event-details-other-events" &&
+        pakageDetailsOtherPackages?.map((pakageDetailsOtherPackages) => (
+          <EventDetailsOtherEvents events={pakageDetailsOtherPackages} />
         ))}
 
       {type === "event-page-scroll" &&
-        eventScroll.map((eventScrollData, index) => (
+        eventScroll.map((eventScrollData) => (
           <EventScroll
-            key={index}
-            image={eventScrollData.image}
-            heading={eventScrollData.heading}
+            key={eventScrollData.id}
+            id={eventScrollData.id}
+            image={eventScrollData.event_photo_urls[0]}
+            heading={eventScrollData.name}
             description={eventScrollData.description}
-            link={eventScrollData.link}
           />
         ))}
 
@@ -325,10 +317,11 @@ function Carousal({
         wonders.map((wonders) => (
           <Singlewonders
             key={wonders.id}
-            image={wonders.image}
-            heading={wonders.heading}
+            image={wonders.event_photo_urls[0]}
+            heading={wonders.name}
             description={wonders.description}
             link={wonders.link}
+            id={wonders.id}
           />
         ))}
 

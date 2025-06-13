@@ -6,7 +6,6 @@ import { FaArrowRightLong } from "react-icons/fa6";
 const ArrowIcon = () => <FaArrowRightLong />;
 
 function SingleHomeEvents({ event_photo_urls, date, name, description, link }) {
-  console.log(date); // Debugging line
   return (
     <Link href={`/events/${link}`} className={`item ${style["item-padding"]}`}>
       <div className={style["event-box"]}>

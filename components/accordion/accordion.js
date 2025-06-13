@@ -1,40 +1,64 @@
-// Accordion.js
-import React, { useState } from 'react';
-import styles from './Accordion.module.css';
+// src/components/accordion/accordion.js (or wherever it is located)
 
-const Accordion = ({ title, items, isOpenInitially }) => {
-    const [isOpen, setIsOpen] = useState(isOpenInitially);
+"use client";
+import React, { useState } from "react";
+import styles from "./accordion.module.css"; // Ensure this path is correct
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 
-    const toggleAccordion = () => {
-        setIsOpen(!isOpen);
-    };
+const Accordion = ({
+  title,
+  items,
+  isOpenInitially = false,
+  onItemClick,
+  selectedItems = [], // This prop receives the list of active items from the parent
+}) => {
+  const [isOpen, setIsOpen] = useState(isOpenInitially);
 
-    return (
-        <div className={styles.accordion}>
-            <div className={styles.accordionHeader} onClick={toggleAccordion}>
-                <h4 className={styles.title}>{title}</h4>
-                <span className={styles.sign}>{isOpen ? '▼' : '▲'}</span>
-            </div>
-            {isOpen && (
-                <div className={styles.accordionContent}>
-                    <ul>
-                        {items.map((item, index) => (
-                            <li key={index} className={styles.listItem}>
-                                <input
-                                    type='checkbox'
-                                    id={`checkbox-${title}-${index}`}
-                                    className={styles.checkbox}
-                                />
-                                <label htmlFor={`checkbox-${title}-${index}`} className={styles.label}>
-                                    {item}
-                                </label>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            )}
+  const handleToggle = () => {
+    setIsOpen(!isOpen);
+  };
+
+  if (!Array.isArray(items)) {
+    return null; // Safety check
+  }
+
+  return (
+    <div className={styles.accordion}>
+      <div className={styles.accordionHeader} onClick={handleToggle}>
+        <h5>{title}</h5>
+        <span className={styles.icon}>
+          {isOpen ? <IoIosArrowUp /> : <IoIosArrowDown />}
+        </span>
+      </div>
+      {isOpen && (
+        <div className={styles.accordionContent}>
+          <ul>
+            {/* THIS IS THE UPDATED PART */}
+            {items.map((item, index) => {
+              // Check if the current item is in the array of selected items
+              const isActive = selectedItems.includes(item);
+
+              return (
+                <li
+                  // It's better to use a unique item string as a key if possible
+                  key={item + index}
+                  // Apply a 'selected' class if isActive is true
+                  className={`${styles.listItem} ${
+                    isActive ? styles.selected : ""
+                  }`}
+                  // The whole list item is now clickable
+                  onClick={() => onItemClick && onItemClick(item)}
+                >
+                  {item}
+                </li>
+              );
+            })}
+            {/* END OF UPDATED PART */}
+          </ul>
         </div>
-    );
+      )}
+    </div>
+  );
 };
 
 export default Accordion;

@@ -13,9 +13,9 @@ import { MdDownhillSkiing } from "react-icons/md";
 import { IoBusOutline } from "react-icons/io5";
 import { GiSailboat } from "react-icons/gi";
 
-const images = [
+const events = [
   {
-    src: "/images/demo/01.jpg",
+    src: "/events/demo/01.jpg",
     title: "Travis Scott | CIRCUS MAXIMUS TOUR ",
     provider: "Discover Qatar",
     description:
@@ -121,7 +121,7 @@ const images = [
   //   },
 ];
 
-const ExploreEventsContainer = ({}) => {
+const ExploreEventsContainer = ({ events }) => {
   const [expandedItems, setExpandedItems] = useState([]); // To track which items are expanded
 
   // Toggle function for expanding/collapsing the ul
@@ -136,24 +136,29 @@ const ExploreEventsContainer = ({}) => {
   return (
     <ResponsiveMasonry>
       <Masonry>
-        {images.map((image, i) => (
+        {events.map((event, i) => (
           <div key={i} className="masonry-item">
             <img
-              src={image.src}
+              src={event.event_photo_urls[0]}
               style={{ width: "100%", display: "block" }}
-              alt={image.title}
+              alt={event.title}
             />
             <div className="event-masonry-item-content">
-              <h5>{image.title}</h5>
+              <h5>{event.name}</h5>
               <div className={style["provider-date"]}>
-                <p>{image.provider}</p> &nbsp; | &nbsp;
-                <p>{image.date}</p>
+                {event.provider && ( // Conditionally render provider and separator
+                  <>
+                    <p className="mb-0">{event.provider}</p>
+                    <span className="mx-2">|</span>
+                  </>
+                )}{" "}
+                <p>{event.date}</p>
               </div>
-              <div className={style["star-section"]}>
+              {/* <div className={style["star-section"]}>
                 <div className={style["star"]}>
                   <Rating
                     count={5}
-                    value={image.rating}
+                    value={event.rating}
                     size={24}
                     activeColor="#ffd700"
                     edit={false}
@@ -165,38 +170,71 @@ const ExploreEventsContainer = ({}) => {
                 <div>
                   <FaRegLightbulb />
                 </div>
-              </div>
+              </div> */}
 
               <ul className={style["pakages-ul"]}>
                 <li>
-                  <p className="text-start">{image.description}</p>
+                  <p className="text-start">{event.description}</p>
                 </li>
               </ul>
 
               {/* Toggleable UL */}
-              <ul className={style["plus-ul"]}>
-                {expandedItems.includes(i) && (
-                  <>
-                    <li>
-                      <b>{image.startDate}</b>
-                      <br />
-                      Jan
-                    </li>
-                    <li>to</li>
-                    <li>
-                      <b>{image.endDate}</b>
-                      <br />
-                      Feb
-                    </li>
-                  </>
-                )}
+              <ul className={style["plus-ul"]} style={{ paddingRight: "2px" }}>
+                {expandedItems.includes(i) &&
+                  (() => {
+                    // Parse event.date (e.g., "14 May, 2025")
+                    const [startYear, startMonth, startDay] =
+                      event.start_date.split("-");
+                    const monthIndex = [
+                      "Jan",
+                      "Feb",
+                      "Mar",
+                      "Apr",
+                      "May",
+                      "Jun",
+                      "Jul",
+                      "Aug",
+                      "Sep",
+                      "Oct",
+                      "Nov",
+                      "Dec",
+                    ];
+                    const monthStartName = monthIndex[startMonth - 1];
+
+                    const [endYear, endMonth, endDay] =
+                      event.end_date.split("-");
+                    // Assume endDate is in the same month and year (e.g., "08 May, 2025")
+                    const endDate = new Date(
+                      endYear,
+                      monthIndex,
+                      parseInt(endDay, 10)
+                    );
+                    const monthEndName = monthIndex[endMonth - 1];
+
+                    return (
+                      <>
+                        <li style={{ paddingInline: "5px" }}>
+                          <b>{monthStartName}</b>
+                          <br />
+                          <b>{startDay}</b>
+                        </li>
+                        <li>to</li>
+                        <li>
+                          {" "}
+                          <b>{monthEndName}</b>
+                          <br />
+                          <b>{endDay}</b>
+                        </li>
+                      </>
+                    );
+                  })()}
               </ul>
 
               <Link
-                href={`/events${image.link}`}
+                href={`/events/${event.id}`}
                 className={`${style["event-detail-button"]} text-start`}
               >
-                SHOPPING & RETAIL
+                {event.category}
               </Link>
 
               <button
