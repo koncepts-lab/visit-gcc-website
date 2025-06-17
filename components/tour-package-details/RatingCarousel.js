@@ -15,7 +15,16 @@ const SlickCarousel = dynamic(() => import("react-slick"), {
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-function RatingCarousel({ packageId }) {
+function RatingCarousel({ packageId, type }) {
+  // Normalize type to handle case sensitivity
+  const normalizedType = typeof type === "string" ? type.toLowerCase() : type;
+
+  // Validate the type prop
+  if (!["package", "event"].includes(normalizedType)) {
+    console.error(`Invalid type prop: ${type}. Must be "package" or "event".`);
+    return <div className="text-danger">Invalid component type</div>;
+  }
+
   const maxRating = 5;
   const [rating, setRating] = useState(0);
   const [ratingText, setRatingText] = useState("");
@@ -28,11 +37,22 @@ function RatingCarousel({ packageId }) {
   const [totalReviews, setTotalReviews] = useState(0);
   const { enqueueSnackbar } = useSnackbar();
 
+  // Log the type prop for debugging
+
+  // Determine the API endpoint based on type
+  const getApiEndpoint = () => {
+    if (normalizedType === "package") return "package-review";
+    if (normalizedType === "event") return "event-review";
+    return "package-review"; // Fallback (shouldn't reach here due to validation)
+  };
+
+  // Log the endpoint for debugging
+
   useEffect(() => {
     if (packageId) {
       fetchRatings();
     }
-  }, [packageId]);
+  }, [packageId, normalizedType]);
 
   const fetchRatings = async () => {
     const registerToken = localStorage.getItem("auth_token_register");
@@ -41,10 +61,8 @@ function RatingCarousel({ packageId }) {
 
     if (loginToken) {
       authToken = loginToken;
-      console.log("Using login token for fetching packages.");
     } else if (registerToken) {
       authToken = registerToken;
-      console.log("Using register token for fetching packages.");
     }
 
     if (!authToken) {
@@ -56,8 +74,10 @@ function RatingCarousel({ packageId }) {
     try {
       setIsLoading(true);
       setError("");
+      const endpoint = getApiEndpoint();
+
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}package-review/${packageId}/ratings`,
+        `${process.env.NEXT_PUBLIC_API_URL}${endpoint}/${packageId}/ratings`,
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -65,28 +85,36 @@ function RatingCarousel({ packageId }) {
         }
       );
 
-      console.log("Ratings data:", response.data);
-
       if (response.data.success) {
-        const apiData = response.data.data;
+        const apiData = response.data.data || {};
         setOverallRating(parseFloat(apiData.average_rating) || 0);
         setTotalReviews(apiData.total_ratings || 0);
 
-        // Transform the API data to match our component's format
-        const formattedRatings = apiData.ratings.map((item) => ({
-          id: item.id,
+        const formattedRatings = (apiData.ratings || []).map((item) => ({
+          id: item.id || `${normalizedType}-${Date.now()}-${Math.random()}`,
           headingIcon: item.user?.first_name?.charAt(0) || "U",
-          date: new Date(item.created_at).toLocaleDateString(),
+          date: new Date(item.created_at || Date.now()).toLocaleDateString(
+            "en-IN",
+            {
+              timeZone: "Asia/Kolkata",
+            }
+          ),
           heading: item.user?.first_name || "User",
-          description: item.review,
-          rating: item.rating,
+          description: item.review || "No review provided",
+          rating: item.rating || 0,
         }));
 
         setUserRatings(formattedRatings);
+      } else {
+        setError(
+          `Failed to fetch ${normalizedType} ratings: ${
+            response.data.message || "Unknown error"
+          }`
+        );
       }
     } catch (err) {
-      console.error("Error fetching ratings:", err);
-      setError("Failed to fetch ratings.");
+      console.error(`Error fetching ${normalizedType} ratings:`, err);
+      setError(`Failed to fetch ${normalizedType} ratings.`);
     } finally {
       setIsLoading(false);
     }
@@ -117,10 +145,8 @@ function RatingCarousel({ packageId }) {
 
       if (loginToken) {
         authToken = loginToken;
-        console.log("Using login token for fetching packages.");
       } else if (registerToken) {
         authToken = registerToken;
-        console.log("Using register token for fetching packages.");
       }
 
       if (!authToken) {
@@ -132,8 +158,9 @@ function RatingCarousel({ packageId }) {
       try {
         setIsLoading(true);
         setError("");
+        const endpoint = getApiEndpoint();
         const response = await axios.post(
-          `${process.env.NEXT_PUBLIC_API_URL}package-review/${packageId}/rate`,
+          `${process.env.NEXT_PUBLIC_API_URL}${endpoint}/${packageId}/rate`,
           {
             rating: rating,
             review: reviewText,
@@ -145,33 +172,34 @@ function RatingCarousel({ packageId }) {
           }
         );
 
-        console.log("Review submitted:", response.data);
-
         if (response.data.success) {
-          enqueueSnackbar("Thank you for your review!", { variant: "success" }); // Show success snackbar
-          fetchRatings(); // Refresh ratings
+          enqueueSnackbar("Thank you for your review!", { variant: "success" });
+          fetchRatings();
           setRating(0);
           setRatingText("");
           setReviewText("");
           setShowRatingInput(false);
         } else {
-          enqueueSnackbar("Failed to submit review.", { variant: "error" }); // Show error snackbar
+          enqueueSnackbar(`Failed to submit ${normalizedType} review.`, {
+            variant: "error",
+          });
         }
       } catch (err) {
-        console.error("Error submitting review:", err);
-        enqueueSnackbar("Failed to submit review.", { variant: "error" }); // Show error snackbar
-        setError("Failed to submit review.");
+        console.error(`Error submitting ${normalizedType} review:`, err);
+        enqueueSnackbar(`Failed to submit ${normalizedType} review.`, {
+          variant: "error",
+        });
+        setError(`Failed to submit ${normalizedType} review.`);
       } finally {
         setIsLoading(false);
       }
     } else {
       enqueueSnackbar("Please select a rating and enter your review.", {
         variant: "warning",
-      }); // Show warning snackbar
+      });
     }
   };
 
-  // Get rating text based on overall rating
   const getRatingText = (rating) => {
     if (rating >= 4.5) return "Excellent";
     if (rating >= 3.5) return "Very good";
@@ -236,14 +264,18 @@ function RatingCarousel({ packageId }) {
   };
 
   if (isLoading && !showRatingInput) {
-    return <div className="text-center">Loading ratings...</div>;
+    return (
+      <div className="text-center">Loading {normalizedType} ratings...</div>
+    );
   }
 
   return (
     <>
       <div className="row pt-5">
-        <div className="col-md-12 ">
-          <h4>User ratings</h4>
+        <div className="col-md-12">
+          <h4>
+            {normalizedType === "package" ? "User ratings" : "Event ratings"}
+          </h4>
           <div className="d-flex justify-content-between">
             <p className="mb-0">
               <IoIosStar color="#FDCC0D" /> {overallRating.toFixed(1)}.{" "}
@@ -309,7 +341,11 @@ function RatingCarousel({ packageId }) {
 
       <div className="row pt-5">
         <div className="col-md-8 col-8">
-          <h4>What guests loved most</h4>
+          <h4>
+            {normalizedType === "package"
+              ? "What guests loved most"
+              : "What attendees loved most"}
+          </h4>
         </div>
       </div>
 
@@ -330,7 +366,7 @@ function RatingCarousel({ packageId }) {
                   <p>{item.description}</p>
                   <div className="clearfix"></div>
                   <div className={style["RatingCarousel-top"]}>
-                    Posted :<p>{item.date}</p>
+                    Posted: <p>{item.date}</p>
                   </div>
                   <div>
                     {Array(5)

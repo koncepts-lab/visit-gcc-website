@@ -46,7 +46,7 @@ function Page() {
         }
 
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}packages/${slug}`
+          `${process.env.NEXT_PUBLIC_API_URL}attractions/${slug}`
         );
 
         const singlePackageData = response.data.data || response.data || [];
@@ -68,7 +68,7 @@ function Page() {
     const fetchAllPackage = async () => {
       try {
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}packages`
+          `${process.env.NEXT_PUBLIC_API_URL}attractions`
         );
 
         const AllPackage = response.data.data || response.data || [];
@@ -134,7 +134,7 @@ function Page() {
       <Banner />
       <section className={style["tour-package-details"]}>
         <div>
-          <Top_container packageId={slugpackage.id} type="packages" />
+          <Top_container packageId={slugpackage.id} type="attractions" />
         </div>
 
         <div className={`container ${style["time"]}`}>

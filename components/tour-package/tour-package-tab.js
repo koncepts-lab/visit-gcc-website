@@ -19,7 +19,12 @@ import {
 import { GiSailboat } from "react-icons/gi";
 import axios from "axios";
 
-const TourPackageTab = ({ packages, tour_category, breakPoints }) => {
+const TourPackageTab = ({
+  packages,
+  tour_category,
+  breakPoints,
+  type = "packages",
+}) => {
   const [activeTab, setActiveTab] = useState("default");
   const [filteredPackages, setFilteredPackages] = useState(packages);
   const [isLoading, setIsLoading] = useState(false);
@@ -322,7 +327,11 @@ const TourPackageTab = ({ packages, tour_category, breakPoints }) => {
                             </ul>
 
                             <Link
-                              href={`/tour-package/${pkg.id}`}
+                              href={
+                                type === "attractions"
+                                  ? `/attractions/${pkg.id}`
+                                  : `/tour-package/${pkg.id}`
+                              }
                               className={style["r-button"]}
                             >
                               Read More

@@ -1,8 +1,6 @@
-// src/components/accordion/accordion.js (or wherever it is located)
-
 "use client";
 import React, { useState } from "react";
-import styles from "./accordion.module.css"; // Ensure this path is correct
+import styles from "./accordion.module.css";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 
 const Accordion = ({
@@ -10,14 +8,14 @@ const Accordion = ({
   items,
   isOpenInitially = false,
   onItemClick,
-  selectedItems = [], // This prop receives the list of active items from the parent
+  selectedItems = [],
 }) => {
   const [isOpen, setIsOpen] = useState(isOpenInitially);
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
   };
-
+  console.log("titile,", title);
   if (!Array.isArray(items)) {
     return null; // Safety check
   }
@@ -33,27 +31,23 @@ const Accordion = ({
       {isOpen && (
         <div className={styles.accordionContent}>
           <ul>
-            {/* THIS IS THE UPDATED PART */}
-            {items.map((item, index) => {
-              // Check if the current item is in the array of selected items
-              const isActive = selectedItems.includes(item);
+            {items.map((item) => {
+              // Check if the current item's ID is in the array of selected items
+              const isActive = selectedItems.includes(item.id);
 
               return (
                 <li
-                  // It's better to use a unique item string as a key if possible
-                  key={item + index}
-                  // Apply a 'selected' class if isActive is true
+                  key={item.id} // Use item.id as the key
                   className={`${styles.listItem} ${
                     isActive ? styles.selected : ""
                   }`}
-                  // The whole list item is now clickable
-                  onClick={() => onItemClick && onItemClick(item)}
+                  onClick={() => onItemClick && onItemClick(item.id)} // Pass item.id to onItemClick
                 >
-                  {item}
+                  {item.title}{" "}
+                  {/* Render item.title instead of the whole object */}
                 </li>
               );
             })}
-            {/* END OF UPDATED PART */}
           </ul>
         </div>
       )}

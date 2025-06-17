@@ -42,6 +42,7 @@ function Carousal({
   wonders,
   packageDetailsReview,
   packageDetailsReviewImage,
+  countryExperiance,
 }) {
   const Responsive = {
     dots:
@@ -91,48 +92,48 @@ function Carousal({
     ],
   };
 
-  const countryExperiance = [
-    {
-      id: 1,
-      link: "https://www.google.com/",
-      heading: "Lorem Ipsum is dummy text",
-      description:
-        "Lorem Ipsum is dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s... ",
-      image: "/images/blog/01.jpg",
-    },
-    {
-      id: 2,
-      link: "https://www.google.com/",
-      heading: "Lorem Ipsum is dummy text",
-      description:
-        "Lorem Ipsum is dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s... ",
-      image: "/images/blog/01.jpg",
-    },
-    {
-      id: 3,
-      link: "https://www.google.com/",
-      heading: "Lorem Ipsum is dummy text",
-      description:
-        "Lorem Ipsum is dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s... ",
-      image: "/images/blog/01.jpg",
-    },
-    {
-      id: 4,
-      link: "https://www.google.com/",
-      heading: "Lorem Ipsum is dummy text",
-      description:
-        "Lorem Ipsum is dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s... ",
-      image: "/images/blog/01.jpg",
-    },
-    {
-      id: 5,
-      link: "https://www.google.com/",
-      heading: "Lorem Ipsum is dummy text",
-      description:
-        "Lorem Ipsum is dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s... ",
-      image: "/images/blog/01.jpg",
-    },
-  ];
+  // const countryExperiance = [
+  //   {
+  //     id: 1,
+  //     link: "https://www.google.com/",
+  //     heading: "Lorem Ipsum is dummy text",
+  //     description:
+  //       "Lorem Ipsum is dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s... ",
+  //     image: "/images/blog/01.jpg",
+  //   },
+  //   {
+  //     id: 2,
+  //     link: "https://www.google.com/",
+  //     heading: "Lorem Ipsum is dummy text",
+  //     description:
+  //       "Lorem Ipsum is dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s... ",
+  //     image: "/images/blog/01.jpg",
+  //   },
+  //   {
+  //     id: 3,
+  //     link: "https://www.google.com/",
+  //     heading: "Lorem Ipsum is dummy text",
+  //     description:
+  //       "Lorem Ipsum is dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s... ",
+  //     image: "/images/blog/01.jpg",
+  //   },
+  //   {
+  //     id: 4,
+  //     link: "https://www.google.com/",
+  //     heading: "Lorem Ipsum is dummy text",
+  //     description:
+  //       "Lorem Ipsum is dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s... ",
+  //     image: "/images/blog/01.jpg",
+  //   },
+  //   {
+  //     id: 5,
+  //     link: "https://www.google.com/",
+  //     heading: "Lorem Ipsum is dummy text",
+  //     description:
+  //       "Lorem Ipsum is dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s... ",
+  //     image: "/images/blog/01.jpg",
+  //   },
+  // ];
 
   return (
     // <SlickCarousel {...Responsive}>
@@ -199,21 +200,15 @@ function Carousal({
         country.map((country) => (
           <CountryInspiration
             key={country.id}
-            image={country.image}
-            heading={country.heading}
+            image={country.event_photo_urls[0]}
+            heading={country.name}
             description={country.description}
             link={country.link}
           />
         ))}
       {type === "country-Experiance" &&
         countryExperiance.map((experiance) => (
-          <CountryExperiance
-            key={experiance.id}
-            image={experiance.image}
-            heading={experiance.heading}
-            description={experiance.description}
-            link={experiance.link}
-          />
+          <CountryExperiance blogs={experiance} />
         ))}
 
       {type === "tour-FeaturedTravel" &&
@@ -229,21 +224,15 @@ function Carousal({
 
       {type === "tour-bestPicked" &&
         bestPicked.map((bestPicked) => (
-          <SingleBestPicked
-            key={bestPicked.id}
-            image={bestPicked.image}
-            heading={bestPicked.heading}
-            description={bestPicked.description}
-            link={bestPicked.link}
-          />
+          <SingleBestPicked packages={bestPicked} key={bestPicked.id} />
         ))}
 
       {type === "tour-wonders" &&
         wonders.map((wonders) => (
           <Singlewonders
             key={wonders.id}
-            image={wonders.image}
-            heading={wonders.heading}
+            image={wonders.photo_urls[0]}
+            heading={wonders.name}
             description={wonders.description}
             link={wonders.link}
           />

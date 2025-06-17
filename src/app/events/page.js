@@ -104,16 +104,8 @@ const Country = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const authToken = getAuthToken();
-        if (!authToken) {
-          setError("Authentication token not found");
-          setIsLoading(false);
-          return;
-        }
-
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}events`,
-          { headers: { Authorization: `Bearer ${authToken}` } }
+          `${process.env.NEXT_PUBLIC_API_URL}events`
         );
 
         const fetchedEvents = response.data.data || response.data || [];

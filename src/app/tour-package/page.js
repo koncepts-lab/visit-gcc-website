@@ -18,7 +18,6 @@ const TourPackage = () => {
   const [packages, setPackages] = useState([]);
   const [allPackages, setAllPackages] = useState([]);
   const [tour_category, setTour_category] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [priceRange, setPriceRange] = useState([30, 8000]);
   const [durationRange, setDurationRange] = useState([1, 10]);
@@ -44,65 +43,64 @@ const TourPackage = () => {
     setDurationRange(values);
   };
 
-  // Clear price range filter
   const clearPriceFilter = () => {
     setPriceRange([30, 8000]);
-    applyAllFilters(); // Apply filters immediately after clearing
+    applyAllFilters();
   };
 
-  // Clear duration range filter
   const clearDurationFilter = () => {
     setDurationRange([1, 10]);
-    applyAllFilters(); // Apply filters immediately after clearing
+    applyAllFilters();
   };
 
-  // Apply filters whenever price or duration range changes
   useEffect(() => {
     if (allPackages.length > 0) {
       applyAllFilters();
     }
-  }, [priceRange, durationRange]);
+  }, [priceRange, durationRange, selectedItems]);
 
   const [accordionData, setAccordionData] = useState([
     {
       title: "ACTIVITIES",
       items: [],
       apiEndpoint: "activities",
-      filterEndpoint: "activities/activity/get-by-activity?activity_ids[]=",
+      filterParam: "activities",
     },
     {
       title: "CULTURAL ACTIVITIES",
       items: [],
       apiEndpoint: "cultural-activities",
-      filterEndpoint:
-        "cultural-activities/activity/get-by-activity?activity_ids[]=",
+      filterParam: "cultural_activities",
     },
     {
       title: "RELAXATION AND REJUVENATION",
       items: [],
       apiEndpoint: "relaxation-rejuvenations",
-      filterEndpoint:
-        "relaxation-rejuvenations/rejuvenation/get-by-rejuvenation?rejuvenation_ids[]=",
+      filterParam: "rejuvenations",
     },
     {
       title: "FILTER BY STAY",
       items: [],
       apiEndpoint: "stay-type",
-      filterEndpoint: "stay-type/stay/get-by-staytype?stay_type_ids[]=",
+      filterParam: "stay_types",
     },
     {
       title: "TRAVEL STYLE",
       items: [],
       apiEndpoint: "travel-style",
-      filterEndpoint:
-        "travel-style/travel/get-by-travelstyle?travel_style_ids[]=",
+      filterParam: "travel_styles",
     },
     {
       title: "GEOGRAPHY",
       items: [],
       apiEndpoint: "geographies",
-      filterEndpoint:
-        "geographies/geographies/get-by-geography?geography_ids[]=",
+      filterParam: "geographies",
+    },
+    {
+      title: "COUNTRY",
+      items: [],
+      apiEndpoint: "countries",
+      filterParam: "country",
     },
   ]);
 
@@ -113,48 +111,40 @@ const TourPackage = () => {
         return;
       }
 
-      setIsLoading(true);
+      const registerToken = localStorage.getItem("auth_token_register");
+      const loginToken = localStorage.getItem("auth_token_login");
+      let authToken = null;
+
+      if (loginToken) {
+        authToken = loginToken;
+      } else if (registerToken) {
+        authToken = registerToken;
+      }
+
       try {
-        const registerToken = localStorage.getItem("auth_token_register");
-        const loginToken = localStorage.getItem("auth_token_login");
-        let authToken = null;
-
-        if (loginToken) {
-          authToken = loginToken;
-          console.log("Using login token for fetching packages.");
-        } else if (registerToken) {
-          authToken = registerToken;
-          console.log("Using register token for fetching packages.");
-        }
-
-        if (!authToken) {
-          setError("Authentication token not found");
-          setIsLoading(false);
-          return;
-        }
-
         const response = await axios.get(
           `${process.env.NEXT_PUBLIC_API_URL}${section.apiEndpoint}`,
           {
-            headers: {
-              Authorization: `Bearer ${authToken}`,
-            },
+            headers: authToken ? { Authorization: `Bearer ${authToken}` } : {},
           }
         );
-
+        console.log(
+          `fetchAccordionItems (${section.title}) response:`,
+          response
+        );
         const items = response.data.data || response.data || [];
         setAccordionData((prevData) => {
           const newData = [...prevData];
-          newData[index].items = items.map((item) => ({
-            title: item.title,
-            id: item.id,
-          }));
+          newData[index].items = Array.isArray(items)
+            ? items.map((item, itemIndex) => ({
+                title: item.title || item.name || "Unknown",
+                id: item.id ?? `${section.title.toLowerCase()}-${itemIndex}`,
+              }))
+            : [];
           return newData;
         });
-        setIsLoading(false);
       } catch (err) {
         setError(`Failed to fetch ${section.title}. Please try again.`);
-        setIsLoading(false);
       }
     };
 
@@ -167,39 +157,35 @@ const TourPackage = () => {
 
   useEffect(() => {
     const fetchBestpicked = async () => {
+      const registerToken = localStorage.getItem("auth_token_register");
+      const loginToken = localStorage.getItem("auth_token_login");
+      let authToken = null;
+
+      if (loginToken) {
+        authToken = loginToken;
+      } else if (registerToken) {
+        authToken = registerToken;
+      }
+
       try {
-        const registerToken = localStorage.getItem("auth_token_register");
-        const loginToken = localStorage.getItem("auth_token_login");
-        let authToken = null;
-
-        if (loginToken) {
-          authToken = loginToken;
-          console.log("Using login token for fetching packages.");
-        } else if (registerToken) {
-          authToken = registerToken;
-          console.log("Using register token for fetching packages.");
-        }
-
-        if (!authToken) {
-          setError("Authentication token not found");
-          setIsLoading(false);
-          return;
-        }
-
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}packages/get-top-rated-packages`,
+          `${process.env.NEXT_PUBLIC_API_URL}packages/get-top-packages`,
           {
-            headers: {
-              Authorization: `Bearer ${authToken}`,
-            },
+            headers: authToken ? { Authorization: `Bearer ${authToken}` } : {},
           }
         );
-        const fetchedBestpicked = response.data.data || response.data || [];
+
+        const fetchedBestpicked = (
+          response.data?.data ||
+          response.data ||
+          []
+        ).map((pkg, index) => ({
+          ...pkg,
+          id: pkg.id ?? `bestpicked-${index}`,
+        }));
         setBestpicked(fetchedBestpicked);
-        setIsLoading(false);
       } catch (err) {
-        setIsLoading(false);
-        setError("Failed to fetch packages. Please try again.");
+        setError("Failed to fetch best picked packages. Please try again.");
       }
     };
     fetchBestpicked();
@@ -207,39 +193,34 @@ const TourPackage = () => {
 
   useEffect(() => {
     const fetchLesserWonders = async () => {
+      const registerToken = localStorage.getItem("auth_token_register");
+      const loginToken = localStorage.getItem("auth_token_login");
+      let authToken = null;
+
+      if (loginToken) {
+        authToken = loginToken;
+      } else if (registerToken) {
+        authToken = registerToken;
+      }
+
       try {
-        const registerToken = localStorage.getItem("auth_token_register");
-        const loginToken = localStorage.getItem("auth_token_login");
-        let authToken = null;
-
-        if (loginToken) {
-          authToken = loginToken;
-          console.log("Using login token for fetching packages.");
-        } else if (registerToken) {
-          authToken = registerToken;
-          console.log("Using register token for fetching packages.");
-        }
-
-        if (!authToken) {
-          setError("Authentication token not found");
-          setIsLoading(false);
-          return;
-        }
-
         const response = await axios.get(
           `${process.env.NEXT_PUBLIC_API_URL}packages/get-lesser-known-packages`,
           {
-            headers: {
-              Authorization: `Bearer ${authToken}`,
-            },
+            headers: authToken ? { Authorization: `Bearer ${authToken}` } : {},
           }
         );
-        const fetchedLesserWonders = response.data.data || response.data || [];
+        const fetchedLesserWonders = (
+          response.data.data ||
+          response.data ||
+          []
+        ).map((pkg, index) => ({
+          ...pkg,
+          id: pkg.id ?? `lesserwonder-${index}`,
+        }));
         setLesserWonders(fetchedLesserWonders);
-        setIsLoading(false);
       } catch (err) {
-        setIsLoading(false);
-        setError("Failed to fetch packages. Please try again.");
+        setError("Failed to fetch lesser-known wonders. Please try again.");
       }
     };
     fetchLesserWonders();
@@ -247,39 +228,33 @@ const TourPackage = () => {
 
   useEffect(() => {
     const fetchPackages = async () => {
+      const registerToken = localStorage.getItem("auth_token_register");
+      const loginToken = localStorage.getItem("auth_token_login");
+      let authToken = null;
+
+      if (loginToken) {
+        authToken = loginToken;
+      } else if (registerToken) {
+        authToken = registerToken;
+      }
+
       try {
-        const registerToken = localStorage.getItem("auth_token_register");
-        const loginToken = localStorage.getItem("auth_token_login");
-        let authToken = null;
-
-        if (loginToken) {
-          authToken = loginToken;
-          console.log("Using login token for fetching packages.");
-        } else if (registerToken) {
-          authToken = registerToken;
-          console.log("Using register token for fetching packages.");
-        }
-
-        if (!authToken) {
-          setError("Authentication token not found");
-          setIsLoading(false);
-          return;
-        }
-
         const response = await axios.get(
           `${process.env.NEXT_PUBLIC_API_URL}packages`,
           {
-            headers: {
-              Authorization: `Bearer ${authToken}`,
-            },
+            headers: authToken ? { Authorization: `Bearer ${authToken}` } : {},
           }
         );
-        const fetchedPackages = response.data.data || response.data || [];
+        console.log("fetchPackages response:", response);
+        const fetchedPackages = (response.data.data || response.data || []).map(
+          (pkg, index) => ({
+            ...pkg,
+            id: pkg.id ?? `package-${index}`,
+          })
+        );
         setPackages(fetchedPackages);
         setAllPackages(fetchedPackages);
-        setIsLoading(false);
       } catch (err) {
-        setIsLoading(false);
         setError("Failed to fetch packages. Please try again.");
       }
     };
@@ -288,62 +263,78 @@ const TourPackage = () => {
 
   useEffect(() => {
     const fetchTour_category = async () => {
+      const registerToken = localStorage.getItem("auth_token_register");
+      const loginToken = localStorage.getItem("auth_token_login");
+      let authToken = null;
+
+      if (loginToken) {
+        authToken = loginToken;
+      } else if (registerToken) {
+        authToken = registerToken;
+      }
+
       try {
-        const registerToken = localStorage.getItem("auth_token_register");
-        const loginToken = localStorage.getItem("auth_token_login");
-        let authToken = null;
-
-        if (loginToken) {
-          authToken = loginToken;
-          console.log("Using login token for fetching packages.");
-        } else if (registerToken) {
-          authToken = registerToken;
-          console.log("Using register token for fetching packages.");
-        }
-
-        if (!authToken) {
-          setError("Authentication token not found");
-          setIsLoading(false);
-          return;
-        }
         const response = await axios.get(
           `${process.env.NEXT_PUBLIC_API_URL}tour-categories`,
           {
-            headers: {
-              Authorization: `Bearer ${authToken}`,
-            },
+            headers: authToken ? { Authorization: `Bearer ${authToken}` } : {},
           }
         );
-        const allTour_category = response.data.data || response.data || [];
+        console.log("fetchTour_category response:", response);
+        const allTour_category = (
+          response.data.data ||
+          response.data ||
+          []
+        ).map((category, index) => ({
+          ...category,
+          id: category.id ?? `tourcategory-${index}`,
+        }));
         setTour_category(allTour_category);
-        setIsLoading(false);
       } catch (err) {
-        setIsLoading(false);
-        setError("Failed to fetch packages. Please try again.");
+        setError("Failed to fetch tour categories. Please try again.");
       }
     };
     fetchTour_category();
   }, []);
 
   const handleAccordionItemClick = async (sectionIndex, itemId) => {
+    console.log("handleAccordionItemClick called:", {
+      sectionIndex,
+      itemId,
+      selectedItems,
+    });
+
     const newSelectedItems = { ...selectedItems };
     const sectionTitle = accordionData[sectionIndex].title;
 
-    if (newSelectedItems[sectionTitle]) {
-      if (newSelectedItems[sectionTitle].includes(itemId)) {
-        newSelectedItems[sectionTitle] = newSelectedItems[sectionTitle].filter(
+    if (sectionTitle === "COUNTRY") {
+      if (
+        newSelectedItems[sectionTitle] &&
+        newSelectedItems[sectionTitle].includes(itemId)
+      ) {
+        console.log(`Deselecting ${itemId} from COUNTRY`);
+        delete newSelectedItems[sectionTitle];
+      } else {
+        console.log(`Selecting ${itemId} in COUNTRY`);
+        newSelectedItems[sectionTitle] = [itemId];
+      }
+    } else {
+      const currentSelections = newSelectedItems[sectionTitle] || [];
+      if (currentSelections.includes(itemId)) {
+        console.log(`Deselecting ${itemId} from ${sectionTitle}`);
+        newSelectedItems[sectionTitle] = currentSelections.filter(
           (id) => id !== itemId
         );
         if (newSelectedItems[sectionTitle].length === 0) {
           delete newSelectedItems[sectionTitle];
         }
       } else {
-        newSelectedItems[sectionTitle].push(itemId);
+        console.log(`Selecting ${itemId} in ${sectionTitle}`);
+        newSelectedItems[sectionTitle] = [...currentSelections, itemId];
       }
-    } else {
-      newSelectedItems[sectionTitle] = [itemId];
     }
 
+    console.log("Updated selectedItems:", newSelectedItems);
     setSelectedItems(newSelectedItems);
     await filterPackagesByAccordion(newSelectedItems);
   };
@@ -355,56 +346,51 @@ const TourPackage = () => {
       return;
     }
 
-    setIsLoading(true);
+    const registerToken = localStorage.getItem("auth_token_register");
+    const loginToken = localStorage.getItem("auth_token_login");
+    let authToken = null;
+
+    if (loginToken) {
+      authToken = loginToken;
+    } else if (registerToken) {
+      authToken = registerToken;
+    }
+
     try {
-      const registerToken = localStorage.getItem("auth_token_register");
-      const loginToken = localStorage.getItem("auth_token_login");
-      let authToken = null;
-
-      if (loginToken) {
-        authToken = loginToken;
-        console.log("Using login token for fetching packages.");
-      } else if (registerToken) {
-        authToken = registerToken;
-        console.log("Using register token for fetching packages.");
-      }
-
-      if (!authToken) {
-        setError("Authentication token not found");
-        setIsLoading(false);
-        return;
-      }
-      let allFilteredPackages = [];
+      const queryParams = new URLSearchParams();
       for (const sectionTitle in selectedItemsToFilter) {
         const section = accordionData.find(
           (item) => item.title === sectionTitle
         );
-        if (section && section.filterEndpoint) {
-          for (const itemId of selectedItemsToFilter[sectionTitle]) {
-            const response = await axios.get(
-              `${process.env.NEXT_PUBLIC_API_URL}${section.filterEndpoint}${itemId}`,
-              {
-                headers: {
-                  Authorization: `Bearer ${authToken}`,
-                },
-              }
-            );
-            allFilteredPackages = [
-              ...allFilteredPackages,
-              ...(response.data.data || response.data || []),
-            ];
-          }
+        if (section && section.filterParam) {
+          selectedItemsToFilter[sectionTitle].forEach((itemId) => {
+            queryParams.append(`${section.filterParam}[]`, itemId);
+          });
         }
       }
+
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}packages?${queryParams.toString()}`,
+        {
+          headers: authToken ? { Authorization: `Bearer ${authToken}` } : {},
+        }
+      );
+      console.log("filterPackagesByAccordion response:", response);
+      const allFilteredPackages = (
+        response.data.data ||
+        response.data ||
+        []
+      ).map((pkg, index) => ({
+        ...pkg,
+        id: pkg.id ?? `filtered-${index}`,
+      }));
       const uniquePackages = allFilteredPackages.filter(
         (v, i, a) => a.findIndex((t) => t.id === v.id) === i
       );
       setFilteredByAccordion(uniquePackages);
-      setIsLoading(false);
       applyAllFilters(uniquePackages);
     } catch (err) {
       setError("Failed to fetch filtered packages.");
-      setIsLoading(false);
     }
   };
 
@@ -416,14 +402,27 @@ const TourPackage = () => {
         filteredByAccordion.length > 0 ? filteredByAccordion : allPackages;
     }
 
+    console.log("applyAllFilters - packagesToFilter:", packagesToFilter);
+
+    if (!Array.isArray(packagesToFilter)) {
+      packagesToFilter = [];
+    }
+
     const filtered = packagesToFilter.filter((pkg) => {
-      const adultPrice = parseFloat(pkg.adult_price);
-      const duration = pkg.number_of_days;
+      if (!pkg) return false;
+      console.log("Filtering package:", pkg);
+      const adultPrice = parseFloat(pkg.adult_price) || 0;
+      const duration = pkg.number_of_days || 0;
+      const matchesCountry =
+        selectedItems["COUNTRY"] && selectedItems["COUNTRY"].length > 0
+          ? (pkg.country_id || 0) === parseInt(selectedItems["COUNTRY"][0])
+          : true;
       return (
         adultPrice >= priceRange[0] &&
         adultPrice <= priceRange[1] &&
         duration >= durationRange[0] &&
-        duration <= durationRange[1]
+        duration <= durationRange[1] &&
+        matchesCountry
       );
     });
 
@@ -441,7 +440,7 @@ const TourPackage = () => {
   const clearAllFilters = () => {
     setPriceRange([30, 8000]);
     setDurationRange([1, 10]);
-    setSelectedItems({}); // This will clear the selected items
+    setSelectedItems({});
     setFilteredByAccordion([]);
     setFilteredPackages([]);
     setNoResultsFound(false);
@@ -460,7 +459,7 @@ const TourPackage = () => {
         >
           <div className={style["tour-packagebtn-container"]}>
             <button className={style["btn-toggle"]} onClick={handleToggle}>
-              <LuMenu /> &nbsp; FILTER
+              <LuMenu />   FILTER
             </button>
           </div>
 
@@ -573,18 +572,23 @@ const TourPackage = () => {
                 </div>
 
                 <div className={style["accordion-range"]}>
-                  {accordionData.map((accordion, index) => (
-                    <Accordion
-                      key={index}
-                      title={accordion.title}
-                      items={accordion.items}
-                      isOpenInitially={true}
-                      onItemClick={(itemId) =>
-                        handleAccordionItemClick(index, itemId)
-                      }
-                      selectedItems={selectedItems[accordion.title] || []}
-                    />
-                  ))}
+                  {accordionData.map((accordion, index) => {
+                    console.log(`Rendering Accordion ${accordion.title}:`, {
+                      selectedItems: selectedItems[accordion.title] || [],
+                    });
+                    return (
+                      <Accordion
+                        key={index}
+                        title={accordion.title}
+                        items={accordion.items || []}
+                        isOpenInitially={true}
+                        onItemClick={(itemId) =>
+                          handleAccordionItemClick(index, itemId)
+                        }
+                        selectedItems={selectedItems[accordion.title] || []}
+                      />
+                    );
+                  })}
                 </div>
 
                 <div className={style["filter-buttons"]}>
@@ -623,8 +627,8 @@ const TourPackage = () => {
                 <div className={style["no-results"]}>
                   <h4>No packages found with the selected filters</h4>
                   <p>
-                    Please try adjusting your price range, duration, or activity
-                    selections
+                    Please try adjusting your price range, duration, country, or
+                    activity selections
                   </p>
                   <button
                     className={style["btn-one"]}
@@ -648,18 +652,20 @@ const TourPackage = () => {
               {/* best picked for you */}
               <section className={style["pakage-bes-picked"]}>
                 <div className="container-fluid">
-                  <div className="row">
-                    <div className="col-md-12">
-                      <h3 className="pb-3">Best picked for you</h3>
+                  {bestPicked.length > 0 && (
+                    <div className="row">
+                      <div className="col-md-12">
+                        <h3 className="pb-3">Best picked for you</h3>
+                      </div>
+                      <div className="col-md-12">
+                        <Carousal
+                          bestPicked={bestPicked}
+                          count={4}
+                          type="tour-bestPicked"
+                        />
+                      </div>
                     </div>
-                    <div className="col-md-12">
-                      <Carousal
-                        bestPicked={bestPicked}
-                        count={4}
-                        type="tour-bestPicked"
-                      />
-                    </div>
-                  </div>
+                  )}
                 </div>
               </section>
               {/* best picked for you END*/}
@@ -667,23 +673,26 @@ const TourPackage = () => {
               {/* lesser-known wonders */}
               <section className={style["pakage-bes-picked"]}>
                 <div className="container p-0">
-                  <div className="row">
-                    <div className="col-md-12">
-                      <h3 className="pb-3">Lesser-Known Wonders</h3>
-                      <p className="text-center">
-                        Lorem Ipsum is simply dummy text of the printing and
-                        typesetting industry. <br />
-                        Lorem Ipsum has been the industry's standard dummy text
-                      </p>
+                  {lesserWonders.length > 0 && (
+                    <div className="row">
+                      <div className="col-md-12">
+                        <h3 className="pb-3">Lesser-Known Wonders</h3>
+                        <p className="text-center">
+                          Lorem Ipsum is simply dummy text of the printing and
+                          typesetting industry. <br />
+                          Lorem Ipsum has been the industry's standard dummy
+                          text
+                        </p>
+                      </div>
+                      <div className="col-md-12">
+                        <Carousal
+                          wonders={lesserWonders}
+                          count={3}
+                          type="tour-wonders"
+                        />
+                      </div>
                     </div>
-                    <div className="col-md-12">
-                      <Carousal
-                        wonders={lesserWonders}
-                        count={3}
-                        type="tour-wonders"
-                      />
-                    </div>
-                  </div>
+                  )}
                 </div>
               </section>
               {/* lesser-known wonders END*/}

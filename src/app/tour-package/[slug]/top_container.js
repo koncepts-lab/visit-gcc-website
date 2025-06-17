@@ -28,6 +28,21 @@ export default function Top_container({ packageId }) {
       setError(null);
 
       try {
+        let authToken = null;
+        const registerToken = localStorage.getItem("auth_token_register");
+        const loginToken = localStorage.getItem("auth_token_login");
+        if (loginToken) {
+          authToken = loginToken;
+          console.log("Using login token for fetching packages.");
+        } else if (registerToken) {
+          authToken = registerToken;
+          console.log("Using register token for fetching packages.");
+        } else {
+          setError("Authentication token not found");
+          setLoading(false);
+          return;
+        }
+
         const packageDetailsResponse = await axios.get(
           `${process.env.NEXT_PUBLIC_API_URL}packages/${packageId}`
         );
@@ -43,12 +58,22 @@ export default function Top_container({ packageId }) {
         setPackageRatings(ratingsResponse.data.data);
 
         const themesResponse = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}themes/package/get-by-package?package_id=${packageId}`
+          `${process.env.NEXT_PUBLIC_API_URL}themes/package/get-by-package?package_id=${packageId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+            },
+          }
         );
         setPackageThemes(themesResponse.data);
 
         const inclusionsResponse = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}inclusions/package/get-by-package?package_id=${packageId}`
+          `${process.env.NEXT_PUBLIC_API_URL}inclusions/package/get-by-package?package_id=${packageId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+            },
+          }
         );
         setPackageInclusions(inclusionsResponse.data);
 
@@ -223,7 +248,7 @@ export default function Top_container({ packageId }) {
           <div className="col-md-5">
             <h3 className="pt-2">Themes</h3>
             <div className={style["inclusions"]}>
-              {packagehauserThemes.map((theme) => (
+              {packageThemes.map((theme) => (
                 <span key={theme.id} className="d-flex flex-column">
                   <img
                     src={theme.theme_icon_url}

@@ -1,4 +1,7 @@
+"use client";
 import React from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import style from "./style.module.css";
 import Banner from "../../../components/banner/banner";
 import Countries from "../../../components/countries/countries";
@@ -8,43 +11,85 @@ import DocumentationTabs from "../../../components/countries/documentation-tab";
 import GettingAroundTab from "../../../components/countries/getting-around-tab";
 
 function Country() {
-  const countryDestinationsData = [
-    {
-      id: 1,
-      heading: "Destination Heading 1",
-      description: "Luxury",
-      image: "/images/blog/01.jpg",
-    },
-    {
-      id: 2,
-      heading: "Destination Heading 2",
-      description: "Culture",
-      image: "/images/blog/02.jpg",
-    },
-    {
-      id: 3,
-      heading: "Destination Heading 3",
-      description: "Coastal Escapes",
-      image: "/images/blog/03.jpg",
-    },
-    {
-      id: 4,
-      heading: "Destination Heading 4",
-      description: "History",
-      image: "/images/blog/04.jpg",
-    },
-    {
-      id: 5,
-      heading: "Destination Heading 5",
-      description: "Events",
-      image: "/images/blog/01.jpg",
-    },
-  ];
+  const [allEvents, setAllEvents] = useState([]);
+  const [blogs, setBlogs] = useState([]);
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}events`
+        );
 
+        const fetchedEvents = response.data.data || response.data || [];
+        console.log("🚀 ~ fetchEvents ~ fetchedEvents:", fetchedEvents);
+
+        setAllEvents(fetchedEvents);
+      } catch (err) {
+        console.error("Error fetching events:", err);
+      }
+    };
+
+    fetchEvents();
+  }, []);
+  // const countryDestinationsData = [
+  //   {
+  //     id: 1,
+  //     heading: "Destination Heading 1",
+  //     description: "Luxury",
+  //     image: "/images/blog/01.jpg",
+  //   },
+  //   {
+  //     id: 2,
+  //     heading: "Destination Heading 2",
+  //     description: "Culture",
+  //     image: "/images/blog/02.jpg",
+  //   },
+  //   {
+  //     id: 3,
+  //     heading: "Destination Heading 3",
+  //     description: "Coastal Escapes",
+  //     image: "/images/blog/03.jpg",
+  //   },
+  //   {
+  //     id: 4,
+  //     heading: "Destination Heading 4",
+  //     description: "History",
+  //     image: "/images/blog/04.jpg",
+  //   },
+  //   {
+  //     id: 5,
+  //     heading: "Destination Heading 5",
+  //     description: "Events",
+  //     image: "/images/blog/01.jpg",
+  //   },
+  // ];
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}blog`
+        );
+        const allBlogs = response.data.data || response.data || [];
+        console.log("🚀 ~ fetchBlogs ~ allBlogs:", allBlogs);
+
+        setBlogs(allBlogs);
+      } catch (err) {
+        console.error("Error fetching packages:", err);
+      }
+    };
+
+    fetchBlogs();
+  }, []);
   const countryExperiance = [];
 
   return (
     <div>
+      <a
+        class="twitter-share-button"
+        href="https://twitter.com/intent/tweet?text=Hello%20world"
+      >
+        Tweet
+      </a>
       <Banner />
       <Countries />
       <div className={style["section-normal"]}>
@@ -78,7 +123,7 @@ function Country() {
               <div className="row">
                 <div className="col-md-12">
                   <Carousal
-                    country={countryDestinationsData}
+                    country={allEvents}
                     count={5}
                     type="country-tab-slider"
                   />
@@ -141,7 +186,7 @@ function Country() {
         <DocumentationTabs />
       </div>
 
-      <div className={style["section-documentation"]}>
+      {/* <div className={style["section-documentation"]}>
         <div className={style["section-normal"]}>
           <div className="container">
             <div className="row">
@@ -152,7 +197,7 @@ function Country() {
           </div>
         </div>
         <GettingAroundTab />
-      </div>
+      </div> */}
 
       <section className={style["countries-explore-container"]}>
         <div className={style["countries-explore"]}>
@@ -177,7 +222,7 @@ function Country() {
                   {/* <Carousal countryExperiance={countryExperiance} count={3} type="country-experiance" /> */}
 
                   <Carousal
-                    countryExperiance={countryExperiance}
+                    countryExperiance={blogs}
                     count={4}
                     countTab={1}
                     type="country-Experiance"

@@ -1,0 +1,239 @@
+.tour-package-page{
+    float: left;
+    width: 100%;
+    margin-top: 35px;
+}
+
+.tour-package-page-container{
+    max-width: 100%;
+    margin: 0 auto;
+}
+.tour-package-page h4{
+    float: left;
+    width: 100%;
+    text-transform: uppercase;
+    font-size: 15px !important;
+}
+.package-filter{
+    float: left;
+    width: 100%;
+    
+}
+.price-range{
+    float: left;
+    width: 100%;
+    margin-bottom: 15px;
+    margin-top: 5px;
+}
+.package-filter p{
+    float: left;
+    width: 100%;
+    margin-top: 15px;
+}
+.duration-range{
+    float: left;
+    width: 100%;
+    margin-bottom: 5px;
+    margin-top: 15px;
+}
+.accordion-range{
+    float: left;
+    width: 100%;
+}
+.pr-0{ padding-right: 0 !important;}
+.cta-section {
+    float: left;
+    width: 100%;
+    /* max-width: 1108px; */
+    padding: 0 30px;
+}
+.cta-section-container{
+    float: left;
+    width: 100%;
+    background-color: #01888b;
+    color: #fff;
+    padding: 25px 0;
+    margin-bottom: 30px;
+}
+.cta-section-left{
+    display: flex;
+    float: left;
+    width: 100%;
+}
+.cta-section-left svg{
+    font-size: 30px;
+}
+.cta-section-left h6{
+    font-size: 20px;
+    margin-bottom: 0;
+}
+.cta-section-left p{
+    margin-bottom: 0;
+}
+.cta-section-left span{
+    
+}
+.cta-section-right{
+    padding-left: 15px;
+    
+}
+.cta-section-right a{
+    color: #fff !important;
+    margin-top: 29px;
+    float: left;
+    /* font-size: 17px; */
+    letter-spacing: 1px;
+}
+.cta-half-left {
+   position: relative; 
+
+}
+.cta-half-container::after{
+    content: "OR";
+    background: #308ea8;
+    padding: 8px;
+    border-radius: 27px;
+    right: 0;
+    position: absolute;
+    top: 10px;
+}
+
+
+.pakage-bes-picked {
+    float: left;
+    width: 100%;
+    /* max-width: 1108px; */
+    padding: 30px 30px 60px 30px;
+}
+
+.pakage-bes-picked h3 {
+    text-align: center;
+}
+.btn-one{
+    background-color: #a0daca;
+    border: none;
+    padding: 7px 25px;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+.highlight{ display: none;}  
+.filter-full-width{ width: 100% !important;}
+.tour-package-container{
+    display: flex;
+    margin: 0 auto;
+    position: relative;
+    max-width: 1500px;
+}
+.tour-packagebtn-container{
+        margin: 0 auto;
+    position: relative;
+    max-width: 1500px;
+}
+.left{ flex: 1 1 25%;
+            padding: 50px 20px;
+            box-sizing: border-box;
+            overflow: hidden; 
+        }
+.right{ 
+    flex: 1 1 75%;
+    margin: 0;
+    padding: 50px 20px;
+    box-sizing: border-box;
+    overflow: hidden;
+ }
+.btn-toggle{
+    background: none;
+    border: none;
+    position: absolute;
+    z-index: 1000;
+    left: 20px;
+    top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.btn-mobile{ display: none;}
+
+@media only screen and (max-width: 991px) {
+.left{ display: none;}
+/* .highlight {
+    display: block !important;
+    position: absolute;
+    background: #f7f7f7;
+    z-index: 100;
+} */
+.highlight {
+    display: block !important;
+    position: fixed;
+    background: #f7f7f7;
+    z-index: 1000000;
+    top: 0;
+    left: 0;
+    right: 0;
+    overflow: scroll;
+    height: 100vh;
+}
+.right {
+    padding: 50px 0px;
+    padding-bottom: 15px;
+}
+.btn-toggle {
+    left: 0px;
+}
+.cta-half-container::after {
+    display: none;
+}
+.cta-section-right a {
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+.cta-section-container {
+    margin-bottom: 0;
+}
+.pakage-bes-picked {
+    padding: 15px 0;
+    margin-bottom: 55px;
+}
+.cta-section {
+    padding: 0 0px;
+}
+.btn-mobile{ display: block;}
+.btn-close{
+    right: 15px;
+    align-items: end;
+    justify-content: end;
+    font-size: 30px;
+    display: block !important;
+    text-align: right;
+}
+
+.cta-half-container::after {
+    display: none;
+}
+}
+
+
+
+
+@media only screen and (max-width: 1200px) {    
+    .cta-half-container::after {
+        display: none;
+    }
+}
+
+
+.btn-close{
+    display: none;
+}
+.bg-container div{
+    position: absolute;
+    background: #ecf1f7;
+    width: 100%;
+    margin-left: -12px;
+    margin-top: -542px;
+    height: 542px;
+    z-index: 1;
+}

@@ -4,7 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Carousal from "../carousel/Carousal";
 import axios from "axios"; // Import axios
 
-function FeaturedIntegratedTravel() {
+function FeaturedIntegratedTravel(props) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [experiences, setExperiences] = useState([]);
@@ -12,32 +12,17 @@ function FeaturedIntegratedTravel() {
   useEffect(() => {
     const fetchExperience = async () => {
       try {
-        const registerToken = localStorage.getItem("auth_token_register");
-        const loginToken = localStorage.getItem("auth_token_login");
-        let authToken = null;
-
-        if (loginToken) {
-          authToken = loginToken;
-          console.log("Using login token for fetching packages.");
-        } else if (registerToken) {
-          authToken = registerToken;
-          console.log("Using register token for fetching packages.");
+        let response;
+        if (props.type === "attractions") {
+          response = await axios.get(
+            `${process.env.NEXT_PUBLIC_API_URL}attractions/get-featured-attractions`
+          );
+        } else {
+          response = await axios.get(
+            `${process.env.NEXT_PUBLIC_API_URL}packages/get-featured-packages`
+          );
         }
 
-        if (!authToken) {
-          setError("Authentication token not found");
-          setIsLoading(false);
-          return;
-        }
-
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}packages/get-featured-packages`,
-          {
-            headers: {
-              Authorization: `Bearer ${authToken}`,
-            },
-          }
-        );
         const featuredPackages = response.data.data || response.data || [];
 
         console.log("Featured Packages:", featuredPackages);

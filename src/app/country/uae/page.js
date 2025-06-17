@@ -1,64 +1,51 @@
+"use client";
 import React from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import style from "./style.module.css";
-import Banner from "../../../../components/banner/banner";
-import Carousal from "../../../../components/carousel/Carousal";
-import DocumentationTabs from "../../../../components/countries/documentation-tab";
-import GettingAroundTab from "../../../../components/countries/getting-around-tab";
-import TabsUae from "../../../../components/countries/tab-uae";
-import CountriesUae from "../../../../components/countries/countries-uae";
-import {
-  FaMoneyBillWave,
-  FaClock,
-  FaPhone,
-  FaSimCard,
-  FaPlaneDeparture,
-  FaCity,
-  FaBusAlt,
-  FaMapMarkedAlt,
-  FaCar,
-  FaCarSide,
-  FaShoppingBag,
-  FaSmile,
-  FaHospital,
-  FaClinicMedical,
-  FaCapsules,
-  FaUserShield,
-} from "react-icons/fa";
+import Banner from "@components/banner/banner";
+import CountriesUae from "@components/countries/countries-uae";
+import Tabs from "@components/countries/tabs";
+import Carousal from "@components/carousel/Carousal";
+import DocumentationTabs from "@components/countries/documentation-tab";
+import GettingAroundTab from "@components/countries/getting-around-tab";
 
 function Country() {
-  const countryDestinationsData = [
-    {
-      id: 1,
-      heading: "Destination Heading 1",
-      description: "Luxury",
-      image: "/images/blog/01.jpg",
-    },
-    {
-      id: 2,
-      heading: "Destination Heading 2",
-      description: "Culture",
-      image: "/images/blog/02.jpg",
-    },
-    {
-      id: 3,
-      heading: "Destination Heading 3",
-      description: "Coastal Escapes",
-      image: "/images/blog/03.jpg",
-    },
-    {
-      id: 4,
-      heading: "Destination Heading 4",
-      description: "History",
-      image: "/images/blog/04.jpg",
-    },
-    {
-      id: 5,
-      heading: "Destination Heading 5",
-      description: "Events",
-      image: "/images/blog/01.jpg",
-    },
-  ];
+  const [allEvents, setAllEvents] = useState([]);
+  const [blogs, setBlogs] = useState([]);
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}events`
+        );
+        const fetchedEvents = response.data.data || response.data || [];
+        setAllEvents(fetchedEvents);
+      } catch (err) {
+        console.error("Error fetching events:", err);
+      }
+    };
 
+    fetchEvents();
+  }, []);
+
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}blog`
+        );
+        const allBlogs = response.data.data || response.data || [];
+        console.log("🚀 ~ fetchBlogs ~ allBlogs:", allBlogs);
+
+        setBlogs(allBlogs);
+      } catch (err) {
+        console.error("Error fetching packages:", err);
+      }
+    };
+
+    fetchBlogs();
+  }, []);
   const countryExperiance = [];
 
   return (
@@ -79,7 +66,7 @@ function Country() {
           </div>
         </div>
       </div>
-      <TabsUae />
+      <Tabs />
       <section className={style["countries-explore-container"]}>
         <div className={style["countries-explore"]}>
           <div className="container">
@@ -96,7 +83,7 @@ function Country() {
               <div className="row">
                 <div className="col-md-12">
                   <Carousal
-                    country={countryDestinationsData}
+                    country={allEvents}
                     count={5}
                     type="country-tab-slider"
                   />
@@ -117,9 +104,7 @@ function Country() {
         <div className="container">
           <div className="row">
             <div className="col-md-12 pb-3">
-              <h3 className="mb-0" style={{ color: "grey" }}>
-                Plan
-              </h3>
+              <h3 className="mb-0">Plan</h3>
             </div>
           </div>
           <div className="row">
@@ -161,18 +146,18 @@ function Country() {
         <DocumentationTabs />
       </div>
 
-      {/* <div className={style['section-documentation']}>
-                <div className={style['section-normal']}>
-                    <div className='container'>
-                        <div className='row'>
-                            <div className='col-md-12'>
-                                <h3>Getting Around</h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-               <GettingAroundTab /> 
-            </div> */}
+      {/* <div className={style["section-documentation"]}>
+        <div className={style["section-normal"]}>
+          <div className="container">
+            <div className="row">
+              <div className="col-md-12">
+                <h3>Getting Around</h3>
+              </div>
+            </div>
+          </div>
+        </div>
+        <GettingAroundTab />
+      </div> */}
 
       <section className={style["countries-explore-container"]}>
         <div className={style["countries-explore"]}>
@@ -197,7 +182,7 @@ function Country() {
                   {/* <Carousal countryExperiance={countryExperiance} count={3} type="country-experiance" /> */}
 
                   <Carousal
-                    countryExperiance={countryExperiance}
+                    countryExperiance={blogs}
                     count={4}
                     countTab={1}
                     type="country-Experiance"

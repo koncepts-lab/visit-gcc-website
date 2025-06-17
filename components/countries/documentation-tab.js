@@ -29,7 +29,7 @@ const DocumentationTabs = () => {
 
   return (
     <section className={style.innerpage}>
-      <div className={`container ${style["light-bg"]}`}>
+      <div className={`container `}>
         <div className="row pb-2">
           <div className="col-md-12">
             <div className={`pr-0 ${style["country-container-box"]}`}>
@@ -44,7 +44,7 @@ const DocumentationTabs = () => {
                     role="presentation"
                   >
                     <button
-                      className={`nav-link active border-0 ${style["country-nav-link"]} ${style["active-tab"]}`}
+                      className={`nav-link active border-0 ${style["country-nav-link"]} }`}
                       id="emergency-numbers-tab"
                       data-bs-toggle="tab"
                       data-bs-target="#emergency-numbers"

@@ -19,6 +19,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Ask_ur_questions from "@components/ask_ur_questions/ask_ur_questions";
 import EnhancedDatePicker from "./date";
+import RatingCarousel from "@components/tour-package-details/RatingCarousel";
 
 function Page() {
   const params = useParams();
@@ -312,7 +313,7 @@ function Page() {
           </div>
         </div>
 
-        <div className="container">
+        {/* <div className="container">
           <div className="row pt-5">
             <div className="col-md-12">
               <h4>User ratings</h4>
@@ -373,6 +374,13 @@ function Page() {
                 count={2}
                 type="user-ratings-carosul"
               />
+            </div>
+          </div>
+        </div> */}
+        <div className="container">
+          <div className="row pt-3">
+            <div className="col-md-8">
+              <RatingCarousel packageId={slug} type="event" />
             </div>
           </div>
         </div>
