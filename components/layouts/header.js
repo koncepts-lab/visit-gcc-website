@@ -8,6 +8,8 @@ import style from "./style.module.css";
 import { CgProfile } from "react-icons/cg";
 import { useRouter } from "next/navigation";
 import { useSnackbar } from "notistack";
+import ChangePasswordForm from "./ChangePasswordForm";
+
 import {
   Settings,
   LogOut,
@@ -37,13 +39,13 @@ function Header() {
   const [mobileActiveTab, setMobileActiveTab] = useState("account");
   const [selectedCurrency, setSelectedCurrency] = useState("AED");
   const [selectedCountry, setSelectedCountry] = useState("UAE");
+  const [showChangePassword, setShowChangePassword] = useState(false);
 
   const [editingField, setEditingField] = useState(null);
   const [editFieldValue, setEditFieldValue] = useState("");
   const [editingFirstName, setEditingFirstName] = useState("");
   const [editingLastName, setEditingLastName] = useState("");
   const [isSubmittingEdit, setIsSubmittingEdit] = useState(false);
-
   const router = useRouter();
   const profileDropdownRef = useRef(null);
   const mobileMenuRef = useRef(null);
@@ -77,15 +79,6 @@ function Header() {
       label: "City of Residence",
       inputType: "text",
       placeholder: "Enter city",
-    },
-  ];
-
-  const settingsMenuItems = [
-    {
-      fieldKey: "Phone",
-      label: "Phone",
-      inputType: "tel",
-      placeholder: "Enter phone",
     },
   ];
 
@@ -146,6 +139,19 @@ function Header() {
     }
   };
 
+  // Function to handle successful password change
+  const handlePasswordChangeSuccess = () => {
+    setShowChangePassword(false); // Hide the form
+    enqueueSnackbar("Password changed successfully!", { variant: "success" });
+    // Optionally, you can redirect the user or close the entire mobile menu
+    toggleMenu(); // Closes the mobile menu after password change
+  };
+
+  // Function to cancel password change (go back to settings)
+  const handleCancelPasswordChange = () => {
+    setShowChangePassword(false);
+  };
+
   const handleStartEditing = (fieldKey, currentValue = "") => {
     setEditingField(fieldKey);
     if (fieldKey === "Display Name") {
@@ -190,9 +196,18 @@ function Header() {
       return;
     }
 
-    let payload = {};
     let currentFieldLabel = editingField;
 
+    // Prepare the complete payload with all profile fields
+    // Use current userData values for unchanged fields, and new values for the field being edited
+    let updatedFirstName = userData?.first_name || "";
+    let updatedLastName = userData?.last_name || "";
+    let updatedGender = userData?.gender || "";
+    let updatedBirthday = userData?.date_of_birth || "";
+    let updatedCityOfResidence = userData?.city || "";
+    let updatedMobileNumber = userData?.mobile_number || "";
+
+    // Update the specific field being edited
     if (editingField === "Display Name") {
       if (!editingFirstName.trim() && !editingLastName.trim()) {
         enqueueSnackbar("Name fields cannot both be empty.", {
@@ -201,10 +216,8 @@ function Header() {
         setIsSubmittingEdit(false);
         return;
       }
-      payload = {
-        first_name: editingFirstName.trim(),
-        last_name: editingLastName.trim(),
-      };
+      updatedFirstName = editingFirstName.trim();
+      updatedLastName = editingLastName.trim();
     } else {
       const allMenuItems = [...accountMenuItems, ...settingsMenuItems];
       const currentItemConfig = allMenuItems.find(
@@ -231,16 +244,13 @@ function Header() {
 
       switch (editingField) {
         case "Gender":
-          payload = { gender: editFieldValue };
+          updatedGender = editFieldValue;
           break;
         case "Date of Birth":
-          payload = { birthday: editFieldValue };
+          updatedBirthday = editFieldValue;
           break;
         case "City of Residence":
-          payload = { city_of_residence: editFieldValue };
-          break;
-        case "Phone":
-          payload = { mobile_number: editFieldValue };
+          updatedCityOfResidence = editFieldValue;
           break;
         default:
           enqueueSnackbar(`Unknown field: ${editingField}`, {
@@ -251,11 +261,27 @@ function Header() {
       }
     }
 
+    // Create the complete payload with all fields
+    // Send null for empty fields, actual values for filled fields
+    const finalRequestBody = {
+      first_name: updatedFirstName.trim() || null,
+      last_name: updatedLastName.trim() || null,
+      birthday: updatedBirthday || null,
+      gender: updatedGender ? updatedGender.toLowerCase() : null,
+      city_of_residence: updatedCityOfResidence || null,
+      mobile_number: updatedMobileNumber || null,
+    };
+
     try {
       const response = await axios.put(
         `${process.env.NEXT_PUBLIC_API_URL}profiles/user`,
-        payload,
-        { headers: { Authorization: `Bearer ${authToken}` } }
+        finalRequestBody,
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+            "Content-Type": "application/json",
+          },
+        }
       );
       if (
         response.data &&
@@ -289,6 +315,7 @@ function Header() {
       }
       if (newState && userData) {
         setMobileActiveTab("account");
+        setShowChangePassword(false);
       }
       return newState;
     });
@@ -668,7 +695,10 @@ function Header() {
           className={`btn btn-link text-decoration-none fw-bold py-2 ${
             mobileActiveTab === "account" ? style.activeMobileTab : "text-muted"
           }`}
-          onClick={() => setMobileActiveTab("account")}
+          onClick={() => {
+            setMobileActiveTab("account");
+            setShowChangePassword(false); // Hide ChangePasswordForm when switching tabs
+          }}
           style={{
             flex: 1,
             borderRadius: 0,
@@ -688,7 +718,10 @@ function Header() {
               ? style.activeMobileTab
               : "text-muted"
           }`}
-          onClick={() => setMobileActiveTab("settings")}
+          onClick={() => {
+            setMobileActiveTab("settings");
+            setShowChangePassword(false);
+          }}
           style={{
             flex: 1,
             borderRadius: 0,
@@ -703,6 +736,7 @@ function Header() {
           Settings
         </button>
       </div>
+
       {mobileActiveTab === "account" && (
         <>
           <MobileMenuItem
@@ -746,28 +780,12 @@ function Header() {
           <MobileMenuItem
             label="Email address"
             value={userData?.email}
-            rightContent={
-              !userData?.email_verified_at &&
-              userData?.email && (
-                <span className="text-warning small fst-italic me-1">
-                  Unverified
-                </span>
-              )
-            }
           />
-          <MobileMenuItem
-            fieldKey="Phone"
-            label="Phone"
-            value={userData?.mobile_number}
-            inputType="tel"
-            placeholder="Enter phone"
-          />
+  
           <MobileMenuItem
             label="Change Password"
-            href={`/profile?section=loginDetails&action=changePassword&email=${encodeURIComponent(
-              userData?.email || ""
-            )}`}
-            isNavigation={true}
+            onClick={() => setShowChangePassword(true)}
+            isNavigation={false}
           />
           <MobileMenuItem
             label="Privacy Policy"
@@ -840,7 +858,6 @@ function Header() {
       <MobileMenuSocials />{" "}
     </>
   );
-
   return (
     <div
       className={`${style.headerWrapper} ${hideOnScroll ? style.hidden : ""}`}
@@ -970,8 +987,14 @@ function Header() {
                     ×
                   </button>
                 </li>
-                {userData ? <LoggedInMobileMenu /> : <GuestMobileMenu />}
-              </ul>
+{showChangePassword ? (
+        <ChangePasswordForm
+        />
+      ) : userData ? (
+        <LoggedInMobileMenu />
+      ) : (
+        <GuestMobileMenu />
+      )}              </ul>
             )}
             <ul
               className={`navbar-nav ${style["navbar-nav-c"]} d-none d-sm-flex`}

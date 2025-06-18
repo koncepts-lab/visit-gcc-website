@@ -16,13 +16,17 @@ const AccordionItem = ({ title, description, isOpen, onToggle }) => {
           style={{
             fontSize: "1rem",
             transition: "transform 0.3s",
-            transform: isOpen ? "rotate(-90deg)" : "rotate(0deg)",
+            transform: isOpen ? "rotate(-90deg)" : "rotate(0deg)"
           }}
         />
         {title}
       </div>
 
-      {isOpen && <p className="text-secondary ps-4 mb-2 ms-5">{description}</p>}
+      {isOpen && (
+        <p className="text-secondary ps-4 mb-2 ms-5">
+          {description}
+        </p>
+      )}
     </div>
   );
 };
