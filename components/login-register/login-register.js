@@ -181,6 +181,10 @@ const LoginRegisterTabs = () => {
       if (response.status === 200 || response.status === 201) {
         console.log("Registration successful:", response.data);
         enqueueSnackbar("Registration Successful!", { variant: "success" });
+
+         localStorage.setItem("first_name", registerFormData.first_name);
+         localStorage.setItem("last_name", registerFormData.last_name);
+
         setRegisterFormData({
           first_name: "",
           last_name: "",
@@ -399,83 +403,6 @@ const LoginRegisterTabs = () => {
               </div>
             )}
           </div>
-
-          {/* <div className="mb-3">
-            <label htmlFor="register-phone" className="form-label">
-              Phone
-            </label>
-            <input
-              type="tel"
-              id="register-phone"
-              name="phone"
-              className={`form-control ${styles["form-control"]}`}
-              placeholder="Phone number"
-              value={registerFormData.phone}
-              onChange={handleInputChange}
-            />
-            {formErrors.phone && (
-              <div className="text-danger">{formErrors.phone}</div>
-            )}
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="register-dob" className="form-label">
-              Date of Birth
-            </label>
-            <input
-              type="date"
-              id="register-dob"
-              name="date_of_birth"
-              className={`form-control ${styles["form-control"]}`}
-              value={registerFormData.date_of_birth}
-              onChange={handleInputChange}
-            />
-            {formErrors.date_of_birth && (
-              <div className="text-danger">{formErrors.date_of_birth}</div>
-            )}
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="register-gender" className="form-label">
-              Gender
-            </label>
-            <select
-              id="register-gender"
-              name="gender"
-              className={`form-control ${styles["form-control"]}`}
-              value={registerFormData.gender}
-              onChange={handleInputChange}
-            >
-              <option value="">Select Gender</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="other">Other</option>
-            </select>
-            {formErrors.gender && (
-              <div className="text-danger">{formErrors.gender}</div>
-            )}
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="register-user_type" className="form-label">
-              User Type
-            </label>
-            <select
-              id="register-user-type"
-              name="user_type"
-              className={`form-select ${styles["form-control"]}`}
-              value={registerFormData.user_type}
-              onChange={handleInputChange}
-            >
-              <option value="">Select User Type</option>
-              <option value="admin">Admin</option>
-              <option value="user">User</option>
-              <option value="vendor">Vendor</option>
-            </select>
-            {formErrors.user_type && (
-              <div className="text-danger">{formErrors.user_type}</div>
-            )}
-          </div> */}
 
           {registerFormData.user_type === "vendor" && (
             <div className="mb-3">

@@ -27,6 +27,7 @@
     "react-range": "^1.8.14",
     "react-rating-stars-component": "^2.2.0",
     "react-responsive-masonry": "^2.2.1",
+    "react-share": "^5.2.2",
     "react-slick": "^0.30.3",
     "react-spinners": "^0.17.0",
     "slick-carousel": "^1.8.1"

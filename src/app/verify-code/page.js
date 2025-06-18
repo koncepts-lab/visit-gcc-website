@@ -67,6 +67,44 @@ const VerifyOtp = () => {
     background: "none",
   };
 
+  const createProfile = async (token) => {
+    try {
+      console.log("Creating profile with token:", token);
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}profiles`,
+        {},
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+      
+      console.log("Profile creation response:", response.data);
+      
+      if (response.data.success) {
+        console.log("Profile created successfully:", response.data.message);
+        enqueueSnackbar("Profile created successfully!", { variant: "success" });
+      } else {
+        console.log("Profile creation failed:", response.data.message);
+        enqueueSnackbar(response.data.message || "Failed to create profile", { variant: "warning" });
+      }
+    } catch (error) {
+      console.error("Error creating profile:", error);
+      if (error.response) {
+        console.log("Profile creation error response:", error.response.data);
+        enqueueSnackbar(
+          error.response.data.message || "Failed to create profile",
+          { variant: "warning" }
+        );
+      } else {
+        console.log("Profile creation network error");
+        enqueueSnackbar("Network error while creating profile", { variant: "warning" });
+      }
+    }
+  };
+
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
     setOtpError("");
@@ -111,6 +149,8 @@ const VerifyOtp = () => {
       setLoading(false);
     }
   };
+
+  
 
   const handleLoginResendOtp = async (e) => {
     // Renamed for clarity if you want to fix it later
@@ -189,8 +229,16 @@ const VerifyOtp = () => {
         enqueueSnackbar("Logged in Successfully!", { variant: "success" });
         setOtp("");
         setPassword("");
-        localStorage.setItem("auth_token_login", response.data.token.token);
+        
+        // Store the token and user data
+        const loginToken = response.data.token.token;
+        localStorage.setItem("auth_token_login", loginToken);
         localStorage.setItem("userId", response.data.user.id);
+        
+        // Create profile after successful login
+        await createProfile(loginToken);
+        
+        // Redirect to home page
         window.location.href = "/";
       } else {
         enqueueSnackbar(response.data.message, { variant: "error" });
@@ -231,6 +279,8 @@ const VerifyOtp = () => {
       setLoading(false);
     }
   };
+
+  
 
   // --- Reset Password Handlers ---
   const handleResetPasswordSubmit = async (e) => {
@@ -290,6 +340,8 @@ const VerifyOtp = () => {
     }
   };
 
+
+  
   const handleResendResetOtp = async (e) => {
     e.preventDefault();
     setLoading(true);
