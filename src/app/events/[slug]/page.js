@@ -248,6 +248,10 @@ function Page() {
             </div>
             <div className="col-md-5">
               <div className={style["flex-package-details-right"]}>
+                <span className={style["min-w"]}>
+                  <p>Starting From</p>
+                  <h5>AED {event.adult_price} per person</h5>
+                </span>
                 <span>
                   <button
                     className={style["btn-one"]}

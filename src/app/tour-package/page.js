@@ -240,10 +240,7 @@ const TourPackage = () => {
 
       try {
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}packages`,
-          {
-            headers: authToken ? { Authorization: `Bearer ${authToken}` } : {},
-          }
+          `${process.env.NEXT_PUBLIC_API_URL}packages`
         );
         console.log("fetchPackages response:", response);
         const fetchedPackages = (response.data.data || response.data || []).map(

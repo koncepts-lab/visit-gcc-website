@@ -229,6 +229,10 @@ const ExploreEventsContainer = ({ events }) => {
                     );
                   })()}
               </ul>
+              <p className="mb-3">
+                <span className="fw-bold">AED {event.adult_price}</span> /
+                person
+              </p>
 
               <Link
                 href={`/events/${event.id}`}

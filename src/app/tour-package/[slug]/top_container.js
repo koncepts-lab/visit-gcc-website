@@ -175,10 +175,10 @@ export default function Top_container({ packageId }) {
           </div>
           <div className="col-md-6 col-lg-5">
             <div className={style["flex-package-details-right"]}>
-              {/* <span className={style["min-w"]}>
+              <span className={style["min-w"]}>
                 <p>Starting From</p>
-                <h5>${packageDetails.adult_price} per person</h5>
-              </span> */}
+                <h5>AED {packageDetails.adult_price} per person</h5>
+              </span>
               <span>
                 <button
                   className={style["btn-one"]}

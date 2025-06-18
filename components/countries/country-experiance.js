@@ -26,7 +26,7 @@ function CountryExperiance(props) {
                 </span>
                 {props.blogs.author_name}
               </div>
-              <div className={style["tag"]}>
+              {/* <div className={style["tag"]}>
                 <span>
                   <BsChatFill />
                 </span>
@@ -37,7 +37,7 @@ function CountryExperiance(props) {
                   <AiFillLike />
                 </span>
                 {props.blogs.number_of_likes} Likes
-              </div>
+              </div> */}
             </div>
           </div>
           <div className={style["back"]}>
@@ -60,7 +60,7 @@ function CountryExperiance(props) {
                 </span>
                 {props.blogs.author_name}
               </div>
-              <div className={style["tag"]}>
+              {/* <div className={style["tag"]}>
                 <span>
                   <BsChatFill />
                 </span>
@@ -71,7 +71,7 @@ function CountryExperiance(props) {
                   <AiFillLike />
                 </span>
                 {props.blogs.number_of_likes} Likes
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

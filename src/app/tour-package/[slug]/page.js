@@ -12,6 +12,7 @@ import PackageInclusionsAndExclusions from "@components/tour-package-details/pac
 import RatingCarousel from "@components/tour-package-details/RatingCarousel";
 import Top_container from "./top_container";
 import { useParams } from "next/navigation";
+import Map from "@components/map/Map";
 
 function Page() {
   const params = useParams();
@@ -86,49 +87,6 @@ function Page() {
     fetchAllPackage();
   }, []);
 
-  useEffect(() => {
-    const fetchLegends = async () => {
-      if (!slug) return;
-
-      try {
-        const registerToken = localStorage.getItem("auth_token_register");
-        const loginToken = localStorage.getItem("auth_token_login");
-        let authToken = null;
-
-        if (loginToken) {
-          authToken = loginToken;
-          console.log("Using login token for fetching packages.");
-        } else if (registerToken) {
-          authToken = registerToken;
-          console.log("Using register token for fetching packages.");
-        }
-
-        if (!authToken) {
-          setError("Authentication token not found");
-          setIsLoading(false);
-          return;
-        }
-
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}legends/package/${slug}/get-by-package`,
-          {
-            headers: {
-              Authorization: `Bearer ${authToken}`,
-            },
-          }
-        );
-
-        const legendsData = response.data.legends || [];
-        console.log("Legends Data:", legendsData);
-        setLegends(legendsData);
-      } catch (err) {
-        console.error("Error fetching legends:", err);
-      }
-    };
-
-    fetchLegends();
-  }, [slug]);
-
   return (
     <>
       <Banner />
@@ -140,34 +98,39 @@ function Page() {
         <div className={`container ${style["time"]}`}>
           <div className="row">
             <div className="col-md-12">
-              <HighlightTab packageId={slugpackage.id} />
+              {slugpackage.id && (
+                <HighlightTab itemId={slugpackage.id} itemType="packages" />
+              )}
             </div>
           </div>
         </div>
 
-        <div className="container">
+        {/* <div className="container">
           <div className={`col-md-12 ${style["pdb-3"]}`}>
             <PackageInclusionsAndExclusions packageId={slugpackage.id} />
           </div>
-        </div>
+        </div> */}
 
-        <div className="container">
+        {/* <div className="container">
           <div className="row pt-5">
             <div key={slugpackage.id} className="col-md-12">
               <h3>Note</h3>
               <p>{slugpackage.note}</p>
             </div>
           </div>
-        </div>
+        </div> */}
 
         <div className="container">
           <div className={`row ${style["ptb-30"]}`}>
             <div className="col-md-12">
-              <h3>Trip Map & Itinerary</h3>
+              <h3>Location</h3>
             </div>
           </div>
-
-          <div className={`row ${style["Legend-ul"]}`}>
+          <Map
+            latitude={slugpackage.latitude}
+            longitude={slugpackage.longitude}
+          />
+          {/* <div className={`row ${style["Legend-ul"]}`}>
             <div className="col-md-8">
               <img src={slugpackage.map_url} alt="Bahrain" />
             </div>
@@ -190,7 +153,7 @@ function Page() {
                 ))}
               </ul>
             </div>
-          </div>
+          </div> */}
         </div>
 
         <div className="container">

@@ -1,21 +1,20 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import style from "./style.module.css"; // Your existing style module
+import style from "./style.module.css";
 import Link from "next/link";
 import { FaCircle } from "react-icons/fa";
 import { PiSealCheckFill } from "react-icons/pi";
 import { MdIosShare } from "react-icons/md";
-import Carousal from "@components/carousel/Carousal"; // Reusing your Carousel
+import Carousal from "@components/carousel/Carousal";
 import axios from "axios";
-import EnhancedDatePicker from "./date"; // Reusing your DatePicker
-import EnquiryForm from "@components/enquiry-form"; // Reusing your EnquiryForm
+import EnhancedDatePicker from "./date";
+import EnquiryForm from "@components/enquiry-form";
+import { useSnackbar } from "notistack"; // Import useSnackbar
 
-// This component is now specifically for displaying Attraction details
-export default function AttractionTopContainer({ packageId }) {
-  // Renamed prop for clarity
+// This component is specifically for displaying Attraction details
+export default function AttractionTopContainer({ attractionId }) {
   const [attractionDetails, setAttractionDetails] = useState(null);
   const [attractionRatings, setAttractionRatings] = useState(null);
-  // These will hold attraction-specific associated data like categories and features
   const [attractionCategories, setAttractionCategories] = useState([]);
   const [attractionFeatures, setAttractionFeatures] = useState([]);
 
@@ -24,11 +23,14 @@ export default function AttractionTopContainer({ packageId }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const { enqueueSnackbar } = useSnackbar(); // Initialize snackbar
+
   useEffect(() => {
-    console.log("Received packageId:", packageId);
+    // ... your existing fetchData logic ...
+    console.log("Received attractionId:", attractionId);
 
     const fetchData = async () => {
-      if (!packageId) {
+      if (!attractionId) {
         setError("Attraction ID is missing.");
         setLoading(false);
         return;
@@ -49,72 +51,53 @@ export default function AttractionTopContainer({ packageId }) {
           ? { Authorization: `Bearer ${authToken}` }
           : {};
 
-        // 1. Fetch Attraction Details
-        const detailsEndpoint = `${process.env.NEXT_PUBLIC_API_URL}attractions/${packageId}`;
-        console.log(`Fetching attraction details from: ${detailsEndpoint}`);
-        const detailsResponse = await axios.get(detailsEndpoint, { headers }); // Add headers if needed for this endpoint
+        const detailsEndpoint = `${process.env.NEXT_PUBLIC_API_URL}attractions/${attractionId}`;
+        const detailsResponse = await axios.get(detailsEndpoint, { headers });
         const fetchedDetails =
           detailsResponse.data.data || detailsResponse.data;
         if (!fetchedDetails) throw new Error("No attraction details found.");
         setAttractionDetails(fetchedDetails);
-        console.log("Attraction details:", fetchedDetails);
 
-        // 2. Fetch Attraction Ratings (if applicable)
-        const ratingsEndpoint = `${process.env.NEXT_PUBLIC_API_URL}attraction-review/${packageId}/ratings`;
+        const ratingsEndpoint = `${process.env.NEXT_PUBLIC_API_URL}attraction-review/${attractionId}/ratings`;
         try {
-          console.log(`Fetching attraction ratings from: ${ratingsEndpoint}`);
-          const ratingsResponse = await axios.get(ratingsEndpoint, { headers }); // Add headers if needed
+          const ratingsResponse = await axios.get(ratingsEndpoint, { headers });
           setAttractionRatings(
             ratingsResponse.data.data || ratingsResponse.data || null
           );
-          console.log(
-            "Attraction ratings:",
-            ratingsResponse.data.data || ratingsResponse.data
-          );
         } catch (ratingErr) {
           console.warn(
-            `No ratings for attraction ID ${packageId}:`,
+            `No ratings for attraction ID ${attractionId}:`,
             ratingErr.response?.data || ratingErr.message
           );
-          setAttractionRatings(null);
+          setItemRatings(null); // Corrected: setAttractionRatings
         }
 
-        // 3. Fetch Attraction Categories and Features (using Promise.all)
-        // Ensure these endpoints and query params are correct for attractions
-        // const categoriesPromise = axios.get(
-        //   `${process.env.NEXT_PUBLIC_API_URL}attraction-categories/attraction/get-by-attraction?attraction_id=${packageId}`,
-        //   { headers }
-        // );
-        // const featuresPromise = axios.get(
-        //   `${process.env.NEXT_PUBLIC_API_URL}attraction-features/attraction/get-by-attraction?attraction_id=${packageId}`,
-        //   { headers }
-        // );
+        const categoriesPromise = axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}attraction-categories/attraction/get-by-attraction?attraction_id=${attractionId}`,
+          { headers }
+        );
+        const featuresPromise = axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}attraction-features/attraction/get-by-attraction?attraction_id=${attractionId}`,
+          { headers }
+        );
 
-        // const [categoriesResponse, featuresResponse] = await Promise.all([
-        //   categoriesPromise,
-        //   featuresPromise,
-        // ]);
+        const [categoriesResponse, featuresResponse] = await Promise.all([
+          categoriesPromise,
+          featuresPromise,
+        ]);
 
-        // setAttractionCategories(
-        //   categoriesResponse.data.data || categoriesResponse.data || []
-        // );
-        // setAttractionFeatures(
-        //   featuresResponse.data.data || featuresResponse.data || []
-        // );
-        // console.log(
-        //   "Attraction categories:",
-        //   categoriesResponse.data.data || categoriesResponse.data
-        // );
-        // console.log(
-        //   "Attraction features:",
-        //   featuresResponse.data.data || featuresResponse.data
-        // );
+        setAttractionCategories(
+          categoriesResponse.data.data || categoriesResponse.data || []
+        );
+        setAttractionFeatures(
+          featuresResponse.data.data || featuresResponse.data || []
+        );
 
         setLoading(false);
       } catch (err) {
         setError("Failed to fetch attraction details. Please try again.");
         console.error(
-          `Error fetching attraction data for ID ${packageId}:`,
+          `Error fetching attraction data for ID ${attractionId}:`,
           err.response?.data || err.message,
           err
         );
@@ -123,18 +106,38 @@ export default function AttractionTopContainer({ packageId }) {
       }
     };
 
-    if (packageId) {
+    if (attractionId) {
       fetchData();
     } else {
       setError("Attraction ID is required to fetch details.");
       setLoading(false);
     }
-  }, [packageId]); // Re-fetch only if packageId changes
+  }, [attractionId]);
 
   const handleBookNowClick = () => setIsDatePickerPopupOpen(true);
   const handleCloseDatePickerPopup = () => setIsDatePickerPopupOpen(false);
   const openEnquiryForm = () => setIsEnquiryFormOpen(true);
   const closeEnquiryForm = () => setIsEnquiryFormOpen(false);
+
+  // --- Share Functionality ---
+  const handleShare = async () => {
+    if (typeof window !== "undefined" && navigator.clipboard) {
+      const currentUrl = window.location.href;
+      try {
+        await navigator.clipboard.writeText(currentUrl);
+        enqueueSnackbar("Link copied to clipboard!", { variant: "success" });
+      } catch (err) {
+        console.error("Failed to copy URL: ", err);
+        enqueueSnackbar("Failed to copy link.", { variant: "error" });
+      }
+    } else {
+      // Fallback for older browsers or non-secure contexts (though less common now)
+      enqueueSnackbar("Sharing not supported on this browser.", {
+        variant: "warning",
+      });
+    }
+  };
+  // --- End of Share Functionality ---
 
   if (loading)
     return (
@@ -162,11 +165,15 @@ export default function AttractionTopContainer({ packageId }) {
     attractionDetails.photos ||
     attractionDetails.images ||
     [];
-
-  const formattedPhotos = attractionDetails.photo_urls.map((photo) => ({
-    image: photo,
-    heading: attractionDetails.name,
-    description: attractionDetails.description,
+  const formattedPhotos = photos.map((photo, index) => ({
+    image: typeof photo === "string" ? photo : photo.url,
+    heading: attractionDetails.name || "Attraction Image",
+    description:
+      attractionDetails.short_description ||
+      attractionDetails.caption ||
+      attractionDetails.name ||
+      "Detail image",
+    id: `carousel-photo-${index}`,
   }));
 
   const renderRatingCircles = () => {
@@ -192,7 +199,6 @@ export default function AttractionTopContainer({ packageId }) {
   };
 
   const itemName = attractionDetails.name || "Attraction";
-  // For attractions, title might just be the name, or include location if available
   const itemTitleText =
     attractionDetails.city && attractionDetails.country
       ? `${itemName.toUpperCase()} - ${
@@ -204,15 +210,13 @@ export default function AttractionTopContainer({ packageId }) {
     attractionDetails.description ||
     attractionDetails.overview ||
     "No detailed description available.";
-  // Attractions might have an 'operator' or 'venue_name' instead of 'vendor'
   const operatorName =
     attractionDetails.operator_name || attractionDetails.venue_name || null;
   const operatorId =
-    attractionDetails.operator_id || attractionDetails.venue_id || null; // If you have IDs for linking
+    attractionDetails.operator_id || attractionDetails.venue_id || null;
 
   return (
     <div>
-      {/* CSS classes from style.module.css are reused */}
       <div className={`container ${style["container-package-details"]}`}>
         <div className="row">
           <div className="col-lg-7 col-md-12">
@@ -249,21 +253,23 @@ export default function AttractionTopContainer({ packageId }) {
                 </span>
               )}
               <span className="d-flex align-items-center mb-2">
+                {/* --- Updated Share Button --- */}
                 <button
                   className="btn btn-light btn-sm p-1 border-0"
-                  title="Share"
+                  title="Share this page"
+                  onClick={handleShare} // Attach the handler
                 >
-                  {" "}
                   <MdIosShare size={20} className="text-secondary" />
                 </button>
+                {/* --- End of Updated Share Button --- */}
               </span>
             </div>
           </div>
+          {/* ... rest of your JSX ... */}
           <div className="col-lg-5 col-md-12">
             <div
               className={`${style["flex-package-details-right"]} mt-3 mt-lg-0`}
             >
-              {/* Price display for attractions */}
               {(attractionDetails.entry_fee || attractionDetails.price) && (
                 <span
                   className={`${style["min-w"]} text-end mb-2 mb-md-0 me-md-3`}
@@ -279,15 +285,15 @@ export default function AttractionTopContainer({ packageId }) {
               )}
               <span className="mb-2 mb-md-0 me-md-2">
                 <button
-                  className={`${style["btn-one"]}`}
+                  className={`${style["btn-one"]} btn btn-primary w-100`}
                   onClick={handleBookNowClick}
                 >
-                  Book Now
+                  Get Tickets
                 </button>
               </span>
               <span>
                 <button
-                  className={`${style["btn-two"]}`}
+                  className={`${style["btn-two"]} btn btn-outline-secondary w-100`}
                   onClick={openEnquiryForm}
                 >
                   Enquire Now
@@ -299,14 +305,14 @@ export default function AttractionTopContainer({ packageId }) {
 
         <div className="row mt-4">
           <div className="col-lg-7 col-md-12">
-            {/* The class name style["package-best-picked"] is reused */}
             <section className={style["package-best-picked"]}>
               <div className={style["review-img-container"]}>
                 {formattedPhotos.length > 0 ? (
                   <Carousal
-                    packageDetailsReview={formattedPhotos}
+                    items={formattedPhotos}
                     count={1}
-                    type="tour-package-details-reviews"
+                    type="item-details-gallery"
+                    showHeadings={false}
                   />
                 ) : (
                   <div className="text-center p-5 border rounded bg-light">
@@ -327,9 +333,8 @@ export default function AttractionTopContainer({ packageId }) {
               >
                 {itemDescription}
               </p>
-              {/* Link to a more detailed attraction page if it exists */}
               <Link
-                href={`/attractions/${packageId}/details`}
+                href={`/attractions/${attractionId}/details`} // Corrected to attractionId
                 className="text-primary text-decoration-none"
               >
                 View Full Details
@@ -338,7 +343,7 @@ export default function AttractionTopContainer({ packageId }) {
           </div>
         </div>
 
-        {/* <div className="row mt-4 pt-3 border-top">
+        <div className="row mt-4 pt-3 border-top">
           <div className={`col-md-7 ${style["border-right"]}`}>
             <h3
               className="pt-2 mb-3 fw-semibold"
@@ -348,39 +353,34 @@ export default function AttractionTopContainer({ packageId }) {
             </h3>
             {attractionFeatures.length > 0 ? (
               <div className={`${style["inclusions"]} d-flex flex-wrap`}>
-                {" "}
-                {attractionFeatures.map(
-                  (
-                    feature // Changed from inclusion to feature
-                  ) => (
-                    <span
-                      key={feature.id || feature.title}
-                      className="d-flex flex-column align-items-center text-center mb-3 me-3 p-2 border rounded"
-                      style={{ width: "100px" }}
+                {attractionFeatures.map((feature) => (
+                  <span
+                    key={feature.id || feature.title}
+                    className="d-flex flex-column align-items-center text-center mb-3 me-3 p-2 border rounded"
+                    style={{ width: "100px" }}
+                  >
+                    <img
+                      src={
+                        feature.feature_icon_url ||
+                        feature.icon_url ||
+                        "/images/icons/default-feature.png"
+                      }
+                      alt={feature.title}
+                      style={{
+                        width: "40px",
+                        height: "40px",
+                        objectFit: "contain",
+                        marginBottom: "0.5rem",
+                      }}
+                    />
+                    <small
+                      className="text-muted"
+                      style={{ fontSize: "0.8rem" }}
                     >
-                      <img
-                        src={
-                          feature.feature_icon_url ||
-                          feature.icon_url ||
-                          "/images/icons/default-feature.png"
-                        } // Field name might change
-                        alt={feature.title}
-                        style={{
-                          width: "40px",
-                          height: "40px",
-                          objectFit: "contain",
-                          marginBottom: "0.5rem",
-                        }}
-                      />
-                      <small
-                        className="text-muted"
-                        style={{ fontSize: "0.8rem" }}
-                      >
-                        {feature.title}
-                      </small>
-                    </span>
-                  )
-                )}
+                      {feature.title}
+                    </small>
+                  </span>
+                ))}
               </div>
             ) : (
               <p className="text-muted">No specific features listed.</p>
@@ -395,52 +395,47 @@ export default function AttractionTopContainer({ packageId }) {
             </h3>
             {attractionCategories.length > 0 ? (
               <div className={`${style["inclusions"]} d-flex flex-wrap`}>
-                {" "}
-                {attractionCategories.map(
-                  (
-                    category // Changed from theme to category
-                  ) => (
-                    <span
-                      key={category.id || category.title}
-                      className="d-flex flex-column align-items-center text-center mb-3 me-3 p-2 border rounded"
-                      style={{ width: "100px" }}
+                {attractionCategories.map((category) => (
+                  <span
+                    key={category.id || category.title}
+                    className="d-flex flex-column align-items-center text-center mb-3 me-3 p-2 border rounded"
+                    style={{ width: "100px" }}
+                  >
+                    <img
+                      src={
+                        category.category_icon_url ||
+                        category.icon_url ||
+                        "/images/icons/default-category.png"
+                      }
+                      alt={category.title}
+                      style={{
+                        width: "40px",
+                        height: "40px",
+                        objectFit: "contain",
+                        marginBottom: "0.5rem",
+                      }}
+                    />
+                    <small
+                      className="text-muted"
+                      style={{ fontSize: "0.8rem" }}
                     >
-                      <img
-                        src={
-                          category.category_icon_url ||
-                          category.icon_url ||
-                          "/images/icons/default-category.png"
-                        } // Field name might change
-                        alt={category.title}
-                        style={{
-                          width: "40px",
-                          height: "40px",
-                          objectFit: "contain",
-                          marginBottom: "0.5rem",
-                        }}
-                      />
-                      <small
-                        className="text-muted"
-                        style={{ fontSize: "0.8rem" }}
-                      >
-                        {category.title}
-                      </small>
-                    </span>
-                  )
-                )}
+                      {category.title}
+                    </small>
+                  </span>
+                ))}
               </div>
             ) : (
               <p className="text-muted">No specific categories listed.</p>
             )}
           </div>
-        </div> */}
+        </div>
       </div>
 
       {isDatePickerPopupOpen && (
         <div className={style["popup-overlay"]}>
           <EnhancedDatePicker
-            itemId={packageId} // Prop name kept as itemId for consistency with this component
-            itemType="attractions" // Explicitly set type
+            itemId={attractionId}
+            itemType="attractions"
             itemName={itemName}
             onClose={handleCloseDatePickerPopup}
           />
@@ -450,8 +445,8 @@ export default function AttractionTopContainer({ packageId }) {
         <EnquiryForm
           isOpen={isEnquiryFormOpen}
           onClose={closeEnquiryForm}
-          itemId={packageId} // Prop name kept as itemId
-          itemType="attractions" // Explicitly set type
+          itemId={attractionId}
+          itemType="attractions"
           itemName={itemName}
         />
       )}

@@ -16,11 +16,12 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 function RatingCarousel({ packageId, type }) {
+  console.log("🚀 ~ RatingCarousel ~ type:", type);
   // Normalize type to handle case sensitivity
   const normalizedType = typeof type === "string" ? type.toLowerCase() : type;
 
   // Validate the type prop
-  if (!["package", "event"].includes(normalizedType)) {
+  if (!["package", "event", "attraction"].includes(normalizedType)) {
     console.error(`Invalid type prop: ${type}. Must be "package" or "event".`);
     return <div className="text-danger">Invalid component type</div>;
   }
@@ -43,6 +44,7 @@ function RatingCarousel({ packageId, type }) {
   const getApiEndpoint = () => {
     if (normalizedType === "package") return "package-review";
     if (normalizedType === "event") return "event-review";
+    if (normalizedType === "attraction") return "attraction-review";
     return "package-review"; // Fallback (shouldn't reach here due to validation)
   };
 

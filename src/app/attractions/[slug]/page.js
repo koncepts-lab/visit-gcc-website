@@ -12,6 +12,7 @@ import PackageInclusionsAndExclusions from "@components/tour-package-details/pac
 import RatingCarousel from "@components/tour-package-details/RatingCarousel";
 import Top_container from "./top_container";
 import { useParams } from "next/navigation";
+import Map from "@components/map/Map";
 
 function Page() {
   const params = useParams();
@@ -21,6 +22,7 @@ function Page() {
   const [legends, setLegends] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [relatedAttractions, setRelatedAttractions] = useState([]);
 
   useEffect(() => {
     if (!slug) return;
@@ -128,7 +130,20 @@ function Page() {
 
     fetchLegends();
   }, [slug]);
-
+  useEffect(() => {
+    const fetchRelatedAttractions = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}attractions/related/${slugpackage.id}`
+        );
+        console.log("Related Attractions:", response.data);
+        setRelatedAttractions(response.data);
+      } catch (err) {
+        console.error("Error fetching related attractions:", err);
+      }
+    };
+    fetchRelatedAttractions();
+  }, [slug]);
   return (
     <>
       <Banner />
@@ -140,7 +155,9 @@ function Page() {
         <div className={`container ${style["time"]}`}>
           <div className="row">
             <div className="col-md-12">
-              <HighlightTab packageId={slugpackage.id} />
+              {slugpackage.id && (
+                <HighlightTab itemId={slugpackage.id} itemType="attractions" />
+              )}
             </div>
           </div>
         </div>
@@ -163,11 +180,11 @@ function Page() {
         <div className="container">
           <div className={`row ${style["ptb-30"]}`}>
             <div className="col-md-12">
-              <h3>Trip Map & Itinerary</h3>
+              <h3>Location</h3>
             </div>
           </div>
 
-          <div className={`row ${style["Legend-ul"]}`}>
+          {/* <div className={`row ${style["Legend-ul"]}`}>
             <div className="col-md-8">
               <img src={slugpackage.map_url} alt="Bahrain" />
             </div>
@@ -190,13 +207,17 @@ function Page() {
                 ))}
               </ul>
             </div>
-          </div>
+          </div> */}
+          <Map
+            latitude={slugpackage.latitude}
+            longitude={slugpackage.longitude}
+          />
         </div>
 
         <div className="container">
           <div className="row pt-3">
             <div className="col-md-8">
-              <RatingCarousel packageId={slugpackage.id} type="package" />
+              <RatingCarousel packageId={slugpackage.id} type="attraction" />
             </div>
           </div>
         </div>
@@ -204,7 +225,9 @@ function Page() {
         <div className="container">
           <div className="row pt-5">
             <div className="col-md-12">
-              <h3>Other Packages</h3>
+              <h3>
+                {relatedAttractions.length > 0 ? "Related Attractions" : ""}
+              </h3>
             </div>
           </div>
         </div>
@@ -213,7 +236,7 @@ function Page() {
           <div className="row pt-2">
             <div className="col-md-12">
               <Carousal
-                pakageDetailsOtherPackages={allPackage}
+                pakageDetailsOtherPackages={relatedAttractions}
                 count={5}
                 type="pakage-details-other-packages"
               />

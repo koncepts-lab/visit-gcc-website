@@ -38,7 +38,6 @@ const TourPackageTab = ({
 
   const allTab = { title: "All Default", uuid_id: "default" };
   const allTabs = [allTab, ...tour_category];
-
   // Declare authToken outside the useEffect to avoid redeclaration on each render
   const authToken =
     localStorage.getItem("auth_token_login") ||
@@ -289,7 +288,7 @@ const TourPackageTab = ({
                                 {new Date(pkg.created_at).toLocaleDateString()}
                               </p>
                             </div>
-                            <div className={style["star-section"]}>
+                            {/* <div className={style["star-section"]}>
                               <div className={style["star"]}>
                                 <Rating
                                   count={5}
@@ -307,7 +306,7 @@ const TourPackageTab = ({
                               <div>
                                 <FaRegLightbulb />
                               </div>
-                            </div>
+                            </div> */}
 
                             <ul className={style["pakages-ul"]}>
                               {iconsData[pkg.id]?.map((icon) => (
@@ -325,17 +324,24 @@ const TourPackageTab = ({
                                 </li>
                               ))}
                             </ul>
-
-                            <Link
-                              href={
-                                type === "attractions"
-                                  ? `/attractions/${pkg.id}`
-                                  : `/tour-package/${pkg.id}`
-                              }
-                              className={style["r-button"]}
-                            >
-                              Read More
-                            </Link>
+                            <div className="d-flex w-100 justify-content-between align-items-center">
+                              <Link
+                                href={
+                                  type === "attractions"
+                                    ? `/attractions/${pkg.id}`
+                                    : `/tour-package/${pkg.id}`
+                                }
+                                className={`${style["r-button"]} mx-0`}
+                              >
+                                Read More
+                              </Link>
+                              <div style={{ width: "fit-content" }}>
+                                <span className="fw-bold">
+                                  AED {pkg.adult_price}
+                                </span>
+                                /person
+                              </div>
+                            </div>
                           </div>
                         </div>
                       ))}

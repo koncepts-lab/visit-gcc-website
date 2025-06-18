@@ -66,11 +66,6 @@ const EventsExploreTab = ({ events }) => {
       }
 
       const fetchedEvents = response.data.data || response.data || [];
-      console.log(
-        `🚀 ~ fetchEventsByCountry ~ fetchedEvents for ${countryId}:`,
-        fetchedEvents
-      );
-
       setCountryEvents((prev) => ({
         ...prev,
         [countryId]: fetchedEvents,
