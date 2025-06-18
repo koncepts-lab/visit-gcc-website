@@ -1,94 +1,193 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import style from "./style.module.css"; // Assuming reuse or a similar one
+import style from "./style.module.css";
 import Banner from "../../../components/banner/banner";
-// import Countries from "../../../components/countries/countries"; // Not directly used in main display
 import { Range } from "react-range";
-// import { CiMobile3 } from "react-icons/ci"; // Not used
-import Carousal from "../../../components/carousel/Carousal"; // Reused
-import HolidaysTab from "../../../components/tour-package/holidays-tab"; // Reused
-import Accordion from "../../../components/accordion/accordion"; // Reused
-import TourPackageTab from "../../../components/tour-package/tour-package-tab"; // Reused
+import Carousal from "../../../components/carousel/Carousal";
+import HolidaysTab from "../../../components/tour-package/holidays-tab";
+import Accordion from "../../../components/accordion/accordion";
+import TourPackageTab from "../../../components/tour-package/tour-package-tab";
 import { LuMenu } from "react-icons/lu";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import axios from "axios";
-import FeaturedIntegratedTravel from "@components/tour-package/featured-integrated-travel"; // Reused
+import FeaturedIntegratedTravel from "@components/tour-package/featured-integrated-travel";
+import EventTab from "@components/tour-package/event-tab";
 
 const AttractionsPage = () => {
-  // State variables will keep package-related names but hold attraction data
-  const [packages, setPackages] = useState([]); // Will hold all attractions
-  const [allPackages, setAllPackages] = useState([]); // Backup of all attractions
-  const [tour_category, setTour_category] = useState([]); // Will hold attraction categories
-
+  const [packages, setPackages] = useState([]);
+  const [allPackages, setAllPackages] = useState([]);
+  const [tour_category, setTour_category] = useState([]);
   const [error, setError] = useState(null);
-  const [priceRange, setPriceRange] = useState([10, 1000]); // Example for attractions
-  const [durationRange, setDurationRange] = useState([1, 8]); // Example for attractions (e.g., hours)
+  const [loading, setLoading] = useState(false);
+
+  // Filter states
+  const [priceRange, setPriceRange] = useState([10, 1000]);
+  const [durationRange, setDurationRange] = useState([1, 8]);
+  const [selectedItems, setSelectedItems] = useState({});
+
+  // UI states
   const [isToggled, setIsToggled] = useState(false);
+  const [noResultsFound, setNoResultsFound] = useState(false);
+
+  // Other content states
+  const [bestPicked, setBestpicked] = useState([]);
+  const [lesserWonders, setLesserWonders] = useState([]);
+
   const firstBreakPoints = { 350: 1, 750: 2, 1200: 2, 1500: 4 };
   const secondBreakPoints = { 350: 1, 750: 2, 1200: 2, 1500: 3 };
-  const [filteredPackages, setFilteredPackages] = useState([]); // Will hold filtered attractions
-  const [selectedItems, setSelectedItems] = useState({});
-  // const [filteredByAccordion, setFilteredByAccordion] = useState([]); // This state can be removed if applyAllFilters handles it directly
-
-  const [bestPicked, setBestpicked] = useState([]); // Will hold top attractions
-  const [lesserWonders, setLesserWonders] = useState([]); // Will hold unique attractions/experiences
-  const [noResultsFound, setNoResultsFound] = useState(false);
 
   const handleToggle = () => setIsToggled(!isToggled);
   const handlePriceRangeChange = (values) => setPriceRange(values);
   const handleDurationRangeChange = (values) => setDurationRange(values);
 
-  const clearPriceFilter = () => {
-    setPriceRange([10, 1000]); /* applyAllFilters will be called by useEffect */
-  };
-  const clearDurationFilter = () => {
-    setDurationRange([1, 8]); /* applyAllFilters will be called by useEffect */
-  };
+  const clearPriceFilter = () => setPriceRange([10, 1000]);
+  const clearDurationFilter = () => setDurationRange([1, 8]);
 
-  // Accordion data: Tailor titles, endpoints, and filterParams for attractions
+  // Accordion configuration
   const [accordionData, setAccordionData] = useState([
     {
       title: "ACTIVITIES",
       items: [],
-      apiEndpoint: "activities",
+      apiEndpoint: "att-activities",
       filterParam: "activities",
     },
     {
       title: "CULTURAL ACTIVITIES",
       items: [],
-      apiEndpoint: "cultural-activities",
+      apiEndpoint: "att-cultural-activities",
       filterParam: "cultural_activities",
     },
     {
       title: "RELAXATION AND REJUVENATION",
       items: [],
-      apiEndpoint: "rejuvenations",
+      apiEndpoint: "att-rejuvenations",
       filterParam: "rejuvenations",
     },
     {
       title: "FILTER BY STAY",
       items: [],
-      apiEndpoint: "stay-types",
+      apiEndpoint: "att-stay-types",
       filterParam: "stay_types",
     },
     {
       title: "TRAVEL STYLE",
       items: [],
-      apiEndpoint: "travel-styles",
+      apiEndpoint: "att-travel-styles",
       filterParam: "travel_styles",
     },
     {
       title: "GEOGRAPHY",
       items: [],
-      apiEndpoint: "geographies",
+      apiEndpoint: "att-geographies",
       filterParam: "geographies",
     },
   ]);
 
+  // Build query parameters for API call
+  const buildQueryParams = () => {
+    const params = {};
+
+    // Add price range
+    if (priceRange[0] !== 10 || priceRange[1] !== 1000) {
+      params.min_price = priceRange[0];
+      params.max_price = priceRange[1];
+    }
+
+    // Add duration range
+    if (durationRange[0] !== 1 || durationRange[1] !== 8) {
+      params.min_duration = durationRange[0];
+      params.max_duration = durationRange[1];
+    }
+
+    // Add accordion filters as arrays
+    Object.entries(selectedItems).forEach(([sectionTitle, selectedIds]) => {
+      if (selectedIds && selectedIds.length > 0) {
+        const sectionConfig = accordionData.find(
+          (s) => s.title === sectionTitle
+        );
+        if (sectionConfig) {
+          // Send as array to maintain proper format for Laravel
+          params[sectionConfig.filterParam] = selectedIds;
+        }
+      }
+    });
+
+    return params;
+  };
+
+  // Fetch attractions with filters
+  const fetchFilteredAttractions = async () => {
+    setLoading(true);
+    setError(null);
+
+    const authToken =
+      localStorage.getItem("auth_token_login") ||
+      localStorage.getItem("auth_token_register");
+
+    try {
+      const filterParams = buildQueryParams();
+      const url = `${process.env.NEXT_PUBLIC_API_URL}attractions`;
+
+      console.log("Fetching attractions with params:", filterParams); // Debug log
+
+      const response = await axios.get(url, {
+        params: filterParams, // Use params object instead of query string
+        headers: authToken ? { Authorization: `Bearer ${authToken}` } : {},
+      });
+
+      const fetchedData = (response.data.data || response.data || []).map(
+        (item, index) => ({
+          ...item,
+          id: item.id ?? `attraction-${index}`,
+        })
+      );
+
+      setPackages(fetchedData);
+      setNoResultsFound(
+        fetchedData.length === 0 &&
+          (Object.keys(selectedItems).length > 0 ||
+            priceRange[0] !== 10 ||
+            priceRange[1] !== 1000 ||
+            durationRange[0] !== 1 ||
+            durationRange[1] !== 8)
+      );
+    } catch (err) {
+      console.error("Error fetching attractions:", err);
+      setError("Failed to fetch attractions.");
+      setPackages([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Initial fetch of all attractions (for fallback)
+  const fetchAllAttractions = async () => {
+    const authToken =
+      localStorage.getItem("auth_token_login") ||
+      localStorage.getItem("auth_token_register");
+    try {
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}attractions`,
+        { headers: authToken ? { Authorization: `Bearer ${authToken}` } : {} }
+      );
+      const fetchedData = (response.data.data || response.data || []).map(
+        (item, index) => ({
+          ...item,
+          id: item.id ?? `attraction-${index}`,
+        })
+      );
+      setAllPackages(fetchedData);
+    } catch (err) {
+      setError("Failed to fetch all attractions.");
+    }
+  };
+
+  // Fetch accordion items
   useEffect(() => {
     const fetchAccordionItems = async (index) => {
       const section = accordionData[index];
       if (!section.apiEndpoint) return;
+
       const authToken =
         localStorage.getItem("auth_token_login") ||
         localStorage.getItem("auth_token_register");
@@ -98,12 +197,13 @@ const AttractionsPage = () => {
           { headers: authToken ? { Authorization: `Bearer ${authToken}` } : {} }
         );
         const items = response.data.data || response.data || [];
+
         setAccordionData((prevData) => {
           const newData = [...prevData];
           newData[index].items = Array.isArray(items)
             ? items.map((item, itemIndex) => ({
                 title: item.name || item.title || "Unknown",
-                id: item.id ?? `${section.filterParam}-${itemIndex}`, // Use filterParam for uniqueness
+                id: item.id ?? `${section.filterParam}-${itemIndex}`,
               }))
             : [];
           return newData;
@@ -112,20 +212,21 @@ const AttractionsPage = () => {
         setError(`Failed to fetch ${section.title}.`);
       }
     };
+
     accordionData.forEach((section, index) => {
       if (section.apiEndpoint) fetchAccordionItems(index);
     });
-  }, []); // Fetch accordion items once
+  }, []);
 
+  // Fetch other content
   useEffect(() => {
     const fetchTopAttractions = async () => {
-      // Renamed function internally
       const authToken =
         localStorage.getItem("auth_token_login") ||
         localStorage.getItem("auth_token_register");
       try {
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}attractions/get-top-attractions`, // ATTRACTION Endpoint
+          `${process.env.NEXT_PUBLIC_API_URL}attractions/get-top-attractions`,
           { headers: authToken ? { Authorization: `Bearer ${authToken}` } : {} }
         );
         const fetchedData = (response.data?.data || response.data || []).map(
@@ -134,20 +235,20 @@ const AttractionsPage = () => {
             id: item.id ?? `top-attraction-${index}`,
           })
         );
-        setBestpicked(fetchedData); // Populating bestPicked state
+        setBestpicked(fetchedData);
       } catch (err) {
         setError("Failed to fetch top attractions.");
       }
     };
+
     fetchTopAttractions();
   }, []);
 
   useEffect(() => {
     const fetchUniqueAttractions = async () => {
-      // Renamed function internally
       try {
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}attractions/get-lesser-known-attractions` // ATTRACTION Endpoint with example query
+          `${process.env.NEXT_PUBLIC_API_URL}attractions/get-lesser-known-attractions`
         );
         const fetchedData = (response.data.data || response.data || []).map(
           (item, index) => ({
@@ -155,50 +256,23 @@ const AttractionsPage = () => {
             id: item.id ?? `unique-attraction-${index}`,
           })
         );
-        console.log("🚀 ~ fetchUniqueAttractions ~ fetchedData:", fetchedData);
-        setLesserWonders(fetchedData); // Populating lesserWonders state
+        setLesserWonders(fetchedData);
       } catch (err) {
         setError("Failed to fetch unique attractions.");
       }
     };
+
     fetchUniqueAttractions();
   }, []);
 
   useEffect(() => {
-    const fetchAllAttractions = async () => {
-      // Renamed function internally
-      const authToken =
-        localStorage.getItem("auth_token_login") ||
-        localStorage.getItem("auth_token_register");
-      try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}attractions`, // ATTRACTION Endpoint
-          { headers: authToken ? { Authorization: `Bearer ${authToken}` } : {} }
-        );
-        const fetchedData = (response.data.data || response.data || []).map(
-          (item, index) => ({
-            ...item,
-            id: item.id ?? `attraction-${index}`,
-          })
-        );
-        setPackages(fetchedData); // Populating 'packages' state with attractions
-        setAllPackages(fetchedData); // Populating 'allPackages' with attractions
-      } catch (err) {
-        setError("Failed to fetch attractions.");
-      }
-    };
-    fetchAllAttractions();
-  }, []);
-
-  useEffect(() => {
     const fetchAttraction_Categories = async () => {
-      // Renamed function internally
       const authToken =
         localStorage.getItem("auth_token_login") ||
         localStorage.getItem("auth_token_register");
       try {
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}attraction-categories`, // ATTRACTION Category Endpoint
+          `${process.env.NEXT_PUBLIC_API_URL}att-categories`,
           { headers: authToken ? { Authorization: `Bearer ${authToken}` } : {} }
         );
         const allData = (response.data.data || response.data || []).map(
@@ -207,105 +281,40 @@ const AttractionsPage = () => {
             id: category.id ?? `attractioncategory-${index}`,
           })
         );
-        setTour_category(allData); // Populating 'tour_category' state with attraction categories
+        setTour_category(allData);
       } catch (err) {
         setError("Failed to fetch attraction categories.");
       }
     };
+
     fetchAttraction_Categories();
   }, []);
 
-  const applyAllFilters = () => {
-    let attractionsToFilter = allPackages; // Start with all fetched attractions
-
-    // Apply accordion filters
-    if (Object.keys(selectedItems).length > 0) {
-      attractionsToFilter = attractionsToFilter.filter((item) => {
-        return Object.entries(selectedItems).every(
-          ([sectionTitle, selectedIds]) => {
-            if (!selectedIds || selectedIds.length === 0) return true;
-            const sectionConfig = accordionData.find(
-              (s) => s.title === sectionTitle
-            );
-            if (!sectionConfig) return true;
-
-            // How the item's property (that matches filterParam) is structured.
-            // e.g., item.country_id, item.attraction_type_ids (array), item.city.id (nested object)
-            let itemValue = item[sectionConfig.filterParam];
-
-            // Handle nested properties like item.country.id
-            if (sectionConfig.filterParam.includes(".")) {
-              const parts = sectionConfig.filterParam.split(".");
-              itemValue = item;
-              for (const part of parts) {
-                itemValue = itemValue?.[part];
-                if (itemValue === undefined) break;
-              }
-            }
-
-            if (Array.isArray(itemValue)) {
-              // If item's property is an array (e.g., multiple types/tags)
-              return selectedIds.some(
-                (id) =>
-                  itemValue.includes(id) ||
-                  itemValue.some((v) => String(v.id || v) === String(id))
-              );
-            } else {
-              // If item's property is a single value (e.g., country_id)
-              return selectedIds.includes(String(itemValue));
-            }
-          }
-        );
-      });
-    }
-
-    // Apply price and duration filters
-    const filtered = attractionsToFilter.filter((item) => {
-      if (!item) return false;
-      // IMPORTANT: Adjust these field names to match your attraction data object structure
-      const price = parseFloat(
-        item.price || item.entry_fee || item.adult_price || 0
-      );
-      const duration = parseFloat(
-        item.duration_hours || item.suggested_duration || 0
-      ); // e.g., in hours
-
-      return (
-        price >= priceRange[0] &&
-        price <= priceRange[1] &&
-        duration >= durationRange[0] &&
-        duration <= durationRange[1]
-      );
-    });
-
-    setNoResultsFound(
-      filtered.length === 0 &&
-        (Object.keys(selectedItems).length > 0 ||
-          priceRange[0] !== 10 ||
-          priceRange[1] !== 1000 ||
-          durationRange[0] !== 1 ||
-          durationRange[1] !== 8)
-    );
-    setFilteredPackages(filtered); // This state will hold the final list for display
-  };
-
+  // Initial load
   useEffect(() => {
-    // Apply filters whenever price, duration, selectedItems, or allPackages change
-    // Only run if allPackages has been populated to avoid filtering an empty initial array
-    if (allPackages.length > 0 || Object.keys(selectedItems).length > 0) {
-      applyAllFilters();
-    }
-  }, [priceRange, durationRange, selectedItems, allPackages]);
+    fetchAllAttractions();
+    fetchFilteredAttractions();
+  }, []);
+
+  // Apply filters when filter values change
+  useEffect(() => {
+    // Debounce the API call to avoid too many requests
+    const timeoutId = setTimeout(() => {
+      fetchFilteredAttractions();
+    }, 500);
+
+    return () => clearTimeout(timeoutId);
+  }, [priceRange, durationRange, selectedItems]);
 
   const handleAccordionItemClick = (sectionIndex, itemId) => {
     const newSelectedItems = { ...selectedItems };
     const section = accordionData[sectionIndex];
-    const sectionTitleKey = section.title; // Use title as the key in selectedItems
+    const sectionTitleKey = section.title;
 
     const currentSelections = newSelectedItems[sectionTitleKey] || [];
 
     if (section.filterParam === "country_id") {
-      // Example: If country is single-select
+      // Single-select logic
       newSelectedItems[sectionTitleKey] =
         currentSelections[0] === itemId ? [] : [itemId];
     } else {
@@ -317,36 +326,30 @@ const AttractionsPage = () => {
       } else {
         newSelectedItems[sectionTitleKey] = [...currentSelections, itemId];
       }
+
       if (newSelectedItems[sectionTitleKey].length === 0) {
         delete newSelectedItems[sectionTitleKey];
       }
     }
+
     setSelectedItems(newSelectedItems);
-    // applyAllFilters will be called by the useEffect watching selectedItems
   };
 
   const handleSearch = () => {
-    applyAllFilters();
+    fetchFilteredAttractions();
     if (isToggled) setIsToggled(false);
   };
+
   const clearAllFilters = () => {
     setPriceRange([10, 1000]);
     setDurationRange([1, 8]);
     setSelectedItems({});
-    // setFilteredPackages(allPackages); // Reset to all attractions, applyAllFilters will refine
     setNoResultsFound(false);
-    // applyAllFilters will be called by useEffect
+    // This will trigger the useEffect to fetch all attractions
   };
 
-  // Determine which set of attractions/packages to display
-  const displayItems =
-    Object.keys(selectedItems).length > 0 ||
-    priceRange[0] !== 10 ||
-    priceRange[1] !== 1000 ||
-    durationRange[0] !== 1 ||
-    durationRange[1] !== 8
-      ? filteredPackages
-      : allPackages;
+  // Determine which attractions to display
+  const displayItems = packages.length > 0 ? packages : allPackages;
 
   return (
     <>
@@ -360,7 +363,7 @@ const AttractionsPage = () => {
         >
           <div className={style["tour-packagebtn-container"]}>
             <button className={style["btn-toggle"]} onClick={handleToggle}>
-              <LuMenu />   FILTER
+              <LuMenu /> FILTER
             </button>
           </div>
 
@@ -488,6 +491,7 @@ const AttractionsPage = () => {
                     />
                   ))}
                 </div>
+
                 <div className={style["filter-buttons"]}>
                   <button
                     className={`${style["btn-one"]} mt-3`}
@@ -496,6 +500,7 @@ const AttractionsPage = () => {
                     Clear All Filters
                   </button>
                 </div>
+
                 <button
                   className={`${style["btn-toggle"]} ${style["btn-close"]}`}
                   onClick={handleToggle}
@@ -503,11 +508,13 @@ const AttractionsPage = () => {
                   <IoIosCloseCircleOutline />
                 </button>
               </div>
+
               <button
                 className={`${style["btn-one"]} ${style["btn-mobile"]}`}
                 onClick={handleSearch}
+                disabled={loading}
               >
-                Search Attractions
+                {loading ? "Searching..." : "Search Attractions"}
               </button>
             </div>
 
@@ -518,7 +525,17 @@ const AttractionsPage = () => {
               }`}
             >
               <h3>Attractions</h3>
-              {error && <div className="alert alert-danger">{error}</div>}
+
+              {/* {error && <div className="alert alert-danger">{error}</div>} */}
+
+              {/* {loading && (
+                <div className="text-center py-4">
+                  <div className="spinner-border" role="status">
+                    <span className="sr-only">Loading...</span>
+                  </div>
+                </div>
+              )} */}
+
               {noResultsFound ? (
                 <div className={style["no-results"]}>
                   <h4>No attractions found with the selected filters.</h4>
@@ -531,10 +548,15 @@ const AttractionsPage = () => {
                   </button>
                 </div>
               ) : (
-                // Using TourPackageTab but passing attraction data
-                <TourPackageTab
-                  tour_category={tour_category} // This should now be attractionCategories
-                  packages={displayItems} // This should now be displayAttractions
+                // <TourPackageTab
+                //   tour_category={tour_category}
+                //   packages={displayItems}
+                //   breakPoints={isToggled ? firstBreakPoints : secondBreakPoints}
+                //   type="attractions"
+                // />
+                <EventTab
+                  tour_category={tour_category}
+                  packages={displayItems}
                   breakPoints={isToggled ? firstBreakPoints : secondBreakPoints}
                   type="attractions"
                 />
@@ -546,16 +568,16 @@ const AttractionsPage = () => {
 
               <section className={`${style["pakage-bes-picked"]} mt-5`}>
                 <div className="container-fluid">
-                  {bestPicked.length > 0 && ( // Using bestPicked state (which holds top attractions)
+                  {bestPicked.length > 0 && (
                     <div className="row">
                       <div className="col-md-12">
                         <h3 className="pb-3">Best Picked For You</h3>
                       </div>
                       <div className="col-md-12">
                         <Carousal
-                          bestPicked={bestPicked} // Passing top attractions as bestPicked
+                          bestPicked={bestPicked}
                           count={4}
-                          type="tour-bestPicked" // Keep type if Carousal logic depends on it
+                          type="tour-bestPicked"
                         />
                       </div>
                     </div>
@@ -565,7 +587,7 @@ const AttractionsPage = () => {
 
               <section className={`${style["pakage-bes-picked"]} mt-5`}>
                 <div className="container p-0">
-                  {lesserWonders.length > 0 && ( // Using lesserWonders state (which holds unique attractions)
+                  {lesserWonders.length > 0 && (
                     <div className="row">
                       <div className="col-md-12">
                         <h3 className="pb-3">Lesser-Known Wonders</h3>
@@ -575,9 +597,9 @@ const AttractionsPage = () => {
                       </div>
                       <div className="col-md-12">
                         <Carousal
-                          wonders={lesserWonders} // Passing unique attractions as wonders
+                          wonders={lesserWonders}
                           count={3}
-                          type="tour-wonders" // Keep type if Carousal logic depends on it
+                          type="tour-wonders"
                         />
                       </div>
                     </div>
@@ -590,7 +612,6 @@ const AttractionsPage = () => {
                   <div className="row">
                     <div className="col-md-12">
                       <h3 className="pb-3">Holidays by theme</h3>
-                      {/* HolidaysTab might need to be adapted or replaced if its internal logic is too holiday-specific */}
                       <HolidaysTab type="attractions" />
                     </div>
                   </div>

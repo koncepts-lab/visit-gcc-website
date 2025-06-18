@@ -3,10 +3,9 @@ import React, { useState, useEffect } from "react";
 import style from "./style.module.css"; // Your existing styles
 import { HiOutlineArrowLongRight } from "react-icons/hi2";
 import axios from "axios";
-import PackageInclusionsAndExclusions from "@components/tour-package-details/package-inclusions";
-// Sub-components for rendering tab content
-// These will receive data appropriate for either a package or an attraction
+import PackageInclusionsAndExclusions from "@components/tour-package-details/package-inclusions"; // For packages
 
+// --- Content Sub-Components ---
 const HighlightContent = ({ highlightPoints, itemType }) => {
   if (!highlightPoints || highlightPoints.length === 0) {
     return (
@@ -26,9 +25,13 @@ const HighlightContent = ({ highlightPoints, itemType }) => {
             size={20}
           />
           <p className="mb-0 fw-light">
-            {typeof point === "object" ? point.description : point}
-          </p>{" "}
-          {/* Handle if highlight is an object */}
+            {/* Assuming point can be a string or an object with a 'description' property */}
+            {typeof point === "object" && point.description
+              ? point.description
+              : typeof point === "string"
+              ? point
+              : "Highlight point not available"}
+          </p>
         </div>
       ))}
     </>
@@ -37,10 +40,8 @@ const HighlightContent = ({ highlightPoints, itemType }) => {
 
 const ItineraryContent = ({ itineraryItems, itemType }) => {
   const [activeAccordion, setActiveAccordion] = useState(null);
-
-  const toggleAccordion = (index) => {
+  const toggleAccordion = (index) =>
     setActiveAccordion(activeAccordion === index ? null : index);
-  };
 
   if (!itineraryItems || itineraryItems.length === 0) {
     return (
@@ -50,15 +51,15 @@ const ItineraryContent = ({ itineraryItems, itemType }) => {
       </p>
     );
   }
-
   return (
     <>
       <h3 className="fw-bold mb-3">Itinerary</h3>
-      {/* Optional: General itinerary description if available for the itemType */}
-      {/* <p>Overall description for {itemType} itinerary...</p> */}
       <div>
         {itineraryItems.map((item, index) => (
-          <div key={item.id || index} className={style.accordion}>
+          <div
+            key={item.id || `itinerary-${index}`}
+            className={style.accordion}
+          >
             <div
               className={`${style.accordionTab} ${
                 activeAccordion === index ? style.activeAccordion : ""
@@ -70,7 +71,6 @@ const ItineraryContent = ({ itineraryItems, itemType }) => {
                   className="me-2 text-primary d-none d-md-inline"
                   size={20}
                 />
-                {/* Packages might have 'day' and 'title', attractions might just have 'title' or 'step_title' */}
                 {item.day
                   ? `${item.day} - ${item.title}`
                   : item.title || "Itinerary Step"}
@@ -84,7 +84,7 @@ const ItineraryContent = ({ itineraryItems, itemType }) => {
                 {item.description ? (
                   <div dangerouslySetInnerHTML={{ __html: item.description }} />
                 ) : (
-                  <p>Details for this step are not available.</p>
+                  <p>Details not available.</p>
                 )}
               </div>
             )}
@@ -95,17 +95,22 @@ const ItineraryContent = ({ itineraryItems, itemType }) => {
   );
 };
 
-const InclusionsExclusionsContent = ({ inclusions, exclusions, itemType }) => (
+// This component will now be used for attractions for the "InclusionsExclusions" tab
+const AttractionFeaturesRestrictionsContent = ({
+  features,
+  restrictions,
+  itemType,
+}) => (
   <div>
-    {inclusions && inclusions.length > 0 && (
+    {features && features.length > 0 && (
       <div className="mb-4">
         <h3 className="fw-bold mb-3" style={{ color: "#0d7a8b" }}>
-          {itemType === "packages" ? "Package Inclusions" : "What's Included"}
+          What's Included (Features)
         </h3>
-        {inclusions.map((item, index) => (
+        {features.map((item, index) => (
           <div
-            key={`inclusion-${item.id || index}`}
-            className={`mb-3 p-2 border-bottom ${style.inclusionItem}`}
+            key={`feature-${item.id || index}`}
+            className={`mb-3 p-3 border rounded shadow-sm ${style.inclusionItem}`}
           >
             <button
               className={`btn text-white fw-bold mb-2 ${style.featureTag}`}
@@ -114,13 +119,16 @@ const InclusionsExclusionsContent = ({ inclusions, exclusions, itemType }) => (
                 borderRadius: "5px",
                 fontSize: "0.9rem",
                 padding: "0.3rem 0.75rem",
+                cursor: "default",
               }}
             >
-              {item.title || item.name} {/* Use title or name */}
+              {item.title || item.name || "Feature"}
             </button>
-            {/* Check for description or content property */}
             {(item.description || item.content) && (
-              <p className="ms-1 text-muted small mb-0">
+              <p
+                className="ms-1 text-muted small mb-0"
+                style={{ fontSize: "0.875rem" }}
+              >
                 {item.description || item.content}
               </p>
             )}
@@ -129,17 +137,15 @@ const InclusionsExclusionsContent = ({ inclusions, exclusions, itemType }) => (
       </div>
     )}
 
-    {exclusions && exclusions.length > 0 && (
-      <div>
+    {restrictions && restrictions.length > 0 && (
+      <div className="mt-4">
         <h3 className="fw-bold mb-3" style={{ color: "#0d7a8b" }}>
-          {itemType === "packages"
-            ? "Package Exclusions"
-            : "What's Not Included"}
+          What's Not Included (Restrictions)
         </h3>
-        {exclusions.map((item, index) => (
+        {restrictions.map((item, index) => (
           <div
-            key={`exclusion-${item.id || index}`}
-            className={`mb-3 p-2 border-bottom ${style.exclusionItem}`}
+            key={`restriction-${item.id || index}`}
+            className={`mb-3 p-3 border rounded shadow-sm ${style.exclusionItem}`}
           >
             <button
               className={`btn text-secondary fw-bold mb-2 ${style.exclusionTag}`}
@@ -149,12 +155,16 @@ const InclusionsExclusionsContent = ({ inclusions, exclusions, itemType }) => (
                 borderRadius: "5px",
                 fontSize: "0.9rem",
                 padding: "0.3rem 0.75rem",
+                cursor: "default",
               }}
             >
-              {item.title || item.name}
+              {item.title || item.name || "Restriction"}
             </button>
             {(item.description || item.content) && (
-              <p className="ms-1 text-muted small mb-0">
+              <p
+                className="ms-1 text-muted small mb-0"
+                style={{ fontSize: "0.875rem" }}
+              >
                 {item.description || item.content}
               </p>
             )}
@@ -162,19 +172,18 @@ const InclusionsExclusionsContent = ({ inclusions, exclusions, itemType }) => (
         ))}
       </div>
     )}
-
-    {(!inclusions || inclusions.length === 0) &&
-      (!exclusions || exclusions.length === 0) && (
+    {(!features || features.length === 0) &&
+      (!restrictions || restrictions.length === 0) && (
         <p className="p-3 text-muted">
-          No specific inclusions or exclusions listed for this{" "}
-          {itemType === "packages" ? "package" : "attraction"}.
+          No specific features or restrictions listed for this attraction.
         </p>
       )}
   </div>
 );
 
 const NoteContent = ({ notes, itemType }) => {
-  if (!notes || notes.length === 0) {
+  // Assuming `notes` is a single string from itemDetails.note
+  if (!notes || typeof notes !== "string" || notes.trim() === "") {
     return (
       <p className="p-3 text-muted">
         No important notes for this{" "}
@@ -185,24 +194,20 @@ const NoteContent = ({ notes, itemType }) => {
   return (
     <>
       <h3 className="fw-bold mb-3">Important Note</h3>
-      {notes.map((note, index) => (
-        <div>{details.note}</div>
-      ))}
+      {/* If notes is expected to be an array of objects, map it here */}
+      <div className="fw-light" dangerouslySetInnerHTML={{ __html: notes }} />
     </>
   );
 };
 
-// Main Component: Reusing the structure of your static HighlightTab
 export default function HighlightTab({ itemId, itemType = "packages" }) {
   const [activeTab, setActiveTab] = useState("Highlight");
-
-  // States for fetched data
   const [highlightData, setHighlightData] = useState([]);
   const [itineraryData, setItineraryData] = useState([]);
-  const [inclusionsData, setInclusionsData] = useState([]);
-  const [exclusionsData, setExclusionsData] = useState([]); // Assuming you might fetch this
-  const [noteData, setNoteData] = useState([]);
-
+  // State specifically for attraction features and restrictions for the "InclusionsExclusions" tab
+  const [attractionFeatures, setAttractionFeatures] = useState([]);
+  const [attractionRestrictions, setAttractionRestrictions] = useState([]);
+  const [noteData, setNoteData] = useState(null); // Can be a string
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -218,107 +223,113 @@ export default function HighlightTab({ itemId, itemType = "packages" }) {
 
       setIsLoading(true);
       setError("");
-      let authToken =
-        localStorage.getItem("auth_token_login") ||
-        localStorage.getItem("auth_token_register");
-      const headers = authToken ? { Authorization: `Bearer ${authToken}` } : {};
 
       try {
-        if (tabName === "Highlight") {
+        // Fetch main details for Highlight and Note first
+        if (tabName === "Highlight" || tabName === "Note") {
           const endpoint =
             itemType === "attractions"
               ? `${process.env.NEXT_PUBLIC_API_URL}attractions/${itemId}`
               : `${process.env.NEXT_PUBLIC_API_URL}packages/${itemId}`;
-          const response = await axios.get(endpoint, { headers });
+          const response = await axios.get(endpoint);
           const details = response.data.data || response.data;
-          // **ADJUST**: How is 'highlight' structured in your package AND attraction details?
-          // This assumes 'highlight' is a field that could be an array or a newline-separated string.
-          const highlights = details?.highlight;
-          if (highlights) {
-            setHighlightData(
-              Array.isArray(highlights)
-                ? highlights
-                : typeof highlights === "string"
-                ? highlights
-                    .split("\n")
-                    .map((h) => h.trim())
-                    .filter((h) => h)
-                : []
-            );
-          } else {
-            setHighlightData([]);
+
+          if (tabName === "Highlight") {
+            const highlights = details?.highlight; // Ensure 'highlight' field exists in API response
+            if (highlights) {
+              setHighlightData(
+                Array.isArray(highlights)
+                  ? highlights
+                  : typeof highlights === "string"
+                  ? highlights
+                      .split("\n")
+                      .map((h) => h.trim())
+                      .filter((h) => h)
+                  : []
+              );
+            } else {
+              setHighlightData([]);
+            }
+          }
+          if (tabName === "Note") {
+            setNoteData(details?.note || null); // Assuming 'note' is a field in API response
           }
         } else if (tabName === "Itinerary") {
           const endpoint =
             itemType === "attractions"
-              ? `${process.env.NEXT_PUBLIC_API_URL}itineraries/attraction/get-by-attraction?attraction_id=${itemId}`
-              : `${process.env.NEXT_PUBLIC_API_URL}itineraries/package/get-by-package?package_id=${itemId}`; // Assuming this endpoint exists
-          const response = await axios.get(endpoint, { headers });
+              ? `${process.env.NEXT_PUBLIC_API_URL}att-itineraries/attraction/get-by-attraction?attraction_id=${itemId}`
+              : `${process.env.NEXT_PUBLIC_API_URL}itineraries/package/get-by-package?package_id=${itemId}`;
+          const response = await axios.get(endpoint); // Added headers
           setItineraryData(
             (response.data.data || response.data || []).map((it) => ({
               ...it,
               title: it.title || `Day ${it.day}`,
             }))
           );
-        } else if (tabName === "InclusionsExclusions") {
-          const inclusionsEndpoint =
-            itemType === "attractions"
-              ? `${process.env.NEXT_PUBLIC_API_URL}attraction-features/attraction/get-by-attraction?attraction_id=${itemId}`
-              : `${process.env.NEXT_PUBLIC_API_URL}inclusions/package/get-by-package?package_id=${itemId}`;
+        } else if (
+          tabName === "InclusionsExclusions" &&
+          itemType === "attractions"
+        ) {
+          // Fetch features and restrictions only for attractions in this tab
+          const featuresEndpoint = `${process.env.NEXT_PUBLIC_API_URL}att-inclusions/attraction/get-by-attraction?attraction_id=${itemId}`;
+          const restrictionsEndpoint = `${process.env.NEXT_PUBLIC_API_URL}att-exclusions/attraction/get-by-attraction?attraction_id=${itemId}`;
 
-          const inclusionsResponse = await axios.get(inclusionsEndpoint, {
-            headers,
-          });
-          setInclusionsData(
-            inclusionsResponse.data.data || inclusionsResponse.data || []
+          const [featuresResponse, restrictionsResponse] = await Promise.all([
+            axios.get(featuresEndpoint).catch((err) => {
+              console.warn(
+                `No features for attraction ${itemId}: ${err.message}`
+              );
+              return { data: { data: [] } };
+            }),
+            axios.get(restrictionsEndpoint).catch((err) => {
+              console.warn(
+                `No restrictions for attraction ${itemId}: ${err.message}`
+              );
+              return { data: { data: [] } };
+            }),
+          ]);
+
+          setAttractionFeatures(
+            featuresResponse.data.data || featuresResponse.data || []
           );
-
-          // Fetch Exclusions (if your API has a separate endpoint or field)
-          // For now, setting static or empty exclusions.
-          // const exclusionsEndpoint = itemType === "attractions" ? ... : ...;
-          // const exclusionsResponse = await axios.get(exclusionsEndpoint, { headers });
-          // setExclusionsData(exclusionsResponse.data.data || exclusionsResponse.data || []);
-          setExclusionsData([]); // Example: no exclusions fetched or static
-        } else if (tabName === "Note") {
-          const endpoint =
-            itemType === "attractions"
-              ? `${process.env.NEXT_PUBLIC_API_URL}attractions/${itemId}`
-              : `${process.env.NEXT_PUBLIC_API_URL}packages/${itemId}`;
-          const response = await axios.get(endpoint, { headers });
-          const details = response.data.data || response.data;
-          // **ADJUST**: How is 'highlight' structured in your package AND attraction details?
-          // This assumes 'highlight' is a field that could be an array or a newline-separated string.
-          const note = details?.note;
-          setNoteData(note);
+          setAttractionRestrictions(
+            restrictionsResponse.data.data || restrictionsResponse.data || []
+          );
         }
+        // For packages, PackageInclusionsAndExclusions handles its own fetching, so no direct fetch here for that tab
       } catch (err) {
         console.error(
           `Error fetching ${tabName} for ${itemType} ID ${itemId}:`,
           err.response?.data || err.message
         );
-        setError(
-          `Failed to load ${tabName.toLowerCase()} data. Please check the console for more details.`
-        );
+        setError(`Failed to load ${tabName.toLowerCase()} data.`);
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchDataForTab(activeTab);
-  }, [itemId, itemType, activeTab]); // Re-fetch if ID, type, or activeTab changes
+  }, [itemId, itemType, activeTab]);
 
   const tabs = [
     { name: "Highlight", label: "Highlight" },
     { name: "Itinerary", label: "Itinerary" },
     {
       name: "InclusionsExclusions",
-      label: " Inclusions & Exclusions",
+      label: "Package Inclusions & Exclusions",
     },
     { name: "Note", label: "Note" },
   ];
 
   const renderTabContent = () => {
-    if (isLoading)
+    // Handle loading/error specifically for tabs that fetch data in this parent component
+    if (
+      isLoading &&
+      (activeTab === "Highlight" ||
+        activeTab === "Itinerary" ||
+        activeTab === "Note" ||
+        (activeTab === "InclusionsExclusions" && itemType === "attractions"))
+    ) {
       return (
         <div className="text-center p-4">
           <div className="spinner-border spinner-border-sm" role="status">
@@ -326,8 +337,16 @@ export default function HighlightTab({ itemId, itemType = "packages" }) {
           </div>
         </div>
       );
-    if (error)
+    }
+    if (
+      error &&
+      (activeTab === "Highlight" ||
+        activeTab === "Itinerary" ||
+        activeTab === "Note" ||
+        (activeTab === "InclusionsExclusions" && itemType === "attractions"))
+    ) {
       return <div className="alert alert-warning text-center p-4">{error}</div>;
+    }
 
     switch (activeTab) {
       case "Highlight":
@@ -345,9 +364,24 @@ export default function HighlightTab({ itemId, itemType = "packages" }) {
           />
         );
       case "InclusionsExclusions":
-        return <PackageInclusionsAndExclusions packageId={itemId} />;
+        if (itemType === "packages") {
+          // This component fetches its own data based on packageId
+          return <PackageInclusionsAndExclusions packageId={itemId} />;
+        } else if (itemType === "attractions") {
+          // Pass fetched features and restrictions to the dynamic content component
+          return (
+            <AttractionFeaturesRestrictionsContent
+              features={attractionFeatures}
+              restrictions={attractionRestrictions}
+              itemType={itemType}
+            />
+          );
+        }
+        return (
+          <div className="p-4">Content not available for this item type.</div>
+        );
       case "Note":
-        return <div>{noteData}</div>;
+        return <NoteContent notes={noteData} itemType={itemType} />;
       default:
         return <div className="p-4">Select a tab to view details.</div>;
     }
@@ -363,14 +397,14 @@ export default function HighlightTab({ itemId, itemType = "packages" }) {
               activeTab === tab.name ? style.active : ""
             }`}
             onClick={() => setActiveTab(tab.name)}
-            disabled={isLoading} // Disable tabs while loading new content
+            // isLoading state managed by parent now more granularly
+            // disabled={isLoading}
           >
             {tab.label}
           </button>
         ))}
       </div>
-      <div className={`${style.tabContent} mt-3`}>{renderTabContent()}</div>{" "}
-      {/* Added mt-3 for spacing */}
+      <div className={`${style.tabContent} mt-3`}>{renderTabContent()}</div>
     </div>
   );
 }

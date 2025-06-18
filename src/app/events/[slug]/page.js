@@ -260,13 +260,13 @@ function Page() {
                     Book Now
                   </button>
                 </span>
-                <span>
+                {/* <span>
                   <button className={style["btn-two"]}>Contact Seller</button>
                   <p className="lap-view">
                     You can now directly communicate with the Seller of this
                     package
                   </p>
-                </span>
+                </span> */}
               </div>
             </div>
           </div>
