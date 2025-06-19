@@ -43,6 +43,8 @@ function page() {
   const [activeFilter, setActiveFilter] = useState({ type: null, id: null });
   const [filteredBlogs, setFilteredBlogs] = useState([]);
   const [categoryCounts, setCategoryCounts] = useState({});
+  const [searchQuery, setSearchQuery] = useState("");
+
   const currentBlogs = (filteredBlogs.length > 0 ? filteredBlogs : blogs).slice(
     indexOfFirstItem,
     indexOfLastItem
@@ -50,38 +52,11 @@ function page() {
 
   const fetchCommentCount = async (blogId) => {
     try {
-      const registerToken = localStorage.getItem("auth_token_register");
-      const loginToken = localStorage.getItem("auth_token_login");
-      let authToken = null;
-
-      if (loginToken) {
-        authToken = loginToken;
-        console.log("Using login token for fetching packages.");
-      } else if (registerToken) {
-        authToken = registerToken;
-        console.log("Using register token for fetching packages.");
-      }
-
-      if (!authToken) {
-        setError("Authentication token not found");
-        setIsLoading(false);
-        return;
-      }
-
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}blogs/${blogId}/comments/count`,
-        {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
+        `${process.env.NEXT_PUBLIC_API_URL}blogs/${blogId}/comments/count`
       );
 
       setIsLoading(false);
-      console.log(
-        `Fetched comment count for ${blogId}:`,
-        response.data.comment_count
-      );
       return response.data.comment_count;
     } catch (error) {
       setIsLoading(false);
@@ -125,6 +100,7 @@ function page() {
     }
   }, [blogs]);
 
+  // Kept token logic here as it's a PUT request (modifying data)
   const handleLikeBlog = async (blogUuid) => {
     try {
       const registerToken = localStorage.getItem("auth_token_register");
@@ -133,10 +109,8 @@ function page() {
 
       if (loginToken) {
         authToken = loginToken;
-        console.log("Using login token for fetching packages.");
       } else if (registerToken) {
         authToken = registerToken;
-        console.log("Using register token for fetching packages.");
       }
 
       if (!authToken) {
@@ -202,31 +176,8 @@ function page() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const registerToken = localStorage.getItem("auth_token_register");
-        const loginToken = localStorage.getItem("auth_token_login");
-        let authToken = null;
-
-        if (loginToken) {
-          authToken = loginToken;
-          console.log("Using login token for fetching packages.");
-        } else if (registerToken) {
-          authToken = registerToken;
-          console.log("Using register token for fetching packages.");
-        }
-
-        if (!authToken) {
-          setError("Authentication token not found");
-          setIsLoading(false);
-          return;
-        }
-
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}category`,
-          {
-            headers: {
-              Authorization: `Bearer ${authToken}`,
-            },
-          }
+          `${process.env.NEXT_PUBLIC_API_URL}category`
         );
         const allCategories = response.data.data || response.data || [];
 
@@ -234,12 +185,7 @@ function page() {
           allCategories.map(async (category) => {
             try {
               const countResponse = await axios.get(
-                `${process.env.NEXT_PUBLIC_API_URL}blog/${category.uuid_id}/get-blogs-by-category`,
-                {
-                  headers: {
-                    Authorization: `Bearer ${authToken}`,
-                  },
-                }
+                `${process.env.NEXT_PUBLIC_API_URL}blog/${category.uuid_id}/get-blogs-by-category`
               );
 
               const categoryBlogs =
@@ -261,10 +207,8 @@ function page() {
           })
         );
 
-        console.log("Categories with counts:", categoriesWithCounts);
         setCategories(categoriesWithCounts);
 
-        // Populate initial category counts
         const initialCategoryCounts = categoriesWithCounts.reduce(
           (acc, category) => {
             acc[category.uuid_id] = category.blogCount;
@@ -288,35 +232,11 @@ function page() {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const registerToken = localStorage.getItem("auth_token_register");
-        const loginToken = localStorage.getItem("auth_token_login");
-        let authToken = null;
-
-        if (loginToken) {
-          authToken = loginToken;
-          console.log("Using login token for fetching packages.");
-        } else if (registerToken) {
-          authToken = registerToken;
-          console.log("Using register token for fetching packages.");
-        }
-
-        if (!authToken) {
-          setError("Authentication token not found");
-          setIsLoading(false);
-          return;
-        }
-
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}blog`,
-          {
-            headers: {
-              Authorization: `Bearer ${authToken}`,
-            },
-          }
+          `${process.env.NEXT_PUBLIC_API_URL}blog`
         );
         const allBlogs = response.data.data || response.data || [];
 
-        console.log("All Packages:", allBlogs);
         setBlogs(allBlogs);
         setIsLoading(false);
       } catch (err) {
@@ -332,30 +252,9 @@ function page() {
   useEffect(() => {
     const fetchFeatured = async () => {
       try {
-        const registerToken = localStorage.getItem("auth_token_register");
-        const loginToken = localStorage.getItem("auth_token_login");
-        let authToken = null;
-
-        if (loginToken) {
-          authToken = loginToken;
-          console.log("Using login token for fetching packages.");
-        } else if (registerToken) {
-          authToken = registerToken;
-          console.log("Using register token for fetching packages.");
-        }
-
-        if (!authToken) {
-          setError("Authentication token not found");
-          setIsLoading(false);
-          return;
-        }
-
         const response = await axios.get(
           `${process.env.NEXT_PUBLIC_API_URL}blog/get-featured-blogs`,
           {
-            headers: {
-              Authorization: `Bearer ${authToken}`,
-            },
             params: {
               limit: 3,
             },
@@ -363,7 +262,6 @@ function page() {
         );
         const allFeatured = response.data.data || response.data || [];
 
-        console.log("All Featured:", allFeatured);
         setFeatured(allFeatured.slice(0, 3));
         setIsLoading(false);
       } catch (err) {
@@ -378,33 +276,10 @@ function page() {
   useEffect(() => {
     const fetchTags = async () => {
       try {
-        const registerToken = localStorage.getItem("auth_token_register");
-        const loginToken = localStorage.getItem("auth_token_login");
-        let authToken = null;
-
-        if (loginToken) {
-          authToken = loginToken;
-          console.log("Using login token for fetching packages.");
-        } else if (registerToken) {
-          authToken = registerToken;
-          console.log("Using register token for fetching packages.");
-        }
-
-        if (!authToken) {
-          setError("Authentication token not found");
-          setIsLoading(false);
-          return;
-        }
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}tag`,
-          {
-            headers: {
-              Authorization: `Bearer ${authToken}`,
-            },
-          }
+          `${process.env.NEXT_PUBLIC_API_URL}tag`
         );
         const allTags = response.data.data || response.data || [];
-        console.log("All Tags:", allTags);
         setTags(allTags);
         setIsLoading(false);
       } catch (err) {
@@ -416,32 +291,32 @@ function page() {
     fetchTags();
   }, []);
 
-  const fetchBlogsByCategory = async (categoryId) => {
+  const handleSearch = async () => {
+    if (!searchQuery.trim()) {
+      enqueueSnackbar("Please enter a search term", { variant: "info" });
+      return;
+    }
+
     try {
-      const registerToken = localStorage.getItem("auth_token_register");
-      const loginToken = localStorage.getItem("auth_token_login");
-      let authToken = null;
-
-      if (loginToken) {
-        authToken = loginToken;
-        console.log("Using login token for fetching packages.");
-      } else if (registerToken) {
-        authToken = registerToken;
-        console.log("Using register token for fetching packages.");
-      }
-
-      if (!authToken) {
-        setError("Authentication token not found");
-        setIsLoading(false);
-        return;
-      }
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}blog/${categoryId}/get-blogs-by-category`,
-        {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
+        `${process.env.NEXT_PUBLIC_API_URL}blog/search?q=${searchQuery}`
+      );
+
+      const searchResults = response.data.results || [];
+      setFilteredBlogs(searchResults);
+      setCurrentPage(1);
+      setActiveFilter({ type: "search", id: searchQuery });
+    } catch (err) {
+      console.error("Error searching blogs:", err);
+      enqueueSnackbar("Failed to perform search", { variant: "error" });
+    }
+  };
+
+  const fetchBlogsByCategory = async (categoryId) => {
+    setSearchQuery("");
+    try {
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}blog/${categoryId}/get-blogs-by-category`
       );
 
       const categoryBlogs = response.data.data || response.data || [];
@@ -468,32 +343,10 @@ function page() {
   };
 
   const fetchBlogsByTag = async (tagId) => {
+    setSearchQuery("");
     try {
-      const registerToken = localStorage.getItem("auth_token_register");
-      const loginToken = localStorage.getItem("auth_token_login");
-      let authToken = null;
-
-      if (loginToken) {
-        authToken = loginToken;
-        console.log("Using login token for fetching packages.");
-      } else if (registerToken) {
-        authToken = registerToken;
-        console.log("Using register token for fetching packages.");
-      }
-
-      if (!authToken) {
-        setError("Authentication token not found");
-        setIsLoading(false);
-        return;
-      }
-
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}blog/${tagId}/get-blogs-by-tag`,
-        {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
+        `${process.env.NEXT_PUBLIC_API_URL}blog/${tagId}/get-blogs-by-tag`
       );
 
       const tagBlogs = response.data.data || response.data || [];
@@ -501,9 +354,8 @@ function page() {
       setCurrentPage(1);
       setActiveFilter({ type: "tag", id: tagId });
 
-      // Check if the screen width is <= 992px and scroll the page 400px down
       if (window.innerWidth <= 992) {
-        window.scrollBy(0, 400); // Scroll 400px down
+        window.scrollBy(0, 400);
       }
     } catch (err) {
       console.error("Error fetching blogs by tag:", err);
@@ -515,6 +367,7 @@ function page() {
     setFilteredBlogs([]);
     setCurrentPage(1);
     setActiveFilter({ type: null, id: null });
+    setSearchQuery("");
   };
 
   const [isCategoryPopupOpen, setIsCategoryPopupOpen] = useState(false);
@@ -564,81 +417,85 @@ function page() {
                 Blogs
               </h1>
 
-              {currentBlogs.map((blogs) => (
-                <div
-                  key={blogs.uuid_id}
-                  className={` ${style["blog-left-section"]} pb-5 mb-4 `}
-                >
-                  <Link href={`/blogs/${blogs.uuid_id}`}>
-                    <img
-                      src={blogs.main_image_url}
-                      className="w-100"
-                      style={{ height: "350px" }}
-                      alt="Banner"
-                    />
+              {currentBlogs.map((blogs) => {
+                const shareUrl = `${window.location.origin}/blogs/${blogs.uuid_id}`;
 
-                    <p className={`${style["all-title"]} pt-3 my-2 pb-1`}>
-                      {blogs.heading}
-                    </p>
-                    <p className="">
-                      Date: <span>{blogs.creation_date}</span>
-                    </p>
-                  </Link>
-
-                  <p style={{ fontSize: "15px" }}>{blogs.description1}</p>
+                return (
                   <div
-                    className={`${style["blog-left-button"]} d-flex flex-row justify-content-between col-12 pt-2`}
+                    key={blogs.uuid_id}
+                    className={` ${style["blog-left-section"]} pb-5 mb-4 `}
                   >
-                    <p
-                      className=" align-content-center align-self-baseline text-black"
-                      style={{ height: "10px" }}
+                    <Link href={`/blogs/${blogs.uuid_id}`}>
+                      <img
+                        src={blogs.main_image_url}
+                        className="w-100"
+                        style={{ height: "350px" }}
+                        alt="Banner"
+                      />
+
+                      <p className={`${style["all-title"]} pt-3 my-2 pb-1`}>
+                        {blogs.heading}
+                      </p>
+                      <p className="">
+                        Date: <span>{blogs.creation_date}</span>
+                      </p>
+                    </Link>
+
+                    <p style={{ fontSize: "15px" }}>{blogs.description1}</p>
+                    <div
+                      className={`${style["blog-left-button"]} d-flex flex-row justify-content-between col-12 pt-2`}
                     >
-                      Share: &nbsp; <br className="d-md-none d-block" />
-                      <FacebookShareButton url="www.youtube.com">
-                        <FaFacebookSquare
-                          color="#1877F2"
-                          size={20}
-                          className="me-1"
-                        />
-                      </FacebookShareButton>
-                      <TwitterShareButton url="www.youtube.com">
-                        <FaSquareXTwitter
-                          size={20}
-                          color="black"
-                          className="me-1"
-                        />{" "}
-                      </TwitterShareButton>
-                      <ThreadsShareButton url="www.youtube.com">
-                        <ThreadsIcon size={18} borderRadius={15} />
-                      </ThreadsShareButton>
-                      <LinkedinShareButton url="www.youtube.com">
-                        <FaLinkedin color="#0077B5 " size={20} />
-                      </LinkedinShareButton>
-                    </p>
-                    <div>
-                      {/* <div className='d-flex'>
-                                      <button onClick={() => toggleComment(blogs.uuid_id)}>
-                                          Comment: {getCommentCount(blogs.uuid_id)}
-                                        </button>
-                                             <span className='px-2'>|</span>
-                                             <button
-                                                  onClick={() => handleLikeBlog(blogs.uuid_id)}
-                                                  className="d-flex align-items-center"
-                                                >
-                                                  {likedBlogs[blogs.uuid_id]?.isLiked ? (
-                                                    <FaHeart color="red" className="me-1" />
-                                                  ) : (
-                                                    <FaRegHeart className="me-1" />
-                                                  )}
-                                                  <span style={{ color: "#57b1b2" }}>
-                                                    {likedBlogs[blogs.uuid_id]?.likes || blogs.number_of_likes}
-                                                  </span>
-                                                </button>    
-                                        </div>      */}
+                      <p
+                        className=" align-content-center align-self-baseline text-black"
+                        style={{ height: "10px" }}
+                      >
+                        Share:   <br className="d-md-none d-block" />
+                        <FacebookShareButton url={shareUrl}>
+                          <FaFacebookSquare
+                            color="#1877F2"
+                            size={20}
+                            className="me-1"
+                          />
+                        </FacebookShareButton>
+                        <TwitterShareButton url={shareUrl}>
+                          <FaSquareXTwitter
+                            size={20}
+                            color="black"
+                            className="me-1"
+                          />{" "}
+                        </TwitterShareButton>
+                        <ThreadsShareButton url={shareUrl}>
+                          <ThreadsIcon size={18} borderRadius={15} />
+                        </ThreadsShareButton>
+                        <LinkedinShareButton url={shareUrl}>
+                          <FaLinkedin color="#0077B5 " size={20} />
+                        </LinkedinShareButton>
+                      </p>
+                      <div>
+                        {/* <div className='d-flex'>
+                                        <button onClick={() => toggleComment(blogs.uuid_id)}>
+                                            Comment: {getCommentCount(blogs.uuid_id)}
+                                          </button>
+                                               <span className='px-2'>|</span>
+                                               <button
+                                                    onClick={() => handleLikeBlog(blogs.uuid_id)}
+                                                    className="d-flex align-items-center"
+                                                  >
+                                                    {likedBlogs[blogs.uuid_id]?.isLiked ? (
+                                                      <FaHeart color="red" className="me-1" />
+                                                    ) : (
+                                                      <FaRegHeart className="me-1" />
+                                                    )}
+                                                    <span style={{ color: "#57b1b2" }}>
+                                                      {likedBlogs[blogs.uuid_id]?.likes || blogs.number_of_likes}
+                                                    </span>
+                                                  </button>    
+                                          </div>      */}
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
             <div className="col-lg-4 col-12">
               <div className="col-11 ms-4">
@@ -646,7 +503,14 @@ function page() {
                   type="text"
                   placeholder="Search"
                   className={`${style["promo_input"]} col-12`}
-                />{" "}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      handleSearch();
+                    }
+                  }}
+                />
                 <span
                   className="bg-white"
                   style={{ marginLeft: "-34px", paddingRight: "32px" }}
@@ -656,8 +520,19 @@ function page() {
                     color="black"
                     className="position-absolute bg-white"
                     style={{ marginTop: "13px", cursor: "pointer" }}
+                    onClick={handleSearch}
                   />
                 </span>
+
+                {activeFilter.type === "search" && (
+                  <button
+                    className="col-12 mt-2 btn btn-secondary"
+                    onClick={clearFilter}
+                  >
+                    Clear Search Filter
+                  </button>
+                )}
+
                 <p className={`${style["all-title"]} pt-5 d-lg-block d-none`}>
                   Categories
                 </p>
@@ -751,7 +626,7 @@ function page() {
                     </p>
                     {featured.map((features) => (
                       <div
-                        key={features.id}
+                        key={features.uuid_id}
                         className={`${style["featured"]} mb-4`}
                       >
                         <Link href={`/blogs/${features.uuid_id}`}>

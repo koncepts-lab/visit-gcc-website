@@ -439,7 +439,7 @@ function Page() {
 
       {isPopupOpen && (
         <div className={style["popup-overlay"]}>
-          <EnhancedDatePicker onClose={handleClosePopup} />
+          <EnhancedDatePicker onClose={handleClosePopup}  eventId={slug}/>
         </div>
       )}
     </>

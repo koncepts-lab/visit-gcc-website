@@ -73,7 +73,7 @@ function Page() {
       <Banner />
       <section className={style["tour-package-details"]}>
         <div>
-          <Top_container packageId={slugpackage.id} type="packages" />
+          <Top_container packageId={slug} type="packages" />
         </div>
 
         <div className={`container ${style["time"]}`}>
@@ -140,7 +140,7 @@ function Page() {
         <div className="container">
           <div className="row pt-3">
             <div className="col-md-8">
-              <RatingCarousel packageId={slugpackage.id} type="package" />
+              <RatingCarousel packageId={slug} type="package" />
             </div>
           </div>
         </div>
