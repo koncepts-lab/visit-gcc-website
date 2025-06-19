@@ -8,19 +8,18 @@ import style from "./style.module.css";
 import Banner from "../../../components/banner/banner";
 import Link from "next/link";
 import Carousal from "../../../components/carousel/Carousal";
-import Accordion from "../../../components/accordion/accordion";
-import EventsExploreTab from "../../../components/tour-package/events-explore";
+
 import { RiInformationLine } from "react-icons/ri";
 import { IoIosArrowDown } from "react-icons/io";
 import { FaUser, FaRegHeart } from "react-icons/fa6";
-import { FaPlus, FaBaby } from "react-icons/fa";
-import { BiSolidPlusCircle } from "react-icons/bi";
-import { PiMinusCircleFill } from "react-icons/pi";
+
 import { GiPerson } from "react-icons/gi";
 import { MdOutlineBoy } from "react-icons/md";
 import { GoShare } from "react-icons/go";
 import Ask_ur_questions from "@components/ask_ur_questions/ask_ur_questions";
 import axios from "axios";
+import { useSearchParams } from "next/navigation";
+
 
 const Checkout = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -39,12 +38,14 @@ const Checkout = () => {
     },
   ]);
   const [nextTravellerId, setNextTravellerId] = useState(2);
+    const searchParams = useSearchParams();
 
-  // Get booking data from localStorage
+
+  const bookingId = searchParams.get("bookingId") || "";
+
   const jsonString = localStorage.getItem("booking_data");
   const dataString = localStorage.getItem("data");
 
-  // Parse the JSON strings into objects
   const data = JSON.parse(jsonString);
   const slugPackageData = JSON.parse(dataString);
 
@@ -54,7 +55,6 @@ const Checkout = () => {
     infant_price: slugPackageData?.infant_price || 0,
   });
 
-  // Calculate initial totals from booking data
   const initialTotals = {
     adults: 0,
     children: 0,
@@ -136,7 +136,6 @@ const Checkout = () => {
     setIsOpen(!isOpen);
   };
 
-  // Update price when slugPackageData changes
   useEffect(() => {
     if (slugPackageData) {
       setPrice({
@@ -179,48 +178,36 @@ const Checkout = () => {
     fetchPackageData();
   }, []);
 
+    useEffect(() => {
+    const fetchBookingData = async () => {
+       const loginToken = localStorage.getItem("auth_token_login");
+    let authToken = loginToken;
+
+    if (!authToken) {
+      console.log("No auth token for user data fetch.");
+      setIsUserDataLoading(false);
+      return;
+    }
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}booking-details/${bookingId}`,
+             {
+          headers: { Authorization: `Bearer ${authToken}` },
+        }
+        );
+        const packageData = response.data.data || response.data || [];
+        console.log("booking Data:", packageData);
+      } catch (err) {
+        console.error("Error fetching data:", err);
+      }
+    };
+    fetchBookingData();
+  }, []);
+
+  
   // Format time to "mins:sec"
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
-
-  const pakageDetailsOtherPackages = [
-    {
-      id: 1,
-      heading: "Project Heading",
-      description: "Industry Name",
-      image: "/images/other-packages/01.jpg",
-    },
-    {
-      id: 2,
-      heading: "Project Heading",
-      description: "Industry Name",
-      image: "/images/other-packages/02.jpg",
-    },
-    {
-      id: 3,
-      heading: "Project Heading",
-      description: "Industry Name",
-      image: "/images/other-packages/03.jpg",
-    },
-    {
-      id: 4,
-      heading: "Project Heading",
-      description: "Industry Name",
-      image: "/images/other-packages/04.jpg",
-    },
-    {
-      id: 5,
-      heading: "Project Heading",
-      description: "Industry Name",
-      image: "/images/other-packages/05.jpg",
-    },
-    {
-      id: 6,
-      heading: "Project Heading",
-      description: "Industry Name",
-      image: "/images/other-packages/06.jpg",
-    },
-  ];
 
   return (
     <div>

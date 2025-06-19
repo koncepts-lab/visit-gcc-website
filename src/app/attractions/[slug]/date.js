@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
-import DatePicker from "react-datepicker";
+import React, { useState, useEffect } from 'react';
+import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import style from "./style.module.css";
-import Link from "next/link";
+import Link from 'next/link';
 import { MdOutlineCancel } from "react-icons/md";
-import axios from "axios";
+import axios from 'axios';
 
 const DatePickerWithHover = ({ onClose, packageId, type = "attraction" }) => {
   const [selectedDates, setSelectedDates] = useState([]);
@@ -27,6 +27,7 @@ const DatePickerWithHover = ({ onClose, packageId, type = "attraction" }) => {
   const [initialCalendarMonth, setInitialCalendarMonth] = useState(new Date());
   const [isBooking, setIsBooking] = useState(false);
   const [ticketType, setTicketType] = useState("VIP");
+  const [bookingId, setBookingId] = useState("");
 
   // Function to get all dates between start and end date
   const getDatesInRange = (startDate, endDate) => {
@@ -339,10 +340,9 @@ const DatePickerWithHover = ({ onClose, packageId, type = "attraction" }) => {
     return date.toLocaleDateString(undefined, options);
   };
 
-  // MODIFIED: Helper function to correctly format date to YYYY-MM-DD
   const toYyyyMmDd = (date) => {
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+    const month = String(date.getMonth() + 1).padStart(2, "0");
     const day = String(date.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
   };
@@ -388,6 +388,9 @@ const DatePickerWithHover = ({ onClose, packageId, type = "attraction" }) => {
       )
       .then((response) => {
         console.log("Booking API Response:", response);
+                console.log("Booking API Response:", response.data.data.id);
+                setBookingId(response.data.data.id);
+
         localStorage.setItem("booking_data", JSON.stringify(bookingData));
         localStorage.setItem("data", JSON.stringify(slugPackage));
         setIsBooking(true);
@@ -457,7 +460,7 @@ const DatePickerWithHover = ({ onClose, packageId, type = "attraction" }) => {
       >
         <div className={`${style["date-left"]}`}>
           <p className="py-2 ms-2">
-            Departure Data Selected:{" "}
+             Data Selected:{" "}
             {displaySelectedDateAndTime() || "No date selected"}
           </p>
           <style>{customStyles}</style>
@@ -618,7 +621,7 @@ const DatePickerWithHover = ({ onClose, packageId, type = "attraction" }) => {
           </div>
           {error && <div className="room-alert mt-2">{error}</div>}
           <div className="mt-4 flex">
-            <Link href="/checkout" passHref>
+            <Link href={`/checkout/${bookingId}`} passHref>
               <button
                 onClick={handleBookNow}
                 className="bg-blue-600 text-white rounded col-12"

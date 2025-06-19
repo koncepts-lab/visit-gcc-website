@@ -19,7 +19,6 @@ import axios from "axios";
 
 const Checkout = () => {
   const [isOpen, setIsOpen] = useState(false);
-  // The initial time is 720 seconds (12 minutes), which matches the target image.
   const initialTime = 720;
   const [timeLeft, setTimeLeft] = useState(initialTime);
   const [gender, setGender] = useState("");

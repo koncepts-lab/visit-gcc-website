@@ -20,6 +20,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import Ask_ur_questions from "@components/ask_ur_questions/ask_ur_questions";
 import EnhancedDatePicker from "./date";
 import RatingCarousel from "@components/tour-package-details/RatingCarousel";
+import { useRouter } from "next/navigation"; // MODIFIED: Import useRouter for redirection
+
 
 function Page() {
   const params = useParams();
@@ -30,6 +32,7 @@ function Page() {
   const [error, setError] = useState(null); // Error state
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const router = useRouter();
 
   // Fetch event data when the component mounts or the ID changes
   useEffect(() => {
@@ -76,131 +79,20 @@ function Page() {
     fetchEvent();
   }, [slug]);
   const handleBookNowClick = () => {
+   const loginToken = localStorage.getItem("auth_token_login");
+    
+    if (loginToken) {
     setIsPopupOpen(true);
+    } else {
+      router.push("/login");
+    }
   };
 
   const handleClosePopup = () => {
     setIsPopupOpen(false);
   };
 
-  // Static data for other components (unchanged)
-  const tourPackageDetailsReviewsImageData = [
-    {
-      id: 1,
-      heading: "Basavaraj B",
 
-      description:
-        "Mr.Indrajit is a very good person and guide. He was so polite and helpful throughout the trip. He..",
-    },
-    {
-      id: 2,
-      heading: "Basavaraj A",
-      description:
-        "Mr.Indrajit is a very good person and guide. He was so polite and helpful throughout the trip. He..",
-    },
-  ];
-
-  const rating = 4.2;
-  const maxRating = 5;
-  const totalReviews = 3.5;
-
-  const userRatingsCarosul = [
-    {
-      id: 1,
-      headingIcon: "M",
-      date: "29 July 2024",
-      heading: "Marta C",
-      description:
-        "Amazing experience in Varanasi! No to be missed. The tour starts in late afternoon, with a both trip on the river, you can enjoy a beautiful...",
-    },
-    {
-      id: 2,
-      headingIcon: "M",
-      date: "15 July 2024",
-      heading: "Michael P",
-      description:
-        "Amazing experience in Varanasi! No to be missed. The tour starts in late afternoon, with a both trip on the river, you can enjoy a beautiful...",
-    },
-    {
-      id: 3,
-      headingIcon: "M",
-      date: "18 July 2024",
-      heading: "Marta C",
-      description:
-        "Amazing experience in Varanasi! No to be missed. The tour starts in late afternoon, with a both trip on the river, you can enjoy a beautiful...",
-    },
-    {
-      id: 4,
-      headingIcon: "M",
-      date: "05 July 2024",
-      heading: "Michael P",
-      description:
-        "Amazing experience in Varanasi! No to be missed. The tour starts in late afternoon, with a both trip on the river, you can enjoy a beautiful...",
-    },
-    {
-      id: 5,
-      headingIcon: "M",
-      date: "04 July 2024",
-      heading: "Marta C",
-      description:
-        "Amazing experience in Varanasi! No to be missed. The tour starts in late afternoon, with a both trip on the river, you can enjoy a beautiful...",
-    },
-  ];
-
-  const pakageDetailsOtherPackages = [
-    {
-      id: 1,
-      heading: "Project Heading",
-      description: "Industry Name",
-      image: "/images/other-packages/01.jpg",
-    },
-    {
-      id: 2,
-      heading: "Project Heading",
-      description: "Industry Name",
-      image: "/images/other-packages/02.jpg",
-    },
-    {
-      id: 3,
-      heading: "Project Heading",
-      description: "Industry Name",
-      image: "/images/other-packages/03.jpg",
-    },
-    {
-      id: 4,
-      heading: "Project Heading",
-      description: "Industry Name",
-      image: "/images/other-packages/04.jpg",
-    },
-    {
-      id: 5,
-      heading: "Project Heading",
-      description: "Industry Name",
-      image: "/images/other-packages/05.jpg",
-    },
-    {
-      id: 6,
-      heading: "Project Heading",
-      description: "Industry Name",
-      image: "/images/other-packages/06.jpg",
-    },
-  ];
-
-  // if (isLoading) {
-  //   return (
-  //     <div className="container">
-  //       <p>Loading event details...</p>
-  //     </div>
-  //   );
-  // }
-
-  // if (error) {
-  //   return (
-  //     <div className="container">
-  //       <p className="text-danger">{error}</p>
-  //     </div>
-  //   );
-  // }
 
   if (!event) {
     return (
