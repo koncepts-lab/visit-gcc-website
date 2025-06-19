@@ -145,7 +145,7 @@ function Carousal({
         packages.map((pkg) => (
           <div key={pkg.id} className="home-package-item">
             <SingleHomePackage
-              photo_url={pkg?.photo_urls || ""}
+              photo_url={pkg?.photo_urls[0] || ""}
               name={pkg.name}
               description={pkg.description}
               link={pkg.id.toString()}

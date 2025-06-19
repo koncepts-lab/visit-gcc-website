@@ -14,9 +14,19 @@ import { IoIosCloudyNight, IoIosAirplane } from "react-icons/io";
 import { GoDotFill } from "react-icons/go";
 import { GiCruiser } from "react-icons/gi";
 import { FaFerry, FaTrain } from "react-icons/fa";
+import Map from "@components/map/Map";
 
 // Main Tab Component
-const HighlightTab = ({ highlight, photo, faq, ticket, sponsor, venue }) => {
+const HighlightTab = ({
+  highlight,
+  photo,
+  faq,
+  ticket,
+  sponsor,
+  venue,
+  latitude,
+  longitude,
+}) => {
   const [activeTab, setActiveTab] = useState("Highlight");
 
   const tabs = [
@@ -44,7 +54,13 @@ const HighlightTab = ({ highlight, photo, faq, ticket, sponsor, venue }) => {
       case "SponsorsAndPartners":
         return <SponsorsAndPartnersContent sponsors={sponsor} />;
       case "VenueInformation":
-        return <VenueInformationContent venue={venue} />;
+        return (
+          <VenueInformationContent
+            venue={venue}
+            latitude={latitude}
+            longitude={longitude}
+          />
+        );
         {
         }
       default:
@@ -194,16 +210,16 @@ const SponsorsAndPartnersContent = ({ sponsers }) => (
 );
 
 // Venue Information Tab Content
-const VenueInformationContent = () => (
+const VenueInformationContent = ({ venue, latitude, longitude }) => (
   <div>
     <h4>Venue Information</h4>
 
     <div className="container">
       <div className={`row ${style["Legend-ul"]}`}>
-        <div className="col-md-8">
+        {/* <div className="col-md-8">
           <img src="../images/map.jpg" alt="Bahrain" />
-        </div>
-        <div className="col-md-4">
+        </div> */}
+        {/* <div className="col-md-4">
           <h4>Legend</h4>
           <ul>
             <li>
@@ -242,7 +258,7 @@ const VenueInformationContent = () => (
                 Ferry
               </p>
             </li> */}
-            <li>
+        {/* <li>
               <p>
                 <IoIosAirplane />
                 Plane
@@ -255,7 +271,8 @@ const VenueInformationContent = () => (
               </p>
             </li>
           </ul>
-        </div>
+        </div> */}
+        <Map latitude={latitude} longitude={longitude} />
       </div>
     </div>
   </div>

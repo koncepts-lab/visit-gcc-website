@@ -60,20 +60,8 @@ const TourPackageTab = ({
         setError(null);
 
         try {
-          if (!authToken) {
-            setError("Authentication token not found");
-            setIsLoading(false);
-            setMasonryLoading(false);
-            return;
-          }
-
           const response = await axios.get(
-            `${process.env.NEXT_PUBLIC_API_URL}tour-categories/category/get-by-category?tour_category_id=${activeTab}`,
-            {
-              headers: {
-                Authorization: `Bearer ${authToken}`,
-              },
-            }
+            `${process.env.NEXT_PUBLIC_API_URL}tour-categories/category/get-by-category?tour_category_id=${activeTab}`
           );
 
           const categoryPackages = response.data.data || response.data || [];
@@ -104,17 +92,8 @@ const TourPackageTab = ({
   useEffect(() => {
     const fetchIcons = async (packageId) => {
       try {
-        if (!authToken) {
-          console.error("Authentication token not found for icons");
-          return;
-        }
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}icon/${packageId}/get-by-package`,
-          {
-            headers: {
-              Authorization: `Bearer ${authToken}`,
-            },
-          }
+          `${process.env.NEXT_PUBLIC_API_URL}icon/${packageId}/get-by-package`
         );
         setIconsData((prevIconsData) => ({
           ...prevIconsData,
@@ -127,17 +106,8 @@ const TourPackageTab = ({
 
     const fetchRatings = async (packageId) => {
       try {
-        if (!authToken) {
-          console.error("Authentication token not found for ratings");
-          return;
-        }
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}package-review/${packageId}/ratings`,
-          {
-            headers: {
-              Authorization: `Bearer ${authToken}`,
-            },
-          }
+          `${process.env.NEXT_PUBLIC_API_URL}package-review/${packageId}/ratings`
         );
         setRatingsData((prevRatingsData) => ({
           ...prevRatingsData,
@@ -155,11 +125,6 @@ const TourPackageTab = ({
       }
 
       try {
-        if (!authToken) {
-          console.error("Authentication token not found for vendor info");
-          return;
-        }
-
         // Step 1: Fetch vendor details using vendor_id
         const vendorResponse = await axios.get(
           `${process.env.NEXT_PUBLIC_API_URL}vendors/${vendorId}`,

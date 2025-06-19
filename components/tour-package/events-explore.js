@@ -23,19 +23,8 @@ const EventsExploreTab = ({ events }) => {
   useEffect(() => {
     const fetchCountries = async () => {
       try {
-        const authToken =
-          localStorage.getItem("auth_token_login") ||
-          localStorage.getItem("auth_token_register");
-        if (!authToken) {
-          setErrorEvents("Authentication token not found");
-          return;
-        }
-
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}countries`,
-          {
-            headers: { Authorization: `Bearer ${authToken}` },
-          }
+          `${process.env.NEXT_PUBLIC_API_URL}countries`
         );
         const fetchedCountries = response.data.data || response.data || [];
 

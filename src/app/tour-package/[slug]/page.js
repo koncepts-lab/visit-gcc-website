@@ -28,30 +28,11 @@ function Page() {
 
     const fetchPackageData = async () => {
       try {
-        const registerToken = localStorage.getItem("auth_token_register");
-        const loginToken = localStorage.getItem("auth_token_login");
-        let authToken = null;
-
-        if (loginToken) {
-          authToken = loginToken;
-          console.log("Using login token for fetching packages.");
-        } else if (registerToken) {
-          authToken = registerToken;
-          console.log("Using register token for fetching packages.");
-        }
-
-        if (!authToken) {
-          setError("Authentication token not found");
-          setIsLoading(false);
-          return;
-        }
-
         const response = await axios.get(
           `${process.env.NEXT_PUBLIC_API_URL}packages/${slug}`
         );
 
         const singlePackageData = response.data.data || response.data || [];
-        console.log("packages Data:", singlePackageData);
         setSlugPackage(singlePackageData);
 
         setIsLoading(false);

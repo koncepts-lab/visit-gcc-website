@@ -9,6 +9,7 @@ import Carousal from "@components/carousel/Carousal"; // Reusing your Carousel
 import axios from "axios";
 import EnhancedDatePicker from "./date"; // Reusing your DatePicker
 import EnquiryForm from "@components/enquiry-form"; // Reusing your EnquiryForm
+import { enqueueSnackbar } from "notistack";
 
 // This component is now specifically for displaying Attraction details
 export default function AttractionTopContainer({ packageId }) {
@@ -45,14 +46,11 @@ export default function AttractionTopContainer({ packageId }) {
         let authToken =
           localStorage.getItem("auth_token_login") ||
           localStorage.getItem("auth_token_register");
-        const headers = authToken
-          ? { Authorization: `Bearer ${authToken}` }
-          : {};
 
         // 1. Fetch Attraction Details
         const detailsEndpoint = `${process.env.NEXT_PUBLIC_API_URL}attractions/${packageId}`;
         console.log(`Fetching attraction details from: ${detailsEndpoint}`);
-        const detailsResponse = await axios.get(detailsEndpoint, { headers }); // Add headers if needed for this endpoint
+        const detailsResponse = await axios.get(detailsEndpoint); // Add headers if needed for this endpoint
         const fetchedDetails =
           detailsResponse.data.data || detailsResponse.data;
         if (!fetchedDetails) throw new Error("No attraction details found.");
@@ -63,13 +61,9 @@ export default function AttractionTopContainer({ packageId }) {
         const ratingsEndpoint = `${process.env.NEXT_PUBLIC_API_URL}attraction-review/${packageId}/ratings`;
         try {
           console.log(`Fetching attraction ratings from: ${ratingsEndpoint}`);
-          const ratingsResponse = await axios.get(ratingsEndpoint, { headers }); // Add headers if needed
+          const ratingsResponse = await axios.get(ratingsEndpoint); // Add headers if needed
           setAttractionRatings(
             ratingsResponse.data.data || ratingsResponse.data || null
-          );
-          console.log(
-            "Attraction ratings:",
-            ratingsResponse.data.data || ratingsResponse.data
           );
         } catch (ratingErr) {
           console.warn(
@@ -209,7 +203,21 @@ export default function AttractionTopContainer({ packageId }) {
     attractionDetails.operator_name || attractionDetails.venue_name || null;
   const operatorId =
     attractionDetails.operator_id || attractionDetails.venue_id || null; // If you have IDs for linking
+  const handleShareClick = () => {
+    const currentUrl = window.location.href;
 
+    navigator.clipboard
+      .writeText(currentUrl)
+      .then(() => {
+        enqueueSnackbar("Link copied to clipboard!", {
+          variant: "success",
+          autoHideDuration: 2000,
+        });
+      })
+      .catch((err) => {
+        console.error("Failed to copy: ", err);
+      });
+  };
   return (
     <div>
       {/* CSS classes from style.module.css are reused */}
@@ -248,13 +256,12 @@ export default function AttractionTopContainer({ packageId }) {
                   of travellers
                 </span>
               )}
-              <span className="d-flex align-items-center mb-2">
+              <span>
                 <button
-                  className="btn btn-light btn-sm p-1 border-0"
-                  title="Share"
+                  onClick={handleShareClick}
+                  style={{ border: "none", background: "none" }}
                 >
-                  {" "}
-                  <MdIosShare size={20} className="text-secondary" />
+                  <MdIosShare className={style["MdIosShare"]} />
                 </button>
               </span>
             </div>

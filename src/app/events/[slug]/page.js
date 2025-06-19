@@ -209,7 +209,21 @@ function Page() {
       </div>
     );
   }
+  const handleShareClick = () => {
+    const currentUrl = window.location.href;
 
+    navigator.clipboard
+      .writeText(currentUrl)
+      .then(() => {
+        enqueueSnackbar("Link copied to clipboard!", {
+          variant: "success",
+          autoHideDuration: 2000,
+        });
+      })
+      .catch((err) => {
+        console.error("Failed to copy: ", err);
+      });
+  };
   return (
     <>
       <Banner />
@@ -242,7 +256,12 @@ function Page() {
                   travellers{" "}
                 </span>
                 <span>
-                  <MdIosShare className={style["MdIosShare"]} />
+                  <button
+                    onClick={handleShareClick}
+                    style={{ border: "none", background: "none" }}
+                  >
+                    <MdIosShare className={style["MdIosShare"]} />
+                  </button>
                 </span>
               </div>
             </div>
@@ -312,6 +331,8 @@ function Page() {
                 ticket={event.ticket_information}
                 sponsor={event.sponsers_and_partners}
                 venue={event.venue_information}
+                latitude={event.latitude}
+                longitude={event.longitude}
               />
             </div>
           </div>

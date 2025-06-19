@@ -27,21 +27,9 @@ const PackageInclusionsAndExclusions = ({ packageId }) => {
         authToken = registerToken;
         console.log("Using register token for fetching packages.");
       }
-
-      if (!authToken) {
-        setError("Authentication token not found");
-        setIsLoading(false);
-        return;
-      }
-
       try {
         const inclusionsResponse = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}inclusions/package/get-by-package?package_id=${packageId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${authToken}`,
-            },
-          }
+          `${process.env.NEXT_PUBLIC_API_URL}inclusions/package/get-by-package?package_id=${packageId}`
         );
         const fetchedInclusions =
           inclusionsResponse.data.data || inclusionsResponse.data || [];
@@ -51,12 +39,7 @@ const PackageInclusionsAndExclusions = ({ packageId }) => {
         }
 
         const exclusionsResponse = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}exclusions/package/get-by-package?package_id=${packageId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${authToken}`,
-            },
-          }
+          `${process.env.NEXT_PUBLIC_API_URL}exclusions/package/get-by-package?package_id=${packageId}`
         );
         const fetchedExclusions =
           exclusionsResponse.data.data || exclusionsResponse.data || [];

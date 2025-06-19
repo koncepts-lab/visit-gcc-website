@@ -17,11 +17,12 @@ function PakageDetailsOtherPackages(props) {
             }
             className="w-100"
             alt=""
+            style={{ height: "146px" }}
           />
           <div className={style["PakageDetailsOtherPackages-text"]}>
             <span>
               <h4>{props.packages.name}</h4>
-              <p>{props.packages.description}</p>
+              <p style={{ fontSize: "14px" }}>{props.packages.description}</p>
             </span>
             <span>
               <Link href="#0">

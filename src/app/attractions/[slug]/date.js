@@ -49,11 +49,11 @@ const DatePickerWithHover = ({ onClose, packageId }) => {
           console.log("Using register token for fetching packages.");
         }
 
-        if (!authToken) {
-          setError("Authentication token not found");
-          setIsLoading(false);
-          return;
-        }
+        // if (!authToken) {
+        //   setError("Authentication token not found");
+        //   setIsLoading(false);
+        //   return;
+        // }
         const response = await axios.get(
           `${process.env.NEXT_PUBLIC_API_URL}packages/${packageId}`,
           {

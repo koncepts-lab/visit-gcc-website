@@ -10,6 +10,7 @@ import Carousal from "@components/carousel/Carousal";
 import axios from "axios";
 import EnhancedDatePicker from "./date";
 import EnquiryForm from "@components/enquiry-form";
+import { enqueueSnackbar } from "notistack";
 
 export default function Top_container({ packageId }) {
   const [packageDetails, setPackageDetails] = useState(null);
@@ -28,27 +29,8 @@ export default function Top_container({ packageId }) {
       setError(null);
 
       try {
-        let authToken = null;
-        const registerToken = localStorage.getItem("auth_token_register");
-        const loginToken = localStorage.getItem("auth_token_login");
-        if (loginToken) {
-          authToken = loginToken;
-          console.log("Using login token for fetching packages.");
-        } else if (registerToken) {
-          authToken = registerToken;
-          console.log("Using register token for fetching packages.");
-        } else {
-          setError("Authentication token not found");
-          setLoading(false);
-          return;
-        }
-
         const packageDetailsResponse = await axios.get(
           `${process.env.NEXT_PUBLIC_API_URL}packages/${packageId}`
-        );
-        console.log(
-          "🚀 ~ fetchPackageData ~ packageDetailsResponse:",
-          packageDetailsResponse
         );
         setPackageDetails(packageDetailsResponse.data);
 
@@ -58,22 +40,12 @@ export default function Top_container({ packageId }) {
         setPackageRatings(ratingsResponse.data.data);
 
         const themesResponse = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}themes/package/get-by-package?package_id=${packageId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${authToken}`,
-            },
-          }
+          `${process.env.NEXT_PUBLIC_API_URL}themes/package/get-by-package?package_id=${packageId}`
         );
         setPackageThemes(themesResponse.data);
 
         const inclusionsResponse = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}inclusions/package/get-by-package?package_id=${packageId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${authToken}`,
-            },
-          }
+          `${process.env.NEXT_PUBLIC_API_URL}inclusions/package/get-by-package?package_id=${packageId}`
         );
         setPackageInclusions(inclusionsResponse.data);
 
@@ -141,7 +113,21 @@ export default function Top_container({ packageId }) {
     }
     return circles;
   };
+  const handleShareClick = () => {
+    const currentUrl = window.location.href;
 
+    navigator.clipboard
+      .writeText(currentUrl)
+      .then(() => {
+        enqueueSnackbar("Link copied to clipboard!", {
+          variant: "success",
+          autoHideDuration: 2000,
+        });
+      })
+      .catch((err) => {
+        console.error("Failed to copy: ", err);
+      });
+  };
   return (
     <div>
       <div className={`container ${style["container-package-details"]}`}>
@@ -168,8 +154,12 @@ export default function Top_container({ packageId }) {
                 /> */}
               </span>
               <span>
-                <MdIosShare className={style["MdIosShare"]} />
-                {/* <FaRegHeart className={style["FaRegHeart"]} /> */}
+                <button
+                  onClick={handleShareClick}
+                  style={{ border: "none", background: "none" }}
+                >
+                  <MdIosShare className={style["MdIosShare"]} />
+                </button>
               </span>
             </div>
           </div>

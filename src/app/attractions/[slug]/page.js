@@ -19,7 +19,7 @@ function Page() {
   const slug = params?.slug;
   const [slugpackage, setSlugPackage] = useState([]);
   const [allPackage, setAllPackage] = useState([]);
-  const [legends, setLegends] = useState([]);
+  // const [legends, setLegends] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [relatedAttractions, setRelatedAttractions] = useState([]);
@@ -29,24 +29,6 @@ function Page() {
 
     const fetchPackageData = async () => {
       try {
-        const registerToken = localStorage.getItem("auth_token_register");
-        const loginToken = localStorage.getItem("auth_token_login");
-        let authToken = null;
-
-        if (loginToken) {
-          authToken = loginToken;
-          console.log("Using login token for fetching packages.");
-        } else if (registerToken) {
-          authToken = registerToken;
-          console.log("Using register token for fetching packages.");
-        }
-
-        if (!authToken) {
-          setError("Authentication token not found");
-          setIsLoading(false);
-          return;
-        }
-
         const response = await axios.get(
           `${process.env.NEXT_PUBLIC_API_URL}attractions/${slug}`
         );
@@ -88,55 +70,30 @@ function Page() {
     fetchAllPackage();
   }, []);
 
-  useEffect(() => {
-    const fetchLegends = async () => {
-      if (!slug) return;
+  // useEffect(() => {
+  //   const fetchLegends = async () => {
+  //     if (!slug) return;
 
-      try {
-        const registerToken = localStorage.getItem("auth_token_register");
-        const loginToken = localStorage.getItem("auth_token_login");
-        let authToken = null;
+  //     try {
+  //       const response = await axios.get(
+  //         `${process.env.NEXT_PUBLIC_API_URL}legends/package/${slug}/get-by-package`
+  //       );
 
-        if (loginToken) {
-          authToken = loginToken;
-          console.log("Using login token for fetching packages.");
-        } else if (registerToken) {
-          authToken = registerToken;
-          console.log("Using register token for fetching packages.");
-        }
+  //       const legendsData = response.data.legends || [];
+  //       setLegends(legendsData);
+  //     } catch (err) {
+  //       console.error("Error fetching legends:", err);
+  //     }
+  //   };
 
-        if (!authToken) {
-          setError("Authentication token not found");
-          setIsLoading(false);
-          return;
-        }
-
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}legends/package/${slug}/get-by-package`,
-          {
-            headers: {
-              Authorization: `Bearer ${authToken}`,
-            },
-          }
-        );
-
-        const legendsData = response.data.legends || [];
-        console.log("Legends Data:", legendsData);
-        setLegends(legendsData);
-      } catch (err) {
-        console.error("Error fetching legends:", err);
-      }
-    };
-
-    fetchLegends();
-  }, [slug]);
+  //   fetchLegends();
+  // }, [slug]);
   useEffect(() => {
     const fetchRelatedAttractions = async () => {
       try {
         const response = await axios.get(
           `${process.env.NEXT_PUBLIC_API_URL}attractions/related/${slugpackage.id}`
         );
-        console.log("Related Attractions:", response.data);
         setRelatedAttractions(response.data);
       } catch (err) {
         console.error("Error fetching related attractions:", err);
@@ -149,24 +106,24 @@ function Page() {
       <Banner />
       <section className={style["tour-package-details"]}>
         <div>
-          <Top_container packageId={slugpackage.id} type="attractions" />
+          <Top_container packageId={slug} type="attractions" />
         </div>
 
         <div className={`container ${style["time"]}`}>
           <div className="row">
             <div className="col-md-12">
               {slugpackage.id && (
-                <HighlightTab itemId={slugpackage.id} itemType="attractions" />
+                <HighlightTab itemId={slug} itemType="attractions" />
               )}
             </div>
           </div>
         </div>
 
-        <div className="container">
+        {/* <div className="container">
           <div className={`col-md-12 ${style["pdb-3"]}`}>
-            <PackageInclusionsAndExclusions packageId={slugpackage.id} />
+            <PackageInclusionsAndExclusions packageId={slug} />
           </div>
-        </div>
+        </div> */}
 
         <div className="container">
           <div className="row pt-5">

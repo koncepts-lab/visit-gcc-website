@@ -60,20 +60,8 @@ const TourPackageTab = ({
         setError(null);
 
         try {
-          if (!authToken) {
-            setError("Authentication token not found");
-            setIsLoading(false);
-            setMasonryLoading(false);
-            return;
-          }
-
           const response = await axios.get(
-            `${process.env.NEXT_PUBLIC_API_URL}att-categories/category/get-by-category?category_ids[]=${activeTab}`,
-            {
-              headers: {
-                Authorization: `Bearer ${authToken}`,
-              },
-            }
+            `${process.env.NEXT_PUBLIC_API_URL}att-categories/category/get-by-category?category_ids[]=${activeTab}`
           );
 
           const categoryPackages = response.data.data || response.data || [];
@@ -127,17 +115,8 @@ const TourPackageTab = ({
 
     const fetchRatings = async (packageId) => {
       try {
-        if (!authToken) {
-          console.error("Authentication token not found for ratings");
-          return;
-        }
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}attraction-review/${packageId}/ratings`,
-          {
-            headers: {
-              Authorization: `Bearer ${authToken}`,
-            },
-          }
+          `${process.env.NEXT_PUBLIC_API_URL}attraction-review/${packageId}/ratings`
         );
         setRatingsData((prevRatingsData) => ({
           ...prevRatingsData,
@@ -148,55 +127,55 @@ const TourPackageTab = ({
       }
     };
 
-    const fetchVendorInfo = async (packageId, vendorId) => {
-      if (!vendorId) {
-        console.error(`No vendor ID found for package ${packageId}`);
-        return;
-      }
+    // const fetchVendorInfo = async (packageId, vendorId) => {
+    //   if (!vendorId) {
+    //     console.error(`No vendor ID found for package ${packageId}`);
+    //     return;
+    //   }
 
-      try {
-        if (!authToken) {
-          console.error("Authentication token not found for vendor info");
-          return;
-        }
+    //   try {
+    //     if (!authToken) {
+    //       console.error("Authentication token not found for vendor info");
+    //       return;
+    //     }
 
-        // Step 1: Fetch vendor details using vendor_id
-        const vendorResponse = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}vendors/${vendorId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${authToken}`,
-            },
-          }
-        );
+    //     // Step 1: Fetch vendor details using vendor_id
+    //     const vendorResponse = await axios.get(
+    //       `${process.env.NEXT_PUBLIC_API_URL}vendors/${vendorId}`,
+    //       {
+    //         headers: {
+    //           Authorization: `Bearer ${authToken}`,
+    //         },
+    //       }
+    //     );
 
-        const vendorData = vendorResponse.data;
-        const userId = vendorData.user_id;
+    //     const vendorData = vendorResponse.data;
+    //     const userId = vendorData.user_id;
 
-        const userResponse = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}app/get-user/${userId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${authToken}`,
-            },
-          }
-        );
+    //     const userResponse = await axios.get(
+    //       `${process.env.NEXT_PUBLIC_API_URL}app/get-user/${userId}`,
+    //       {
+    //         headers: {
+    //           Authorization: `Bearer ${authToken}`,
+    //         },
+    //       }
+    //     );
 
-        const userData = userResponse.data;
+    //     const userData = userResponse.data;
 
-        const vendorName = `${userData.first_name} ${userData.last_name}`;
+    //     const vendorName = `${userData.first_name} ${userData.last_name}`;
 
-        setVendorData((prevVendorData) => ({
-          ...prevVendorData,
-          [packageId]: vendorName,
-        }));
-      } catch (err) {
-        console.error(
-          `Error fetching vendor info for package ${packageId}:`,
-          err
-        );
-      }
-    };
+    //     setVendorData((prevVendorData) => ({
+    //       ...prevVendorData,
+    //       [packageId]: vendorName,
+    //     }));
+    //   } catch (err) {
+    //     console.error(
+    //       `Error fetching vendor info for package ${packageId}:`,
+    //       err
+    //     );
+    //   }
+    // };
 
     filteredPackages.forEach((pkg) => {
       if (!iconsData[pkg.id]) {

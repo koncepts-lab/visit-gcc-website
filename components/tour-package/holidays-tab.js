@@ -32,11 +32,6 @@ const HolidaysTab = (props) => {
           console.log("Using register token for fetching packages.");
         }
 
-        if (!authToken) {
-          setError("Authentication token not found");
-          setIsLoading(false);
-          return;
-        }
         let response;
         if (props.type === "attractions") {
           response = await axios.get(
@@ -97,19 +92,8 @@ const HolidaysTab = (props) => {
           console.log("Using register token for fetching packages.");
         }
 
-        if (!authToken) {
-          setError("Authentication token not found");
-          setIsLoading(false);
-          return;
-        }
-
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}packages`,
-          {
-            headers: {
-              Authorization: `Bearer ${authToken}`,
-            },
-          }
+          `${process.env.NEXT_PUBLIC_API_URL}packages`
         );
         const fetchedPackages = response.data.data || response.data || [];
         setAllPackages(fetchedPackages);
@@ -144,20 +128,9 @@ const HolidaysTab = (props) => {
           console.log("Using register token for fetching packages.");
         }
 
-        if (!authToken) {
-          setError("Authentication token not found");
-          setIsLoading(false);
-          return;
-        }
-
         setIsLoading(true);
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}holiday-themes/theme/get-by-theme?holiday_theme_id=${activeTab}`,
-          {
-            headers: {
-              Authorization: `Bearer ${authToken}`,
-            },
-          }
+          `${process.env.NEXT_PUBLIC_API_URL}holiday-themes/theme/get-by-theme?holiday_theme_id=${activeTab}`
         );
 
         const themePackages = response.data.data || response.data || [];

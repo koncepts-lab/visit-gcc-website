@@ -67,24 +67,13 @@ function RatingCarousel({ packageId, type }) {
       authToken = registerToken;
     }
 
-    if (!authToken) {
-      setError("Authentication token not found");
-      setIsLoading(false);
-      return;
-    }
-
     try {
       setIsLoading(true);
       setError("");
       const endpoint = getApiEndpoint();
 
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}${endpoint}/${packageId}/ratings`,
-        {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
+        `${process.env.NEXT_PUBLIC_API_URL}${endpoint}/${packageId}/ratings`
       );
 
       if (response.data.success) {
@@ -149,12 +138,6 @@ function RatingCarousel({ packageId, type }) {
         authToken = loginToken;
       } else if (registerToken) {
         authToken = registerToken;
-      }
-
-      if (!authToken) {
-        setError("Authentication token not found");
-        setIsLoading(false);
-        return;
       }
 
       try {
