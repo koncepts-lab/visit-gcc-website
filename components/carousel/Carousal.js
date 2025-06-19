@@ -15,6 +15,8 @@ import SinglePackageContainerReviewImage from "../tour-package-details/package-d
 import RatingCarousel from "../tour-package-details/RatingCarousel";
 import PakageDetailsOtherPackages from "../tour-package-details/pakage-details-other-packages";
 import CountryInspiration from "../countries/country-inspiration";
+import OtherBlogs from "@components/tour-package-details/other-blogs";
+
 // Import Slick Carousel and styles
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -36,6 +38,7 @@ function Carousal({
   userRatingsCarosul,
   pakageDetailsOtherPackages,
   count,
+    otherBlogs,
   type,
   bestPicked,
   featuredTravel,
@@ -44,6 +47,7 @@ function Carousal({
   packageDetailsReviewImage,
   countryExperiance,
 }) {
+    const data = packages || events || eventScroll || country || experiences || blog || userRatingsCarosul || pakageDetailsOtherPackages || otherBlogs || bestPicked || featuredTravel || wonders || packageDetailsReview || packageDetailsReviewImage || countryExperiance;
   const Responsive = {
     dots:
       type !== "home-package" &&
@@ -51,7 +55,7 @@ function Carousal({
       type !== "home-experience" &&
       type !== "home-blog" &&
       type !== "upcoming-events",
-    infinite: true,
+    infinite: data && data.length > 1,
     speed: 500,
     slidesToShow: count,
     slidesToScroll: 1,
@@ -69,7 +73,7 @@ function Carousal({
         settings: {
           slidesToShow: 2,
           slidesToScroll: 1,
-          infinite: true,
+    infinite: data && data.length > 1,
           dots:
             type !== "home-package" &&
             type !== "home-event" &&
@@ -85,7 +89,7 @@ function Carousal({
           centerMode: type === "home-experience", // Enable center mode for 'home-experience'
           centerPadding: "50px", // Show half of the second item (adjust as needed)
           slidesToScroll: 1,
-          infinite: true,
+    infinite: data && data.length > 1,
           dots: false, // You can keep dots off for mobile if needed
         },
       },
@@ -209,6 +213,17 @@ function Carousal({
       {type === "country-Experiance" &&
         countryExperiance.map((experiance) => (
           <CountryExperiance blogs={experiance} />
+        ))}
+
+          {type === "other-blogs" &&
+        otherBlogs?.map((otherblogs) => (
+          <OtherBlogs
+            key={otherblogs.uuid_id}
+            image={otherblogs.main_image_url}
+            heading={otherblogs.heading}
+            description={otherblogs.description1}
+            link={otherblogs.uuid_id}
+          />
         ))}
 
       {type === "tour-FeaturedTravel" &&

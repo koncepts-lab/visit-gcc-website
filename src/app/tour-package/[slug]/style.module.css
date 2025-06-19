@@ -418,6 +418,8 @@
     flex-direction: column;
     justify-content: space-between;
     padding: 20px 0px 20px 20px;
+      height: 480px;
+
   }
   .date-left {
     width: 100%;
@@ -452,6 +454,8 @@
     flex-direction: column;
     justify-content: space-between;
     padding: 0px 0px 10px 10px;
+      height: 480px;
+
   }
   .date-left {
     width: 100%;

@@ -431,9 +431,7 @@ export default function AttractionTopContainer({ packageId }) {
       {isDatePickerPopupOpen && (
         <div className={style["popup-overlay"]}>
           <EnhancedDatePicker
-            itemId={packageId} // Prop name kept as itemId for consistency with this component
-            itemType="attractions" // Explicitly set type
-            itemName={itemName}
+          packageId={packageId}
             onClose={handleCloseDatePickerPopup}
           />
         </div>
