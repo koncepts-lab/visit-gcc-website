@@ -12,6 +12,7 @@ function Home() {
   const [packages, setPackages] = useState([]);
   const [events, setEvents] = useState([]);
   const [blogs, setBlogs] = useState([]);
+  const [attractions, setAttractions] = useState([]);
   const [loading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -102,6 +103,22 @@ function Home() {
 
     fetchEvents();
   }, []);
+  useEffect(() => {
+    const fetchAttractions = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}attractions`
+        );
+        setAttractions(response.data.data);
+        setIsLoading(false);
+      } catch (err) {
+        setIsLoading(false);
+        setError("Failed to fetch attractions. Please try again.");
+        console.error("Error fetching attractions:", err);
+      }
+    };
+    fetchAttractions();
+  }, []);
 
   return (
     <>
@@ -166,14 +183,14 @@ function Home() {
         <div className="container">
           <div className="row">
             <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-8 col-sm-9 col-9 pdb-3">
-              <h3>What to experience</h3>
+              <h3>Attractions</h3>
             </div>
             <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-4 col-sm-3 col-3 text-right">
               <Link href="tour-package" className="float-right">
                 View All
               </Link>
             </div>
-            <Carousal packages={packages} count={3} type="home-package" />
+            <Carousal packages={attractions} count={3} type="home-package" />
           </div>
         </div>
       </div>

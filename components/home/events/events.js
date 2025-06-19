@@ -6,6 +6,32 @@ import { FaArrowRightLong } from "react-icons/fa6";
 const ArrowIcon = () => <FaArrowRightLong />;
 
 function SingleHomeEvents({ event_photo_urls, date, name, description, link }) {
+  function formatDate(isoDateString) {
+    // Return early if the input is not valid
+    if (!isoDateString) {
+      return "";
+    }
+
+    // Create a Date object from the input string
+    const date = new Date(isoDateString);
+
+    // Check if the created date is valid
+    if (isNaN(date.getTime())) {
+      return "";
+    }
+
+    // Get the day and add a leading zero if it's a single digit (e.g., 5 -> "05")
+    const day = String(date.getDate()).padStart(2, "0");
+
+    // Get the month (which is 0-indexed), add 1, and add a leading zero
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+
+    // Get the full year
+    const year = date.getFullYear();
+
+    // Combine the parts into the desired format
+    return `${day}-${month}-${year}`;
+  }
   return (
     <Link href={`/events/${link}`} className={`item ${style["item-padding"]}`}>
       <div className={style["event-box"]}>
@@ -15,7 +41,7 @@ function SingleHomeEvents({ event_photo_urls, date, name, description, link }) {
           alt={name}
           style={{ height: "214px" }}
         />
-        <div className={style["date"]}>{date}</div>
+        <div className={style["date"]}>{formatDate(date)}</div>
         <h4>{name}</h4>
         <p>{description}</p>
       </div>

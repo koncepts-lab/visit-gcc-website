@@ -6,7 +6,7 @@ import Link from "next/link";
 import { MdOutlineCancel } from "react-icons/md";
 import axios from "axios";
 
-const DatePickerWithHover = ({ onClose, packageId }) => {
+const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
   const [selectedDates, setSelectedDates] = useState([]);
   const [slugPackage, setSlugPackage] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -17,6 +17,9 @@ const DatePickerWithHover = ({ onClose, packageId }) => {
   ]);
   const [nextRoomId, setNextRoomId] = useState(2);
   const [showRoomAlert, setShowRoomAlert] = useState(false);
+  const [customerCountry, setCustomerCountry] = useState("UAE");
+  const [ticketType, setTicketType] = useState("VIP");
+  const [isBooking, setIsBooking] = useState(false); // Moved here
 
   // Function to get all dates between start and end date
   const getDatesInRange = (startDate, endDate) => {
@@ -567,6 +570,52 @@ const DatePickerWithHover = ({ onClose, packageId }) => {
     return <p>Error: {error}</p>;
   }
 
+  const handleBookNow = () => {
+    if (selectedDates.length === 0) {
+      setError("Please select at least one date.");
+      return;
+    }
+
+    const bookingData = {
+      start_date: selectedDates[0].toISOString().split("T")[0], // YYYY-MM-DD format
+      end_date: selectedDates[selectedDates.length - 1]
+        .toISOString()
+        .split("T")[0], // YYYY-MM-DD format
+      customer_country: customerCountry,
+      ticket_type: ticketType,
+      rooms: rooms.map((room) => ({
+        adults: room.adults,
+        children: room.children,
+        infants: room.infant, // Note: State uses "infant", JSON uses "infants"
+      })),
+    };
+    console.log(bookingData);
+
+    axios
+      .post(
+        `${process.env.NEXT_PUBLIC_API_URL}book/${type}/${slugPackage.id}`,
+        bookingData,
+        {
+          headers: {
+            Authorization: `Bearer ${
+              localStorage.getItem("auth_token_login") ||
+              localStorage.getItem("auth_token_register")
+            }`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response);
+        localStorage.setItem("booking_data", JSON.stringify(bookingData));
+        localStorage.setItem("data", JSON.stringify(slugPackage));
+        setIsBooking(true); // Update booking status
+      })
+      .catch((error) => {
+        console.error("Error booking package:", error);
+        setError("Failed to book package. Please try again.");
+      });
+  };
+
   return (
     <div className={`bg-white ${style["date-pick-container"]}`}>
       <div
@@ -740,6 +789,8 @@ const DatePickerWithHover = ({ onClose, packageId }) => {
                   overflowY: "auto",
                   boxShadow: "none",
                 }}
+                value={customerCountry}
+                onChange={(e) => setCustomerCountry(e.target.value)}
               >
                 <option value="UAE">UAE</option>
                 <option value="Saudi Arabia">Saudi Arabia</option>
@@ -749,13 +800,32 @@ const DatePickerWithHover = ({ onClose, packageId }) => {
                 <option value="Bahrain">Bahrain</option>
               </select>
             </div>
+
+            <div className="my-md-4 my-1 pe-2">
+              <label className="text-black">Ticket Type*</label>
+              <br />
+              <select
+                className={`form-select col-xl-11 col-lg-12 col-12 fw-semibold my-1`}
+                style={{
+                  maxHeight: "200px",
+                  overflowY: "auto",
+                  boxShadow: "none",
+                }}
+                value={ticketType}
+                onChange={(e) => setTicketType(e.target.value)}
+              >
+                <option value="VIP">VIP</option>
+                <option value="Standard">Standard</option>
+                <option value="Premium">Premium</option>
+              </select>
+            </div>
           </div>
           <div className="mt-4 flex">
             <Link href="/checkout">
               <button
                 onClick={() => {
                   // Handle booking logic here
-                  onClose();
+                  handleBookNow();
                 }}
                 className="bg-blue-600 text-white rounded col-12"
                 style={{

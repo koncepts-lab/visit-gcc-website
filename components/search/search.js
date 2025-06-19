@@ -131,9 +131,9 @@ const SearchComponent = () => {
       } else if (result.type === "event") {
         url = `/events/${encodeURIComponent(result.id)}`;
       } else if (result.type === "blog") {
-        url = `/blogs/${encodeURIComponent(result.uuid_id)}
-        }`;
+        url = `/blogs/${encodeURIComponent(result.uuid_id)}`;
       }
+      console.log("🚀 ~ handleResultClick ~ url:", url);
 
       window.location.href = url;
     }

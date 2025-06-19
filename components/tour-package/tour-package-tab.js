@@ -282,8 +282,8 @@ const TourPackageTab = ({
                           <div className="tour-pakage-masonry-item-content">
                             <h5>{pkg.name}</h5>
                             <div className={style["provider-date"]}>
-                              <p>{vendorData[pkg.id] || "Loading vendor..."}</p>{" "}
-                              &nbsp; | &nbsp;
+                              {/* <p>{vendorData[pkg.id] || "Loading vendor..."}</p>{" "}
+                              &nbsp; | &nbsp; */}
                               <p>
                                 {new Date(pkg.created_at).toLocaleDateString()}
                               </p>

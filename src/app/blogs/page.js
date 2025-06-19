@@ -540,7 +540,7 @@ function page() {
             {currentBlogs.length > 0 && (
               <div className="d-flex justify-content-center">
                 <img
-                  src={currentBlogs[0].banner_image_url}
+                  src="/images/banner-02.jpg"
                   className="lap-view col-12 object-fit-cover"
                   alt="Banner"
                 />

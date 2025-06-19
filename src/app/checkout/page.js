@@ -40,6 +40,54 @@ const Checkout = () => {
   ]);
   const [nextTravellerId, setNextTravellerId] = useState(2);
 
+  // Get booking data from localStorage
+  const jsonString = localStorage.getItem("booking_data");
+  const dataString = localStorage.getItem("data");
+
+  // Parse the JSON strings into objects
+  const data = JSON.parse(jsonString);
+  const slugPackageData = JSON.parse(dataString);
+
+  const [price, setPrice] = useState({
+    adult_price: slugPackageData?.adult_price || 0,
+    child_price: slugPackageData?.child_price || 0,
+    infant_price: slugPackageData?.infant_price || 0,
+  });
+
+  // Calculate initial totals from booking data
+  const initialTotals = {
+    adults: 0,
+    children: 0,
+    infants: 0,
+  };
+
+  const finalTotals =
+    data?.rooms?.reduce((accumulator, currentRoom) => {
+      accumulator.adults += currentRoom.adults;
+      accumulator.children += currentRoom.children;
+      accumulator.infants += currentRoom.infants;
+      return accumulator;
+    }, initialTotals) || initialTotals;
+
+  const [guests, setGuests] = useState({
+    adults: finalTotals.adults,
+    children: finalTotals.children,
+    infants: finalTotals.infants,
+  });
+
+  const [slugPackage, setSlugPackage] = useState([]);
+
+  // Calculate total price
+  const calculateTotalPrice = () => {
+    const adultTotal = guests.adults * (price.adult_price || 0);
+    const childTotal = guests.children * (price.child_price || 0);
+    const infantTotal = guests.infants * (price.infant_price || 0);
+
+    return adultTotal + childTotal + infantTotal;
+  };
+
+  const totalPrice = calculateTotalPrice();
+
   const handleInputChange = (travellerId, field, value) => {
     setTravellers((prevTravellers) =>
       prevTravellers.map((traveller) =>
@@ -73,34 +121,6 @@ const Checkout = () => {
     setNextTravellerId(nextTravellerId + 1);
   };
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTimeLeft((prevTime) => {
-        if (prevTime <= 0) {
-          clearInterval(interval);
-          return 0;
-        }
-        return prevTime - 1;
-      });
-    }, 1000); // 1000 ms = 1 second
-
-    return () => clearInterval(interval);
-  }, []);
-
-  // Format time to "mins:sec"
-  const minutes = Math.floor(timeLeft / 60);
-  const seconds = timeLeft % 60;
-
-  const toggleAccordion = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const [guests, setGuests] = useState({
-    adults: 0,
-    children: 0,
-    infants: 0,
-  });
-
   const updateGuestCount = (type, change) => {
     setGuests((prevGuests) => {
       const newValue = prevGuests[type] + change;
@@ -111,6 +131,57 @@ const Checkout = () => {
       return prevGuests;
     });
   };
+
+  const toggleAccordion = () => {
+    setIsOpen(!isOpen);
+  };
+
+  // Update price when slugPackageData changes
+  useEffect(() => {
+    if (slugPackageData) {
+      setPrice({
+        adult_price: slugPackageData.adult_price || 0,
+        child_price: slugPackageData.child_price || 0,
+        infant_price: slugPackageData.infant_price || 0,
+      });
+    }
+  }, []);
+
+  // Timer effect
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimeLeft((prevTime) => {
+        if (prevTime <= 0) {
+          clearInterval(interval);
+          return 0;
+        }
+        return prevTime - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // Fetch packages data
+  useEffect(() => {
+    const fetchPackageData = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}packages`
+        );
+        const packageData = response.data.data || response.data || [];
+        console.log("packages Data:", packageData);
+        setSlugPackage(packageData);
+      } catch (err) {
+        console.error("Error fetching data:", err);
+      }
+    };
+    fetchPackageData();
+  }, []);
+
+  // Format time to "mins:sec"
+  const minutes = Math.floor(timeLeft / 60);
+  const seconds = timeLeft % 60;
 
   const pakageDetailsOtherPackages = [
     {
@@ -150,22 +221,6 @@ const Checkout = () => {
       image: "/images/other-packages/06.jpg",
     },
   ];
-  const [slugPackage, setSlugPackage] = useState([]);
-  useEffect(() => {
-    const fetchPackageData = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}packages`
-        );
-        const packageData = response.data.data || response.data || [];
-        console.log("packages Data:", packageData);
-        setSlugPackage(packageData);
-      } catch (err) {
-        console.error("Error fetching data:", err);
-      }
-    };
-    fetchPackageData();
-  }, []);
 
   return (
     <div>
@@ -334,52 +389,6 @@ const Checkout = () => {
                         </div>
                       </div>
                     ))}
-                    {/* <div className="d-flex flex-md-row flex-column justify-content-between">
-                          <p
-                            className="align-items-center d-flex cursor-pointer "
-                            style={{ color: '#5ab2b3' }}
-                            onClick={handleAddTraveller}
-                          >
-                            <FaUser size={23} className="me-3" color="#e7e7e7" />
-                            <span className="d-flex flex-column">
-                              <span style={{ fontSize: '11px' }}>Traveller {nextTravellerId}</span>
-                              <span className=' fw-semibold'>Add Traveller </span>
-                            </span>
-                            <FaPlus size={23} className="ms-lg-2 ms-md-2 ms-0" color="#5ab2b3" style={{ marginTop: '6px' }}
-                            />
-                          </p>
-                          <label className="my-3 text-black-50">*Adult-Should be Above 18 Years</label>
-                        </div> */}
-
-                    {/* <div className="d-flex flex-lg-row flex-md-column flex-column gap-xl-5 gap-lg-2 gap-3 justify-content-between col-12 align-items-center py-3" style={{ fontFamily: 'sans-serif' }}>
-                          {['adults', 'children', 'infants'].map((type) => (
-                            <div key={type} className="d-flex align-items-center me-3 px-1" style={{background: '#f6f6f6'}}> 
-                            <div className="d-flex align-items-center">
-                                  <span className="me-1">
-                                    {type === 'adults' ? <GiPerson size={23} color="#5ab2b3"/> : type === 'children' ? <MdOutlineBoy color="#5ab2b3" size={21}/> : <FaBaby color="#5ab2b3" size={18} />}
-                                  </span>
-                                </div>
-                              <div className="d-flex flex-column" >
-                              <span className="fw-bold  me-xl-5 me-lg-4 me-5" style={{fontSize: '13.5px', height: '15px'}}>{type.charAt(0).toUpperCase() + type.slice(1)}</span>
-                                <span className="small text-muted" style={{fontSize: '11px'}}>
-                                  {type === 'adults' ? '16+ years' : type === 'children' ? '2-15 years' : 'Under 2'}
-                                </span>
-                              </div>
-                              < PiMinusCircleFill color="#5ab2b3"
-                                onClick={() => updateGuestCount(type, -1)}
-                                disabled={guests[type] === 0}
-                                  size={22}/ >
-                       
-                              <span className={`fw-bold ${style["count"]} px-2`} style={{ minWidth: '20px', textAlign: 'center' }}>
-                                {guests[type]}
-                              </span>
-                              <BiSolidPlusCircle color="#5ab2b3"
-                                onClick={() => updateGuestCount(type, 1)}
-                                size={22}   /  >
-                         
-                            </div>
-                          ))}
-                        </div> */}
 
                     <div>
                       <h1 className="m-2 pt-2 pb-2 ms-0 fw-bolder">
@@ -446,19 +455,6 @@ const Checkout = () => {
               </div>
 
               <div className="col-md-4 my-md-0 my-5">
-                {/* <div className={style["flex-checkout-details-right"]}>
-                      <div className='d-flex flex-lg-row flex-md-column flex-row ms-xxl-5 ps-0 ps-lg-5 ms-3 col-12'>
-                   
-                        <span>
-                          <button className={style["btn-two"]}>Contact Seller</button>
-                          <p className="col-12" style={{ fontSize: '9px' }}>
-                            You can now directly communicate<br className='d-xl-block d-none'/> with the Seller of this package
-                          </p>
-                        </span>
-                     
-                      </div>
-                    </div> */}
-
                 <label className="text-black fw-semibold fs-4">
                   Package Price
                 </label>
@@ -476,19 +472,62 @@ const Checkout = () => {
                     <span>
                       <b>Price</b>
                     </span>
-                    <span>AED 121.00</span>
                   </h5>
-                  <p className="text-black">2 Adult </p>
-                  <p className="text-black">1 Children</p>
+
+                  {/* Show adult pricing if there are adults */}
+                  {guests.adults > 0 && (
+                    <div className="d-flex justify-content-between">
+                      <p className="text-black">
+                        {guests.adults} Adult{guests.adults > 1 ? "s" : ""}
+                      </p>
+                      {/* <p className="text-black">
+                        AED{" "}
+                        {(guests.adults * (price.adult_price || 0)).toFixed(2)}
+                      </p> */}
+                    </div>
+                  )}
+
+                  {/* Show children pricing if there are children */}
+                  {guests.children > 0 && (
+                    <div className="d-flex justify-content-between">
+                      <p className="text-black">
+                        {guests.children} Child
+                        {guests.children > 1 ? "ren" : ""}
+                      </p>
+                      {/* <p className="text-black">
+                        AED{" "}
+                        {(guests.children * (price.child_price || 0)).toFixed(
+                          2
+                        )}
+                      </p> */}
+                    </div>
+                  )}
+
+                  {/* Show infant pricing if there are infants */}
+                  {guests.infants > 0 && (
+                    <div className="d-flex justify-content-between">
+                      <p className="text-black">
+                        {guests.infants} Infant{guests.infants > 1 ? "s" : ""}
+                      </p>
+                      {/* <p className="text-black">
+                        AED{" "}
+                        {(guests.infants * (price.infant_price || 0)).toFixed(
+                          2
+                        )}
+                      </p> */}
+                    </div>
+                  )}
+
                   <h5 className="pt-2 d-flex pb-1 justify-content-between col-11">
                     <span>
                       <b>Total</b>
                     </span>
                     <span>
-                      <b>AED 121.00</b>
+                      <b>AED {totalPrice.toFixed(2)}</b>
                     </span>
                   </h5>
                 </div>
+
                 <span className="col-10 ps-1 pt-2 d-flex justify-content-end">
                   <button className={style["btn-one"]}>Pay Now</button>
                 </span>
@@ -513,8 +552,8 @@ const Checkout = () => {
                     color="grey"
                     size={22}
                     style={{
-                      transform: isOpen ? "rotate(180deg)" : "rotate(0deg)", // Rotate the arrow when the accordion is open
-                      transition: "transform 0.3s ease", // Smooth transition for the arrow rotation
+                      transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
+                      transition: "transform 0.3s ease",
                     }}
                   />
                 </button>
