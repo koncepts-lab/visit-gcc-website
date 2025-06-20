@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from "react";
-import DatePicker from "react-datepicker";
+import React, { useState, useEffect } from 'react';
+import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import style from "./style.module.css";
-import Link from "next/link";
+import Link from 'next/link';
 import { MdOutlineCancel } from "react-icons/md";
-import axios from "axios";
+import axios from 'axios';
+import { useRouter } from 'next/navigation'; // MODIFIED: Import useRouter
+
 
 const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
   const [selectedDates, setSelectedDates] = useState([]);
@@ -27,6 +29,9 @@ const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
   const [initialCalendarMonth, setInitialCalendarMonth] = useState(new Date());
   const [isBooking, setIsBooking] = useState(false);
   const [ticketType, setTicketType] = useState("VIP");
+      const router = useRouter(); 
+
+  
 
   // Function to get all dates between start and end date
   const getDatesInRange = (startDate, endDate) => {
@@ -177,7 +182,7 @@ const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
     return timeSlots;
   };
 
-  const timeSlots = slugPackage ? generateTimeSlots() : {};
+    const timeSlots = slugPackage ? generateTimeSlots() : {};
 
   const isDateSelected = (date) => {
     return selectedDates.some(
@@ -373,11 +378,19 @@ const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
         }
       )
       .then((response) => {
+                const bookingId = response.data.data.id;
+
         console.log("Booking API Response:", response);
+     console.log("Booking API Response:", response.data.data.id);
         localStorage.setItem("booking_data", JSON.stringify(bookingData));
         localStorage.setItem("data", JSON.stringify(slugPackage));
         setIsBooking(true);
         onClose();
+                router.push(`/checkout/${bookingId}`);
+                 router.push(
+          `/checkout?bookingId=${encodeURIComponent(bookingId)}`
+        );
+
       })
       .catch((error) => {
         console.error("Error booking package:", error);
@@ -604,7 +617,6 @@ const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
           </div>
           {error && <div className="room-alert mt-2">{error}</div>}
           <div className="mt-4 flex">
-            <Link href="/checkout" passHref>
               <button
                 onClick={handleBookNow}
                 className="bg-blue-600 text-white rounded col-12"
@@ -618,7 +630,6 @@ const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
               >
                 {isBooking ? "Processing..." : "Proceed"}
               </button>
-            </Link>
           </div>
         </div>
       </div>

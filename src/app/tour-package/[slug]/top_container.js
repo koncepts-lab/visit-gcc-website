@@ -11,6 +11,7 @@ import axios from "axios";
 import EnhancedDatePicker from "./date";
 import EnquiryForm from "@components/enquiry-form";
 import { enqueueSnackbar } from "notistack";
+import { useRouter } from "next/navigation"; // MODIFIED: Import useRouter for redirection
 
 export default function Top_container({ packageId }) {
   const [packageDetails, setPackageDetails] = useState(null);
@@ -22,6 +23,8 @@ export default function Top_container({ packageId }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [vendorName, setVendorName] = useState("");
+    const router = useRouter();
+  
 
   useEffect(() => {
     const fetchPackageData = async () => {
@@ -63,7 +66,13 @@ export default function Top_container({ packageId }) {
   }, [packageId]);
 
   const handleBookNowClick = () => {
-    setIsDatePickerPopupOpen(true);
+  const loginToken = localStorage.getItem("auth_token_login");
+    
+    if (loginToken) {
+      setIsDatePickerPopupOpen(true);
+    } else {
+      router.push("/login");
+    }
   };
 
   const handleCloseDatePickerPopup = () => {
