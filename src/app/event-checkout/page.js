@@ -16,23 +16,23 @@ import {
 import { GoShare } from "react-icons/go";
 import Ask_ur_questions from "@components/ask_ur_questions/ask_ur_questions";
 import axios from "axios";
+import { useSearchParams } from "next/navigation";
 
 const Checkout = () => {
   const [isOpen, setIsOpen] = useState(false);
   const initialTime = 720;
   const [timeLeft, setTimeLeft] = useState(initialTime);
-  const [gender, setGender] = useState("");
-  const [travellers, setTravellers] = useState([
-    {
-      id: 1,
-      lastName: "",
-      firstName: "",
-      idType: "",
-      idNumber: "",
-      gender: "",
-    },
-  ]);
-  const [nextTravellerId, setNextTravellerId] = useState(2);
+
+  // State to hold the entire API response
+  const [bookingDetails, setBookingDetails] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  
+  const [travellers, setTravellers] = useState([]);
+  const [nextTravellerId, setNextTravellerId] = useState(1);
+  
+  const searchParams = useSearchParams();
+  const bookingId = searchParams.get("bookingId") || "";
 
   const handleInputChange = (travellerId, field, value) => {
     setTravellers((prevTravellers) =>
@@ -52,21 +52,6 @@ const Checkout = () => {
     );
   };
 
-  const handleAddTraveller = () => {
-    setTravellers((prevTravellers) => [
-      ...prevTravellers,
-      {
-        id: nextTravellerId,
-        lastName: "",
-        firstName: "",
-        idType: "",
-        idNumber: "",
-        gender: "",
-      },
-    ]);
-    setNextTravellerId(nextTravellerId + 1);
-  };
-
   useEffect(() => {
     const interval = setInterval(() => {
       setTimeLeft((prevTime) => {
@@ -76,12 +61,11 @@ const Checkout = () => {
         }
         return prevTime - 1;
       });
-    }, 1000); // 1000 ms = 1 second
+    }, 1000);
 
     return () => clearInterval(interval);
   }, []);
 
-  // Format time to "mins:sec"
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
 
@@ -89,39 +73,113 @@ const Checkout = () => {
     setIsOpen(!isOpen);
   };
 
-  const [guests, setGuests] = useState({
-    adults: 0,
-    children: 0,
-    infants: 0,
-  });
-
-  const updateGuestCount = (type, change) => {
-    setGuests((prevGuests) => {
-      const newValue = prevGuests[type] + change;
-
-      if (newValue >= 0 && newValue <= 3) {
-        return { ...prevGuests, [type]: newValue };
-      }
-      return prevGuests;
-    });
-  };
-
   const [slugPackage, setSlugPackage] = useState([]);
   useEffect(() => {
-    const fetchPackageData = async () => {
+    const fetchOtherPackages = async () => {
       try {
         const response = await axios.get(
           `${process.env.NEXT_PUBLIC_API_URL}packages`
         );
         const packageData = response.data.data || response.data || [];
-        console.log("packages Data:", packageData);
         setSlugPackage(packageData);
       } catch (err) {
-        console.error("Error fetching data:", err);
+        console.error("Error fetching other packages:", err);
       }
     };
-    fetchPackageData();
+    fetchOtherPackages();
   }, []);
+
+  useEffect(() => {
+    if (!bookingId) {
+      setError("Booking ID is missing from the URL.");
+      setIsLoading(false);
+      return;
+    }
+
+    const fetchBookingData = async () => {
+      const loginToken = localStorage.getItem("auth_token_login");
+      if (!loginToken) {
+        setError("Please log in to view your booking details.");
+        setIsLoading(false);
+        return;
+      }
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}booking-details/${bookingId}`,
+          {
+            headers: { Authorization: `Bearer ${loginToken}` },
+          }
+        );
+        const apiData = response.data || {};
+        if (!apiData.booking) {
+            throw new Error("Invalid booking data received from API.");
+        }
+        setBookingDetails(apiData);
+
+        // Dynamically create traveler forms for each adult
+        const totalAdults = apiData.total_adults || 0;
+        const initialTravellers = Array.from({ length: totalAdults }, (_, i) => ({
+            id: i + 1,
+            lastName: "",
+            firstName: "",
+            idType: "",
+            idNumber: "",
+            gender: "",
+        }));
+        setTravellers(initialTravellers);
+        setNextTravellerId(totalAdults + 1);
+
+      } catch (err) {
+        console.error("Error fetching booking data:", err);
+        setError("Failed to fetch booking details. Please try again.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchBookingData();
+  }, [bookingId]);
+  
+  // Helper to format date with weekday
+  const formatDate = (dateString) => {
+    if (!dateString) return "Not available";
+    const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString('en-US', options);
+  };
+
+  // Helper to format time to AM/PM
+  const formatTime = (timeString) => {
+      if (!timeString) return "";
+      const [hour, minute] = timeString.split(':');
+      const h = parseInt(hour, 10);
+      const m = parseInt(minute, 10);
+      const ampm = h >= 12 ? 'PM' : 'AM';
+      const formattedHour = h % 12 === 0 ? 12 : h % 12;
+      return `${formattedHour.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')} ${ampm}`;
+  };
+
+  if (isLoading) {
+    return <div className="container text-center py-5"><h2>Loading your booking details...</h2></div>;
+  }
+  if (error) {
+    return <div className="container text-center py-5"><h2 className="text-danger">{error}</h2></div>;
+  }
+  if (!bookingDetails) {
+    return <div className="container text-center py-5"><h2>No booking details found.</h2></div>;
+  }
+  
+  // Safe data extraction with fallbacks
+  const bookingInfo = bookingDetails.booking;
+  const itemDetails = bookingInfo.event || bookingInfo.package || bookingInfo.attraction || {};
+  
+  const itemName = itemDetails.name || "Your Booking";
+  const itemAdultPrice = parseFloat(itemDetails.adult_price || 0).toFixed(2);
+  const itemStartDate = formatDate(bookingInfo.start_date);
+  const itemStartTime = formatTime(itemDetails.start_time);
+  const itemEndTime = formatTime(itemDetails.end_time);
+  const totalAmount = parseFloat(bookingInfo.total_amount || 0).toFixed(2);
+  const totalAdults = bookingDetails.total_adults || 0;
+  const totalChildren = bookingDetails.total_children || 0;
+  const totalInfants = bookingDetails.total_infants || 0;
 
   return (
     <div>
@@ -132,12 +190,12 @@ const Checkout = () => {
             <div className="row pt-5">
               {/* LEFT SIDE - Personal Information */}
               <div className="col-md-8">
-                <h2 className="fw-bolder">Rabeh Saqer Night</h2>
+                <h2 className="fw-bolder">{itemName}</h2>
                 <p style={{ fontSize: "14px", color: "black" }}>
                   Things to do{" "}
                 </p>
                 <p className="fs-6">
-                  <Link href="#">
+                  <Link href="/login">
                     <span style={{ color: "#5ab2b3" }} className="fs-6">
                       {" "}
                       Register or Sign in
@@ -321,7 +379,7 @@ const Checkout = () => {
                   className={`d-flex justify-content-between ${style["price-container"]}`}
                 >
                   <div className="d-flex">
-                    <span className="fw-bolder fs-4 text-center ">₹6,599</span>
+                    <span className="fw-bolder fs-4 text-center ">AED {itemAdultPrice}</span>
                   </div>
                   <div className="d-flex flex-column gap-2 align-items-end">
                     <div className="d-flex gap-2">
@@ -346,15 +404,15 @@ const Checkout = () => {
                 </div>
 
                 <div className="my-4">
-                  <h3 className="fw-bolder">Dubai Frame</h3>
+                  <h3 className="fw-bolder">{itemName}</h3>
                   <p style={{ color: "#80878b" }}>Entry Ticket</p>
                   <div className="d-flex align-items-center mb-2">
                     <FaRegCalendarAlt color="#80878b" className="me-2" />
-                    <span>Sun, Feb 09</span>
+                    <span>{itemStartDate}</span>
                   </div>
                   <div className="d-flex align-items-center">
                     <FaRegClock color="#80878b" className="me-2" />
-                    <span>11:00 AM - 07:00 PM</span>
+                    <span>{itemStartTime} - {itemEndTime}</span>
                   </div>
                 </div>
                 <hr />
@@ -362,20 +420,23 @@ const Checkout = () => {
                 <div className="text-black">
                   <div className="d-flex justify-content-between">
                     <p>Price</p>
-                    <p className="fw-semibold">AED 121.00</p>
+                    <p className="fw-semibold">AED {totalAmount}</p>
                   </div>
-                  <p className="text-black-50" style={{ marginTop: "-10px" }}>
-                    2 Adult
-                  </p>
-                  <p className="text-black-50" style={{ marginTop: "-10px" }}>
-                    1 Children
-                  </p>
+                  {totalAdults > 0 && <p className="text-black-50" style={{ marginTop: "-10px" }}>
+                    {totalAdults} Adult{totalAdults > 1 ? "s" : ""}
+                  </p>}
+                  {totalChildren > 0 && <p className="text-black-50" style={{ marginTop: "-10px" }}>
+                    {totalChildren} Child{totalChildren > 1 ? "ren" : ""}
+                  </p>}
+                  {totalInfants > 0 && <p className="text-black-50" style={{ marginTop: "-10px" }}>
+                    {totalInfants} Infant{totalInfants > 1 ? "s" : ""}
+                  </p>}
                 </div>
                 <hr />
 
                 <div className="d-flex justify-content-between pt-1">
                   <p className="fw-bolder fs-5">Total</p>
-                  <p className="fw-bolder fs-5">AED 121.00</p>
+                  <p className="fw-bolder fs-5">AED {totalAmount}</p>
                 </div>
 
                 <p
@@ -405,27 +466,6 @@ const Checkout = () => {
                 </button>
                 <hr className="mt-2" />
 
-                {/* <div className="my-2">
- <label className="text-black fw-semibold fs-4">
- Promotions
- </label>
- <br />
- <label className="pt-1">Promo Code</label>
- <br />
- <div className="d-flex">
- <input
- className={`${style["promo_input"]} col-8`}
- style={{ height: "38px" }}
- />
- <button
- className={`${style["btn-one"]}`}
- style={{ padding: "6px 20px" }}
- >
- Apply
- </button>
- </div>
- </div> */}
-
                 <div className="pt-4 d-flex flex-xl-row flex-lg-column flex-column">
                   <div>
                     <label
@@ -437,8 +477,8 @@ const Checkout = () => {
                     <br />
                     <p>
                       {" "}
-                      &nbsp; Ticket price or availability updates
-                      <br className="d-lg-block d-none" /> &nbsp; after promo
+                        Ticket price or availability updates
+                      <br className="d-lg-block d-none" />   after promo
                       applications
                     </p>
                   </div>
@@ -475,9 +515,6 @@ const Checkout = () => {
                       <button className={`${style["ordinary_button"]}`}>
                         <GoShare size={21} /> Share
                       </button>
-                      {/* <button className={`${style["ordinary_button"]}`}>
- <FaRegHeart size={20} /> Save
- </button> */}
                     </div>
                   </div>
                 </div>

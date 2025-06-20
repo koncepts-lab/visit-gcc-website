@@ -16,38 +16,6 @@ function Home() {
   const [loading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Static data for experiences and blogs
-  const experienceData = [
-    {
-      id: 1,
-      heading: "Experience 1",
-      image: "/images/experience/01.jpg",
-      description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-    },
-    {
-      id: 2,
-      heading: "Experience 2",
-      image: "/images/experience/02.jpg",
-      description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-    },
-    {
-      id: 3,
-      heading: "Experience 3",
-      image: "/images/experience/03.jpg",
-      description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-    },
-    {
-      id: 4,
-      heading: "Experience 4",
-      image: "/images/experience/04.jpg",
-      description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-    },
-  ];
-
   useEffect(() => {
     const fetchAllBlog = async () => {
       try {
@@ -190,7 +158,7 @@ function Home() {
                 View All
               </Link>
             </div>
-            <Carousal packages={attractions} count={3} type="home-package" />
+            <Carousal packages={attractions} count={3} type="home-attractions" />
           </div>
         </div>
       </div>

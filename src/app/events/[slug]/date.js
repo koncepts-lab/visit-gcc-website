@@ -5,6 +5,7 @@ import style from "./style.module.css";
 import Link from "next/link";
 import { MdOutlineCancel } from "react-icons/md";
 import axios from "axios";
+import { useRouter } from 'next/navigation';
 
 const DatePickerWithHover = ({ onClose, eventId, type = "event" }) => {
   // MODIFIED: State changed from an array of dates to a single date object or null.
@@ -21,10 +22,11 @@ const DatePickerWithHover = ({ onClose, eventId, type = "event" }) => {
     end: null,
   });
   const [initialCalendarMonth, setInitialCalendarMonth] = useState(new Date());
-  const [isBooking, setIsBooking] = useState(false);
   const [ticketType, setTicketType] = useState("VIP");
+    const router = useRouter(); 
+    const [isBooking, setIsBooking] = useState(false);
+  
 
-  // Fetch event data from API
   useEffect(() => {
     const fetchEventData = async () => {
       try {
@@ -100,7 +102,7 @@ const DatePickerWithHover = ({ onClose, eventId, type = "event" }) => {
           setTimeout(() => setShowRoomAlert(false), 3000);
         }
       }
-      return prevRoom; // Return previous state if no change
+      return prevRoom; 
     });
   };
 
@@ -116,7 +118,6 @@ const DatePickerWithHover = ({ onClose, eventId, type = "event" }) => {
     }
   };
 
-  // MODIFIED: Logic updated to handle a single date selection.
   const handleDateChange = (date) => {
     if (!isDateInValidRange(date)) return;
     setSelectedDate(date);
@@ -199,12 +200,17 @@ const DatePickerWithHover = ({ onClose, eventId, type = "event" }) => {
         }
       )
       .then((response) => {
+        const bookingId = response.data.data.id;
         console.log("Booking API Response:", response);
         localStorage.setItem("booking_data", JSON.stringify(bookingData));
         localStorage.setItem("data", JSON.stringify(slugEvent));
         setIsBooking(false);
         onClose();
+         router.push(
+          `/event-checkout?bookingId=${encodeURIComponent(bookingId)}`
+        );
       })
+      
       .catch((error) => {
         console.error("Error booking event:", error);
         setError(
@@ -408,7 +414,6 @@ const DatePickerWithHover = ({ onClose, eventId, type = "event" }) => {
           </div>
           {error && <div className="room-alert mt-2">{error}</div>}
           <div className="mt-4 flex">
-            <Link href="/checkout" passHref>
               <button
                 onClick={handleBookNow}
                 className="bg-blue-600 text-white rounded col-12"
@@ -423,7 +428,6 @@ const DatePickerWithHover = ({ onClose, eventId, type = "event" }) => {
               >
                 {isBooking ? "Processing..." : "Proceed"}
               </button>
-            </Link>
           </div>
         </div>
       </div>

@@ -38,7 +38,7 @@ function Carousal({
   userRatingsCarosul,
   pakageDetailsOtherPackages,
   count,
-    otherBlogs,
+  otherBlogs,
   type,
   bestPicked,
   featuredTravel,
@@ -152,7 +152,19 @@ function Carousal({
               photo_url={pkg?.photo_urls[0] || ""}
               name={pkg.name}
               description={pkg.description}
-              link={pkg.id.toString()}
+              link={`/tour-package/${pkg.id.toString()}`}
+            />
+          </div>
+        ))}
+
+            {type === "home-attractions" &&
+        packages.map((pkg) => (
+          <div key={pkg.id} className="home-package-item">
+            <SingleHomePackage
+              photo_url={pkg?.photo_urls[0] || ""}
+              name={pkg.name}
+              description={pkg.description}
+              link={`/attractions/${pkg.id.toString()}`}
             />
           </div>
         ))}

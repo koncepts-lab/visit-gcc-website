@@ -8,7 +8,7 @@ const ArrowIcon = () => <FaArrowRightLong />;
 function SingleHomePackage({ link, photo_url, name, description }) {
   return (
     <Link
-      href={`/tour-package/${link}`}
+      href={`${link}`}
       className={`item ${style["item-padding"]}`}
       style={{ height: "auto" }}
     >

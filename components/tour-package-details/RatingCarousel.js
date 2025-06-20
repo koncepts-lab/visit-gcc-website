@@ -7,6 +7,7 @@ import dynamic from "next/dynamic";
 import { IoIosStar, IoIosStarOutline } from "react-icons/io";
 import axios from "axios";
 import { useSnackbar } from "notistack";
+import { useRouter } from "next/navigation"; // MODIFIED: Import useRouter
 
 const SlickCarousel = dynamic(() => import("react-slick"), {
   ssr: false,
@@ -16,13 +17,12 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 function RatingCarousel({ packageId, type }) {
-  console.log("🚀 ~ RatingCarousel ~ type:", type);
   // Normalize type to handle case sensitivity
   const normalizedType = typeof type === "string" ? type.toLowerCase() : type;
 
   // Validate the type prop
   if (!["package", "event", "attraction"].includes(normalizedType)) {
-    console.error(`Invalid type prop: ${type}. Must be "package" or "event".`);
+    console.error(`Invalid type prop: ${type}. Must be "package", "event", or "attraction".`);
     return <div className="text-danger">Invalid component type</div>;
   }
 
@@ -37,8 +37,7 @@ function RatingCarousel({ packageId, type }) {
   const [overallRating, setOverallRating] = useState(0);
   const [totalReviews, setTotalReviews] = useState(0);
   const { enqueueSnackbar } = useSnackbar();
-
-  // Log the type prop for debugging
+  const router = useRouter(); // MODIFIED: Initialize the router
 
   // Determine the API endpoint based on type
   const getApiEndpoint = () => {
@@ -48,8 +47,6 @@ function RatingCarousel({ packageId, type }) {
     return "package-review"; // Fallback (shouldn't reach here due to validation)
   };
 
-  // Log the endpoint for debugging
-
   useEffect(() => {
     if (packageId) {
       fetchRatings();
@@ -57,16 +54,6 @@ function RatingCarousel({ packageId, type }) {
   }, [packageId, normalizedType]);
 
   const fetchRatings = async () => {
-    const registerToken = localStorage.getItem("auth_token_register");
-    const loginToken = localStorage.getItem("auth_token_login");
-    let authToken = null;
-
-    if (loginToken) {
-      authToken = loginToken;
-    } else if (registerToken) {
-      authToken = registerToken;
-    }
-
     try {
       setIsLoading(true);
       setError("");
@@ -123,21 +110,32 @@ function RatingCarousel({ packageId, type }) {
     setRating(selectedRating);
     setRatingText(ratingLabels[selectedRating] || "");
   };
-
+  
+  // MODIFIED: This function now checks for authentication before showing the review form
   const handleAddReviewClick = () => {
-    setShowRatingInput(true);
+    const registerToken = localStorage.getItem("auth_token_register");
+    const loginToken = localStorage.getItem("auth_token_login");
+    const authToken = loginToken || registerToken;
+
+    if (authToken) {
+      setShowRatingInput(true);
+    } else {
+      enqueueSnackbar("Please log in to add a review.", { variant: "warning" });
+      router.push("/login");
+    }
   };
+
 
   const handleSendReview = async () => {
     if (rating > 0 && reviewText) {
       const registerToken = localStorage.getItem("auth_token_register");
       const loginToken = localStorage.getItem("auth_token_login");
-      let authToken = null;
-
-      if (loginToken) {
-        authToken = loginToken;
-      } else if (registerToken) {
-        authToken = registerToken;
+      const authToken = loginToken || registerToken;
+      
+      if (!authToken) {
+          enqueueSnackbar("Authentication error. Please log in again.", { variant: "error" });
+          router.push('/login');
+          return;
       }
 
       try {
@@ -217,7 +215,7 @@ function RatingCarousel({ packageId, type }) {
 
   const settings = {
     dots: true,
-    infinite: true,
+    infinite: userRatings.length > 1, 
     speed: 500,
     slidesToShow: 2,
     slidesToScroll: 1,
@@ -227,7 +225,7 @@ function RatingCarousel({ packageId, type }) {
         settings: {
           slidesToShow: 2,
           slidesToScroll: 1,
-          infinite: true,
+          infinite: userRatings.length > 2,
           dots: true,
         },
       },
@@ -236,6 +234,7 @@ function RatingCarousel({ packageId, type }) {
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
+          infinite: userRatings.length > 1,
         },
       },
       {
@@ -243,14 +242,15 @@ function RatingCarousel({ packageId, type }) {
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
+          infinite: userRatings.length > 1,
         },
       },
     ],
   };
 
-  if (isLoading && !showRatingInput) {
+  if (isLoading && !showRatingInput && userRatings.length === 0) {
     return (
-      <div className="text-center">Loading {normalizedType} ratings...</div>
+      <div className="text-center py-5">Loading {normalizedType} ratings...</div>
     );
   }
 
@@ -259,12 +259,12 @@ function RatingCarousel({ packageId, type }) {
       <div className="row pt-5">
         <div className="col-md-12">
           <h4>
-            {normalizedType === "package" ? "User ratings" : "Event ratings"}
+            {normalizedType === "package" ? "User ratings" : `${normalizedType.charAt(0).toUpperCase() + normalizedType.slice(1)} ratings`}
           </h4>
-          <div className="d-flex justify-content-between">
+          <div className="d-flex justify-content-between align-items-center">
             <p className="mb-0">
-              <IoIosStar color="#FDCC0D" /> {overallRating.toFixed(1)}.{" "}
-              {getRatingText(overallRating)} ({totalReviews} reviews)
+              <IoIosStar color="#FDCC0D" /> {overallRating.toFixed(1)}
+               · {getRatingText(overallRating)} · ({totalReviews} reviews)
             </p>
             <button
               className={`${style["tabButton"]}`}
@@ -299,7 +299,7 @@ function RatingCarousel({ packageId, type }) {
         <div className="d-flex flex-column pt-4">
           <div className="d-flex align-items-center flex-column py-2">
             <div>{renderStars()}</div>
-            {ratingText && <span className="ml-2">{ratingText}</span>}
+            {ratingText && <span className="ml-2 pt-2">{ratingText}</span>}
           </div>
           <div className="d-flex">
             <textarea
@@ -329,7 +329,7 @@ function RatingCarousel({ packageId, type }) {
           <h4>
             {normalizedType === "package"
               ? "What guests loved most"
-              : "What attendees loved most"}
+              : `What ${normalizedType === 'event' ? 'attendees' : 'visitors'} loved most`}
           </h4>
         </div>
       </div>
@@ -337,10 +337,9 @@ function RatingCarousel({ packageId, type }) {
       {userRatings.length > 0 ? (
         <SlickCarousel {...settings}>
           {userRatings.map((item) => (
-            <Link
+            <div
               key={item.id}
               className={`item ${style["item-padding"]}`}
-              href="#0"
             >
               <div className={style["country-explore-item"]}>
                 <div className={style["country-explore-text"]}>
@@ -365,7 +364,7 @@ function RatingCarousel({ packageId, type }) {
                   </div>
                 </div>
               </div>
-            </Link>
+            </div>
           ))}
         </SlickCarousel>
       ) : (

@@ -5,8 +5,7 @@ import style from "./style.module.css";
 import Link from 'next/link';
 import { MdOutlineCancel } from "react-icons/md";
 import axios from 'axios';
-import { useRouter } from 'next/navigation'; // MODIFIED: Import useRouter
-
+import { useRouter } from 'next/navigation';
 
 const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
   const [selectedDates, setSelectedDates] = useState([]);
@@ -29,11 +28,9 @@ const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
   const [initialCalendarMonth, setInitialCalendarMonth] = useState(new Date());
   const [isBooking, setIsBooking] = useState(false);
   const [ticketType, setTicketType] = useState("VIP");
-      const router = useRouter(); 
+  const [isSelectionFixed, setIsSelectionFixed] = useState(false); // MODIFIED: State to lock selection
+  const router = useRouter(); 
 
-  
-
-  // Function to get all dates between start and end date
   const getDatesInRange = (startDate, endDate) => {
     const dates = [];
     const currentDate = new Date(startDate);
@@ -81,6 +78,7 @@ const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
 
         if (!singlePackageData.start_date || !singlePackageData.end_date) {
           setCustomDateRange(true);
+          setIsSelectionFixed(false); // MODIFIED: Selection is not fixed for custom ranges
           setSelectionDays(numberOfDays);
           setInitialCalendarMonth(new Date());
         } else {
@@ -96,10 +94,12 @@ const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
             totalDays: totalDays,
           });
 
+          // MODIFIED: Logic to handle fixed date ranges
           if (totalDays <= numberOfDays) {
             const dateRange = getDatesInRange(startDate, endDate);
             setSelectedDates(dateRange);
             setSelectionDays(totalDays);
+            setIsSelectionFixed(true); // Lock the selection
           } else {
             setSelectionDays(numberOfDays);
             const defaultRange = getContinuousDateRange(
@@ -107,6 +107,7 @@ const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
               numberOfDays
             );
             setSelectedDates(defaultRange);
+            setIsSelectionFixed(false); // Allow user to change selection
           }
         }
 
@@ -256,38 +257,32 @@ const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
   };
 
   const handleDateChange = (date) => {
+    // MODIFIED: If selection is fixed, do not allow any changes.
+    if (isSelectionFixed) {
+      return;
+    }
+
     if (!isDateInValidRange(date)) return;
 
     const numberOfDays = slugPackage?.number_of_days || 5;
 
-    if (customDateRange || packageDateRange.totalDays <= numberOfDays) {
-      if (isDateSelected(date)) {
-        setSelectedDates((prevDates) =>
-          prevDates.filter(
-            (d) =>
-              !(
-                d.getDate() === date.getDate() &&
-                d.getMonth() === date.getMonth() &&
-                d.getFullYear() === date.getFullYear()
-              )
-          )
-        );
-      } else {
-        if (customDateRange) {
-          const newRange = getContinuousDateRange(date, numberOfDays);
-          setSelectedDates(newRange);
+    // This logic now only applies to scenarios where the date is not fixed.
+    if (customDateRange) {
+        if (isDateSelected(date)) {
+            setSelectedDates([]); // Deselect if the start of a range is clicked
         } else {
-          setSelectedDates((prevDates) => [...prevDates, date]);
+            const newRange = getContinuousDateRange(date, numberOfDays);
+            setSelectedDates(newRange);
         }
-      }
     } else {
-      const maxStartDate = new Date(packageDateRange.end);
-      maxStartDate.setDate(maxStartDate.getDate() - (selectionDays - 1));
+        // This handles cases where totalDays > numberOfDays
+        const maxStartDate = new Date(packageDateRange.end);
+        maxStartDate.setDate(maxStartDate.getDate() - (selectionDays - 1));
 
-      let startDate = date > maxStartDate ? maxStartDate : date;
-      const newRange = getContinuousDateRange(startDate, selectionDays);
-      const validRange = newRange.filter((d) => d <= packageDateRange.end);
-      setSelectedDates(validRange);
+        let startDate = date > maxStartDate ? maxStartDate : date;
+        const newRange = getContinuousDateRange(startDate, selectionDays);
+        const validRange = newRange.filter((d) => d <= packageDateRange.end);
+        setSelectedDates(validRange);
     }
   };
 
@@ -330,10 +325,9 @@ const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
     return date.toLocaleDateString(undefined, options);
   };
 
-  // MODIFIED: Helper function to correctly format date to YYYY-MM-DD
   const toYyyyMmDd = (date) => {
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+    const month = String(date.getMonth() + 1).padStart(2, "0");
     const day = String(date.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
   };
@@ -346,7 +340,6 @@ const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
     const sortedDates = [...selectedDates].sort((a, b) => a - b);
 
     const bookingData = {
-      // MODIFIED: Use the timezone-safe helper function
       start_date: toYyyyMmDd(sortedDates[0]),
       end_date: toYyyyMmDd(sortedDates[sortedDates.length - 1]),
       customer_country: customerCountry,
@@ -378,19 +371,16 @@ const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
         }
       )
       .then((response) => {
-                const bookingId = response.data.data.id;
-
+        const bookingId = response.data.data.id;
         console.log("Booking API Response:", response);
-     console.log("Booking API Response:", response.data.data.id);
+        console.log("Booking API Response:", response.data.data.id);
         localStorage.setItem("booking_data", JSON.stringify(bookingData));
         localStorage.setItem("data", JSON.stringify(slugPackage));
         setIsBooking(true);
         onClose();
-                router.push(`/checkout/${bookingId}`);
-                 router.push(
+        router.push(
           `/checkout?bookingId=${encodeURIComponent(bookingId)}`
         );
-
       })
       .catch((error) => {
         console.error("Error booking package:", error);
@@ -438,8 +428,6 @@ const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
   if (isLoading) return <p>Loading...</p>;
   if (error && !slugPackage) return <p>Error: {error}</p>;
 
-  const numberOfDays = slugPackage?.number_of_days || 5;
-
   return (
     <div className={`bg-white ${style["date-pick-container"]}`}>
       <div
@@ -461,6 +449,7 @@ const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
           </p>
           <style>{customStyles}</style>
           <div className="relative">
+        
             <DatePicker
               openToDate={initialCalendarMonth}
               onChange={handleDateChange}
