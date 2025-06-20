@@ -48,7 +48,7 @@ const Banner = () => {
       id: 4,
       title: "Book",
       image: "../images/Book.svg",
-      hoverImage: "../images/Book Mouse Over.svg", // Assumed hover image path
+      hoverImage: "../images/Book Mouse Over.svg", 
       onClick: null,
       isLink: false,
       link: "",
