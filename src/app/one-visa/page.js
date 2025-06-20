@@ -179,7 +179,7 @@ const OneVisa = () => {
                 className={`carousel-item ${index === 0 ? "active" : ""}`}
                 key={index}
               >
-                <div className="row justify-content-center flex-nowrap gx-3">
+                <div className="row justify-content-center justify-content-sm-start flex-nowrap gx-3">
                   {" "}
                   {/* Added gx-3 for some gutter */}
                   {itemCards.map((card, cardIndex) => (
@@ -387,9 +387,9 @@ const OneVisa = () => {
           >
             Key Features Of The GCC Unified Visa
           </h2>
-          <div className="row g-4 setWidth">
+          <div className="d-flex flex-xl-row flex-column gap-4 setWidth">
             {/* Easy Multi Access */}
-            <div className="col-md-4">
+            <div className="col-xl-4">
               <div className="card h-100 text-center p-4">
                 <img src="/images/one-visa/icon-06.svg" style={{height: '44px'}} className="bi mb-3 mx-auto"/>
 
@@ -405,7 +405,7 @@ const OneVisa = () => {
             </div>
 
             {/* Cost-Effective */}
-            <div className="col-md-4">
+            <div className="col-xl-4">
               <div className="card h-100 text-center p-4">
                 <img src="/images/one-visa/icons-07.svg" style={{height: '44px'}} className="bi mb-3 mx-auto"/>
 
@@ -420,7 +420,7 @@ const OneVisa = () => {
             </div>
 
             {/* Expanded Opportunities */}
-            <div className="col-md-4">
+            <div className="col-xl-4">
               <div className="card h-100 text-center p-4">
                 <img src="/images/one-visa/icons-07.svg" style={{height: '44px'}} className="bi mb-3 mx-auto"/>
                 <h5 className="card-title">Expanded Opportunities</h5>
@@ -447,7 +447,7 @@ const OneVisa = () => {
           </h2>
           <div className="row justify-content-center align-items-stretch g-0">
             {/* Left Sidebar */}
-            <div className="col-md-2 col-lg-2 d-none d-md-flex flex-column">
+            <div className="col-md-2 col-lg-2 d-none d-xl-flex flex-column">
               {stakeholderSidebarItemsConfig.left.map((item, index) => (
                 <div
                   key={`left-sidebar-${index}`}
@@ -463,7 +463,7 @@ const OneVisa = () => {
             </div>
 
             {/* Central Content */}
-            <div className="col-12 col-md-8 col-lg-7">
+            <div className="col-12 col-md-12 col-lg-12 col-xl-7">
               <div className="bg-white shadow-sm h-100">
                 <div className="row g-0">
                   {" "}
@@ -637,7 +637,7 @@ const OneVisa = () => {
             </div>
 
             {/* Right Sidebar */}
-            <div className="col-md-2 col-lg-2 d-none d-md-flex flex-column">
+            <div className="col-md-2 col-lg-2 d-none d-xl-flex flex-column">
               {stakeholderSidebarItemsConfig.right.map((item, index) => (
                 <div
                   key={`right-sidebar-${index}`}
