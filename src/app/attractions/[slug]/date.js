@@ -5,6 +5,7 @@ import style from "./style.module.css";
 import Link from 'next/link';
 import { MdOutlineCancel } from "react-icons/md";
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 
 const DatePickerWithHover = ({ onClose, packageId, type = "attraction" }) => {
   const [selectedDates, setSelectedDates] = useState([]);
@@ -27,7 +28,8 @@ const DatePickerWithHover = ({ onClose, packageId, type = "attraction" }) => {
   const [initialCalendarMonth, setInitialCalendarMonth] = useState(new Date());
   const [isBooking, setIsBooking] = useState(false);
   const [ticketType, setTicketType] = useState("VIP");
-  const [bookingId, setBookingId] = useState("");
+  const router = useRouter(); 
+  
 
   // Function to get all dates between start and end date
   const getDatesInRange = (startDate, endDate) => {
@@ -387,14 +389,17 @@ const DatePickerWithHover = ({ onClose, packageId, type = "attraction" }) => {
         }
       )
       .then((response) => {
+                        const bookingId = response.data.data.id;
         console.log("Booking API Response:", response);
                 console.log("Booking API Response:", response.data.data.id);
-                setBookingId(response.data.data.id);
 
         localStorage.setItem("booking_data", JSON.stringify(bookingData));
         localStorage.setItem("data", JSON.stringify(slugPackage));
         setIsBooking(true);
         onClose();
+                   router.push(
+          `/checkout?bookingId=${encodeURIComponent(bookingId)}`
+        );
       })
       .catch((error) => {
         console.error("Error booking package:", error);
@@ -621,7 +626,6 @@ const DatePickerWithHover = ({ onClose, packageId, type = "attraction" }) => {
           </div>
           {error && <div className="room-alert mt-2">{error}</div>}
           <div className="mt-4 flex">
-            <Link href={`/checkout/${bookingId}`} passHref>
               <button
                 onClick={handleBookNow}
                 className="bg-blue-600 text-white rounded col-12"
@@ -635,7 +639,6 @@ const DatePickerWithHover = ({ onClose, packageId, type = "attraction" }) => {
               >
                 {isBooking ? "Processing..." : "Proceed"}
               </button>
-            </Link>
           </div>
         </div>
       </div>

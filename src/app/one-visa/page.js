@@ -17,16 +17,9 @@ const OneVisa = () => {
       description:
         "Ideal for students attending short courses, exchange programs, or researchers engaging in collaborative academic projects.",
       icon: (
-        <svg
-          className="bi mb-3 mx-auto"
-          width="40"
-          height="40"
-          fill="currentColor"
-          viewBox="0 0 16 16"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path d="M8 0a1 1 0 0 1 1 1v1h2a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h2V1a1 1 0 0 1 1-1zm-1 2H5v10h6V3H9v1a1 1 0 0 1-2 0V2zm1 5a2 2 0 1 1 0 4 2 2 0 0 1 0-4z" />
-        </svg>
+           <img src="/images/one-visa/icons-02.svg" style={{height: '44px'}} className="bi mb-3 mx-auto"
+/>
+
       ),
     },
     {
@@ -34,16 +27,7 @@ const OneVisa = () => {
       description:
         "Explore 6 countries with one visa—from Saudi Arabia’s ancient heritage sites to Dubai’s futuristic skyline.",
       icon: (
-        <svg
-          className="bi mb-3 mx-auto"
-          width="40"
-          height="40"
-          fill="currentColor"
-          viewBox="0 0 16 15"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path d="M8 1a1 1 0 0 1 1 1v1h2a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h2V2a1 1 0 0 1 1-1zm0 4a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" />
-        </svg>
+         <img src="/images/one-visa/icons-01.svg" style={{height: '44px'}} className="bi mb-3 mx-auto"/>
       ),
     },
     {
@@ -51,16 +35,7 @@ const OneVisa = () => {
       description:
         "Attend conferences in Riyadh, sign deals in Dubai, and network in Doha without visa hassles.",
       icon: (
-        <svg
-          className="bi mb-3 mx-auto"
-          width="40"
-          height="40"
-          fill="currentColor"
-          viewBox="0 0 16 16"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H4zM8 5a2 2 0 1 1 0 4 2 2 0 0 1 0-4z" />
-        </svg>
+               <img src="/images/one-visa/icons-03.svg" style={{height: '44px'}} className="bi mb-3 mx-auto"/>
       ),
     },
     {
@@ -68,16 +43,8 @@ const OneVisa = () => {
       description:
         "Scout projects in Oman’s ports, Saudi megacities, or Bahrain’s fintech hubs with ease.",
       icon: (
-        <svg
-          className="bi mb-3 mx-auto"
-          width="40"
-          height="40"
-          fill="currentColor"
-          viewBox="0 0 16 16"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path d="M8 1a1 1 0 0 1 1 1v1h2a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h2V2a1 1 0 0 1 1-1zm0 4a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" />
-        </svg>
+    <img src="/images/one-visa/icons-04.svg" style={{height: '44px'}} className="bi mb-3 mx-auto"/>
+
       ),
     },
     {
@@ -85,16 +52,8 @@ const OneVisa = () => {
       description:
         "Creative professionals and remote workers can explore different GCC countries while continuing their work.",
       icon: (
-        <svg
-          className="bi mb-3 mx-auto"
-          width="40"
-          height="40"
-          fill="currentColor"
-          viewBox="0 0 16 16"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path d="M8 1a1 1 0 0 1 1 1v1h2a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h2V2a1 1 0 0 1 1-1zm0 4a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" />
-        </svg>
+                  <img src="/images/one-visa/icons-05.svg" style={{height: '44px'}} className="bi mb-3 mx-auto"/>
+
       ),
     },
   ];
@@ -134,28 +93,30 @@ const OneVisa = () => {
 
   const stakeholderBenefitItemsData = [
     {
-      icon: <BsAwardFill />, // Changed here
+      icon:<img src="/images/one-visa/icons-09.svg" style={{height: '44px'}} className="bi mb-3 mx-auto"/>
+, // Changed here
       title: "Reinforce Global MICE Leadership",
       description:
         "Cement Dubai/Abu Dhabi as top destinations for conferences, exhibitions, and mega-events (e.g., COP28, GITEX) with hassle-free multi-country entry.",
       borderClasses: `border-end border-bottom`,
     },
     {
-      icon: <BsGem />, // Changed here
+      icon: <img src="/images/one-visa/icons-10.svg" style={{height: '44px'}} className="bi mb-3 mx-auto"/>
+, // Changed here
       title: "Luxury Tourism Surge",
       description:
         "Attract high-net-worth travelers to Dubai's resorts and Abu Dhabi's cultural landmarks (Louvre Abu Dhabi, Sheikh Zayed Mosque) through seamless visa access.",
       borderClasses: `border-bottom`,
     },
     {
-      icon: <BsPersonWorkspace />, // Changed here
+      icon:  <img src="/images/one-visa/icons-12.svg" style={{height: '44px'}} className="bi mb-3 mx-auto"/>, // Changed here
       title: "Digital Nomad Hub",
       description:
         "Leverage the visa to retain remote workers in Dubai's “virtual working program,” boosting long-term residency and spending.",
       borderClasses: `border-end`,
     },
     {
-      icon: <BsAirplaneEnginesFill />, // Changed here
+      icon:  <img src="/images/one-visa/icons-11.svg" style={{height: '44px'}} className="bi mb-3 mx-auto"/>, // Changed here
       title: "Aviation Growth",
       description:
         "Enhance Emirates/Etihad transit passenger numbers by offering stopover tours across the GCC.",
@@ -192,50 +153,14 @@ const OneVisa = () => {
                 .marginTop{
                     margin-top: 80px;
                     }
-            }
-            
+            }  
         `}
       </style>
       {/* Hero Section */}
       <div
-        className="position-relative w-100 marginTop"
-        style={{ height: "500px" }}
+        className="position-relative w-100 "
       >
-        {/* Background Image */}
-        <div
-          className="position-absolute top-0 start-0 w-100 h-100"
-          style={{
-            backgroundImage: `url('https://via.placeholder.com/1200x500?text=City+Skyline+with+Boats')`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            zIndex: "-1",
-          }}
-        >
-          {/* Overlay for better text readability */}
-          <div className="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-25"></div>
-        </div>
-
-        {/* Content */}
-        <div className="position-relative d-flex flex-column align-items-center justify-content-center h-100 text-center text-white px-3">
-          {/* Subtitle */}
-          <h2 className="h3 fw-medium mb-4">
-            The Future & Digital Transformation with Unlimited Opportunities
-          </h2>
-          <p>
-            Say Goodbye to Complicated Paperwork, Hello to Seamless Exploration
-          </p>
-
-          {/* Description */}
-          <p className="fs-6 col-md-8">
-            The GCC nations—Saudi Arabia, UAE, Qatar, Kuwait, Oman, and
-            Bahrain—are pioneering a historic leap in regional integration with
-            the launch of the GCC Unified Visa, removing granting access to all
-            six countries. This visa eliminates redundant application processes,
-            and bureaucratic hurdles. Whether you’re a tourist, business, or
-            investor, the GCC Unified Visa is your golden ticket to unlocking
-            the world’s most dynamic economic and cultural hub.
-          </p>
-        </div>
+               <img src="/images/one-visa/banner.jpg" className="mt-md-0 mt-5"/>     
       </div>
 
       {/* "FOR WHOM IS THIS VISA A GAME-CHANGER?" Section */}
@@ -336,90 +261,23 @@ const OneVisa = () => {
       </div>
 
       {/* "Why This Visa" Section */}
-      <div className="setWidth" style={{ paddingBlock: "80px" }}>
-        <div className="row align-items-center">
+      <div className="col-12 h-auto" style={{  background: '#ECF1F7' }}>
+        <div className="row align-items-center justify-content-center">
           {/* Left side - Title and Logo */}
           <div
-            className="col-lg-6 col-md-6 mb-4 mb-md-0"
-            style={{ alignSelf: "start", marginTop: "-52px" }}
+            className="col-lg-3 col-md-6 mb-4 mb-md-0"
+            style={{  }}
           >
-            <div className="text-center text-md-start">
-              <p className=" fw-bold mb-3 largeText">Why This Visa</p>
-              <p className="h4 mb-4" style={{ color: "#031E26" }}>
-                Is a Global Game-Changer
-              </p>
-
-              {/* Logo */}
-              <div className="mb-4">
-                <div
-                  className="d-inline-flex flex-column align-items-center justify-content-center"
-                  style={{
-                    width: "120px",
-                    height: "120px",
-                    backgroundColor: "transparent",
-                  }}
-                >
-                  {/* Eagle/Bird Icon */}
-                  <div
-                    className="mb-2"
-                    style={{
-                      width: "60px",
-                      height: "40px",
-                      background: "linear-gradient(135deg, #c9a96e, #b8975a)",
-                      clipPath: "polygon(50% 0%, 0% 100%, 100% 100%)",
-                      position: "relative",
-                    }}
-                  >
-                    {/* Wings representation */}
-                    <div
-                      style={{
-                        position: "absolute",
-                        top: "10px",
-                        left: "10px",
-                        right: "10px",
-                        height: "20px",
-                        background:
-                          "repeating-linear-gradient(90deg, #c9a96e 0px, #c9a96e 8px, transparent 8px, transparent 12px)",
-                      }}
-                    ></div>
-                  </div>
-
-                  <div className="text-center">
-                    <div
-                      className="fw-bold"
-                      style={{
-                        color: "#c9a96e",
-                        fontSize: "24px",
-                        fontFamily: "Arial, sans-serif",
-                        letterSpacing: "2px",
-                      }}
-                    >
-                      ONE
-                    </div>
-                    <div
-                      className="fw-bold"
-                      style={{
-                        color: "#c9a96e",
-                        fontSize: "24px",
-                        fontFamily: "Arial, sans-serif",
-                        letterSpacing: "2px",
-                      }}
-                    >
-                      VISA
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+           <img src="/images/one-visa/why-this-visa.jpg" style={{width: '80%',height: '80%' }}/>
           </div>
 
           {/* Right side - Benefits */}
-          <div className="col-lg-6 col-md-6">
+          <div className="col-lg-4 col-md-6 p-5" >
             <div className="row g-4">
               {/* Economic Surge */}
               <div className="col-12 mt-0">
-                <div className="card border-0 h-100">
-                  <div className="card-body p-0">
+                <div className=" border-0 h-100">
+                  <div className=" p-0">
                     <h3
                       className="h5 fw-bold mb-3"
                       style={{ color: "#2c2c2c" }}
@@ -443,8 +301,8 @@ const OneVisa = () => {
 
               {/* Regional Unity */}
               <div className="col-12 mt-0">
-                <div className="card border-0 h-100">
-                  <div className="card-body p-0">
+                <div className=" border-0 h-100">
+                  <div className=" p-0">
                     <h3
                       className="h5 fw-bold mb-3"
                       style={{ color: "#2c2c2c" }}
@@ -468,8 +326,8 @@ const OneVisa = () => {
 
               {/* Global Leadership */}
               <div className="col-12 mt-0">
-                <div className="card border-0 h-100">
-                  <div className="card-body p-0">
+                <div className=" border-0 h-100">
+                  <div className=" p-0">
                     <h3
                       className="h5 fw-bold mb-3"
                       style={{ color: "#2c2c2c" }}
@@ -493,8 +351,8 @@ const OneVisa = () => {
 
               {/* Sustainability */}
               <div className="col-12 mt-0">
-                <div className="card border-0 h-100">
-                  <div className="card-body p-0">
+                <div className=" border-0 h-100">
+                  <div className=" p-0">
                     <h3
                       className="h5 fw-bold mb-3"
                       style={{ color: "#2c2c2c" }}
@@ -533,16 +391,8 @@ const OneVisa = () => {
             {/* Easy Multi Access */}
             <div className="col-md-4">
               <div className="card h-100 text-center p-4">
-                <svg
-                  className="bi mb-3 mx-auto"
-                  width="40"
-                  height="40"
-                  fill="#c9a96e"
-                  viewBox="0 0 16 16"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M8 2a.5.5 0 0 1 .5.5v1.793l2.146-2.147a.5.5 0 0 1 .708.708L8.707 5.5h1.793a.5.5 0 0 1 0 1H8a.5.5 0 0 1-.5-.5v-1.793l-2.146 2.147a.5.5 0 0 1-.708-.708L7.293 3.5H5.5a.5.5 0 0 1 0-1H8zM2 12a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-1z" />
-                </svg>
+                <img src="/images/one-visa/icon-06.svg" style={{height: '44px'}} className="bi mb-3 mx-auto"/>
+
                 <h5 className="card-title">Easy Multi Access</h5>
                 <p className="card-text">
                   Enter any GCC country multiple times with a single
@@ -557,16 +407,8 @@ const OneVisa = () => {
             {/* Cost-Effective */}
             <div className="col-md-4">
               <div className="card h-100 text-center p-4">
-                <svg
-                  className="bi mb-3 mx-auto"
-                  width="40"
-                  height="40"
-                  fill="#c9a96e"
-                  viewBox="0 0 16 16"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H4zM8 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6zm0 1a2 2 0 1 0 0 4 2 2 0 0 0 0-4z" />
-                </svg>
+                <img src="/images/one-visa/icons-07.svg" style={{height: '44px'}} className="bi mb-3 mx-auto"/>
+
                 <h5 className="card-title">Cost-Effective</h5>
                 <p className="card-text">
                   Save 60% compared to individual visa costs.
@@ -580,16 +422,7 @@ const OneVisa = () => {
             {/* Expanded Opportunities */}
             <div className="col-md-4">
               <div className="card h-100 text-center p-4">
-                <svg
-                  className="bi mb-3 mx-auto"
-                  width="40"
-                  height="40"
-                  fill="#c9a96e"
-                  viewBox="0 0 16 16"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M9 1a1 1 0 0 1 1 1v1h2a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h2V2a1 1 0 0 1 1-1zm-1 5a2 2 0 1 0 0 4 2 2 0 0 0 0-4z" />
-                </svg>
+                <img src="/images/one-visa/icons-07.svg" style={{height: '44px'}} className="bi mb-3 mx-auto"/>
                 <h5 className="card-title">Expanded Opportunities</h5>
                 <p className="card-text">
                   Projected to boost GCC tourism revenue by $30B annually by

@@ -1,31 +1,36 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Range } from "react-range";
-import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import style from "./style.module.css";
 import Banner from "../../../components/banner/banner";
 import Link from "next/link";
 import Carousal from "../../../components/carousel/Carousal";
 
-import { RiInformationLine } from "react-icons/ri";
 import { IoIosArrowDown } from "react-icons/io";
 import { FaUser, FaRegHeart } from "react-icons/fa6";
-
-import { GiPerson } from "react-icons/gi";
-import { MdOutlineBoy } from "react-icons/md";
 import { GoShare } from "react-icons/go";
 import Ask_ur_questions from "@components/ask_ur_questions/ask_ur_questions";
 import axios from "axios";
 import { useSearchParams } from "next/navigation";
 
-
 const Checkout = () => {
   const [isOpen, setIsOpen] = useState(false);
   const initialTime = 720;
   const [timeLeft, setTimeLeft] = useState(initialTime);
-  const [gender, setGender] = useState("");
+
+  // MODIFIED: State to hold all booking data from API
+  const [bookingData, setBookingData] = useState(null); 
+  // MODIFIED: State to hold the type and ID from the booking data
+  const [bookingType, setBookingType] = useState('');
+  const [bookedItemId, setBookedItemId] = useState('');
+
+  // MODIFIED: Simplified initial state, will be populated by API
+  const [guests, setGuests] = useState({
+    adults: 0,
+    children: 0,
+    infants: 0,
+  });
 
   const [travellers, setTravellers] = useState([
     {
@@ -38,55 +43,27 @@ const Checkout = () => {
     },
   ]);
   const [nextTravellerId, setNextTravellerId] = useState(2);
-    const searchParams = useSearchParams();
-
+  const searchParams = useSearchParams();
 
   const bookingId = searchParams.get("bookingId") || "";
-
-  const jsonString = localStorage.getItem("booking_data");
-  const dataString = localStorage.getItem("data");
-
-  const data = JSON.parse(jsonString);
-  const slugPackageData = JSON.parse(dataString);
-
-  const [price, setPrice] = useState({
-    adult_price: slugPackageData?.adult_price || 0,
-    child_price: slugPackageData?.child_price || 0,
-    infant_price: slugPackageData?.infant_price || 0,
-  });
-
-  const initialTotals = {
-    adults: 0,
-    children: 0,
-    infants: 0,
-  };
-
-  const finalTotals =
-    data?.rooms?.reduce((accumulator, currentRoom) => {
-      accumulator.adults += currentRoom.adults;
-      accumulator.children += currentRoom.children;
-      accumulator.infants += currentRoom.infants;
-      return accumulator;
-    }, initialTotals) || initialTotals;
-
-  const [guests, setGuests] = useState({
-    adults: finalTotals.adults,
-    children: finalTotals.children,
-    infants: finalTotals.infants,
-  });
+  
+  // REMOVED: Getting data from localStorage is no longer needed
+  // const jsonString = localStorage.getItem("booking_data");
+  // const dataString = localStorage.getItem("data");
+  // const data = JSON.parse(jsonString);
+  // const slugPackageData = JSON.parse(dataString);
 
   const [slugPackage, setSlugPackage] = useState([]);
 
-  // Calculate total price
+  // This calculation is now a fallback, the primary total comes from the API
   const calculateTotalPrice = () => {
-    const adultTotal = guests.adults * (price.adult_price || 0);
-    const childTotal = guests.children * (price.child_price || 0);
-    const infantTotal = guests.infants * (price.infant_price || 0);
-
-    return adultTotal + childTotal + infantTotal;
+    if (bookingData && bookingData.booking && bookingData.booking.total_amount) {
+      return parseFloat(bookingData.booking.total_amount);
+    }
+    return 0;
   };
-
   const totalPrice = calculateTotalPrice();
+
 
   const handleInputChange = (travellerId, field, value) => {
     setTravellers((prevTravellers) =>
@@ -121,30 +98,9 @@ const Checkout = () => {
     setNextTravellerId(nextTravellerId + 1);
   };
 
-  const updateGuestCount = (type, change) => {
-    setGuests((prevGuests) => {
-      const newValue = prevGuests[type] + change;
-
-      if (newValue >= 0 && newValue <= 3) {
-        return { ...prevGuests, [type]: newValue };
-      }
-      return prevGuests;
-    });
-  };
-
   const toggleAccordion = () => {
     setIsOpen(!isOpen);
   };
-
-  useEffect(() => {
-    if (slugPackageData) {
-      setPrice({
-        adult_price: slugPackageData.adult_price || 0,
-        child_price: slugPackageData.child_price || 0,
-        infant_price: slugPackageData.infant_price || 0,
-      });
-    }
-  }, []);
 
   // Timer effect
   useEffect(() => {
@@ -161,51 +117,71 @@ const Checkout = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Fetch packages data
+  // Fetch 'Other Packages' data
   useEffect(() => {
-    const fetchPackageData = async () => {
+    const fetchOtherPackageData = async () => {
       try {
         const response = await axios.get(
           `${process.env.NEXT_PUBLIC_API_URL}packages`
         );
         const packageData = response.data.data || response.data || [];
-        console.log("packages Data:", packageData);
         setSlugPackage(packageData);
       } catch (err) {
-        console.error("Error fetching data:", err);
+        console.error("Error fetching other packages:", err);
       }
     };
-    fetchPackageData();
+    fetchOtherPackageData();
   }, []);
 
-    useEffect(() => {
-    const fetchBookingData = async () => {
-       const loginToken = localStorage.getItem("auth_token_login");
-    let authToken = loginToken;
+  useEffect(() => {
+    if (!bookingId) return;
 
-    if (!authToken) {
-      console.log("No auth token for user data fetch.");
-      setIsUserDataLoading(false);
-      return;
-    }
+    const fetchBookingData = async () => {
+      const loginToken = localStorage.getItem("auth_token_login");
+      const authToken = loginToken;
+
+      if (!authToken) {
+        console.log("No auth token for booking data fetch.");
+        return;
+      }
       try {
         const response = await axios.get(
           `${process.env.NEXT_PUBLIC_API_URL}booking-details/${bookingId}`,
-             {
-          headers: { Authorization: `Bearer ${authToken}` },
-        }
+          {
+            headers: { Authorization: `Bearer ${authToken}` },
+          }
         );
-        const packageData = response.data.data || response.data || [];
-        console.log("booking Data:", packageData);
+        const apiData = response.data.data || response.data || {};
+        setBookingData(apiData);
+
+        setGuests({
+          adults: apiData.total_adults || 0,
+          children: apiData.total_children || 0,
+          infants: apiData.total_infants || 0,
+        });
+
+        const type = apiData.type;
+        setBookingType(type);
+
+        if (type === 'package' && apiData.booking) {
+            setBookedItemId(apiData.booking.package_id);
+        } else if (type === 'attraction' && apiData.booking) {
+            setBookedItemId(apiData.booking.attraction_id);
+        } else if (type === 'event' && apiData.booking) {
+            setBookedItemId(apiData.booking.event_id);
+        }
+
+        console.log("Booking Data from API:", apiData);
+        console.log("Booking Type:", type, "Booked Item ID:", bookedItemId);
+
+
       } catch (err) {
-        console.error("Error fetching data:", err);
+        console.error("Error fetching booking data:", err);
       }
     };
     fetchBookingData();
-  }, []);
+  }, [bookingId]); // Rerun when bookingId changes
 
-  
-  // Format time to "mins:sec"
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
 
@@ -234,7 +210,7 @@ const Checkout = () => {
                   Guest Signup - Tour Package Booking{" "}
                 </p>
                 <p className="fs-6">
-                  <Link href="#">
+                  <Link href="/login">
                     <span style={{ color: "#5ab2b3" }} className="fs-6">
                       {" "}
                       Register or Sign in
@@ -440,7 +416,8 @@ const Checkout = () => {
                   </form>
                 </div>
               </div>
-
+              
+              {/* MODIFIED: Price Summary Section */}
               <div className="col-md-4 my-md-0 my-5">
                 <label className="text-black fw-semibold fs-4">
                   Package Price
@@ -461,47 +438,28 @@ const Checkout = () => {
                     </span>
                   </h5>
 
-                  {/* Show adult pricing if there are adults */}
                   {guests.adults > 0 && (
                     <div className="d-flex justify-content-between">
                       <p className="text-black">
                         {guests.adults} Adult{guests.adults > 1 ? "s" : ""}
                       </p>
-                      {/* <p className="text-black">
-                        AED{" "}
-                        {(guests.adults * (price.adult_price || 0)).toFixed(2)}
-                      </p> */}
                     </div>
                   )}
 
-                  {/* Show children pricing if there are children */}
                   {guests.children > 0 && (
                     <div className="d-flex justify-content-between">
                       <p className="text-black">
                         {guests.children} Child
                         {guests.children > 1 ? "ren" : ""}
                       </p>
-                      {/* <p className="text-black">
-                        AED{" "}
-                        {(guests.children * (price.child_price || 0)).toFixed(
-                          2
-                        )}
-                      </p> */}
                     </div>
                   )}
 
-                  {/* Show infant pricing if there are infants */}
                   {guests.infants > 0 && (
                     <div className="d-flex justify-content-between">
                       <p className="text-black">
                         {guests.infants} Infant{guests.infants > 1 ? "s" : ""}
                       </p>
-                      {/* <p className="text-black">
-                        AED{" "}
-                        {(guests.infants * (price.infant_price || 0)).toFixed(
-                          2
-                        )}
-                      </p> */}
                     </div>
                   )}
 
@@ -514,6 +472,7 @@ const Checkout = () => {
                     </span>
                   </h5>
                 </div>
+                {/* End of Price Summary Section */}
 
                 <span className="col-10 ps-1 pt-2 d-flex justify-content-end">
                   <button className={style["btn-one"]}>Pay Now</button>
@@ -575,8 +534,8 @@ const Checkout = () => {
                       <br />
                       <p>
                         {" "}
-                        &nbsp; The package price will refresh
-                        <br className="d-lg-block d-none" /> &nbsp; After
+                          The package price will refresh
+                        <br className="d-lg-block d-none" />   After
                       </p>
                     </div>
                     <div
