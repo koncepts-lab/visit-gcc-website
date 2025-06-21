@@ -115,9 +115,9 @@ const HighlightContent = ({ highlight }) => {
 const PhotoGalleryEventHighlightsContent = ({ photoGallery }) => {
   const carouselSettings = {
     dots: true, // Enable dot pagination
-    infinite: true, // Loop slides infinitely
-    speed: 500, // Transition speed in milliseconds
-    slidesToShow: 1, // Show one slide at a time
+    infinite: photoGallery.length > 1, 
+    speed: 500,    
+    slidesToShow: 1,
     slidesToScroll: 1, // Scroll one slide at a time
     autoplay: true, // Enable autoplay
     autoplaySpeed: 3000, // Autoplay interval in milliseconds
