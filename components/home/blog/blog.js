@@ -9,9 +9,23 @@ function SingleHomeBlog(props) {
       className={`item ${style["item-padding"]}`}
     >
       <div className={style["blog-box"]}>
-        <img src={props.image} className="w-100" alt="" />
+        <img
+          src={props.image}
+          className="w-100"
+          alt=""
+          style={{ height: "152px" }}
+        />
         <h4>{props.heading}</h4>
-        <p>{props.description}</p>
+        <p
+          style={{
+            width: "110px",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+          }}
+        >
+          {props.description}
+        </p>
       </div>
     </Link>
   );

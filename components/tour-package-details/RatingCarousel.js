@@ -22,7 +22,9 @@ function RatingCarousel({ packageId, type }) {
 
   // Validate the type prop
   if (!["package", "event", "attraction"].includes(normalizedType)) {
-    console.error(`Invalid type prop: ${type}. Must be "package", "event", or "attraction".`);
+    console.error(
+      `Invalid type prop: ${type}. Must be "package", "event", or "attraction".`
+    );
     return <div className="text-danger">Invalid component type</div>;
   }
 
@@ -110,7 +112,7 @@ function RatingCarousel({ packageId, type }) {
     setRating(selectedRating);
     setRatingText(ratingLabels[selectedRating] || "");
   };
-  
+
   // MODIFIED: This function now checks for authentication before showing the review form
   const handleAddReviewClick = () => {
     const registerToken = localStorage.getItem("auth_token_register");
@@ -125,17 +127,18 @@ function RatingCarousel({ packageId, type }) {
     }
   };
 
-
-  const handleSendReview = async () => {
+  const handleSendReviewhandleSendReview = async () => {
     if (rating > 0 && reviewText) {
       const registerToken = localStorage.getItem("auth_token_register");
       const loginToken = localStorage.getItem("auth_token_login");
       const authToken = loginToken || registerToken;
-      
+
       if (!authToken) {
-          enqueueSnackbar("Authentication error. Please log in again.", { variant: "error" });
-          router.push('/login');
-          return;
+        enqueueSnackbar("Authentication error. Please log in again.", {
+          variant: "error",
+        });
+        router.push("/login");
+        return;
       }
 
       try {
@@ -162,6 +165,10 @@ function RatingCarousel({ packageId, type }) {
           setRatingText("");
           setReviewText("");
           setShowRatingInput(false);
+        } else if (response.status === 401) {
+          enqueueSnackbar("Please login to submit your review", {
+            variant: "error",
+          });
         } else {
           enqueueSnackbar(`Failed to submit ${normalizedType} review.`, {
             variant: "error",
@@ -215,7 +222,7 @@ function RatingCarousel({ packageId, type }) {
 
   const settings = {
     dots: true,
-    infinite: userRatings.length > 1, 
+    infinite: userRatings.length > 1,
     speed: 500,
     slidesToShow: 2,
     slidesToScroll: 1,
@@ -250,7 +257,9 @@ function RatingCarousel({ packageId, type }) {
 
   if (isLoading && !showRatingInput && userRatings.length === 0) {
     return (
-      <div className="text-center py-5">Loading {normalizedType} ratings...</div>
+      <div className="text-center py-5">
+        Loading {normalizedType} ratings...
+      </div>
     );
   }
 
@@ -259,7 +268,12 @@ function RatingCarousel({ packageId, type }) {
       <div className="row pt-5">
         <div className="col-md-12">
           <h4>
-            {normalizedType === "package" ? "User ratings" : `${normalizedType.charAt(0).toUpperCase() + normalizedType.slice(1)} ratings`}
+            {normalizedType === "package"
+              ? "User ratings"
+              : `${
+                  normalizedType.charAt(0).toUpperCase() +
+                  normalizedType.slice(1)
+                } ratings`}
           </h4>
           <div className="d-flex justify-content-between align-items-center">
             <p className="mb-0">
@@ -329,7 +343,9 @@ function RatingCarousel({ packageId, type }) {
           <h4>
             {normalizedType === "package"
               ? "What guests loved most"
-              : `What ${normalizedType === 'event' ? 'attendees' : 'visitors'} loved most`}
+              : `What ${
+                  normalizedType === "event" ? "attendees" : "visitors"
+                } loved most`}
           </h4>
         </div>
       </div>
@@ -337,10 +353,7 @@ function RatingCarousel({ packageId, type }) {
       {userRatings.length > 0 ? (
         <SlickCarousel {...settings}>
           {userRatings.map((item) => (
-            <div
-              key={item.id}
-              className={`item ${style["item-padding"]}`}
-            >
+            <div key={item.id} className={`item ${style["item-padding"]}`}>
               <div className={style["country-explore-item"]}>
                 <div className={style["country-explore-text"]}>
                   <div className={style["RatingCarousel-top"]}>

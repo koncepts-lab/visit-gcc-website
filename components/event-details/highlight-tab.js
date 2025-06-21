@@ -115,8 +115,8 @@ const HighlightContent = ({ highlight }) => {
 const PhotoGalleryEventHighlightsContent = ({ photoGallery }) => {
   const carouselSettings = {
     dots: true, // Enable dot pagination
-    infinite: photoGallery.length > 1, 
-    speed: 500,    
+    infinite: photoGallery.length > 1,
+    speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1, // Scroll one slide at a time
     autoplay: true, // Enable autoplay
@@ -136,7 +136,12 @@ const PhotoGalleryEventHighlightsContent = ({ photoGallery }) => {
       <Slider {...carouselSettings}>
         {photoGallery.map((image, index) => (
           <div key={index} className={style.carouselSlide}>
-            <img src={image} alt={`Slide ${index + 1}`} className="rounded-4" />
+            <img
+              src={image}
+              alt={`Slide ${index + 1}`}
+              className="rounded-4"
+              style={{ height: "252px" }}
+            />
           </div>
         ))}
       </Slider>

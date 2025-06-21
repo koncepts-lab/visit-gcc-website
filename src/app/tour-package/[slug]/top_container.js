@@ -48,8 +48,9 @@ export default function Top_container({ packageId }) {
         setPackageThemes(themesResponse.data);
 
         const inclusionsResponse = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}inclusions/package/get-by-package?package_id=${packageId}`
+          `${process.env.NEXT_PUBLIC_API_URL}package/${packageId}/inclusions`
         );
+
         setPackageInclusions(inclusionsResponse.data);
 
         setLoading(false);
@@ -232,7 +233,7 @@ export default function Top_container({ packageId }) {
           <div className={`col-md-7 ${style["border-right"]}`}>
             <h3 className="pt-2">Inclusions</h3>
             <div className={style["inclusions"]}>
-              {packageInclusions.map((inclusion) => (
+              {/* {packageInclusions.map((inclusion) => (
                 <span key={inclusion.id} className="d-flex flex-column">
                   <img
                     src={inclusion.inclusion_icon_url}
@@ -241,7 +242,7 @@ export default function Top_container({ packageId }) {
                   />
                   <div className="clearfix"></div> {inclusion.title}
                 </span>
-              ))}
+              ))} */}
             </div>
           </div>
           <div className="col-md-5">

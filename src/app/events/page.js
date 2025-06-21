@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, use } from "react";
+import React, { useState, useEffect } from "react";
 import { Range } from "react-range";
 import Calendar from "react-calendar";
 import axios from "axios";
@@ -44,37 +44,37 @@ const Country = () => {
     {
       title: "EVENT TYPE",
       items: [],
-      apiEndpoint: "event-types",
+      apiEndpoint: "event-types/get-event-types",
       filterEndpoint: "events",
     },
     {
       title: "EVENT LOCATION",
       items: [],
-      apiEndpoint: "event-locations",
+      apiEndpoint: "event-locations/get-event-locations",
       filterEndpoint: "events",
     },
     {
       title: "EVENT FORMAT",
       items: [],
-      apiEndpoint: "event-formats",
+      apiEndpoint: "event-formats/get-event-formats",
       filterEndpoint: "events",
     },
     {
       title: "LANGUAGE",
       items: [],
-      apiEndpoint: "languages",
+      apiEndpoint: "languages/get-languages",
       filterEndpoint: "events",
     },
     {
       title: "DURATION",
       items: [],
-      apiEndpoint: "event-durations",
+      apiEndpoint: "event-durations/get-event-durations",
       filterEndpoint: "events",
     },
     {
       title: "AGE GROUP",
       items: [],
-      apiEndpoint: "age-groups",
+      apiEndpoint: "age-groups/get-age-groups",
       filterEndpoint: "events",
     },
   ]);
@@ -91,8 +91,6 @@ const Country = () => {
   const isCalendarDateActive = () => {
     const todayDate = new Date();
     const selected = filters.selectedDate;
-
-    // Compare just the date parts, not the full datetime
     return (
       selected.getFullYear() !== todayDate.getFullYear() ||
       selected.getMonth() !== todayDate.getMonth() ||
@@ -107,7 +105,6 @@ const Country = () => {
         const response = await axios.get(
           `${process.env.NEXT_PUBLIC_API_URL}events`
         );
-
         const fetchedEvents = response.data.data || response.data || [];
         setAllEvents(fetchedEvents);
         setFilteredEvents(fetchedEvents);
@@ -118,87 +115,79 @@ const Country = () => {
         setIsLoading(false);
       }
     };
-
     fetchEvents();
   }, []);
 
-  // Fetch lesser wonders
+  // Fetch past events for the "lesser wonders" section
   useEffect(() => {
-    const fetchLesserWonders = async () => {
-      const token = getAuthToken();
-      if (!token) return;
-
+    const fetchPastEvents = async () => {
       try {
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}events/get-lesser-known-events`,
-          { headers: { Authorization: `Bearer ${token}` } }
+          `${process.env.NEXT_PUBLIC_API_URL}events/past`
         );
-        setLesserWonders(response.data);
+        const fetchedEvents = response.data.data;
+        setLesserWonders(fetchedEvents);
       } catch (err) {
-        console.error("Error fetching lesser wonders:", err);
+        console.error("Error fetching past events:", err);
       }
     };
-
-    fetchLesserWonders();
+    fetchPastEvents();
   }, []);
 
-  // Fetch accordion items
+  // **FIXED**: Fetch accordion items reliably and in parallel
   useEffect(() => {
-    const fetchAccordionItems = async () => {
-      const authToken = getAuthToken();
-      if (!authToken) return;
-
-      const updatedAccordionData = [...accordionData];
-
-      for (let i = 0; i < updatedAccordionData.length; i++) {
-        const section = updatedAccordionData[i];
-
-        if (section.apiEndpoint && section.items.length === 0) {
+    const fetchAllAccordionData = async () => {
+      try {
+        const promises = accordionData.map(async (section) => {
+          if (!section.apiEndpoint || section.items.length > 0) {
+            return section;
+          }
           try {
             const response = await axios.get(
-              `${process.env.NEXT_PUBLIC_API_URL}${section.apiEndpoint}`,
-              { headers: { Authorization: `Bearer ${authToken}` } }
+              `${process.env.NEXT_PUBLIC_API_URL}${section.apiEndpoint}`
             );
-
-            const items = response.data.data || response.data || [];
-            updatedAccordionData[i].items = items.map((item) => ({
+            const fetchedItems = response.data.data || response.data || [];
+            const formattedItems = fetchedItems.map((item) => ({
               id: item.id,
               title: item.title || item.name,
             }));
+            return { ...section, items: formattedItems };
           } catch (err) {
-            console.error(`Failed to fetch ${section.title}:`, err);
+            console.error(`Failed to fetch data for ${section.title}:`, err);
+            return section; // Return original section on error
           }
-        }
+        });
+        const newAccordionData = await Promise.all(promises);
+        setAccordionData(newAccordionData);
+      } catch (error) {
+        console.error(
+          "An error occurred while fetching accordion data:",
+          error
+        );
       }
-
-      setAccordionData(updatedAccordionData);
     };
 
-    fetchAccordionItems();
-  }, []);
+    fetchAllAccordionData();
+  }, []); // Runs once on component mount
 
   // Date filter functions
   const filterByDateOption = (events, dateOption) => {
     const now = new Date();
     const todayString = now.toISOString().split("T")[0];
-
     switch (dateOption) {
       case "upcoming":
         return events
           .filter((event) => event.start_date >= todayString)
           .sort((a, b) => new Date(a.start_date) - new Date(b.start_date));
-
       case "past":
         return events
           .filter((event) => event.end_date < todayString)
           .sort((a, b) => new Date(b.end_date) - new Date(a.end_date));
-
       case "today":
         return events.filter(
           (event) =>
             event.start_date <= todayString && event.end_date >= todayString
         );
-
       case "thisWeek":
         const startOfWeek = new Date(now);
         startOfWeek.setDate(now.getDate() - now.getDay());
@@ -211,7 +200,6 @@ const Country = () => {
             event.start_date <= endOfWeekString &&
             event.end_date >= startOfWeekString
         );
-
       case "thisMonth":
         const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
         const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
@@ -222,7 +210,6 @@ const Country = () => {
             event.start_date <= endOfMonthString &&
             event.end_date >= startOfMonthString
         );
-
       default:
         return events;
     }
@@ -235,9 +222,7 @@ const Country = () => {
         .toString()
         .replace(/[^0-9.]/g, "");
       const adultPrice = parseFloat(priceString);
-
       if (isNaN(adultPrice)) return false;
-
       return adultPrice >= priceRange[0] && adultPrice <= priceRange[1];
     });
   };
@@ -245,42 +230,23 @@ const Country = () => {
   // Calendar date filter function
   const filterByCalendarDate = (events, selectedDate) => {
     const selectedDateString = selectedDate.toISOString().split("T")[0];
-    console.log("Filtering by calendar date:", selectedDateString);
-
-    const filtered = events.filter((event) => {
-      const startDate = event.start_date;
-      const endDate = event.end_date;
-
-      console.log(
-        "Comparing event range:",
-        startDate,
-        "to",
-        endDate,
-        "with selected:",
-        selectedDateString
+    return events.filter((event) => {
+      return (
+        selectedDateString >= event.start_date &&
+        selectedDateString <= event.end_date
       );
-
-      // Check if selected date falls within the event's date range (inclusive)
-      return selectedDateString >= startDate && selectedDateString <= endDate;
     });
-
-    console.log("Calendar filtered events:", filtered.length);
-    return filtered;
   };
 
   // API filter function for accordion items
   const fetchFilteredEventsByAPI = async (sectionTitle, selectedIds) => {
     const authToken = getAuthToken();
     if (!authToken) return [];
-
     const section = accordionData.find((item) => item.title === sectionTitle);
     if (!section || !section.filterEndpoint) return [];
-
     try {
       let url = `${process.env.NEXT_PUBLIC_API_URL}${section.filterEndpoint}`;
       let params = [];
-
-      // Build parameters based on section type
       switch (sectionTitle) {
         case "EVENT TYPE":
           params = selectedIds.map((id) => `event_types[]=${id}`);
@@ -303,13 +269,10 @@ const Country = () => {
         default:
           return [];
       }
-
       if (params.length > 0) {
         url += `?${params.join("&")}`;
       }
-
       const response = await axios.get(url);
-
       return response.data.data || response.data || [];
     } catch (err) {
       console.error(`Error filtering events by ${sectionTitle}:`, err);
@@ -321,79 +284,53 @@ const Country = () => {
   const applyAllFilters = async () => {
     let eventsToFilter = [...allEvents];
     const { priceRange, selectedDate, selectedItems } = filters;
-
-    // Check if any filters are active
     const isPriceFilterActive = priceRange[0] !== 30 || priceRange[1] !== 3900;
     const isCalendarDateFilterActive = isCalendarDateActive();
-    const hasAccordionFilters = Object.keys(selectedItems).length > 0;
+    const hasAccordionFilters = Object.values(selectedItems).some(
+      (arr) => arr.length > 0
+    );
 
-    console.log("Filter states:", {
-      isPriceFilterActive,
-      isCalendarDateFilterActive,
-      hasAccordionFilters,
-      selectedDate: selectedDate.toISOString().split("T")[0],
-    });
-
-    // If no filters are active, show all events
     if (
       !isPriceFilterActive &&
       !isCalendarDateFilterActive &&
       !hasAccordionFilters
     ) {
-      console.log("No filters active, showing all events");
       setFilteredEvents(allEvents);
       return;
     }
 
     try {
       setIsLoading(true);
-
-      // Apply API-based accordion filters first
       const apiFilterSections = Object.keys(selectedItems).filter(
-        (section) => section !== "DATE"
+        (section) => section !== "DATE" && selectedItems[section]?.length > 0
       );
-
       if (apiFilterSections.length > 0) {
-        // Get filtered events from each API section
         const filteredEventsSets = await Promise.all(
           apiFilterSections.map((section) =>
             fetchFilteredEventsByAPI(section, selectedItems[section])
           )
         );
-
-        // Find intersection of all filtered sets
         if (filteredEventsSets.length > 0) {
           eventsToFilter = filteredEventsSets.reduce(
             (intersection, currentSet) => {
-              if (intersection.length === 0) return currentSet;
+              const currentSetIds = new Set(currentSet.map((e) => e.id));
               return intersection.filter((event) =>
-                currentSet.some((e) => e.id === event.id)
+                currentSetIds.has(event.id)
               );
             }
           );
         }
       }
-
-      // Apply date filter if selected
       if (selectedItems["DATE"] && selectedItems["DATE"].length > 0) {
         const dateOption = selectedItems["DATE"][0];
-        console.log("🚀 ~ applyAllFilters ~ dateOption:", dateOption);
         eventsToFilter = filterByDateOption(eventsToFilter, dateOption);
       }
-
-      // Apply price filter
       if (isPriceFilterActive) {
-        console.log("Applying price filter:", priceRange);
         eventsToFilter = filterByPrice(eventsToFilter, priceRange);
       }
-
-      // Apply calendar date filter
       if (isCalendarDateFilterActive) {
-        console.log("Applying calendar date filter");
         eventsToFilter = filterByCalendarDate(eventsToFilter, selectedDate);
       }
-
-      console.log("Final filtered events:", eventsToFilter.length);
       setFilteredEvents(eventsToFilter);
     } catch (err) {
       console.error("Error applying filters:", err);
@@ -412,120 +349,64 @@ const Country = () => {
 
   // Handler functions
   const handlePriceRangeChange = (values) => {
-    setFilters((prev) => ({
-      ...prev,
-      priceRange: values,
-    }));
+    setFilters((prev) => ({ ...prev, priceRange: values }));
   };
 
   const handleDateChange = (date) => {
-    console.log("Calendar date changed to:", date);
-    setFilters((prev) => ({
-      ...prev,
-      selectedDate: date,
-    }));
+    setFilters((prev) => ({ ...prev, selectedDate: date }));
   };
 
-  const handleAccordionItemClick = (sectionIndex, clickedTitle) => {
+  // **FIXED**: Accordion click handler now works with IDs
+  const handleAccordionItemClick = (sectionIndex, clickedId) => {
     const section = accordionData[sectionIndex];
-    const clickedItem = section.items.find(
-      (item) => item.title === clickedTitle
-    );
-
-    if (!clickedItem) return;
-
-    const itemId = clickedItem.id;
+    if (!section) return;
+    const itemId = clickedId;
     const sectionTitle = section.title;
 
     setFilters((prev) => {
       const newSelectedItems = { ...prev.selectedItems };
-
-      // Handle DATE section (single selection)
       if (sectionTitle === "DATE") {
-        if (newSelectedItems[sectionTitle]?.includes(itemId)) {
-          delete newSelectedItems[sectionTitle];
-        } else {
-          newSelectedItems[sectionTitle] = [itemId];
-        }
+        newSelectedItems[sectionTitle] = newSelectedItems[
+          sectionTitle
+        ]?.includes(itemId)
+          ? []
+          : [itemId];
       } else {
-        // Handle other sections (multiple selection)
-        if (newSelectedItems[sectionTitle]) {
-          if (newSelectedItems[sectionTitle].includes(itemId)) {
-            // Remove item
-            newSelectedItems[sectionTitle] = newSelectedItems[
-              sectionTitle
-            ].filter((id) => id !== itemId);
-            if (newSelectedItems[sectionTitle].length === 0) {
-              delete newSelectedItems[sectionTitle];
-            }
-          } else {
-            // Add item
-            newSelectedItems[sectionTitle].push(itemId);
-          }
+        const currentSelection = newSelectedItems[sectionTitle] || [];
+        if (currentSelection.includes(itemId)) {
+          newSelectedItems[sectionTitle] = currentSelection.filter(
+            (id) => id !== itemId
+          );
         } else {
-          // Create new array with item
-          newSelectedItems[sectionTitle] = [itemId];
+          newSelectedItems[sectionTitle] = [...currentSelection, itemId];
         }
       }
-
-      return {
-        ...prev,
-        selectedItems: newSelectedItems,
-      };
+      return { ...prev, selectedItems: newSelectedItems };
     });
   };
 
   const clearAllFilters = () => {
-    const todayDate = new Date();
     setFilters({
       priceRange: [30, 3900],
-      selectedDate: todayDate,
+      selectedDate: new Date(),
       selectedItems: {},
     });
-  };
-
-  // Helper function to get selected item titles for accordion
-  const getSelectedItemTitles = (sectionTitle) => {
-    const selectedIds = filters.selectedItems[sectionTitle] || [];
-    const section = accordionData.find((item) => item.title === sectionTitle);
-
-    if (!section) return [];
-
-    return selectedIds
-      .map((id) => section.items.find((item) => item.id === id)?.title)
-      .filter(Boolean);
   };
 
   // Check if any filters are active
   const isAnyFilterActive = () => {
     const { priceRange, selectedItems } = filters;
-    const isPriceFilterActive = priceRange[0] !== 30 || priceRange[1] !== 3900;
-    const isCalendarDateFilterActive = isCalendarDateActive();
-    const hasAccordionFilters = Object.keys(selectedItems).length > 0;
-
     return (
-      isPriceFilterActive || isCalendarDateFilterActive || hasAccordionFilters
+      priceRange[0] !== 30 ||
+      priceRange[1] !== 3900 ||
+      isCalendarDateActive() ||
+      Object.values(selectedItems).some((arr) => arr.length > 0)
     );
   };
 
   const displayEvents = isAnyFilterActive() ? filteredEvents : allEvents;
-  const noResultsFound = isAnyFilterActive() && filteredEvents.length === 0;
-
-  // Fetch past events for lesser wonders section
-  useEffect(() => {
-    const fetchPastEvents = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}events/past`
-        );
-        const fetchedEvents = response.data.data;
-        setLesserWonders(fetchedEvents);
-      } catch (err) {
-        console.error("Error fetching past events:", err);
-      }
-    };
-    fetchPastEvents();
-  }, []);
+  const noResultsFound =
+    isAnyFilterActive() && !isLoading && filteredEvents.length === 0;
 
   return (
     <>
@@ -534,13 +415,13 @@ const Country = () => {
         <div className="container">
           <Link
             className="row"
-            href={`/events/${allEvents[0]?.id}`}
+            href={allEvents.length > 0 ? `/events/${allEvents[0]?.id}` : "#"}
             style={{ textDecoration: "none" }}
           >
             <div className="col-md-6">
               <img
                 src={
-                  allEvents[0]?.event_photo_urls[0] ||
+                  allEvents[0]?.event_photo_urls?.[0] ||
                   "/images/placeholder-image.jpg"
                 }
                 className={`img-fluid w-100`}
@@ -577,7 +458,7 @@ const Country = () => {
                   <h4 className="pt-2">Price Range</h4>
                   <div className={style["price-range"]}>
                     <Range
-                      step={1}
+                      step={10}
                       min={30}
                       max={3900}
                       values={filters.priceRange}
@@ -611,7 +492,7 @@ const Country = () => {
                     />
                     <div>
                       <p className={style["price-range-text"]}>
-                        Price Range: ${filters.priceRange[0]} — $
+                        Price: ${filters.priceRange[0]} — $
                         {filters.priceRange[1]}
                       </p>
                     </div>
@@ -630,12 +511,15 @@ const Country = () => {
                       <Accordion
                         key={index}
                         title={accordion.title}
-                        items={accordion.items.map((item) => item.title)}
+                        items={accordion.items}
                         isOpenInitially={true}
-                        onItemClick={(clickedTitle) =>
-                          handleAccordionItemClick(index, clickedTitle)
+                        // **FIXED**: Pass the correct props
+                        onItemClick={(clickedId) =>
+                          handleAccordionItemClick(index, clickedId)
                         }
-                        selectedItems={getSelectedItemTitles(accordion.title)}
+                        selectedItems={
+                          filters.selectedItems[accordion.title] || []
+                        }
                       />
                     ))}
                   </div>
@@ -667,10 +551,9 @@ const Country = () => {
                     </button>
                   </div>
                 ) : (
-                  <>
-                    <EventsExploreTab events={displayEvents} />
-                  </>
+                  <EventsExploreTab events={displayEvents} />
                 )}
+
                 <UpcomingEvents />
 
                 <section className={style["pakage-bes-picked"]}>

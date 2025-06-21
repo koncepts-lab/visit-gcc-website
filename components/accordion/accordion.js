@@ -8,15 +8,16 @@ const Accordion = ({
   items,
   isOpenInitially = false,
   onItemClick,
-  selectedItems = [],
+  selectedItems = [], // This will now correctly receive an array of IDs, e.g., [1, 2]
 }) => {
   const [isOpen, setIsOpen] = useState(isOpenInitially);
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
   };
-  console.log("titile,", title);
+
   if (!Array.isArray(items)) {
+    console.error("Accordion received non-array items for title:", title);
     return null; // Safety check
   }
 
@@ -32,19 +33,20 @@ const Accordion = ({
         <div className={styles.accordionContent}>
           <ul>
             {items.map((item) => {
-              // Check if the current item's ID is in the array of selected items
+              // This check will now work correctly because `selectedItems` is an array of IDs
+              // and `item.id` is the ID we are checking against.
               const isActive = selectedItems.includes(item.id);
 
               return (
                 <li
-                  key={item.id} // Use item.id as the key
+                  key={item.id}
                   className={`${styles.listItem} ${
                     isActive ? styles.selected : ""
                   }`}
-                  onClick={() => onItemClick && onItemClick(item.id)} // Pass item.id to onItemClick
+                  // This correctly passes the item's ID up to the parent component's handler.
+                  onClick={() => onItemClick && onItemClick(item.id)}
                 >
-                  {item.title}{" "}
-                  {/* Render item.title instead of the whole object */}
+                  {item.title}
                 </li>
               );
             })}

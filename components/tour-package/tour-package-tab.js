@@ -93,7 +93,7 @@ const TourPackageTab = ({
     const fetchIcons = async (packageId) => {
       try {
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}icon/${packageId}/get-by-package`
+          `${process.env.NEXT_PUBLIC_API_URL}icons/${packageId}/get-by-package`
         );
         setIconsData((prevIconsData) => ({
           ...prevIconsData,
@@ -273,22 +273,28 @@ const TourPackageTab = ({
                               </div>
                             </div> */}
 
-                            <ul className={style["pakages-ul"]}>
-                              {iconsData[pkg.id]?.map((icon) => (
-                                <li className="d-flex pe-2" key={icon.uuid_id}>
-                                  <img
-                                    src={icon.icon_image_url}
-                                    alt={icon.icon_title}
-                                    style={{
-                                      width: "20px",
-                                      height: "20px",
-                                      marginRight: "5px",
-                                    }}
-                                  />
-                                  {icon.icon_title}
-                                </li>
-                              ))}
-                            </ul>
+                            {iconsData[pkg.id] &&
+                              iconsData[pkg.id].length > 0 && (
+                                <ul className={style["pakages-ul"]}>
+                                  {iconsData[pkg.id].map((icon) => (
+                                    <li
+                                      className="d-flex pe-2"
+                                      key={icon.uuid_id}
+                                    >
+                                      <img
+                                        src={icon.icon_image_url}
+                                        alt={icon.icon_title}
+                                        style={{
+                                          width: "20px",
+                                          height: "20px",
+                                          marginRight: "5px",
+                                        }}
+                                      />
+                                      {icon.icon_title}
+                                    </li>
+                                  ))}
+                                </ul>
+                              )}
                             <div className="d-flex w-100 justify-content-between align-items-center">
                               <Link
                                 href={

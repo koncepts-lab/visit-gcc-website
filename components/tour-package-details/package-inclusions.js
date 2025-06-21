@@ -29,7 +29,7 @@ const PackageInclusionsAndExclusions = ({ packageId }) => {
       }
       try {
         const inclusionsResponse = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}inclusions/package/get-by-package?package_id=${packageId}`
+          `${process.env.NEXT_PUBLIC_API_URL}package/${packageId}/inclusions`
         );
         const fetchedInclusions =
           inclusionsResponse.data.data || inclusionsResponse.data || [];
@@ -39,7 +39,7 @@ const PackageInclusionsAndExclusions = ({ packageId }) => {
         }
 
         const exclusionsResponse = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}exclusions/package/get-by-package?package_id=${packageId}`
+          `${process.env.NEXT_PUBLIC_API_URL}package/${packageId}/exclusions`
         );
         const fetchedExclusions =
           exclusionsResponse.data.data || exclusionsResponse.data || [];
