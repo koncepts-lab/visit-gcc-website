@@ -240,8 +240,6 @@ const Country = () => {
 
   // API filter function for accordion items
   const fetchFilteredEventsByAPI = async (sectionTitle, selectedIds) => {
-    const authToken = getAuthToken();
-    if (!authToken) return [];
     const section = accordionData.find((item) => item.title === sectionTitle);
     if (!section || !section.filterEndpoint) return [];
     try {
