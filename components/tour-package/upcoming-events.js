@@ -276,6 +276,8 @@ function UpcomingEvents() {
                       const dynamicWidth = calculateDynamicWidth(index);
                       const isExpanded =
                         windowWidth >= 992 && index === currentSlide;
+                          const imageUrl = event.event_photo_urls[0] || "/images/placeholder.jpg"; // Use placeholder if 'image' is falsy
+
 
                       return (
                         <div
@@ -293,7 +295,7 @@ function UpcomingEvents() {
                           <div className={`${style["upcoming-item-padding"]}`}>
                             <div className={style["event-box"]}>
                               <img
-                                src={event.event_photo_urls[0]}
+                                src={imageUrl}
                                 className=""
                                 alt=""
                                 onClick={() => handleImageClick(event.id)}

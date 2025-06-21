@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
+
 import "react-datepicker/dist/react-datepicker.css";
 import style from "./style.module.css";
 import Link from 'next/link';
@@ -14,7 +15,7 @@ const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
   const [error, setError] = useState(null);
   const [customDateRange, setCustomDateRange] = useState(false);
   const [rooms, setRooms] = useState([
-    { id: 1, adults: 0, children: 0, infant: 0 },
+    { id: 1, adults: 1, children: 0, infant: 0 }, // Start with 1 adult by default
   ]);
   const [nextRoomId, setNextRoomId] = useState(2);
   const [showRoomAlert, setShowRoomAlert] = useState(false);
@@ -28,8 +29,14 @@ const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
   const [initialCalendarMonth, setInitialCalendarMonth] = useState(new Date());
   const [isBooking, setIsBooking] = useState(false);
   const [ticketType, setTicketType] = useState("VIP");
-  const [isSelectionFixed, setIsSelectionFixed] = useState(false); // MODIFIED: State to lock selection
+  const [isSelectionFixed, setIsSelectionFixed] = useState(false);
   const router = useRouter(); 
+
+  // Calculate total number of travelers (excluding infants)
+  const totalTravelers = rooms.reduce(
+    (acc, room) => acc + room.adults + room.children,
+    0
+  );
 
   const getDatesInRange = (startDate, endDate) => {
     const dates = [];
@@ -44,13 +51,11 @@ const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
     return dates;
   };
 
-  // Calculate days between two dates
   const getDaysBetween = (startDate, endDate) => {
     const timeDiff = endDate.getTime() - startDate.getTime();
     return Math.ceil(timeDiff / (1000 * 3600 * 24)) + 1;
   };
 
-  // Function to get continuous date range starting from a specific date
   const getContinuousDateRange = (startDate, days) => {
     const dates = [];
     const currentDate = new Date(startDate);
@@ -63,7 +68,6 @@ const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
     return dates;
   };
 
-  // Fetch package data from API
   useEffect(() => {
     const fetchPackageData = async () => {
       try {
@@ -78,7 +82,7 @@ const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
 
         if (!singlePackageData.start_date || !singlePackageData.end_date) {
           setCustomDateRange(true);
-          setIsSelectionFixed(false); // MODIFIED: Selection is not fixed for custom ranges
+          setIsSelectionFixed(false); 
           setSelectionDays(numberOfDays);
           setInitialCalendarMonth(new Date());
         } else {
@@ -94,12 +98,11 @@ const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
             totalDays: totalDays,
           });
 
-          // MODIFIED: Logic to handle fixed date ranges
           if (totalDays <= numberOfDays) {
             const dateRange = getDatesInRange(startDate, endDate);
             setSelectedDates(dateRange);
             setSelectionDays(totalDays);
-            setIsSelectionFixed(true); // Lock the selection
+            setIsSelectionFixed(true); 
           } else {
             setSelectionDays(numberOfDays);
             const defaultRange = getContinuousDateRange(
@@ -107,7 +110,7 @@ const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
               numberOfDays
             );
             setSelectedDates(defaultRange);
-            setIsSelectionFixed(false); // Allow user to change selection
+            setIsSelectionFixed(false); 
           }
         }
 
@@ -242,7 +245,7 @@ const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
   const handleAddRoom = () => {
     setRooms((prevRooms) => [
       ...prevRooms,
-      { id: nextRoomId, adults: 0, children: 0, infant: 0 },
+      { id: nextRoomId, adults: 1, children: 0, infant: 0 }, // Add new room with 1 adult
     ]);
     setNextRoomId(nextRoomId + 1);
     if (showRoomAlert) {
@@ -257,7 +260,6 @@ const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
   };
 
   const handleDateChange = (date) => {
-    // MODIFIED: If selection is fixed, do not allow any changes.
     if (isSelectionFixed) {
       return;
     }
@@ -266,16 +268,14 @@ const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
 
     const numberOfDays = slugPackage?.number_of_days || 5;
 
-    // This logic now only applies to scenarios where the date is not fixed.
     if (customDateRange) {
         if (isDateSelected(date)) {
-            setSelectedDates([]); // Deselect if the start of a range is clicked
+            setSelectedDates([]);
         } else {
             const newRange = getContinuousDateRange(date, numberOfDays);
             setSelectedDates(newRange);
         }
     } else {
-        // This handles cases where totalDays > numberOfDays
         const maxStartDate = new Date(packageDateRange.end);
         maxStartDate.setDate(maxStartDate.getDate() - (selectionDays - 1));
 
@@ -292,7 +292,6 @@ const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
       today.setHours(0, 0, 0, 0);
       return date >= today;
     }
-
     return isDateInValidRange(date);
   };
 
@@ -300,18 +299,12 @@ const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
     if (selectedDates.length === 0) return "No date selected";
     const sortedDates = [...selectedDates].sort((a, b) => a - b);
 
-    if (sortedDates.length > 3) {
+    if (sortedDates.length > 1) {
       return `${formatDate(sortedDates[0])} to ${formatDate(
         sortedDates[sortedDates.length - 1]
       )}`;
     }
-
-    return sortedDates.map((date, index) => (
-      <span key={index}>
-        {formatDate(date)}
-        <span style={{ marginLeft: "15px" }}></span>
-      </span>
-    ));
+    return formatDate(sortedDates[0]);
   };
 
   const formatDate = (date) => {
@@ -333,12 +326,21 @@ const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
   };
 
   const handleBookNow = () => {
+    setError(null); // Clear previous errors
+
+    // Validation checks
     if (selectedDates.length === 0) {
-      setError("Please select at least one date.");
+      setError("Please select your travel dates.");
       return;
     }
-    const sortedDates = [...selectedDates].sort((a, b) => a - b);
+    if (totalTravelers === 0) {
+      setError("Please add at least one adult or child to proceed.");
+      return;
+    }
+    
+    setIsBooking(true); // Start loader
 
+    const sortedDates = [...selectedDates].sort((a, b) => a - b);
     const bookingData = {
       start_date: toYyyyMmDd(sortedDates[0]),
       end_date: toYyyyMmDd(sortedDates[sortedDates.length - 1]),
@@ -357,6 +359,7 @@ const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
       localStorage.getItem("auth_token_register");
     if (!authToken) {
       setError("Authentication token not found. Please log in.");
+      setIsBooking(false); // Stop loader
       return;
     }
 
@@ -372,11 +375,9 @@ const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
       )
       .then((response) => {
         const bookingId = response.data.data.id;
-        console.log("Booking API Response:", response);
         console.log("Booking API Response:", response.data.data.id);
         localStorage.setItem("booking_data", JSON.stringify(bookingData));
         localStorage.setItem("data", JSON.stringify(slugPackage));
-        setIsBooking(true);
         onClose();
         router.push(
           `/checkout?bookingId=${encodeURIComponent(bookingId)}`
@@ -388,6 +389,7 @@ const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
           error.response?.data?.message ||
             "Failed to book package. Please try again."
         );
+        setIsBooking(false); // Stop loader on error
       });
   };
 
@@ -403,6 +405,24 @@ const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
       .react-datepicker__day { font-weight: 550 }
       .room-alert { background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 4px; margin-top: 10px; font-size: 14px; text-align: center; }
       .selection-info { background-color: #e8f4f8; color: #2c5282; padding: 8px 12px; border-radius: 6px; margin-bottom: 10px; font-size: 14px; text-align: center; }
+      
+      /* Loader styles */
+      .loader {
+        border: 4px solid rgba(255, 255, 255, 0.3);
+        border-top: 4px solid #ffffff;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        animation: spin 1s linear infinite;
+        display: inline-block;
+        margin-right: 10px;
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      
       @media (max-width: 1200px) {
         .react-datepicker__day { width: 76px !important; padding: 7px 0; font-size: 15px; color: #797979 !important; }
         .react-datepicker__day-names { margin-bottom: -10px; }
@@ -445,11 +465,10 @@ const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
         <div className={`${style["date-left"]}`}>
           <p className="py-2 ms-2">
             Departure Data Selected:{" "}
-            {displaySelectedDateAndTime() || "No date selected"}
+            <strong>{displaySelectedDateAndTime()}</strong>
           </p>
           <style>{customStyles}</style>
           <div className="relative">
-        
             <DatePicker
               openToDate={initialCalendarMonth}
               onChange={handleDateChange}
@@ -608,16 +627,24 @@ const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
           <div className="mt-4 flex">
               <button
                 onClick={handleBookNow}
-                className="bg-blue-600 text-white rounded col-12"
+                className="bg-blue-600 text-white rounded col-12 d-flex align-items-center justify-content-center"
                 style={{
                   background: "#5bb3b5",
                   border: "none",
                   fontSize: "20px",
                   padding: "14px",
+                  minHeight: "58px" // Prevents layout shift
                 }}
-                disabled={selectedDates.length === 0 || isBooking}
+                disabled={selectedDates.length === 0 || totalTravelers === 0 || isBooking}
               >
-                {isBooking ? "Processing..." : "Proceed"}
+                {isBooking ? (
+                  <>
+                    <span className="loader"></span>
+                    Processing...
+                  </>
+                ) : (
+                  "Proceed"
+                )}
               </button>
           </div>
         </div>

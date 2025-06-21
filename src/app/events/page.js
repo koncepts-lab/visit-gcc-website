@@ -419,9 +419,9 @@ const Country = () => {
             <div className="col-md-6">
               <img
                 src={
-                  allEvents[0]?.event_photo_urls?.[0] ||
-                  "/images/placeholder-image.jpg"
-                }
+  allEvents[0]?.event_photo_urls && allEvents[0].event_photo_urls.length > 0
+          ? allEvents[0].event_photo_urls[0]
+          : "/images/placeholder.jpg"                }
                 className={`img-fluid w-100`}
                 alt="Featured Event"
               />

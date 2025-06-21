@@ -427,7 +427,9 @@ function page() {
                   >
                     <Link href={`/blogs/${blogs.uuid_id}`}>
                       <img
-                        src={blogs.main_image_url}
+                        src={ blogs.main_image_url > 0
+          ? blogs.main_image_url
+          : "/images/placeholder.jpg"}
                         className="w-100"
                         style={{ height: "350px" }}
                         alt="Banner"
@@ -631,7 +633,9 @@ function page() {
                       >
                         <Link href={`/blogs/${features.uuid_id}`}>
                           <div className="d-flex gap-4">
-                            <img src={features.main_image_url} />
+                            <img src={features.main_image_url > 0
+          ? features.main_image_url
+          : "/images/placeholder.jpg"} />
                             <div>
                               <p
                                 style={{

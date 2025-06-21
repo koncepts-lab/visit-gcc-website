@@ -4,6 +4,8 @@ import style from "./style.module.css";
 import { FaChevronRight } from "react-icons/fa6";
 
 function OtherBlogs(props) {
+        const imageUrl = props.banner_image || "/images/placeholder.jpg";
+
   return (
     <>
       <Link
@@ -13,7 +15,7 @@ function OtherBlogs(props) {
       >
         <div className={style["PakageDetailsOtherPackages"]}>
           <img
-            src={props.image}
+            src={imageUrl}
             className="w-100"
             alt=""
             style={{ height: "130px" }}

@@ -65,7 +65,8 @@ function Carousal({
       type !== "media-page-full-carosul" &&
       type !== "event-page-scroll" &&
       type !== "upcoming-events" &&
-      type !== "pakage-details-other-packages",
+      type !== "pakage-details-other-packages" &&
+      type !== "event-details-other-events",
 
     responsive: [
       {

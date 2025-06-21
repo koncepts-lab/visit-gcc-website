@@ -13,7 +13,7 @@ function Singlewonders(props) {
         href={`/events/${props.id}`}
       >
         <div className={style["best-picked-box"]}>
-          <img src={props.image} className="w-100" alt={props.heading} />
+          <img src={props.image || "iamges/placeholder.jpg"} className="w-100" style={{width: "360px",height: "312px"}} alt={props.heading} />
           <span>
             <h4>{props.heading}</h4>
             <p>{props.description}</p>

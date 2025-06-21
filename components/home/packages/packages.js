@@ -6,6 +6,8 @@ import { FaArrowRightLong } from "react-icons/fa6";
 const ArrowIcon = () => <FaArrowRightLong />;
 
 function SingleHomePackage({ link, photo_url, name, description }) {
+  const imageUrl = photo_url || "/images/placeholder.jpg";
+
   return (
     <Link
       href={`${link}`}
@@ -14,9 +16,9 @@ function SingleHomePackage({ link, photo_url, name, description }) {
     >
       <div className={style["bg-black-shade"]}></div>
       <img
-        src={photo_url}
+        src={imageUrl} 
         className="w-100"
-        alt={name}
+        alt={name || "Package Image"} 
         style={{ height: "230px" }}
       />
       <div className={style["home-packages-text"]}>

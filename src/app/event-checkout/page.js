@@ -27,29 +27,32 @@ const Checkout = () => {
   const [bookingDetails, setBookingDetails] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  
-  const [travellers, setTravellers] = useState([]);
-  const [nextTravellerId, setNextTravellerId] = useState(1);
-  
+
+  // State for a single lead traveller form
+  const [leadTraveller, setLeadTraveller] = useState({
+    lastName: "",
+    firstName: "",
+    idType: "",
+    idNumber: "",
+    gender: "",
+  });
+
   const searchParams = useSearchParams();
   const bookingId = searchParams.get("bookingId") || "";
 
-  const handleInputChange = (travellerId, field, value) => {
-    setTravellers((prevTravellers) =>
-      prevTravellers.map((traveller) =>
-        traveller.id === travellerId
-          ? { ...traveller, [field]: value }
-          : traveller
-      )
-    );
+  // Handlers for the single lead traveller form
+  const handleTravellerInputChange = (field, value) => {
+    setLeadTraveller((prevTraveller) => ({
+      ...prevTraveller,
+      [field]: value,
+    }));
   };
 
-  const handleGenderChange = (travellerId, gender) => {
-    setTravellers((prevTravellers) =>
-      prevTravellers.map((traveller) =>
-        traveller.id === travellerId ? { ...traveller, gender } : traveller
-      )
-    );
+  const handleTravellerGenderChange = (gender) => {
+    setLeadTraveller((prevTraveller) => ({
+      ...prevTraveller,
+      gender,
+    }));
   };
 
   useEffect(() => {
@@ -78,7 +81,7 @@ const Checkout = () => {
     const fetchOtherPackages = async () => {
       try {
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}packages`
+          `${process.env.NEXT_PUBLIC_API_URL}events`
         );
         const packageData = response.data.data || response.data || [];
         setSlugPackage(packageData);
@@ -112,23 +115,9 @@ const Checkout = () => {
         );
         const apiData = response.data || {};
         if (!apiData.booking) {
-            throw new Error("Invalid booking data received from API.");
+          throw new Error("Invalid booking data received from API.");
         }
         setBookingDetails(apiData);
-
-        // Dynamically create traveler forms for each adult
-        const totalAdults = apiData.total_adults || 0;
-        const initialTravellers = Array.from({ length: totalAdults }, (_, i) => ({
-            id: i + 1,
-            lastName: "",
-            firstName: "",
-            idType: "",
-            idNumber: "",
-            gender: "",
-        }));
-        setTravellers(initialTravellers);
-        setNextTravellerId(totalAdults + 1);
-
       } catch (err) {
         console.error("Error fetching booking data:", err);
         setError("Failed to fetch booking details. Please try again.");
@@ -138,39 +127,59 @@ const Checkout = () => {
     };
     fetchBookingData();
   }, [bookingId]);
-  
+
   // Helper to format date with weekday
   const formatDate = (dateString) => {
     if (!dateString) return "Not available";
-    const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString('en-US', options);
+    const options = {
+      weekday: "short",
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    };
+    return new Date(dateString).toLocaleDateString("en-US", options);
   };
 
   // Helper to format time to AM/PM
   const formatTime = (timeString) => {
-      if (!timeString) return "";
-      const [hour, minute] = timeString.split(':');
-      const h = parseInt(hour, 10);
-      const m = parseInt(minute, 10);
-      const ampm = h >= 12 ? 'PM' : 'AM';
-      const formattedHour = h % 12 === 0 ? 12 : h % 12;
-      return `${formattedHour.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')} ${ampm}`;
+    if (!timeString) return "";
+    const [hour, minute] = timeString.split(":");
+    const h = parseInt(hour, 10);
+    const m = parseInt(minute, 10);
+    const ampm = h >= 12 ? "PM" : "AM";
+    const formattedHour = h % 12 === 0 ? 12 : h % 12;
+    return `${formattedHour.toString().padStart(2, "0")}:${m
+      .toString()
+      .padStart(2, "0")} ${ampm}`;
   };
 
   if (isLoading) {
-    return <div className="container text-center py-5"><h2>Loading your booking details...</h2></div>;
+    return (
+      <div className="container text-center py-5">
+        <h2>Loading your booking details...</h2>
+      </div>
+    );
   }
   if (error) {
-    return <div className="container text-center py-5"><h2 className="text-danger">{error}</h2></div>;
+    return (
+      <div className="container text-center py-5">
+        <h2 className="text-danger">{error}</h2>
+      </div>
+    );
   }
   if (!bookingDetails) {
-    return <div className="container text-center py-5"><h2>No booking details found.</h2></div>;
+    return (
+      <div className="container text-center py-5">
+        <h2>No booking details found.</h2>
+      </div>
+    );
   }
-  
+
   // Safe data extraction with fallbacks
   const bookingInfo = bookingDetails.booking;
-  const itemDetails = bookingInfo.event || bookingInfo.package || bookingInfo.attraction || {};
-  
+  const itemDetails =
+    bookingInfo.event || bookingInfo.package || bookingInfo.attraction || {};
+
   const itemName = itemDetails.name || "Your Booking";
   const itemAdultPrice = parseFloat(itemDetails.adult_price || 0).toFixed(2);
   const itemStartDate = formatDate(bookingInfo.start_date);
@@ -209,129 +218,125 @@ const Checkout = () => {
                     Personal Information
                   </h1>
                   <form className="col-xxl-10 col-xl-12">
-                    {travellers.map((traveller) => (
-                      <div key={traveller.id} className="pt-1">
-                        <p
-                          className="align-items-center fw-semibold d-flex"
-                          style={{ color: "#5ab2b3", height: "25px" }}
+                    {/* --- MODIFIED SECTION: Single Adult Form --- */}
+                    <div className="pt-1">
+                      <p
+                        className="align-items-center fw-semibold d-flex"
+                        style={{ color: "#5ab2b3", height: "25px" }}
+                      >
+                        <FaUser size={23} className="me-3" color="#e7e7e7" />
+                      Adult 1
+                      </p>
+                      <div className="">
+                        <div className="col-12">
+                          <input
+                            className={`${style["promo_input"]} col-xl-5 col-lg-6 col-12 `}
+                            placeholder="Last name (in English)*"
+                            value={leadTraveller.lastName}
+                            onChange={(e) =>
+                              handleTravellerInputChange(
+                                "lastName",
+                                e.target.value
+                              )
+                            }
+                          />
+                          <br className="d-xl-none d-lg-block" />
+                          <input
+                            className={`${style["promo_input"]} ms-xxl-5 ms-xl-5 ms-md-0 col-xl-5 col-lg-6 col-12`}
+                            placeholder="First & middle name (in English)*"
+                            value={leadTraveller.firstName}
+                            onChange={(e) =>
+                              handleTravellerInputChange(
+                                "firstName",
+                                e.target.value
+                              )
+                            }
+                          />
+                          <br />
+                        </div>
+                        <div className="col-12 pt-2">
+                          <input
+                            className={`${style["promo_input"]} col-xl-5 col-lg-6 col-12`}
+                            placeholder="ID Type*"
+                            value={leadTraveller.idType}
+                            onChange={(e) =>
+                              handleTravellerInputChange(
+                                "idType",
+                                e.target.value
+                              )
+                            }
+                          />
+                          <br className="d-xl-none d-lg-block" />
+                          <input
+                            className={`${style["promo_input"]} ms-xxl-5 ms-xl-5 ms-md-0 col-xl-4 col-lg-6 col-12 `}
+                            placeholder="ID number*"
+                            value={leadTraveller.idNumber}
+                            onChange={(e) =>
+                              handleTravellerInputChange(
+                                "idNumber",
+                                e.target.value
+                              )
+                            }
+                          />
+                        </div>
+                        {/* gender buttons */}
+                        <div
+                          style={{ marginTop: "10px", marginBottom: "10px" }}
                         >
-                          <FaUser size={23} className="me-3" color="#e7e7e7" />
-                          Adult {traveller.id}
-                        </p>
-                        <div className="">
-                          <div className="col-12">
-                            <input
-                              className={`${style["promo_input"]} col-xl-5 col-lg-6 col-12 `}
-                              placeholder="Last name (in English)*"
-                              value={traveller.lastName}
-                              onChange={(e) =>
-                                handleInputChange(
-                                  traveller.id,
-                                  "lastName",
-                                  e.target.value
-                                )
-                              }
-                            />
-                            <br className="d-xl-none d-lg-block" />
-                            <input
-                              className={`${style["promo_input"]} ms-xxl-5 ms-xl-5 ms-md-0 col-xl-5 col-lg-6 col-12`}
-                              placeholder="First & middle name (in English)*"
-                              value={traveller.firstName}
-                              onChange={(e) =>
-                                handleInputChange(
-                                  traveller.id,
-                                  "firstName",
-                                  e.target.value
-                                )
-                              }
-                            />
-                            <br />
-                          </div>
-                          <div className="col-12 pt-2">
-                            <input
-                              className={`${style["promo_input"]} col-xl-5 col-lg-6 col-12`}
-                              placeholder="ID Type*"
-                              value={traveller.idType}
-                              onChange={(e) =>
-                                handleInputChange(
-                                  traveller.id,
-                                  "idType",
-                                  e.target.value
-                                )
-                              }
-                            />
-                            <br className="d-xl-none d-lg-block" />
-                            <input
-                              className={`${style["promo_input"]} ms-xxl-5 ms-xl-5 ms-md-0 col-xl-4 col-lg-6 col-12 `}
-                              placeholder="ID number*"
-                              value={traveller.idNumber}
-                              onChange={(e) =>
-                                handleInputChange(
-                                  traveller.id,
-                                  "idNumber",
-                                  e.target.value
-                                )
-                              }
-                            />
-                          </div>
-                          {/* gender buttons */}
-                          <div
-                            style={{ marginTop: "10px", marginBottom: "10px" }}
+                          <button
+                            type="button"
+                            className={`${
+                              leadTraveller.gender === "male" ? "active" : ""
+                            }`}
+                            onClick={() =>
+                              handleTravellerGenderChange("male")
+                            }
+                            style={{
+                              backgroundColor:
+                                leadTraveller.gender === "male"
+                                  ? "#5ab2b3"
+                                  : "white",
+                              color:
+                                leadTraveller.gender === "male"
+                                  ? "white"
+                                  : "#686767",
+                              padding: "5px 45px",
+                              fontSize: "13px",
+                              border: "#e2e2e2 2px solid",
+                              borderRadius: "5px",
+                            }}
                           >
-                            <button
-                              type="button"
-                              className={`${
-                                traveller.gender === "male" ? "active" : ""
-                              }`}
-                              onClick={() =>
-                                handleGenderChange(traveller.id, "male")
-                              }
-                              style={{
-                                backgroundColor:
-                                  traveller.gender === "male"
-                                    ? "#5ab2b3"
-                                    : "white",
-                                color:
-                                  traveller.gender === "male"
-                                    ? "white"
-                                    : "#686767",
-                                padding: "5px 45px",
-                                fontSize: "13px",
-                                border: "#e2e2e2 2px solid",
-                                borderRadius: "5px",
-                              }}
-                            >
-                              Male
-                            </button>
-                            <button
-                              type="button"
-                              className={`promo_input ${
-                                traveller.gender === "female" ? "active" : ""
-                              } ms-md-3 ms-2 `}
-                              onClick={() =>
-                                handleGenderChange(traveller.id, "female")
-                              }
-                              style={{
-                                backgroundColor:
-                                  traveller.gender === "female"
-                                    ? "#5ab2b3"
-                                    : "white",
-                                color:
-                                  traveller.gender === "female"
-                                    ? "white"
-                                    : "#686767",
-                                padding: "5px 42px",
-                                fontSize: "13px",
-                                border: "#e2e2e2 2px solid",
-                                borderRadius: "5px",
-                              }}
-                            >
-                              Female
-                            </button>
-                          </div>
+                            Male
+                          </button>
+                          <button
+                            type="button"
+                            className={`promo_input ${
+                              leadTraveller.gender === "female" ? "active" : ""
+                            } ms-md-3 ms-2 `}
+                            onClick={() =>
+                              handleTravellerGenderChange("female")
+                            }
+                            style={{
+                              backgroundColor:
+                                leadTraveller.gender === "female"
+                                  ? "#5ab2b3"
+                                  : "white",
+                              color:
+                                leadTraveller.gender === "female"
+                                  ? "white"
+                                  : "#686767",
+                              padding: "5px 42px",
+                              fontSize: "13px",
+                              border: "#e2e2e2 2px solid",
+                              borderRadius: "5px",
+                            }}
+                          >
+                            Female
+                          </button>
                         </div>
                       </div>
-                    ))}
+                    </div>
+                    {/* --- END OF MODIFIED SECTION --- */}
 
                     <div>
                       <h1 className="m-3 ms-0 pt-1 fw-bolder">Contact Info</h1>
@@ -379,7 +384,9 @@ const Checkout = () => {
                   className={`d-flex justify-content-between ${style["price-container"]}`}
                 >
                   <div className="d-flex">
-                    <span className="fw-bolder fs-4 text-center ">AED {itemAdultPrice}</span>
+                    <span className="fw-bolder fs-4 text-center ">
+                      AED {itemAdultPrice}
+                    </span>
                   </div>
                   <div className="d-flex flex-column gap-2 align-items-end">
                     <div className="d-flex gap-2">
@@ -412,7 +419,9 @@ const Checkout = () => {
                   </div>
                   <div className="d-flex align-items-center">
                     <FaRegClock color="#80878b" className="me-2" />
-                    <span>{itemStartTime} - {itemEndTime}</span>
+                    <span>
+                      {itemStartTime} - {itemEndTime}
+                    </span>
                   </div>
                 </div>
                 <hr />
@@ -422,15 +431,30 @@ const Checkout = () => {
                     <p>Price</p>
                     <p className="fw-semibold">AED {totalAmount}</p>
                   </div>
-                  {totalAdults > 0 && <p className="text-black-50" style={{ marginTop: "-10px" }}>
-                    {totalAdults} Adult{totalAdults > 1 ? "s" : ""}
-                  </p>}
-                  {totalChildren > 0 && <p className="text-black-50" style={{ marginTop: "-10px" }}>
-                    {totalChildren} Child{totalChildren > 1 ? "ren" : ""}
-                  </p>}
-                  {totalInfants > 0 && <p className="text-black-50" style={{ marginTop: "-10px" }}>
-                    {totalInfants} Infant{totalInfants > 1 ? "s" : ""}
-                  </p>}
+                  {totalAdults > 0 && (
+                    <p
+                      className="text-black-50"
+                      style={{ marginTop: "-10px" }}
+                    >
+                      {totalAdults} Adult{totalAdults > 1 ? "s" : ""}
+                    </p>
+                  )}
+                  {totalChildren > 0 && (
+                    <p
+                      className="text-black-50"
+                      style={{ marginTop: "-10px" }}
+                    >
+                      {totalChildren} Child{totalChildren > 1 ? "ren" : ""}
+                    </p>
+                  )}
+                  {totalInfants > 0 && (
+                    <p
+                      className="text-black-50"
+                      style={{ marginTop: "-10px" }}
+                    >
+                      {totalInfants} Infant{totalInfants > 1 ? "s" : ""}
+                    </p>
+                  )}
                 </div>
                 <hr />
 
@@ -526,8 +550,9 @@ const Checkout = () => {
         {/* --- REST OF YOUR PAGE (UNCHANGED) --- */}
         <div className="container">
           <img
-            src="/images/blank.png"
-            className="w-100"
+  src={
+      slugPackage?.[0]?.event_photo_urls?.[0] || "/images/blank.png"
+    }            className="w-100"
             style={{ height: "400px", borderRadius: "15px" }}
             alt="Banner"
           />
@@ -535,11 +560,11 @@ const Checkout = () => {
             className="d-flex justify-content-between px-4"
             style={{ marginTop: "-33px" }}
           >
-            <p className="text-black-50 ">
-              Date: <span className="text-white">19- JAN-2017</span>
+             <p className="text-black-50 ">
+              Date: <span className="text-black">{slugPackage?.[0]?.start_date}</span>
             </p>
             <p className="text-black-50 ">
-              Tag: <span className="text-white"> Business</span>
+              Tag: <span className="text-black"> {slugPackage?.[0]?.category}</span>
             </p>
           </div>
         </div>
@@ -547,7 +572,7 @@ const Checkout = () => {
         <div className="container">
           <div className="row">
             <div className="col-md-12 pt-5 d-flex justify-content-center">
-              <h3>Other Packages</h3>
+              <h3>Other Events</h3>
             </div>
           </div>
         </div>
@@ -558,7 +583,7 @@ const Checkout = () => {
               <Carousal
                 pakageDetailsOtherPackages={slugPackage}
                 count={5}
-                type="pakage-details-other-packages"
+                type="event-details-other-events"
               />
             </div>
           </div>
