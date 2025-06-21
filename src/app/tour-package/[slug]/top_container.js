@@ -23,8 +23,7 @@ export default function Top_container({ packageId }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [vendorName, setVendorName] = useState("");
-    const router = useRouter();
-  
+  const router = useRouter();
 
   useEffect(() => {
     const fetchPackageData = async () => {
@@ -67,8 +66,8 @@ export default function Top_container({ packageId }) {
   }, [packageId]);
 
   const handleBookNowClick = () => {
-  const loginToken = localStorage.getItem("auth_token_login");
-    
+    const loginToken = localStorage.getItem("auth_token_login");
+
     if (loginToken) {
       setIsDatePickerPopupOpen(true);
     } else {
@@ -209,7 +208,7 @@ export default function Top_container({ packageId }) {
                   <div className="col-md-12">
                     <div className={style["review-img-container"]}>
                       <Carousal
-                        packageDetailsReview={formattedPhotos}
+                        packageDetailsReview={packageDetails.photo_urls}
                         count={1}
                         type="tour-package-details-reviews"
                       />

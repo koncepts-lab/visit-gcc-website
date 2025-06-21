@@ -70,7 +70,7 @@ export default function AttractionTopContainer({ packageId }) {
           );
           setAttractionRatings(null);
         }
-        
+
         // Other fetches are commented out as per your original code
         setLoading(false);
       } catch (err) {
@@ -95,7 +95,7 @@ export default function AttractionTopContainer({ packageId }) {
 
   const handleBookNowClick = () => {
     const loginToken = localStorage.getItem("auth_token_login");
-    
+
     if (loginToken) {
       setIsDatePickerPopupOpen(true);
     } else {
@@ -264,7 +264,7 @@ export default function AttractionTopContainer({ packageId }) {
               <div className={style["review-img-container"]}>
                 {formattedPhotos.length > 0 ? (
                   <Carousal
-                    packageDetailsReview={formattedPhotos}
+                    packageDetailsReview={attractionDetails.photo_urls}
                     count={1}
                     type="tour-package-details-reviews"
                   />
@@ -290,8 +290,8 @@ export default function AttractionTopContainer({ packageId }) {
             </div>
           </div>
         </div>
-        
-       {/* <div className="row mt-4 pt-3 border-top">
+
+        {/* <div className="row mt-4 pt-3 border-top">
           <div className={`col-md-7 ${style["border-right"]}`}>
             <h3
               className="pt-2 mb-3 fw-semibold"
@@ -393,7 +393,7 @@ export default function AttractionTopContainer({ packageId }) {
         <div className={style["popup-overlay"]}>
           <EnhancedDatePicker
             // MODIFIED: Prop name changed to reflect it can be any ID
-          packageId={packageId}
+            packageId={packageId}
             type="attraction" // Set type to 'attraction' for the booking API
             onClose={handleCloseDatePickerPopup}
           />
@@ -412,9 +412,8 @@ export default function AttractionTopContainer({ packageId }) {
   );
 }
 
-
-
-       {/* <div className="row mt-4 pt-3 border-top">
+{
+  /* <div className="row mt-4 pt-3 border-top">
           <div className={`col-md-7 ${style["border-right"]}`}>
             <h3
               className="pt-2 mb-3 fw-semibold"
@@ -509,4 +508,5 @@ export default function AttractionTopContainer({ packageId }) {
               <p className="text-muted">No specific categories listed.</p>
             )}
           </div>
-        </div> */}
+        </div> */
+}
