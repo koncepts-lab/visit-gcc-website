@@ -1,37 +1,54 @@
+// TourPackage Component - Final Version
+
 "use client";
+
+// React and hooks
 import React, { useState, useEffect, useCallback } from "react";
-import style from "./style.module.css";
-import Banner from "../../../components/banner/banner";
+
+// External libraries
+import axios from "axios";
 import { Range } from "react-range";
+
+// Icons
+import { LuMenu } from "react-icons/lu";
+import { IoIosCloseCircleOutline } from "react-icons/io";
+
+// Local styles
+import style from "./style.module.css";
+
+// Custom components
+import Banner from "../../../components/banner/banner";
 import Carousal from "../../../components/carousel/Carousal";
 import HolidaysTab from "../../../components/tour-package/holidays-tab";
 import Accordion from "../../../components/accordion/accordion";
 import TourPackageTab from "../../../components/tour-package/tour-package-tab";
-import { LuMenu } from "react-icons/lu";
-import { IoIosCloseCircleOutline } from "react-icons/io";
-import axios from "axios";
 import FeaturedIntegratedTravel from "@components/tour-package/featured-integrated-travel";
 
 const TourPackage = () => {
-  const [packages, setPackages] = useState([]);
-  const [allPackages, setAllPackages] = useState([]);
-  const [tour_category, setTour_category] = useState([]);
+  // --- STATE MANAGEMENT ---
+
+  // Package data states
+  const [allPackages, setAllPackages] = useState([]); // Master list of all packages from initial fetch
+  const [filteredPackages, setFilteredPackages] = useState([]); // The list of packages to be displayed after filters are applied
+
+  // UI and loading states
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isToggled, setIsToggled] = useState(false); // For mobile filter sidebar
+  const [noResultsFound, setNoResultsFound] = useState(false);
+
+  // Filter states
   const [priceRange, setPriceRange] = useState([30, 8000]);
-  const [durationRange, setDurationRange] = useState([1, 30]); // Expanded max duration
-  const [isToggled, setIsToggled] = useState(false);
-  const firstBreakPoints = { 350: 1, 750: 2, 1200: 3, 1500: 4 };
-  const secondBreakPoints = { 350: 1, 750: 2, 1200: 3, 1500: 3 };
+  const [durationRange, setDurationRange] = useState([1, 30]);
+  const [selectedItems, setSelectedItems] = useState({}); // Stores selected accordion filter items
+  const [isApiFiltered, setIsApiFiltered] = useState(false); // Tracks if the current filter set is from an API call
 
-  const [filteredPackages, setFilteredPackages] = useState([]);
-  const [selectedItems, setSelectedItems] = useState({});
-  const [isApiFiltered, setIsApiFiltered] = useState(false); // Track if API filtering is active
-
+  // Static/Carousel data states
+  const [tour_category, setTour_category] = useState([]);
   const [bestPicked, setBestpicked] = useState([]);
   const [lesserWonders, setLesserWonders] = useState([]);
-  const [noResultsFound, setNoResultsFound] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
 
+  // Accordion data configuration
   const [accordionData, setAccordionData] = useState([
     {
       title: "ACTIVITIES",
@@ -77,34 +94,40 @@ const TourPackage = () => {
     },
   ]);
 
+  // Carousel responsive breakpoints
+  const firstBreakPoints = { 350: 1, 750: 2, 1200: 3, 1500: 4 };
+  const secondBreakPoints = { 350: 1, 750: 2, 1200: 3, 1500: 3 };
+
+  // --- HANDLERS AND HELPERS ---
+
   const handleToggle = () => setIsToggled(!isToggled);
   const handlePriceRangeChange = (values) => setPriceRange(values);
   const handleDurationRangeChange = (values) => setDurationRange(values);
-
   const getAuthToken = () =>
     localStorage.getItem("auth_token_login") ||
     localStorage.getItem("auth_token_register");
 
-  // *** FIXED: Use Promise.all for efficient and reliable data fetching for accordions
+  // --- DATA FETCHING AND LOGIC (useEffect Hooks) ---
+
+  // EFFECT 1: Fetch data for accordion filters on initial mount
   useEffect(() => {
     const fetchAllAccordionData = async () => {
       const authToken = getAuthToken();
+      const headers = authToken ? { Authorization: `Bearer ${authToken}` } : {};
       try {
         const promises = accordionData.map(async (section) => {
           if (!section.apiEndpoint) return section;
           try {
             const response = await axios.get(
               `${process.env.NEXT_PUBLIC_API_URL}${section.apiEndpoint}`,
-              {
-                headers: authToken
-                  ? { Authorization: `Bearer ${authToken}` }
-                  : {},
-              }
+              { headers }
             );
             const items = response.data.data || response.data || [];
+
+            // FIX: Handle both 'uuid_id' (for countries) and 'id' (for others)
             const formattedItems = Array.isArray(items)
               ? items.map((item) => ({
-                  id: item.id,
+                  id: item.uuid_id || item.id,
                   title: item.title || item.name || "Unknown",
                 }))
               : [];
@@ -124,12 +147,14 @@ const TourPackage = () => {
       }
     };
     fetchAllAccordionData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Run only once on mount
 
-  // Fetch initial and static data
+  // EFFECT 2: Fetch initial page data (all packages, carousels) on initial mount
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
+      setError(null);
       const authToken = getAuthToken();
       const headers = authToken ? { Authorization: `Bearer ${authToken}` } : {};
 
@@ -151,9 +176,8 @@ const TourPackage = () => {
           ]);
 
         const fetchedPackages = packagesRes.data.data || [];
-        setPackages(fetchedPackages);
         setAllPackages(fetchedPackages);
-        setFilteredPackages(fetchedPackages); // Initially, show all
+        setFilteredPackages(fetchedPackages); // Set both master and display lists initially
 
         setTour_category(tourCategoryRes.data.data || []);
         setBestpicked(bestPickedRes.data.data || []);
@@ -161,44 +185,55 @@ const TourPackage = () => {
       } catch (err) {
         setError("Failed to fetch initial page data. Please try again.");
         console.error("Data fetch error:", err);
+        setAllPackages([]);
+        setFilteredPackages([]);
       } finally {
         setIsLoading(false);
       }
     };
     fetchData();
-  }, []);
+  }, []); // Run only once on mount
 
+  // Central filtering logic, memoized with useCallback for performance
   const applyAllFilters = useCallback(
     (basePackages) => {
+      // Determine the source list to filter from
       let packagesToFilter =
         basePackages || (isApiFiltered ? filteredPackages : allPackages);
 
-      if (!Array.isArray(packagesToFilter)) {
-        packagesToFilter = [];
-      }
+      if (!Array.isArray(packagesToFilter)) packagesToFilter = [];
 
       const filtered = packagesToFilter.filter((pkg) => {
         if (!pkg) return false;
         const adultPrice = parseFloat(pkg.adult_price) || 0;
         const duration = parseInt(pkg.number_of_days, 10) || 0;
 
-        // *** FIXED: Correct country filter logic
+        // --- Local Filters (applied on top of any API results) ---
+        const matchesPrice =
+          adultPrice >= priceRange[0] && adultPrice <= priceRange[1];
+        const matchesDuration =
+          duration >= durationRange[0] && duration <= durationRange[1];
+
+        // Country filter is always local for better performance
         const countryIdFilter = selectedItems["COUNTRY"]?.[0];
         const matchesCountry = countryIdFilter
           ? pkg.country_id === countryIdFilter
           : true;
 
-        return (
-          adultPrice >= priceRange[0] &&
-          adultPrice <= priceRange[1] &&
-          duration >= durationRange[0] &&
-          duration <= durationRange[1] &&
-          matchesCountry
-        );
+        return matchesPrice && matchesDuration && matchesCountry;
       });
 
       setFilteredPackages(filtered);
-      setNoResultsFound(filtered.length === 0);
+
+      // Check if any filters are active to determine if "No Results" should be shown
+      const hasActiveFilters =
+        Object.keys(selectedItems).length > 0 ||
+        priceRange[0] !== 30 ||
+        priceRange[1] !== 8000 ||
+        durationRange[0] !== 1 ||
+        durationRange[1] !== 30;
+
+      setNoResultsFound(filtered.length === 0 && hasActiveFilters);
     },
     [
       allPackages,
@@ -210,32 +245,34 @@ const TourPackage = () => {
     ]
   );
 
-  // Effect to re-apply local filters (price/duration) when they change
+  // EFFECT 3: Re-apply filters when user changes price or duration sliders
+  // FIX: This effect is now decoupled from the initial data load to prevent race conditions.
   useEffect(() => {
+    // Only run this filter if the initial data has been loaded.
     if (!isLoading) {
       applyAllFilters();
     }
   }, [priceRange, durationRange, applyAllFilters, isLoading]);
 
-  const filterPackagesByAccordion = async (currentSelectedItems) => {
+  // --- FILTERING STRATEGY FUNCTIONS ---
+
+  // Fetches packages from API based on accordion selections (excluding Country)
+  const filterPackagesByApi = async (currentSelectedItems) => {
     const authToken = getAuthToken();
     const queryParts = [];
 
     for (const sectionTitle in currentSelectedItems) {
       const section = accordionData.find((item) => item.title === sectionTitle);
       if (section && section.filterParam && section.title !== "COUNTRY") {
-        // Exclude country from API call
         currentSelectedItems[sectionTitle].forEach((itemId) => {
           queryParts.push(`${section.filterParam}[]=${itemId}`);
         });
       }
     }
 
-    // If only the country filter is selected, don't make an API call.
-    // Let the local `applyAllFilters` handle it.
     if (queryParts.length === 0) {
       setIsApiFiltered(false);
-      applyAllFilters(allPackages); // Apply filters to the full list
+      applyAllFilters(allPackages);
       return;
     }
 
@@ -250,9 +287,8 @@ const TourPackage = () => {
         headers: authToken ? { Authorization: `Bearer ${authToken}` } : {},
       });
       const apiFilteredPackages = response.data.data || [];
-      applyAllFilters(apiFilteredPackages); // Apply all filters on the new API results
+      applyAllFilters(apiFilteredPackages); // Apply local filters (price, duration, country) on top of API results
     } catch (err) {
-      // *** FIXED: Handle 404 specifically as "No Results"
       if (err.response && err.response.status === 404) {
         setFilteredPackages([]);
         setNoResultsFound(true);
@@ -265,6 +301,7 @@ const TourPackage = () => {
     }
   };
 
+  // Handles clicking an item in any accordion filter
   const handleAccordionItemClick = (sectionIndex, itemId) => {
     const newSelectedItems = { ...selectedItems };
     const sectionTitle = accordionData[sectionIndex].title;
@@ -275,32 +312,26 @@ const TourPackage = () => {
         ? []
         : [itemId];
     } else {
-      if (currentSelections.includes(itemId)) {
-        newSelectedItems[sectionTitle] = currentSelections.filter(
-          (id) => id !== itemId
-        );
-      } else {
-        newSelectedItems[sectionTitle] = [...currentSelections, itemId];
-      }
+      newSelectedItems[sectionTitle] = currentSelections.includes(itemId)
+        ? currentSelections.filter((id) => id !== itemId)
+        : [...currentSelections, itemId];
     }
-    // Cleanup empty arrays
+
     if (newSelectedItems[sectionTitle]?.length === 0) {
       delete newSelectedItems[sectionTitle];
     }
 
     setSelectedItems(newSelectedItems);
 
-    // Decide whether to call API or filter locally
     const hasNonCountryApiFilter = Object.keys(newSelectedItems).some(
       (key) => key !== "COUNTRY"
     );
 
     if (hasNonCountryApiFilter) {
-      filterPackagesByAccordion(newSelectedItems);
+      filterPackagesByApi(newSelectedItems); // API call needed
     } else {
-      // If only country filter is active (or no accordion filters), filter locally
       setIsApiFiltered(false);
-      applyAllFilters(allPackages);
+      applyAllFilters(allPackages); // Only local filters are active
     }
   };
 
@@ -314,10 +345,10 @@ const TourPackage = () => {
     setError(null);
   };
 
-  const displayPackages =
-    isApiFiltered || noResultsFound || Object.keys(selectedItems).length > 0
-      ? filteredPackages
-      : allPackages;
+  // --- RENDER ---
+
+  // The list of packages to be rendered is always `filteredPackages` after the initial load.
+  const displayPackages = filteredPackages;
 
   return (
     <>
@@ -330,6 +361,7 @@ const TourPackage = () => {
             </button>
           </div>
           <div className={style["tour-package-container"]}>
+            {/* Left Side - Filters */}
             <div
               className={`${style["left"]} ${
                 isToggled ? style["highlight"] : ""
@@ -457,7 +489,8 @@ const TourPackage = () => {
                 Apply
               </button>
             </div>
-            {/* right */}
+
+            {/* Right Side - Content */}
             <div
               className={`${style["right"]} ${
                 isToggled ? style["filter-full-width"] : ""
