@@ -230,9 +230,11 @@ select {
 
 .event-masonry-item-content {
   padding: 10px;
-  margin-top: -212px;
+   top: 0;
+   height: 100%;
   width: 100%;
-  color: #fff;
+  align-content: end; 
+   color: #fff;
   position: absolute;
   background: linear-gradient(0deg, rgba(0, 0, 0, 1) 6%, rgba(0, 0, 0, 0) 100%);
 }
