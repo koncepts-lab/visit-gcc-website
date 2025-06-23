@@ -61,8 +61,6 @@ const HighlightTab = ({
             longitude={longitude}
           />
         );
-        {
-        }
       default:
         return null;
     }
@@ -88,9 +86,23 @@ const HighlightTab = ({
   );
 };
 
+// No Data Message Component
+const NoDataMessage = ({ message }) => (
+  <div style={{ textAlign: "center", padding: "2rem", color: "#6c757d" }}>
+    <p>{message}</p>
+  </div>
+);
+
 // Highlight Tab Content
 const HighlightContent = ({ highlight }) => {
   const [activeAccordion, setActiveAccordion] = useState(null);
+
+  // Check if highlight data exists
+  if (!highlight || highlight.trim() === "") {
+    return (
+      <NoDataMessage message="No highlight information available at the moment." />
+    );
+  }
 
   const accordionTabs = [
     { name: "Day 1 - Arrival in Salalah", content: "Content for Day 1" },
@@ -113,16 +125,27 @@ const HighlightContent = ({ highlight }) => {
 
 // Photo Gallery Tab Content
 const PhotoGalleryEventHighlightsContent = ({ photoGallery }) => {
+  // Check if photo gallery data exists
+  if (
+    !photoGallery ||
+    !Array.isArray(photoGallery) ||
+    photoGallery.length === 0
+  ) {
+    return (
+      <NoDataMessage message="No photos or event highlights available at the moment." />
+    );
+  }
+
   const carouselSettings = {
-    dots: true, // Enable dot pagination
+    dots: true,
     infinite: photoGallery.length > 1,
     speed: 500,
     slidesToShow: 3,
-    slidesToScroll: 1, // Scroll one slide at a time
-    autoplay: true, // Enable autoplay
-    autoplaySpeed: 3000, // Autoplay interval in milliseconds
-    arrows: false, 
-     responsive: [
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    arrows: false,
+    responsive: [
       {
         breakpoint: 1024,
         settings: {
@@ -148,14 +171,8 @@ const PhotoGalleryEventHighlightsContent = ({ photoGallery }) => {
           infinite: photoGallery.length > 1,
         },
       },
-    ],// Hide navigation arrows
+    ],
   };
-
-  const images = [
-    "https://dummyimage.com/2000x700/009497/ffffff.jpg&text=2000x700",
-    "https://dummyimage.com/2000x700/962100/ffffff.jpg&text=2000x700",
-    "https://dummyimage.com/2000x700/948500/ffffff.jpg&text=2000x700",
-  ];
 
   return (
     <div className="photoGalleryContainer">
@@ -177,137 +194,91 @@ const PhotoGalleryEventHighlightsContent = ({ photoGallery }) => {
 };
 
 // FAQ Tab Content
-const FAQSectionContent = ({ faq }) => (
-  <div>
-    <h4>FAQ Section</h4>
-    <p>{faq}</p>
-  </div>
-);
+const FAQSectionContent = ({ faq }) => {
+  // Check if FAQ data exists
+  if (!faq || faq.trim() === "") {
+    return (
+      <NoDataMessage message="No frequently asked questions available at the moment." />
+    );
+  }
+
+  return (
+    <div>
+      <h4>FAQ Section</h4>
+      <p>{faq}</p>
+    </div>
+  );
+};
 
 // Ticket Information Tab Content
-const TicketInformationContent = ({ ticket }) => (
-  <div>
-    <h4>Ticket Information</h4>
-    <p>{ticket}</p>
-  </div>
-);
+const TicketInformationContent = ({ ticket }) => {
+  // Check if ticket data exists
+  if (!ticket || ticket.trim() === "") {
+    return (
+      <NoDataMessage message="No ticket information available at the moment." />
+    );
+  }
+
+  return (
+    <div>
+      <h4>Ticket Information</h4>
+      <p>{ticket}</p>
+    </div>
+  );
+};
 
 // Sponsors Tab Content
-const SponsorsAndPartnersContent = ({ sponsers }) => (
-  <div>
-    <h4>Sponsors and Partners</h4>
+const SponsorsAndPartnersContent = ({ sponsors }) => {
+  // Check if sponsors data exists
+  if (!sponsors || sponsors.trim() === "") {
+    return (
+      <NoDataMessage message="No sponsors and partners information available at the moment." />
+    );
+  }
 
-    <div className="container pt-2">
-      <div className="row">
-        <p>{sponsers}</p>
-        {/* <div className="col-md-2 mb-4">
-          <img src="../images/logo.svg" />
+  return (
+    <div>
+      <h4>Sponsors and Partners</h4>
+      <div className="container pt-2">
+        <div className="row">
+          <p>{sponsors}</p>
         </div>
-        <div className="col-md-2 mb-4">
-          <img src="../images/logo.svg" />
-        </div>
-        <div className="col-md-2 mb-4">
-          <img src="../images/logo.svg" />
-        </div>
-        <div className="col-md-2 mb-4">
-          <img src="../images/logo.svg" />
-        </div>
-        <div className="col-md-2 mb-4">
-          <img src="../images/logo.svg" />
-        </div>
-        <div className="col-md-2 mb-4">
-          <img src="../images/logo.svg" />
-        </div>
-        <div className="col-md-2 mb-4">
-          <img src="../images/logo.svg" />
-        </div>
-        <div className="col-md-2 mb-4">
-          <img src="../images/logo.svg" />
-        </div>
-        <div className="col-md-2 mb-4">
-          <img src="../images/logo.svg" />
-        </div>
-        <div className="col-md-2 mb-4">
-          <img src="../images/logo.svg" />
-        </div>
-        <div className="col-md-2 mb-4">
-          <img src="../images/logo.svg" />
-        </div>
-        <div className="col-md-2 mb-4">
-          <img src="../images/logo.svg" />
-        </div> */}
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 // Venue Information Tab Content
-const VenueInformationContent = ({ venue, latitude, longitude }) => (
-  <div>
-    <h4>Venue Information</h4>
+const VenueInformationContent = ({ venue, latitude, longitude }) => {
+  // Check if venue data exists
+  const hasVenueData = venue && venue.trim() !== "";
+  const hasCoordinates = latitude && longitude;
 
-    <div className="container">
-      <div className={`row ${style["Legend-ul"]}`}>
-        {/* <div className="col-md-8">
-          <img src="../images/map.jpg" alt="Bahrain" />
-        </div> */}
-        {/* <div className="col-md-4">
-          <h4>Legend</h4>
-          <ul>
-            <li>
-              <p>
-                <IoLocationSharp />
-                Start Location
-              </p>
-            </li>
-            <li>
-              <p>
-                <IoLocationSharp />
-                End Location
-              </p>
-            </li>
-            <li>
-              <p>
-                <IoIosCloudyNight />
-                Over Night
-              </p>
-            </li>
-            <li>
-              <p>
-                <GoDotFill />
-                Visited Location
-              </p>
-            </li>
-            <li>
-              <p>
-                <GiCruiser />
-                Cruise
-              </p>
-            </li>
-            {/* <li>
-              <p>
-                <FaFerry />
-                Ferry
-              </p>
-            </li> */}
-        {/* <li>
-              <p>
-                <IoIosAirplane />
-                Plane
-              </p>
-            </li>
-            <li>
-              <p>
-                <FaTrain />
-                Train
-              </p>
-            </li>
-          </ul>
-        </div> */}
-        <Map latitude={latitude} longitude={longitude} />
+  if (!hasVenueData && !hasCoordinates) {
+    return (
+      <NoDataMessage message="No venue information available at the moment." />
+    );
+  }
+
+  return (
+    <div>
+      <h4>Venue Information</h4>
+      <div className="container">
+        <div className={`row ${style["Legend-ul"]}`}>
+          {hasVenueData && <p>{venue}</p>}
+          {hasCoordinates ? (
+            <Map latitude={latitude} longitude={longitude} />
+          ) : (
+            <div
+              style={{ textAlign: "center", padding: "1rem", color: "#6c757d" }}
+            >
+              <p>Map location not available</p>
+            </div>
+          )}
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default HighlightTab;

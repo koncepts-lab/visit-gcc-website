@@ -16,21 +16,29 @@ const PackageInclusionsAndExclusions = ({ packageId }) => {
     const fetchPackageDetails = async () => {
       setIsLoading(true);
       setError("");
-      const registerToken = localStorage.getItem("auth_token_register");
-      const loginToken = localStorage.getItem("auth_token_login");
-      let authToken = null;
 
-      if (loginToken) {
-        authToken = loginToken;
-        console.log("Using login token for fetching packages.");
-      } else if (registerToken) {
-        authToken = registerToken;
-        console.log("Using register token for fetching packages.");
+      // Simplified token retrieval
+      const authToken =
+        localStorage.getItem("auth_token_login") ||
+        localStorage.getItem("auth_token_register");
+
+      // We don't use authToken in the GET request, but keeping it in case it's needed for future protected routes.
+      // If your API doesn't require it, you can remove the token logic.
+      if (authToken) {
+        console.log("Auth token found.");
       }
+
       try {
-        const inclusionsResponse = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}package/${packageId}/inclusions`
-        );
+        // Fetch both in parallel for better performance
+        const [inclusionsResponse, exclusionsResponse] = await Promise.all([
+          axios.get(
+            `${process.env.NEXT_PUBLIC_API_URL}packages/${packageId}/inclusions`
+          ),
+          axios.get(
+            `${process.env.NEXT_PUBLIC_API_URL}packages/${packageId}/exclusions`
+          ),
+        ]);
+
         const fetchedInclusions =
           inclusionsResponse.data.data || inclusionsResponse.data || [];
         setInclusions(fetchedInclusions);
@@ -38,86 +46,96 @@ const PackageInclusionsAndExclusions = ({ packageId }) => {
           setKeyInclusions(fetchedInclusions[0].title);
         }
 
-        const exclusionsResponse = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}package/${packageId}/exclusions`
-        );
         const fetchedExclusions =
           exclusionsResponse.data.data || exclusionsResponse.data || [];
         setExclusions(fetchedExclusions);
         if (fetchedExclusions.length > 0) {
           setKeyExclusions(fetchedExclusions[0].title);
         }
-
-        setIsLoading(false);
       } catch (err) {
-        setIsLoading(false);
         setError("Failed to fetch package details. Please try again.");
         console.error("Error fetching package details:", err);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     if (packageId) {
       fetchPackageDetails();
     }
-    // Removed packageId from the dependency array as it's now a prop.
-    // The component will re-render when the prop changes, triggering the useEffect.
   }, [packageId]);
+
+  // A clear message for when there is no data at all.
+  const noDataAvailable =
+    !isLoading && !error && inclusions.length === 0 && exclusions.length === 0;
 
   return (
     <Container>
       {isLoading ? (
-        <div className="text-center">Loading...</div>
+        <div className="text-center p-4">Loading...</div>
       ) : error ? (
-        <div className="text-danger text-center">{error}</div>
+        <div className="text-danger text-center p-4">{error}</div>
+      ) : noDataAvailable ? (
+        <div className={style.noDataMessage}>
+          No inclusion or exclusion information is available for this package.
+        </div>
       ) : (
         <>
-          {/* Inclusions Tab */}
-          <h3 className={` ${style["p-color"]}`}>Package Inclusions</h3>
-          <Tabs
-            id="package-inclusions-tabs"
-            activeKey={keyInclusions}
-            onSelect={(k) => setKeyInclusions(k)}
-            className={`${style["package-inclusions-tabs"]}`}
-          >
-            {inclusions.map((inclusion) => (
-              <Tab
-                key={inclusion.id}
-                eventKey={inclusion.title}
-                title={inclusion.title}
-                className={style["box-container"]}
+          {/* Inclusions Section: Renders only if there are inclusions */}
+          {inclusions.length > 0 && (
+            <div>
+              <h3 className={` ${style["p-color"]}`}>Package Inclusions</h3>
+              <Tabs
+                id="package-inclusions-tabs"
+                activeKey={keyInclusions}
+                onSelect={(k) => setKeyInclusions(k)}
+                className={`${style["package-inclusions-tabs"]}`}
               >
-                <Row>
-                  <Col>
-                    <p className="text-justify">{inclusion.description}</p>
-                  </Col>
-                </Row>
-              </Tab>
-            ))}
-          </Tabs>
+                {inclusions.map((inclusion) => (
+                  <Tab
+                    key={inclusion.id}
+                    eventKey={inclusion.title}
+                    title={inclusion.title}
+                    className={style["box-container"]}
+                  >
+                    <Row>
+                      <Col>
+                        <p className="text-justify">{inclusion.description}</p>
+                      </Col>
+                    </Row>
+                  </Tab>
+                ))}
+              </Tabs>
+            </div>
+          )}
 
-          {/* Exclusions Tab */}
-          <h3 className={` ${style["p-color"]} pt-4`}>Package Exclusions</h3>
-          <Tabs
-            id="package-exclusions-tabs"
-            activeKey={keyExclusions}
-            onSelect={(k) => setKeyExclusions(k)}
-            className={`${style["package-inclusions-tabs"]}`}
-          >
-            {exclusions.map((exclusion) => (
-              <Tab
-                key={exclusion.id}
-                eventKey={exclusion.title}
-                title={exclusion.title}
-                className={style["box-container"]}
+          {/* Exclusions Section: Renders only if there are exclusions */}
+          {exclusions.length > 0 && (
+            <div className="pt-4">
+              <h3 className={` ${style["p-color"]}`}>Package Exclusions</h3>
+              <Tabs
+                id="package-exclusions-tabs"
+                activeKey={keyExclusions}
+                onSelect={(k) => setKeyExclusions(k)}
+                className={`${style["package-inclusions-tabs"]}`}
               >
-                <Row>
-                  <Col>
-                    <p className="text-justify">{exclusion.description}</p>
-                  </Col>
-                </Row>
-              </Tab>
-            ))}
-          </Tabs>
+                {exclusions.map((exclusion) => (
+                  <Tab
+                    key={exclusion.id}
+                    eventKey={exclusion.title}
+                    title={exclusion.title}
+                    className={style["box-container"]}
+                  >
+                    <Row>
+                      <Col>
+                        <p className="text-justify">{exclusion.description}</p>
+                      </Col>
+                    </Row>
+                  </Tab>
+                ))}
+              </Tabs>
+            </div>
+          )}
         </>
       )}
     </Container>

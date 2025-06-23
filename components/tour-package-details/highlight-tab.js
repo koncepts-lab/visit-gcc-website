@@ -61,9 +61,7 @@ const ItineraryContent = ({ itineraryItems, itemType }) => {
             className={style.accordion}
           >
             <div
-              className={`${style.accordionTab} ${
-                activeAccordion === index ? style.activeAccordion : ""
-              }`}
+              className={`${style.accordionTab} `}
               onClick={() => toggleAccordion(index)}
             >
               <h4 className="mb-0 d-flex align-items-center">

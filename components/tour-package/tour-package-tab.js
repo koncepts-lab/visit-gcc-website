@@ -244,7 +244,19 @@ const TourPackageTab = ({
                             style={{ width: "100%", display: "block" }}
                             alt={pkg.name}
                           />
-                          <div className="tour-pakage-masonry-item-content">
+                          <div
+                            className="tour-pakage-masonry-item-content"
+                            style={{
+                              height: "100%",
+                              position: "absolute",
+                              bottom: "0px",
+                              width: "100%",
+                              display: "flex",
+                              flexDirection: "column",
+                              justifyContent: "end",
+                              gap: "8px",
+                            }}
+                          >
                             <h5>{pkg.name}</h5>
                             <div className={style["provider-date"]}>
                               {/* <p>{vendorData[pkg.id] || "Loading vendor..."}</p>{" "}

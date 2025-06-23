@@ -61,7 +61,7 @@ const TourPackageTab = ({
 
         try {
           const response = await axios.get(
-            `${process.env.NEXT_PUBLIC_API_URL}att-categories/category/get-by-category?category_ids[]=${activeTab}`
+            `${process.env.NEXT_PUBLIC_API_URL}attractions?category_id[]=${activeTab}`
           );
 
           const categoryPackages = response.data.data || response.data || [];

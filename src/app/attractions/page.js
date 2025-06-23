@@ -33,8 +33,8 @@ const AttractionsPage = () => {
   const [bestPicked, setBestpicked] = useState([]);
   const [lesserWonders, setLesserWonders] = useState([]);
 
-  const firstBreakPoints = { 350: 1, 750: 2, 1200: 2, 1500: 4 };
-  const secondBreakPoints = { 350: 1, 750: 2, 1200: 2, 1500: 3 };
+  const firstBreakPoints = { 350: 1, 750: 2, 1200: 3, 1500: 4 };
+  const secondBreakPoints = { 350: 1, 750: 2, 1200: 3, 1500: 3 };
 
   const handleToggle = () => setIsToggled(!isToggled);
   const handlePriceRangeChange = (values) => setPriceRange(values);

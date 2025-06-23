@@ -1,10 +1,8 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import style from "./style.module.css";
 import Banner from "../../../components/banner/banner";
-import Countries from "../../../components/countries/countries";
 import { Range } from "react-range";
-import { CiMobile3 } from "react-icons/ci";
 import Carousal from "../../../components/carousel/Carousal";
 import HolidaysTab from "../../../components/tour-package/holidays-tab";
 import Accordion from "../../../components/accordion/accordion";
@@ -20,44 +18,19 @@ const TourPackage = () => {
   const [tour_category, setTour_category] = useState([]);
   const [error, setError] = useState(null);
   const [priceRange, setPriceRange] = useState([30, 8000]);
-  const [durationRange, setDurationRange] = useState([1, 10]);
+  const [durationRange, setDurationRange] = useState([1, 30]); // Expanded max duration
   const [isToggled, setIsToggled] = useState(false);
-  const firstBreakPoints = { 350: 1, 750: 2, 1200: 2, 1500: 4 };
-  const secondBreakPoints = { 350: 1, 750: 2, 1200: 2, 1500: 3 };
+  const firstBreakPoints = { 350: 1, 750: 2, 1200: 3, 1500: 4 };
+  const secondBreakPoints = { 350: 1, 750: 2, 1200: 3, 1500: 3 };
+
   const [filteredPackages, setFilteredPackages] = useState([]);
   const [selectedItems, setSelectedItems] = useState({});
-  const [filteredByAccordion, setFilteredByAccordion] = useState([]);
+  const [isApiFiltered, setIsApiFiltered] = useState(false); // Track if API filtering is active
+
   const [bestPicked, setBestpicked] = useState([]);
   const [lesserWonders, setLesserWonders] = useState([]);
   const [noResultsFound, setNoResultsFound] = useState(false);
-
-  const handleToggle = () => {
-    setIsToggled(!isToggled);
-  };
-
-  const handlePriceRangeChange = (values) => {
-    setPriceRange(values);
-  };
-
-  const handleDurationRangeChange = (values) => {
-    setDurationRange(values);
-  };
-
-  const clearPriceFilter = () => {
-    setPriceRange([30, 8000]);
-    applyAllFilters();
-  };
-
-  const clearDurationFilter = () => {
-    setDurationRange([1, 10]);
-    applyAllFilters();
-  };
-
-  useEffect(() => {
-    if (allPackages.length > 0) {
-      applyAllFilters();
-    }
-  }, [priceRange, durationRange, selectedItems]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const [accordionData, setAccordionData] = useState([
     {
@@ -104,367 +77,262 @@ const TourPackage = () => {
     },
   ]);
 
+  const handleToggle = () => setIsToggled(!isToggled);
+  const handlePriceRangeChange = (values) => setPriceRange(values);
+  const handleDurationRangeChange = (values) => setDurationRange(values);
+
+  const getAuthToken = () =>
+    localStorage.getItem("auth_token_login") ||
+    localStorage.getItem("auth_token_register");
+
+  // *** FIXED: Use Promise.all for efficient and reliable data fetching for accordions
   useEffect(() => {
-    const fetchAccordionItems = async (index) => {
-      const section = accordionData[index];
-      if (!section.apiEndpoint) {
-        return;
-      }
-
-      const registerToken = localStorage.getItem("auth_token_register");
-      const loginToken = localStorage.getItem("auth_token_login");
-      let authToken = null;
-
-      if (loginToken) {
-        authToken = loginToken;
-      } else if (registerToken) {
-        authToken = registerToken;
-      }
-
+    const fetchAllAccordionData = async () => {
+      const authToken = getAuthToken();
       try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}${section.apiEndpoint}`,
-          {
-            headers: authToken ? { Authorization: `Bearer ${authToken}` } : {},
+        const promises = accordionData.map(async (section) => {
+          if (!section.apiEndpoint) return section;
+          try {
+            const response = await axios.get(
+              `${process.env.NEXT_PUBLIC_API_URL}${section.apiEndpoint}`,
+              {
+                headers: authToken
+                  ? { Authorization: `Bearer ${authToken}` }
+                  : {},
+              }
+            );
+            const items = response.data.data || response.data || [];
+            const formattedItems = Array.isArray(items)
+              ? items.map((item) => ({
+                  id: item.id,
+                  title: item.title || item.name || "Unknown",
+                }))
+              : [];
+            return { ...section, items: formattedItems };
+          } catch (err) {
+            console.error(
+              `Failed to fetch accordion items for ${section.title}:`,
+              err
+            );
+            return section; // Return original section on error
           }
-        );
-        console.log(
-          `fetchAccordionItems (${section.title}) response:`,
-          response
-        );
-        const items = response.data.data || response.data || [];
-        setAccordionData((prevData) => {
-          const newData = [...prevData];
-          newData[index].items = Array.isArray(items)
-            ? items.map((item, itemIndex) => ({
-                title: item.title || item.name || "Unknown",
-                id: item.id ?? `${section.title.toLowerCase()}-${itemIndex}`,
-              }))
-            : [];
-          return newData;
         });
-      } catch (err) {
-        setError(`Failed to fetch ${section.title}. Please try again.`);
+        const newAccordionData = await Promise.all(promises);
+        setAccordionData(newAccordionData);
+      } catch (error) {
+        console.error("Error fetching accordion data:", error);
       }
     };
+    fetchAllAccordionData();
+  }, []); // Run only once on mount
 
-    accordionData.forEach((section, index) => {
-      if (section.apiEndpoint) {
-        fetchAccordionItems(index);
-      }
-    });
-  }, []);
-
+  // Fetch initial and static data
   useEffect(() => {
-    const fetchBestpicked = async () => {
-      const registerToken = localStorage.getItem("auth_token_register");
-      const loginToken = localStorage.getItem("auth_token_login");
-      let authToken = null;
-
-      if (loginToken) {
-        authToken = loginToken;
-      } else if (registerToken) {
-        authToken = registerToken;
-      }
+    const fetchData = async () => {
+      setIsLoading(true);
+      const authToken = getAuthToken();
+      const headers = authToken ? { Authorization: `Bearer ${authToken}` } : {};
 
       try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}packages/get-top-packages`,
-          {
-            headers: authToken ? { Authorization: `Bearer ${authToken}` } : {},
-          }
-        );
+        const [packagesRes, tourCategoryRes, bestPickedRes, lesserWondersRes] =
+          await Promise.all([
+            axios.get(`${process.env.NEXT_PUBLIC_API_URL}packages`),
+            axios.get(`${process.env.NEXT_PUBLIC_API_URL}tour-categories`, {
+              headers,
+            }),
+            axios.get(
+              `${process.env.NEXT_PUBLIC_API_URL}packages/get-top-packages`,
+              { headers }
+            ),
+            axios.get(
+              `${process.env.NEXT_PUBLIC_API_URL}packages/get-lesser-known-packages`,
+              { headers }
+            ),
+          ]);
 
-        const fetchedBestpicked = (
-          response.data?.data ||
-          response.data ||
-          []
-        ).map((pkg, index) => ({
-          ...pkg,
-          id: pkg.id ?? `bestpicked-${index}`,
-        }));
-        setBestpicked(fetchedBestpicked);
-      } catch (err) {
-        setError("Failed to fetch best picked packages. Please try again.");
-      }
-    };
-    fetchBestpicked();
-  }, []);
-
-  useEffect(() => {
-    const fetchLesserWonders = async () => {
-      const registerToken = localStorage.getItem("auth_token_register");
-      const loginToken = localStorage.getItem("auth_token_login");
-      let authToken = null;
-
-      if (loginToken) {
-        authToken = loginToken;
-      } else if (registerToken) {
-        authToken = registerToken;
-      }
-
-      try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}packages/get-lesser-known-packages`,
-          {
-            headers: authToken ? { Authorization: `Bearer ${authToken}` } : {},
-          }
-        );
-        const fetchedLesserWonders = (
-          response.data.data ||
-          response.data ||
-          []
-        ).map((pkg, index) => ({
-          ...pkg,
-          id: pkg.id ?? `lesserwonder-${index}`,
-        }));
-        setLesserWonders(fetchedLesserWonders);
-      } catch (err) {
-        setError("Failed to fetch lesser-known wonders. Please try again.");
-      }
-    };
-    fetchLesserWonders();
-  }, []);
-
-  useEffect(() => {
-    const fetchPackages = async () => {
-      const registerToken = localStorage.getItem("auth_token_register");
-      const loginToken = localStorage.getItem("auth_token_login");
-      let authToken = null;
-
-      if (loginToken) {
-        authToken = loginToken;
-      } else if (registerToken) {
-        authToken = registerToken;
-      }
-
-      try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}packages`
-        );
-        console.log("fetchPackages response:", response);
-        const fetchedPackages = (response.data.data || response.data || []).map(
-          (pkg, index) => ({
-            ...pkg,
-            id: pkg.id ?? `package-${index}`,
-          })
-        );
+        const fetchedPackages = packagesRes.data.data || [];
         setPackages(fetchedPackages);
         setAllPackages(fetchedPackages);
+        setFilteredPackages(fetchedPackages); // Initially, show all
+
+        setTour_category(tourCategoryRes.data.data || []);
+        setBestpicked(bestPickedRes.data.data || []);
+        setLesserWonders(lesserWondersRes.data.data || []);
       } catch (err) {
-        setError("Failed to fetch packages. Please try again.");
+        setError("Failed to fetch initial page data. Please try again.");
+        console.error("Data fetch error:", err);
+      } finally {
+        setIsLoading(false);
       }
     };
-    fetchPackages();
+    fetchData();
   }, []);
 
-  useEffect(() => {
-    const fetchTour_category = async () => {
-      const registerToken = localStorage.getItem("auth_token_register");
-      const loginToken = localStorage.getItem("auth_token_login");
-      let authToken = null;
+  const applyAllFilters = useCallback(
+    (basePackages) => {
+      let packagesToFilter =
+        basePackages || (isApiFiltered ? filteredPackages : allPackages);
 
-      if (loginToken) {
-        authToken = loginToken;
-      } else if (registerToken) {
-        authToken = registerToken;
+      if (!Array.isArray(packagesToFilter)) {
+        packagesToFilter = [];
       }
 
-      try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}tour-categories`,
-          {
-            headers: authToken ? { Authorization: `Bearer ${authToken}` } : {},
-          }
+      const filtered = packagesToFilter.filter((pkg) => {
+        if (!pkg) return false;
+        const adultPrice = parseFloat(pkg.adult_price) || 0;
+        const duration = parseInt(pkg.number_of_days, 10) || 0;
+
+        // *** FIXED: Correct country filter logic
+        const countryIdFilter = selectedItems["COUNTRY"]?.[0];
+        const matchesCountry = countryIdFilter
+          ? pkg.country_id === countryIdFilter
+          : true;
+
+        return (
+          adultPrice >= priceRange[0] &&
+          adultPrice <= priceRange[1] &&
+          duration >= durationRange[0] &&
+          duration <= durationRange[1] &&
+          matchesCountry
         );
-        console.log("fetchTour_category response:", response);
-        const allTour_category = (
-          response.data.data ||
-          response.data ||
-          []
-        ).map((category, index) => ({
-          ...category,
-          id: category.id ?? `tourcategory-${index}`,
-        }));
-        setTour_category(allTour_category);
-      } catch (err) {
-        setError("Failed to fetch tour categories. Please try again.");
-      }
-    };
-    fetchTour_category();
-  }, []);
+      });
 
-  const handleAccordionItemClick = async (sectionIndex, itemId) => {
-    console.log("handleAccordionItemClick called:", {
-      sectionIndex,
-      itemId,
+      setFilteredPackages(filtered);
+      setNoResultsFound(filtered.length === 0);
+    },
+    [
+      allPackages,
+      filteredPackages,
+      isApiFiltered,
+      priceRange,
+      durationRange,
       selectedItems,
-    });
+    ]
+  );
 
-    const newSelectedItems = { ...selectedItems };
-    const sectionTitle = accordionData[sectionIndex].title;
+  // Effect to re-apply local filters (price/duration) when they change
+  useEffect(() => {
+    if (!isLoading) {
+      applyAllFilters();
+    }
+  }, [priceRange, durationRange, applyAllFilters, isLoading]);
 
-    if (sectionTitle === "COUNTRY") {
-      if (
-        newSelectedItems[sectionTitle] &&
-        newSelectedItems[sectionTitle].includes(itemId)
-      ) {
-        console.log(`Deselecting ${itemId} from COUNTRY`);
-        delete newSelectedItems[sectionTitle];
-      } else {
-        console.log(`Selecting ${itemId} in COUNTRY`);
-        newSelectedItems[sectionTitle] = [itemId];
-      }
-    } else {
-      const currentSelections = newSelectedItems[sectionTitle] || [];
-      if (currentSelections.includes(itemId)) {
-        console.log(`Deselecting ${itemId} from ${sectionTitle}`);
-        newSelectedItems[sectionTitle] = currentSelections.filter(
-          (id) => id !== itemId
-        );
-        if (newSelectedItems[sectionTitle].length === 0) {
-          delete newSelectedItems[sectionTitle];
-        }
-      } else {
-        console.log(`Selecting ${itemId} in ${sectionTitle}`);
-        newSelectedItems[sectionTitle] = [...currentSelections, itemId];
+  const filterPackagesByAccordion = async (currentSelectedItems) => {
+    const authToken = getAuthToken();
+    const queryParts = [];
+
+    for (const sectionTitle in currentSelectedItems) {
+      const section = accordionData.find((item) => item.title === sectionTitle);
+      if (section && section.filterParam && section.title !== "COUNTRY") {
+        // Exclude country from API call
+        currentSelectedItems[sectionTitle].forEach((itemId) => {
+          queryParts.push(`${section.filterParam}[]=${itemId}`);
+        });
       }
     }
 
-    console.log("Updated selectedItems:", newSelectedItems);
-    setSelectedItems(newSelectedItems);
-    await filterPackagesByAccordion(newSelectedItems);
-  };
-
-  const filterPackagesByAccordion = async (selectedItemsToFilter) => {
-    if (Object.keys(selectedItemsToFilter).length === 0) {
-      setFilteredByAccordion([]);
-      applyAllFilters();
+    // If only the country filter is selected, don't make an API call.
+    // Let the local `applyAllFilters` handle it.
+    if (queryParts.length === 0) {
+      setIsApiFiltered(false);
+      applyAllFilters(allPackages); // Apply filters to the full list
       return;
     }
 
-    const registerToken = localStorage.getItem("auth_token_register");
-    const loginToken = localStorage.getItem("auth_token_login");
-    let authToken = null;
-
-    if (loginToken) {
-      authToken = loginToken;
-    } else if (registerToken) {
-      authToken = registerToken;
-    }
+    setIsApiFiltered(true);
+    const queryString = queryParts.join("&");
+    const url = `${process.env.NEXT_PUBLIC_API_URL}packages?${queryString}`;
 
     try {
-      const queryParams = new URLSearchParams();
-      for (const sectionTitle in selectedItemsToFilter) {
-        const section = accordionData.find(
-          (item) => item.title === sectionTitle
-        );
-        if (section && section.filterParam) {
-          selectedItemsToFilter[sectionTitle].forEach((itemId) => {
-            queryParams.append(`${section.filterParam}[]`, itemId);
-          });
-        }
-      }
-
-      const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}packages?${queryParams.toString()}`,
-        {
-          headers: authToken ? { Authorization: `Bearer ${authToken}` } : {},
-        }
-      );
-      console.log("filterPackagesByAccordion response:", response);
-      const allFilteredPackages = (
-        response.data.data ||
-        response.data ||
-        []
-      ).map((pkg, index) => ({
-        ...pkg,
-        id: pkg.id ?? `filtered-${index}`,
-      }));
-      const uniquePackages = allFilteredPackages.filter(
-        (v, i, a) => a.findIndex((t) => t.id === v.id) === i
-      );
-      setFilteredByAccordion(uniquePackages);
-      applyAllFilters(uniquePackages);
+      setIsLoading(true);
+      setError(null);
+      const response = await axios.get(url, {
+        headers: authToken ? { Authorization: `Bearer ${authToken}` } : {},
+      });
+      const apiFilteredPackages = response.data.data || [];
+      applyAllFilters(apiFilteredPackages); // Apply all filters on the new API results
     } catch (err) {
-      setError("Failed to fetch filtered packages.");
+      // *** FIXED: Handle 404 specifically as "No Results"
+      if (err.response && err.response.status === 404) {
+        setFilteredPackages([]);
+        setNoResultsFound(true);
+      } else {
+        setError("Failed to fetch filtered packages.");
+        console.error("Filter error:", err);
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const applyAllFilters = (basePackages = null) => {
-    let packagesToFilter = basePackages;
+  const handleAccordionItemClick = (sectionIndex, itemId) => {
+    const newSelectedItems = { ...selectedItems };
+    const sectionTitle = accordionData[sectionIndex].title;
+    const currentSelections = newSelectedItems[sectionTitle] || [];
 
-    if (!packagesToFilter) {
-      packagesToFilter =
-        filteredByAccordion.length > 0 ? filteredByAccordion : allPackages;
+    if (sectionTitle === "COUNTRY") {
+      newSelectedItems[sectionTitle] = currentSelections.includes(itemId)
+        ? []
+        : [itemId];
+    } else {
+      if (currentSelections.includes(itemId)) {
+        newSelectedItems[sectionTitle] = currentSelections.filter(
+          (id) => id !== itemId
+        );
+      } else {
+        newSelectedItems[sectionTitle] = [...currentSelections, itemId];
+      }
+    }
+    // Cleanup empty arrays
+    if (newSelectedItems[sectionTitle]?.length === 0) {
+      delete newSelectedItems[sectionTitle];
     }
 
-    console.log("applyAllFilters - packagesToFilter:", packagesToFilter);
+    setSelectedItems(newSelectedItems);
 
-    if (!Array.isArray(packagesToFilter)) {
-      packagesToFilter = [];
-    }
+    // Decide whether to call API or filter locally
+    const hasNonCountryApiFilter = Object.keys(newSelectedItems).some(
+      (key) => key !== "COUNTRY"
+    );
 
-    const filtered = packagesToFilter.filter((pkg) => {
-      if (!pkg) return false;
-      console.log("Filtering package:", pkg);
-      const adultPrice = parseFloat(pkg.adult_price) || 0;
-      const duration = pkg.number_of_days || 0;
-      const matchesCountry =
-        selectedItems["COUNTRY"] && selectedItems["COUNTRY"].length > 0
-          ? (pkg.country_id || 0) === parseInt(selectedItems["COUNTRY"][0])
-          : true;
-      return (
-        adultPrice >= priceRange[0] &&
-        adultPrice <= priceRange[1] &&
-        duration >= durationRange[0] &&
-        duration <= durationRange[1] &&
-        matchesCountry
-      );
-    });
-
-    setNoResultsFound(filtered.length === 0);
-    setFilteredPackages(filtered);
-  };
-
-  const handleSearch = () => {
-    applyAllFilters();
-    if (isToggled) {
-      setIsToggled(false);
+    if (hasNonCountryApiFilter) {
+      filterPackagesByAccordion(newSelectedItems);
+    } else {
+      // If only country filter is active (or no accordion filters), filter locally
+      setIsApiFiltered(false);
+      applyAllFilters(allPackages);
     }
   };
 
   const clearAllFilters = () => {
     setPriceRange([30, 8000]);
-    setDurationRange([1, 10]);
+    setDurationRange([1, 30]);
     setSelectedItems({});
-    setFilteredByAccordion([]);
-    setFilteredPackages([]);
+    setIsApiFiltered(false);
+    setFilteredPackages(allPackages);
     setNoResultsFound(false);
-    applyAllFilters();
+    setError(null);
   };
 
   const displayPackages =
-    filteredPackages.length > 0 ? filteredPackages : packages;
+    isApiFiltered || noResultsFound || Object.keys(selectedItems).length > 0
+      ? filteredPackages
+      : allPackages;
 
   return (
     <>
       <Banner />
       <section className={style["tour-package-page"]}>
-        <div
-          className={`container-fluid ${style["tour-package-page-container"]}`}
-        >
+        <div className={`container-fluid`}>
           <div className={style["tour-packagebtn-container"]}>
             <button className={style["btn-toggle"]} onClick={handleToggle}>
-              <LuMenu />   FILTER
+              <LuMenu /> FILTER
             </button>
           </div>
-
           <div className={style["tour-package-container"]}>
-            {/* left */}
             <div
               className={`${style["left"]} ${
-                isToggled ? `${style["highlight"]}` : ""
+                isToggled ? style["highlight"] : ""
               }`}
             >
               <div className={style["package-filter"]}>
@@ -473,7 +341,7 @@ const TourPackage = () => {
                 </div>
                 <div className={style["price-range"]}>
                   <Range
-                    step={1}
+                    step={100}
                     min={30}
                     max={8000}
                     values={priceRange}
@@ -505,17 +373,9 @@ const TourPackage = () => {
                       />
                     )}
                   />
-                  <div className="d-flex">
-                    <p>
-                      Price Range: ${priceRange[0]} — ${priceRange[1]}
-                    </p>
-                    <button
-                      onClick={clearPriceFilter}
-                      className="btn btn-link text-primary"
-                    >
-                      Clear
-                    </button>
-                  </div>
+                  <p>
+                    Price Range: ${priceRange[0]} — ${priceRange[1]}
+                  </p>
                 </div>
 
                 <div className={style["filter-header"]}>
@@ -555,37 +415,24 @@ const TourPackage = () => {
                       />
                     )}
                   />
-                  <div className="d-flex">
-                    <p>
-                      Days: {durationRange[0]} — {durationRange[1]} Days
-                    </p>
-                    <button
-                      onClick={clearDurationFilter}
-                      className="btn btn-link text-primary"
-                    >
-                      Clear
-                    </button>
-                  </div>
+                  <p>
+                    Days: {durationRange[0]} — {durationRange[1]} Days
+                  </p>
                 </div>
 
                 <div className={style["accordion-range"]}>
-                  {accordionData.map((accordion, index) => {
-                    console.log(`Rendering Accordion ${accordion.title}:`, {
-                      selectedItems: selectedItems[accordion.title] || [],
-                    });
-                    return (
-                      <Accordion
-                        key={index}
-                        title={accordion.title}
-                        items={accordion.items || []}
-                        isOpenInitially={true}
-                        onItemClick={(itemId) =>
-                          handleAccordionItemClick(index, itemId)
-                        }
-                        selectedItems={selectedItems[accordion.title] || []}
-                      />
-                    );
-                  })}
+                  {accordionData.map((accordion, index) => (
+                    <Accordion
+                      key={accordion.title}
+                      title={accordion.title}
+                      items={accordion.items || []}
+                      isOpenInitially={true}
+                      onItemClick={(itemId) =>
+                        handleAccordionItemClick(index, itemId)
+                      }
+                      selectedItems={selectedItems[accordion.title] || []}
+                    />
+                  ))}
                 </div>
 
                 <div className={style["filter-buttons"]}>
@@ -596,7 +443,6 @@ const TourPackage = () => {
                     Clear Filters
                   </button>
                 </div>
-
                 <button
                   className={`${style["btn-toggle"]} ${style["btn-close"]}`}
                   onClick={handleToggle}
@@ -606,26 +452,27 @@ const TourPackage = () => {
               </div>
               <button
                 className={`${style["btn-one"]} ${style["btn-mobile"]}`}
-                onClick={handleSearch}
+                onClick={handleToggle}
               >
-                Search
+                Apply
               </button>
             </div>
-            {/* left end */}
-
             {/* right */}
             <div
-              className={`${style["right"]}  ${
-                isToggled ? `${style["filter-full-width"]}` : ""
+              className={`${style["right"]} ${
+                isToggled ? style["filter-full-width"] : ""
               }`}
             >
               <h3>Tour Packages</h3>
-              {noResultsFound ? (
+              {isLoading ? (
+                <p>Loading packages...</p>
+              ) : error ? (
+                <div className="alert alert-danger">{error}</div>
+              ) : noResultsFound ? (
                 <div className={style["no-results"]}>
-                  <h4>No packages found with the selected filters</h4>
+                  <h4>No packages found matching your criteria</h4>
                   <p>
-                    Please try adjusting your price range, duration, country, or
-                    activity selections
+                    Please try adjusting your selections or clear the filters.
                   </p>
                   <button
                     className={style["btn-one"]}
@@ -642,78 +489,40 @@ const TourPackage = () => {
                 />
               )}
 
-              <div>
-                <FeaturedIntegratedTravel />
-              </div>
+              <FeaturedIntegratedTravel />
 
-              {/* best picked for you */}
-              <section className={style["pakage-bes-picked"]}>
-                <div className="container-fluid">
-                  {bestPicked.length > 0 && (
-                    <div className="row">
-                      <div className="col-md-12">
-                        <h3 className="pb-3">Best picked for you</h3>
-                      </div>
-                      <div className="col-md-12">
-                        <Carousal
-                          bestPicked={bestPicked}
-                          count={4}
-                          type="tour-bestPicked"
-                        />
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </section>
-              {/* best picked for you END*/}
-
-              {/* lesser-known wonders */}
-              <section className={style["pakage-bes-picked"]}>
-                <div className="container p-0">
-                  {lesserWonders.length > 0 && (
-                    <div className="row">
-                      <div className="col-md-12">
-                        <h3 className="pb-3">Lesser-Known Wonders</h3>
-                        <p className="text-center">
-                          Lorem Ipsum is simply dummy text of the printing and
-                          typesetting industry. <br />
-                          Lorem Ipsum has been the industry's standard dummy
-                          text
-                        </p>
-                      </div>
-                      <div className="col-md-12">
-                        <Carousal
-                          wonders={lesserWonders}
-                          count={3}
-                          type="tour-wonders"
-                        />
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </section>
-              {/* lesser-known wonders END*/}
-
-              {/* holidays by theme */}
-              <section className={style["pakage-bes-picked"]}>
-                <div className="container p-0">
-                  <div className="row">
-                    <div className="col-md-12">
-                      <h3 className="pb-3">Holidays by theme</h3>
-                      <HolidaysTab />
-                    </div>
+              {bestPicked.length > 0 && (
+                <section className={style["pakage-bes-picked"]}>
+                  <div className="container-fluid">
+                    <h3 className="pb-3">Best picked for you</h3>
+                    <Carousal
+                      bestPicked={bestPicked}
+                      count={4}
+                      type="tour-bestPicked"
+                    />
                   </div>
+                </section>
+              )}
 
-                  <div className="row">
-                    <div className="col-md-12 text-center mt-4">
-                      <button className={style["btn-one"]}>Full List</button>
-                    </div>
-                  </div>
+              {lesserWonders.length > 0 && (
+                <section className={style["pakage-bes-picked"]}>
+                  <h3 className="pb-3">Lesser-Known Wonders</h3>
+                  <Carousal
+                    wonders={lesserWonders}
+                    count={3}
+                    type="tour-wonders"
+                  />
+                </section>
+              )}
+
+              <section className={style["pakage-bes-picked"]}>
+                <h3 className="pb-3">Holidays by theme</h3>
+                <HolidaysTab />
+                <div className="text-center mt-4">
+                  <button className={style["btn-one"]}>Full List</button>
                 </div>
               </section>
-              {/* holidays by theme END*/}
             </div>
-            {/* right end */}
           </div>
         </div>
       </section>

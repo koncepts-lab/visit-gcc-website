@@ -76,7 +76,7 @@ function Page() {
           <Top_container packageId={slug} type="packages" />
         </div>
 
-        <div className={`container ${style["time"]}`}>
+        <div className={`container`}>
           <div className="row">
             <div className="col-md-12">
               {slugpackage.id && (
