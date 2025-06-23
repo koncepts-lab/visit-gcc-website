@@ -61,11 +61,10 @@
 
 .tabButtons {
     display: flex;
-   
 }
 
 .tabButton {
-    background-color: #a0daca !important;
+background-color: #a0daca !important;
 color: #fff;
 border-radius: 6px !important;
 margin-right: 10px;

@@ -314,15 +314,15 @@ function RatingCarousel({ packageId, type }) {
             <div>{renderStars()}</div>
             {ratingText && <span className="ml-2 pt-2">{ratingText}</span>}
           </div>
-          <div className="d-flex">
+          <div className="d-flex flex-sm-row flex-column gap-2">
             <textarea
-              className={`${style["promo_input"]} col-11`}
+              className={`${style["promo_input"]} col-md-11 `}
               placeholder="Your review..."
               value={reviewText}
               onChange={(e) => setReviewText(e.target.value)}
             />
             <button
-              className={`${style["tabButton"]} ms-2`}
+              className={`${style["tabButton"]} `}
               onClick={handleSendReview}
               disabled={isLoading}
             >

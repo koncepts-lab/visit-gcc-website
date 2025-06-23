@@ -15,8 +15,11 @@ function CountryExperiance(props) {
             {/* front content */}
             <img
               src={props.blogs.banner_image_url}
+                          onError={(e) => {
+    e.currentTarget.src = "/images/placeholder.jpg"; // Fallback if image fails to load
+  }}
               alt={props.blogs.heading}
-              className="w-100"
+              className="w-100" style={{height: '250px'}}
             />
             <div className={style["block-content"]}>
               <h4>{props.blogs.heading}</h4>
