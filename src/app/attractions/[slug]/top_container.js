@@ -99,9 +99,11 @@ export default function AttractionTopContainer({ packageId }) {
     if (loginToken) {
       setIsDatePickerPopupOpen(true);
     } else {
+     enqueueSnackbar("Please log in to Book.", { variant: "warning" });
       router.push("/login");
     }
   };
+  
 
   const handleCloseDatePickerPopup = () => setIsDatePickerPopupOpen(false);
   const openEnquiryForm = () => setIsEnquiryFormOpen(true);
@@ -127,12 +129,11 @@ export default function AttractionTopContainer({ packageId }) {
         Attraction details not found.
       </div>
     );
-
-  const formattedPhotos = (attractionDetails.photo_urls || []).map((photo) => ({
-    image: photo,
-    heading: attractionDetails.name,
-    description: attractionDetails.description,
-  }));
+const formattedPhotos = (attractionDetails.photo_urls || []).map((photo) => ({
+  image: photo || "/images/placeholder.jpg", // Add placeholder if 'photo' is falsy
+  heading: attractionDetails.name,
+  description: attractionDetails.description,
+}));
 
   const renderRatingCircles = () => {
     if (
@@ -269,9 +270,7 @@ export default function AttractionTopContainer({ packageId }) {
                     type="tour-package-details-reviews"
                   />
                 ) : (
-                  <div className="text-center p-5 border rounded bg-light">
-                    <p className="mb-0 text-muted">No images available.</p>
-                  </div>
+                <img src="/images/placeholder.jpg" className="col-6" />
                 )}
               </div>
             </section>

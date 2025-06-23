@@ -607,8 +607,9 @@ const Checkout = () => {
         </div>
         <div className="container">
           <img
-            src="/images/blank.png"
-            className="w-100"
+src={
+      slugPackage?.[0]?.event_photo_urls?.[0] || "/images/blank.png"
+    }                        className="w-100"
             style={{ height: "400px", borderRadius: "15px" }}
             alt="Banner"
           />
@@ -617,10 +618,10 @@ const Checkout = () => {
             style={{ marginTop: "-33px" }}
           >
             <p className="text-black-50 ">
-              Date: <span className="text-white">19- JAN-2017</span>
+              Date: <span className="text-white">{slugPackage?.[0]?.start_date}</span>
             </p>
             <p className="text-black-50 ">
-              Tag: <span className="text-white"> Business</span>
+              Tag: <span className="text-white"> {slugPackage?.[0]?.category}</span>
             </p>
           </div>
         </div>

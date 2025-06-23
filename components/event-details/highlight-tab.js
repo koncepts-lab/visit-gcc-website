@@ -117,11 +117,38 @@ const PhotoGalleryEventHighlightsContent = ({ photoGallery }) => {
     dots: true, // Enable dot pagination
     infinite: photoGallery.length > 1,
     speed: 500,
-    slidesToShow: 1,
+    slidesToShow: 3,
     slidesToScroll: 1, // Scroll one slide at a time
     autoplay: true, // Enable autoplay
     autoplaySpeed: 3000, // Autoplay interval in milliseconds
-    arrows: false, // Hide navigation arrows
+    arrows: false, 
+     responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          infinite: photoGallery.length > 2,
+          dots: true,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          infinite: photoGallery.length > 1,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          infinite: photoGallery.length > 1,
+        },
+      },
+    ],// Hide navigation arrows
   };
 
   const images = [
@@ -139,7 +166,7 @@ const PhotoGalleryEventHighlightsContent = ({ photoGallery }) => {
             <img
               src={image}
               alt={`Slide ${index + 1}`}
-              className="rounded-4"
+              className="rounded-4 col-sm-10 col-12"
               style={{ height: "252px" }}
             />
           </div>

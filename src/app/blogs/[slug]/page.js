@@ -295,7 +295,9 @@ function Page() {
           <div className="d-flex flex-column-reverse flex-lg-row gap-xl-4 gap-lg-3 gap-md-4">
             <div className="col-lg-8 col-12 ">
               <div key={slugblog.uuid_id} className={`${style["blog-left-section"]} pb-5 mb-4`}>
-                <img src={slugblog.main_image_url} className="w-100" style={{ height: "350px" }} alt="Banner" />
+                <img src={  slugblog.main_image_url > 0
+          ? slugblog.main_image_url
+          : "/images/placeholder.jpg"} className="w-100" style={{ height: "350px" }} alt="Banner" />
                 <div className="d-flex justify-content-between px-4" style={{ marginTop: "-36px", fontWeight: 500 }}>
                   <p className="text-grey">Date: <span className="text-white">{slugblog.date}</span></p>
                 </div>
@@ -347,7 +349,9 @@ function Page() {
                             </div>
                 </div>
                 <div className={`${style["author-div"]} d-flex flex-md-row flex-column gap-4 my-5`}>
-                  <img src={slugblog?.author_photo_url} />
+                  <img src={ slugblog?.author_photo_url > 0
+          ? slugblog?.author_photo_url
+          : "/images/placeholder.jpg"} />
                   <div className="pt-2">
                     <p className="fw-semibold text-black" style={{ fontSize: "18px", height: "17px" }}>{slugblog.author_name}</p>
                     <p className="col-md-11 col-12">{slugblog.author_description}</p>
@@ -426,7 +430,9 @@ function Page() {
                       <div key={features.uuid_id} className={`${style["featured"]} mb-4`}>
                         <Link href={`/blogs/${features.uuid_id}`}>
                           <div className="d-flex gap-4">
-                            <img src={features.main_image_url} />
+                            <img src={ features.main_image_url > 0
+          ? features.main_image_url
+          : "/images/placeholder.jpg"} />
                             <div>
                               <p style={{ fontWeight: "550", fontSize: "15px", height: "10px" }}>{features.creation_date}</p>
                               <p style={{ fontWeight: "500" }} className="text-black">
@@ -463,7 +469,9 @@ function Page() {
             </div>
           </div>
           <div key={`${slugblog.uuid_id}-footer`} className="container">
-            <img src={slugblog.footer_image_url} className="w-100" style={{ height: "400px", borderRadius: "10px" }} alt="Banner"/>
+            <img src={ slugblog.footer_image_url > 0
+          ? slugblog.footer_image_url
+          : "/images/placeholder.jpg"} className="w-100" style={{ height: "400px", borderRadius: "10px" }} alt="Banner"/>
             <div className="d-flex justify-content-between px-4" style={{ marginTop: "-33px" }}>
               <p className="text-black-50 ">Date: <span className="text-white">19- JAN-2017</span></p>
               <p className="text-black-50 ">Tag: <span className="text-white"> Business</span></p>

@@ -3,6 +3,8 @@ import Link from "next/link";
 import style from "./blog.module.css";
 
 function SingleHomeBlog(props) {
+      const imageUrl = props.banner_image || "/images/placeholder.jpg";
+
   return (
     <Link
       href={`/blogs/${props.link}`}
@@ -10,7 +12,7 @@ function SingleHomeBlog(props) {
     >
       <div className={style["blog-box"]}>
         <img
-          src={props.image}
+          src={imageUrl}
           className="w-100"
           alt=""
           style={{ height: "152px" }}

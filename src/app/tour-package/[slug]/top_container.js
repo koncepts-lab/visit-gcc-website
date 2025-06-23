@@ -71,8 +71,8 @@ export default function Top_container({ packageId }) {
     if (loginToken) {
       setIsDatePickerPopupOpen(true);
     } else {
-      router.push("/login");
-    }
+    enqueueSnackbar("Please log in to Book.", { variant: "warning" });
+      router.push("/login");    }
   };
 
   const handleCloseDatePickerPopup = () => {

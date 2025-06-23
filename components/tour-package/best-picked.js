@@ -12,8 +12,8 @@ function SingleBestPicked(props) {
         <div className={`item ${style["item-padding"]}`}>
           <div className={style["best-picked-box"]}>
             <img
-              src={props.packages.photo_urls[0]}
-              className="w-100"
+              src={props.packages.photo_urls[0] || "/images/placeholder.jpg"}
+              className="w-100" style={{width: "360px",height: '330px'}}
               alt={props.packages.name}
             />
             <span>

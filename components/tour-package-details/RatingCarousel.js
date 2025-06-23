@@ -115,9 +115,8 @@ function RatingCarousel({ packageId, type }) {
 
   // MODIFIED: This function now checks for authentication before showing the review form
   const handleAddReviewClick = () => {
-    const registerToken = localStorage.getItem("auth_token_register");
     const loginToken = localStorage.getItem("auth_token_login");
-    const authToken = loginToken || registerToken;
+    const authToken = loginToken;
 
     if (authToken) {
       setShowRatingInput(true);
@@ -127,7 +126,7 @@ function RatingCarousel({ packageId, type }) {
     }
   };
 
-  const handleSendReviewhandleSendReview = async () => {
+  const handleSendReview = async () => {
     if (rating > 0 && reviewText) {
       const registerToken = localStorage.getItem("auth_token_register");
       const loginToken = localStorage.getItem("auth_token_login");

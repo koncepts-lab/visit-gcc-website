@@ -13,7 +13,7 @@ function PakageDetailsOtherPackages(props) {
         <div className={style["PakageDetailsOtherPackages"]}>
           <img
             src={
-              props.packages?.photo_urls[0] || "/images/placeholder-image.jpg"
+              props.packages?.photo_urls[0] || "/images/placeholder.jpg"
             }
             className="w-100"
             alt=""

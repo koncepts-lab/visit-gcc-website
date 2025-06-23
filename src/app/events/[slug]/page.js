@@ -84,8 +84,8 @@ function Page() {
     if (loginToken) {
     setIsPopupOpen(true);
     } else {
-      router.push("/login");
-    }
+    enqueueSnackbar("Please log in to Book.", { variant: "warning" });
+      router.push("/login");    }
   };
 
   const handleClosePopup = () => {

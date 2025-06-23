@@ -6,6 +6,9 @@ import { FaArrowRightLong } from "react-icons/fa6";
 const ArrowIcon = () => <FaArrowRightLong />;
 
 function SingleHomeEvents({ event_photo_urls, date, name, description, link }) {
+
+    const imageUrl = event_photo_urls || "/images/placeholder.jpg";
+
   function formatDate(isoDateString) {
     // Return early if the input is not valid
     if (!isoDateString) {
@@ -36,7 +39,7 @@ function SingleHomeEvents({ event_photo_urls, date, name, description, link }) {
     <Link href={`/events/${link}`} className={`item ${style["item-padding"]}`}>
       <div className={style["event-box"]}>
         <img
-          src={event_photo_urls}
+          src={imageUrl}
           className="w-100"
           alt={name}
           style={{ height: "214px" }}

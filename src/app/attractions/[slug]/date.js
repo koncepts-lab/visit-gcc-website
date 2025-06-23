@@ -194,7 +194,7 @@ const DatePickerWithHover = ({ onClose, packageId, type = "attraction" }) => {
     return timeSlots;
   };
 
-  const timeSlots = slugPackage ? generateTimeSlots() : {};
+    const timeSlots = slugPackage ? generateTimeSlots() : {};
 
   const isDateSelected = (date) => {
     return selectedDates.some(
@@ -348,16 +348,27 @@ const DatePickerWithHover = ({ onClose, packageId, type = "attraction" }) => {
     const day = String(date.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
   };
+  
+  // MODIFIED: Calculate total travelers (excluding infants)
+  const totalTravelers = rooms.reduce((total, room) => total + room.adults + room.children, 0);
 
+  // MODIFIED: Updated handleBookNow with validation and proper state handling
   const handleBookNow = () => {
+    // Validation checks
     if (selectedDates.length === 0) {
-      setError("Please select at least one date.");
+      setError("Please select at least one date to proceed.");
       return;
     }
-    const sortedDates = [...selectedDates].sort((a, b) => a - b);
+    if (totalTravelers === 0) {
+      setError("Please add at least one adult or child. Infants must be accompanied.");
+      return;
+    }
 
+    setError(null); // Clear previous errors
+    setIsBooking(true); // Set loading state to true
+
+    const sortedDates = [...selectedDates].sort((a, b) => a - b);
     const bookingData = {
-      // MODIFIED: Use the timezone-safe helper function
       start_date: toYyyyMmDd(sortedDates[0]),
       end_date: toYyyyMmDd(sortedDates[sortedDates.length - 1]),
       customer_country: customerCountry,
@@ -375,6 +386,7 @@ const DatePickerWithHover = ({ onClose, packageId, type = "attraction" }) => {
       localStorage.getItem("auth_token_register");
     if (!authToken) {
       setError("Authentication token not found. Please log in.");
+      setIsBooking(false); // Stop loading if no token
       return;
     }
 
@@ -389,17 +401,17 @@ const DatePickerWithHover = ({ onClose, packageId, type = "attraction" }) => {
         }
       )
       .then((response) => {
-                        const bookingId = response.data.data.id;
+        const bookingId = response.data.data.id;
         console.log("Booking API Response:", response);
-                console.log("Booking API Response:", response.data.data.id);
+        console.log("Booking API Response ID:", bookingId);
 
         localStorage.setItem("booking_data", JSON.stringify(bookingData));
         localStorage.setItem("data", JSON.stringify(slugPackage));
-        setIsBooking(true);
         onClose();
-                   router.push(
+        router.push(
           `/checkout?bookingId=${encodeURIComponent(bookingId)}`
         );
+        // No need to set isBooking to false here, as the component will unmount on redirect.
       })
       .catch((error) => {
         console.error("Error booking package:", error);
@@ -407,6 +419,7 @@ const DatePickerWithHover = ({ onClose, packageId, type = "attraction" }) => {
           error.response?.data?.message ||
             "Failed to book package. Please try again."
         );
+        setIsBooking(false); // Stop loading on error
       });
   };
 
@@ -422,6 +435,23 @@ const DatePickerWithHover = ({ onClose, packageId, type = "attraction" }) => {
       .react-datepicker__day { font-weight: 550 }
       .room-alert { background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 4px; margin-top: 10px; font-size: 14px; text-align: center; }
       .selection-info { background-color: #e8f4f8; color: #2c5282; padding: 8px 12px; border-radius: 6px; margin-bottom: 10px; font-size: 14px; text-align: center; }
+
+      /* MODIFIED: Added loader styles */
+      .loader {
+        width: 20px;
+        height: 20px;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-top-color: #fff;
+        border-radius: 50%;
+        display: inline-block;
+        animation: spin 1s linear infinite;
+        margin-right: 10px;
+        vertical-align: middle;
+      }
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+      
       @media (max-width: 1200px) {
         .react-datepicker__day { width: 76px !important; padding: 7px 0; font-size: 15px; color: #797979 !important; }
         .react-datepicker__day-names { margin-bottom: -10px; }
@@ -626,18 +656,27 @@ const DatePickerWithHover = ({ onClose, packageId, type = "attraction" }) => {
           </div>
           {error && <div className="room-alert mt-2">{error}</div>}
           <div className="mt-4 flex">
+              {/* MODIFIED: Updated button with loader and disabled logic */}
               <button
                 onClick={handleBookNow}
-                className="bg-blue-600 text-white rounded col-12"
+                className="bg-blue-600 text-white rounded col-12 d-flex align-items-center justify-content-center"
                 style={{
                   background: "#5bb3b5",
                   border: "none",
                   fontSize: "20px",
                   padding: "14px",
+                  cursor: (selectedDates.length === 0 || totalTravelers === 0 || isBooking) ? 'not-allowed' : 'pointer'
                 }}
-                disabled={selectedDates.length === 0 || isBooking}
+                disabled={selectedDates.length === 0 || totalTravelers === 0 || isBooking}
               >
-                {isBooking ? "Processing..." : "Proceed"}
+                {isBooking ? (
+                  <>
+                    <span className="loader"></span>
+                    <span>Processing...</span>
+                  </>
+                ) : (
+                  "Proceed"
+                )}
               </button>
           </div>
         </div>
