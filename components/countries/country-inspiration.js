@@ -7,11 +7,11 @@ function CountryInspiration(props) {
   return (
     <div>
       <Link
-        href={`/events/${props.key}`}
+        href={props.link}
         className={`item ${style["item-padding"]}`}
       >
         <div className={style["country-explore-item"]}>
-          <img src={props.image} className="w-100" alt="" />
+          <img src={props.image || "/images/placeholder.jpg"} className="w-100" style={{height: '286px'}} alt="" />
           <div className={style["country-explore-text"]}>
             <span>
               <h4>{props.heading}</h4>

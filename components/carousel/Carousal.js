@@ -222,7 +222,7 @@ function Carousal({
             image={country.event_photo_urls[0]}
             heading={country.name}
             description={country.description}
-            link={country.link}
+            link={`/events/${country.id}`}
           />
         ))}
       {type === "country-Experiance" &&
