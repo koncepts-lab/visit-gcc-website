@@ -116,6 +116,11 @@ function Page() {
         console.error("Failed to copy: ", err);
       });
   };
+
+const formattedPhotos = (event.event_photo_urls || []).map((photo) => ({
+  image: photo || "/images/placeholder.jpg", 
+}));
+
   return (
     <>
       <Banner />
@@ -189,11 +194,15 @@ function Page() {
                   <div className="row">
                     <div className="col-md-12">
                       <div className={style["review-img-container"]}>
-                        <Carousal
-                          packageDetailsReview={event.event_photo_urls}
-                          count={1}
-                          type="tour-package-details-reviews"
-                        />
+                           {formattedPhotos.length > 0 ? (
+                  <Carousal
+                    packageDetailsReview={formattedPhotos}
+                    count={1}
+                    type="tour-package-details-reviews"
+                  />
+                ) : (
+                <img src="/images/placeholder.jpg" className="col-6" />
+                )}
                       </div>
                     </div>
                   </div>

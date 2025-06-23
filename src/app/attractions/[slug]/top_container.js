@@ -265,7 +265,7 @@ const formattedPhotos = (attractionDetails.photo_urls || []).map((photo) => ({
               <div className={style["review-img-container"]}>
                 {formattedPhotos.length > 0 ? (
                   <Carousal
-                    packageDetailsReview={attractionDetails.photo_urls}
+                    packageDetailsReview={formattedPhotos}
                     count={1}
                     type="tour-package-details-reviews"
                   />

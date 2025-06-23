@@ -138,6 +138,7 @@ export default function Top_container({ packageId }) {
         console.error("Failed to copy: ", err);
       });
   };
+
   return (
     <div>
       <div className={`container ${style["container-package-details"]}`}>
@@ -208,11 +209,15 @@ export default function Top_container({ packageId }) {
                 <div className="row">
                   <div className="col-md-12">
                     <div className={style["review-img-container"]}>
-                      <Carousal
-                        packageDetailsReview={packageDetails.photo_urls}
-                        count={1}
-                        type="tour-package-details-reviews"
-                      />
+                     {formattedPhotos.length > 0 ? (
+                  <Carousal
+                    packageDetailsReview={formattedPhotos}
+                    count={1}
+                    type="tour-package-details-reviews"
+                  />
+                ) : (
+                <img src="/images/placeholder.jpg" className="col-6" />
+                )}
                     </div>
                   </div>
                 </div>

@@ -81,7 +81,6 @@ function Page() {
 
   const params = useParams();
   const slug = params?.slug;
-
   const toggleCategoryPopup = () => {
     setIsCategoryPopupOpen(!isCategoryPopupOpen);
   };
@@ -295,17 +294,19 @@ function Page() {
           <div className="d-flex flex-column-reverse flex-lg-row gap-xl-4 gap-lg-3 gap-md-4">
             <div className="col-lg-8 col-12 ">
               <div key={slugblog.uuid_id} className={`${style["blog-left-section"]} pb-5 mb-4`}>
-                <img src={  slugblog.main_image_url > 0
-          ? slugblog.main_image_url
-          : "/images/placeholder.jpg"} className="w-100" style={{ height: "350px" }} alt="Banner" />
+                <img src={  slugblog?.main_image_url || "/images/placeholder.jpg"} onError={(e) => {
+    e.currentTarget.src = "/images/placeholder.jpg"; 
+  }} className="w-100" style={{ height: "350px" }} alt="Banner" />
                 <div className="d-flex justify-content-between px-4" style={{ marginTop: "-36px", fontWeight: 500 }}>
                   <p className="text-grey">Date: <span className="text-white">{slugblog.date}</span></p>
                 </div>
+                
                 <p className={`${style["all-title"]} pt-3 my-2 pb-1`}>{slugblog.heading}</p>
                 <p className="" style={{ fontSize: "15px" }}>{slugblog.description1}</p>
                 <div className={`${style["quotes_div"]} pt-4`}>
                   <div className="col-12 p-4 position-relative mx-auto" style={{ background: "#E3F2F7" }}>
                     <div className="position-relative text-center px-4">
+               
                       <ImQuotesLeft className="position-absolute text-primary start-0 top-0" style={{ fontSize: "1rem" }} />
                       <p className="text-black text-secondary fw-medium mb-0 px-2 py-4" style={{ fontSize: "15px" }}>{slugblog.quote}</p>
                       <ImQuotesRight className="position-absolute text-primary bottom-0 end-0" style={{ fontSize: "1rem", transform: "scaleY(-1)" }}/>
@@ -326,7 +327,7 @@ function Page() {
                     <ThreadsShareButton url={typeof window !== 'undefined' ? window.location.href : ''}><ThreadsIcon size={18} borderRadius={15} /></ThreadsShareButton>
                     <LinkedinShareButton url={typeof window !== 'undefined' ? window.location.href : ''}><FaLinkedin color="#0077B5 " size={20} /></LinkedinShareButton>
                   </p>
-                  <div>
+    <div>
     <div>
                       {/* <div className='d-flex'>
                       <button onClick={scrollDown}>
@@ -347,12 +348,14 @@ function Page() {
                           </div> */}
                     </div>          
                             </div>
+            
                 </div>
                 <div className={`${style["author-div"]} d-flex flex-md-row flex-column gap-4 my-5`}>
-                  <img src={ slugblog?.author_photo_url > 0
-          ? slugblog?.author_photo_url
-          : "/images/placeholder.jpg"} />
+                  <img src={ slugblog?.author_photo_url || "/images/placeholder.jpg"} onError={(e) => {
+    e.currentTarget.src = "/images/placeholder.jpg"; 
+  }}/>
                   <div className="pt-2">
+      
                     <p className="fw-semibold text-black" style={{ fontSize: "18px", height: "17px" }}>{slugblog.author_name}</p>
                     <p className="col-md-11 col-12">{slugblog.author_description}</p>
                   </div>
@@ -406,6 +409,7 @@ function Page() {
                     </Link>
                   ))}
                 </div>
+
                 <div className={`${style["categories"]} d-lg-none d-block pt-3`}>
                   <p className={`${style["title_category"]}`} onClick={toggleCategoryPopup}>Categories</p>
                   {isCategoryPopupOpen && (
@@ -413,6 +417,7 @@ function Page() {
                       <div className={`${style["category-popup-inner"]}`}>
                         <button className={`ms-auto fs-4 text-white col-12 d-flex justify-content-end`} onClick={() => setIsCategoryPopupOpen(false)}>X</button>
                         {categoriesWithCounts.map((cat) => (
+                       
                           <Link href="/blogs" key={cat.uuid_id} className="text-decoration-none">
                             <button className={`col-12 d-flex justify-content-between btn btn-light mb-2`}>
                               {cat.category}<span className="">{cat.blogCount}</span>
@@ -430,9 +435,9 @@ function Page() {
                       <div key={features.uuid_id} className={`${style["featured"]} mb-4`}>
                         <Link href={`/blogs/${features.uuid_id}`}>
                           <div className="d-flex gap-4">
-                            <img src={ features.main_image_url > 0
-          ? features.main_image_url
-          : "/images/placeholder.jpg"} />
+                            <img src={ features.main_image_url || "/images/placeholder.jpg"} onError={(e) => {
+    e.currentTarget.src = "/images/placeholder.jpg";
+  }}/>
                             <div>
                               <p style={{ fontWeight: "550", fontSize: "15px", height: "10px" }}>{features.creation_date}</p>
                               <p style={{ fontWeight: "500" }} className="text-black">
@@ -445,9 +450,11 @@ function Page() {
                     ))}
                   </div>
                   <div className="col-lg-12 col-md-4 col-12">
+              
                     <p className={`${style["all-title"]} pt-lg-4 my-lg-2 my-0 pt-5`}>Tags</p>
                     <div className={`${style["tags"]} row position-relative gap-2 pb-lg-0 pb-3`}>
                       {tags.map((tag) => (
+                    
                         <Link href="/blogs" key={tag.uuid_id}>
                           <button className={`position-relative `} style={{ width: "100%", maxWidth: "170px" }}>
                             {tag.tag}
@@ -469,9 +476,9 @@ function Page() {
             </div>
           </div>
           <div key={`${slugblog.uuid_id}-footer`} className="container">
-            <img src={ slugblog.footer_image_url > 0
-          ? slugblog.footer_image_url
-          : "/images/placeholder.jpg"} className="w-100" style={{ height: "400px", borderRadius: "10px" }} alt="Banner"/>
+            <img src={ slugblog.footer_image_url || "/images/placeholder.jpg"} onError={(e) => {
+    e.currentTarget.src = "/images/placeholder.jpg";
+  }} className="w-100" style={{ height: "400px", borderRadius: "10px" }} alt="Banner"/>
             <div className="d-flex justify-content-between px-4" style={{ marginTop: "-33px" }}>
               <p className="text-black-50 ">Date: <span className="text-white">19- JAN-2017</span></p>
               <p className="text-black-50 ">Tag: <span className="text-white"> Business</span></p>

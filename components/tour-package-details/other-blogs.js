@@ -4,7 +4,7 @@ import style from "./style.module.css";
 import { FaChevronRight } from "react-icons/fa6";
 
 function OtherBlogs(props) {
-        const imageUrl = props.banner_image || "/images/placeholder.jpg";
+        const imageUrl = props.image || "/images/placeholder.jpg";
 
   return (
     <>
@@ -15,8 +15,11 @@ function OtherBlogs(props) {
       >
         <div className={style["PakageDetailsOtherPackages"]}>
           <img
-            src={imageUrl}
+            src={props.image}
             className="w-100"
+             onError={(e) => {
+    e.currentTarget.src = "/images/placeholder.jpg"; // Fallback if image fails to load
+  }}
             alt=""
             style={{ height: "130px" }}
           />

@@ -489,7 +489,9 @@ const TourPackage = () => {
                 />
               )}
 
-              <FeaturedIntegratedTravel />
+              <div>
+                <FeaturedIntegratedTravel type="package"/>
+              </div>
 
               {bestPicked.length > 0 && (
                 <section className={style["pakage-bes-picked"]}>

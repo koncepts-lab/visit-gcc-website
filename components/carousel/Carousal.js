@@ -66,7 +66,9 @@ function Carousal({
       type !== "event-page-scroll" &&
       type !== "upcoming-events" &&
       type !== "pakage-details-other-packages" &&
+      type !== "attraction-details-other-packages" &&
       type !== "event-details-other-events",
+      
 
     responsive: [
       {
@@ -247,12 +249,30 @@ function Carousal({
             heading={featuredTravel.name}
             description={featuredTravel.description}
             id={featuredTravel.id}
+            link={`/tour-package/${featuredTravel.id}`}
+          />
+        ))}
+        
+         {type === "attraction-FeaturedTravel" &&
+        featuredTravel.map((featuredTravel) => (
+          <FeaturedTravel
+            key={featuredTravel.id}
+            image={featuredTravel.photo_urls[0]}
+            heading={featuredTravel.name}
+            description={featuredTravel.description}
+            id={featuredTravel.id}
+            link={`/attractions/${featuredTravel.id}`}
           />
         ))}
 
       {type === "tour-bestPicked" &&
         bestPicked.map((bestPicked) => (
-          <SingleBestPicked packages={bestPicked} key={bestPicked.id} />
+          <SingleBestPicked packages={bestPicked} key={bestPicked.id} type="tour-bestPicked"/>
+        ))}
+
+            {type === "attraction-bestPicked" &&
+        bestPicked.map((bestPicked) => (
+          <SingleBestPicked packages={bestPicked} key={bestPicked.id} type="attraction-bestPicked"/>
         ))}
 
       {type === "tour-wonders" &&
@@ -262,13 +282,30 @@ function Carousal({
             image={wonders.photo_urls[0]}
             heading={wonders.name}
             description={wonders.description}
-            link={wonders.link}
+            link={`/tour-package/${wonders.id}`}
+            type="tour-wonders"
+
           />
         ))}
+
+ {type === "attraction-wonders" &&
+        wonders.map((wonders) => (
+          <Singlewonders
+            key={wonders.id}
+            image={wonders.photo_urls[0]}
+            heading={wonders.name}
+            description={wonders.description}
+            link={`/attractions/${wonders.id}`}
+            type="attraction-wonders"
+          />
+        ))}
+
       {type === "tour-package-details-reviews" &&
         packageDetailsReview.map((review) => (
-          <SinglePackageContainerReview image={review} />
+          <SinglePackageContainerReview image={review.image} />
         ))}
+   
+
       {type === "tour-package-details-reviews-img" &&
         packageDetailsReviewImage.map((reviewImage) => (
           <SinglePackageContainerReviewImage
@@ -294,8 +331,14 @@ function Carousal({
 
       {type === "pakage-details-other-packages" &&
         pakageDetailsOtherPackages?.map((pakageDetailsOtherPackages) => (
-          <PakageDetailsOtherPackages packages={pakageDetailsOtherPackages} />
+          <PakageDetailsOtherPackages packages={pakageDetailsOtherPackages} type={"pakage-details-other-packages"}/>
         ))}
+        
+          {type === "attraction-details-other-packages" &&
+        pakageDetailsOtherPackages?.map((pakageDetailsOtherPackages) => (
+          <PakageDetailsOtherPackages packages={pakageDetailsOtherPackages} type={"attraction-details-other-packages"}/>
+        ))}
+
       {type === "event-details-other-events" &&
         pakageDetailsOtherPackages?.map((pakageDetailsOtherPackages) => (
           <EventDetailsOtherEvents events={pakageDetailsOtherPackages} />
@@ -337,8 +380,9 @@ function Carousal({
             image={wonders.event_photo_urls[0]}
             heading={wonders.name}
             description={wonders.description}
-            link={wonders.link}
+            link={`/events/${wonders.id}`}
             id={wonders.id}
+            type="past-events"
           />
         ))}
 
