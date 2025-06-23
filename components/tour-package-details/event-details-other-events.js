@@ -25,7 +25,7 @@ function PakageDetailsOtherPackages(props) {
               <p style={{ fontSize: "14px" }}>{props.events.description}</p>
             </span>
             <span>
-              <Link href="#0">
+              <Link href={`/events/${props.events.id}`}>
                 <FaChevronRight />
               </Link>
             </span>

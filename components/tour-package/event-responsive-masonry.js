@@ -34,11 +34,12 @@ const ExploreEventsContainer = ({ events }) => {
           return ( 
             <div key={i} className="masonry-item">
               <img
-                src={imageUrl} // Use the conditionally determined imageUrl
+                src={imageUrl}
                 style={{ width: "100%", display: "block" }}
-                alt={event.name || "Event Image"} // Changed 'event.title' to 'event.name' and added a fallback alt text
+                alt={event.name || "Event Image"} 
               />
-              <div className="event-masonry-item-content">
+              <div className="event-masonry-item-content"
+              >
                 <h5>{event.name}</h5>
                 <div className={style["provider-date"]}>
                   {event.provider && ( 

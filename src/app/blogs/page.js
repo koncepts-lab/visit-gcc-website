@@ -237,7 +237,9 @@ function page() {
         );
         const allBlogs = response.data.data || response.data || [];
 
+        console.log(allBlogs.main_image_url);
         setBlogs(allBlogs);
+
         setIsLoading(false);
       } catch (err) {
         setIsLoading(false);
@@ -356,7 +358,7 @@ function page() {
 
       if (window.innerWidth <= 992) {
         window.scrollBy(0, 400);
-      }
+     }
     } catch (err) {
       console.error("Error fetching blogs by tag:", err);
       enqueueSnackbar("Failed to fetch blogs by tag", { variant: "error" });
@@ -427,9 +429,11 @@ function page() {
                   >
                     <Link href={`/blogs/${blogs.uuid_id}`}>
                       <img
-                        src={ blogs.main_image_url > 0
-          ? blogs.main_image_url
-          : "/images/placeholder.jpg"}
+                        src={ blogs?.main_image_url
+        || "/images/placeholder.jpg"}
+        onError={(e) => {
+    e.currentTarget.src = "/images/placeholder.jpg"; // Fallback if image fails to load
+  }}
                         className="w-100"
                         style={{ height: "350px" }}
                         alt="Banner"
@@ -633,9 +637,11 @@ function page() {
                       >
                         <Link href={`/blogs/${features.uuid_id}`}>
                           <div className="d-flex gap-4">
-                            <img src={features.main_image_url > 0
-          ? features.main_image_url
-          : "/images/placeholder.jpg"} />
+                            <img src={features?.main_image_url || "/images/placeholder.jpg"}
+  alt="Feature image"
+  onError={(e) => {
+    e.currentTarget.src = "/images/placeholder.jpg"; // Fallback if image fails to load
+  }}/>
                             <div>
                               <p
                                 style={{

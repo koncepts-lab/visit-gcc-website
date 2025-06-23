@@ -32,10 +32,8 @@ const AttractionsPage = () => {
   // Other content states
   const [bestPicked, setBestpicked] = useState([]);
   const [lesserWonders, setLesserWonders] = useState([]);
-
   const firstBreakPoints = { 350: 1, 750: 2, 1200: 3, 1500: 4 };
   const secondBreakPoints = { 350: 1, 750: 2, 1200: 3, 1500: 3 };
-
   const handleToggle = () => setIsToggled(!isToggled);
   const handlePriceRangeChange = (values) => setPriceRange(values);
   const handleDurationRangeChange = (values) => setDurationRange(values);
@@ -577,7 +575,7 @@ const AttractionsPage = () => {
                         <Carousal
                           bestPicked={bestPicked}
                           count={4}
-                          type="tour-bestPicked"
+                          type="attraction-bestPicked"
                         />
                       </div>
                     </div>
@@ -599,7 +597,7 @@ const AttractionsPage = () => {
                         <Carousal
                           wonders={lesserWonders}
                           count={3}
-                          type="tour-wonders"
+                          type="attraction-wonders"
                         />
                       </div>
                     </div>

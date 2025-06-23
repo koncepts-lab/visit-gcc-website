@@ -195,7 +195,7 @@ function Page() {
               <Carousal
                 pakageDetailsOtherPackages={relatedAttractions}
                 count={5}
-                type="pakage-details-other-packages"
+                type="attraction-details-other-packages"
               />
             </div>
             <div className="col-md-12">
