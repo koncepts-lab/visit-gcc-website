@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, use } from "react";
-import { useParams } from "next/navigation"; // To extract the ID from the URL
+import { useParams } from "next/navigation"; 
 import Link from "next/link";
 import axios from "axios"; // Import Axios
 import style from "./style.module.css";
@@ -22,11 +22,11 @@ import EnhancedDatePicker from "./date";
 import RatingCarousel from "@components/tour-package-details/RatingCarousel";
 import { useRouter } from "next/navigation"; // MODIFIED: Import useRouter for redirection
 
-
 function Page() {
   const params = useParams();
   const slug = params?.slug;
   const [event, setEvent] = useState(null); // State to store the fetched event data
+  const [eventRatings, setEventRatings] = useState(null); // State for event ratings
   const [relatedEvents, setRelatedEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(true); // Loading state
   const [error, setError] = useState(null); // Error state
@@ -41,6 +41,7 @@ function Page() {
       setError(null);
 
       try {
+        // Fetch event details
         const response = await axios.get(
           `${process.env.NEXT_PUBLIC_API_URL}events/${slug}`
         );
@@ -48,9 +49,15 @@ function Page() {
         if (!eventData) {
           throw new Error("No event data found");
         }
-
         setEvent(eventData);
         console.log("Fetched event:", eventData);
+
+        // Fetch event ratings
+        const ratingsResponse = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}event-review/${slug}/ratings`
+        );
+        setEventRatings(ratingsResponse.data.data);
+
         setIsLoading(false);
       } catch (err) {
         console.error("Error fetching event:", err);
@@ -59,8 +66,11 @@ function Page() {
       }
     };
 
-    fetchEvent();
+    if (slug) {
+        fetchEvent();
+    }
   }, [slug]);
+
   useEffect(() => {
     const fetchEvent = async () => {
       try {
@@ -76,23 +86,67 @@ function Page() {
         setIsLoading(false);
       }
     };
-    fetchEvent();
+    if (slug) {
+        fetchEvent();
+    }
   }, [slug]);
+
   const handleBookNowClick = () => {
-   const loginToken = localStorage.getItem("auth_token_login");
-    
+    const loginToken = localStorage.getItem("auth_token_login");
+
     if (loginToken) {
-    setIsPopupOpen(true);
+      setIsPopupOpen(true);
     } else {
-    enqueueSnackbar("Please log in to Book.", { variant: "warning" });
-      router.push("/login");    }
+      // Assuming enqueueSnackbar is globally available or imported elsewhere
+      // enqueueSnackbar("Please log in to Book.", { variant: "warning" });
+      router.push("/login");
+    }
   };
 
   const handleClosePopup = () => {
     setIsPopupOpen(false);
   };
 
+  const handleShareClick = () => {
+    const currentUrl = window.location.href;
+    navigator.clipboard
+      .writeText(currentUrl)
+      .then(() => {
+        // Assuming enqueueSnackbar is globally available or imported elsewhere
+        // enqueueSnackbar("Link copied to clipboard!", {
+        //   variant: "success",
+        //   autoHideDuration: 2000,
+        // });
+        alert("Link copied to clipboard!"); // Fallback alert
+      })
+      .catch((err) => {
+        console.error("Failed to copy: ", err);
+      });
+  };
 
+  // Helper function to render rating circles dynamically
+  const renderRatingCircles = () => {
+    const averageRating = eventRatings?.average_rating
+      ? parseFloat(eventRatings.average_rating)
+      : 0;
+    const filledCircles = Math.round(averageRating);
+    const circles = [];
+    for (let i = 0; i < 5; i++) {
+      circles.push(
+        <FaCircle
+          key={i}
+          color={i < filledCircles ? "#04ac6a" : "#ccc"}
+          className={style["circle-icon"]}
+        />
+      );
+    }
+    return circles;
+  };
+
+  if (isLoading) {
+    // You might want a better loading indicator
+    return <p>Loading...</p>;
+  }
 
   if (!event) {
     return (
@@ -101,25 +155,10 @@ function Page() {
       </div>
     );
   }
-  const handleShareClick = () => {
-    const currentUrl = window.location.href;
 
-    navigator.clipboard
-      .writeText(currentUrl)
-      .then(() => {
-        enqueueSnackbar("Link copied to clipboard!", {
-          variant: "success",
-          autoHideDuration: 2000,
-        });
-      })
-      .catch((err) => {
-        console.error("Failed to copy: ", err);
-      });
-  };
-
-const formattedPhotos = (event.event_photo_urls || []).map((photo) => ({
-  image: photo || "/images/placeholder.jpg", 
-}));
+  const formattedPhotos = (event.event_photo_urls || []).map((photo) => ({
+    image: photo || "/images/placeholder.jpg",
+  }));
 
   return (
     <>
@@ -131,21 +170,19 @@ const formattedPhotos = (event.event_photo_urls || []).map((photo) => ({
               <h3>{event.name || "Event Name Not Available"}</h3>
               <p>
                 <Link href="#0" className="text_underline">
-                  {event.organizer ? `By ${event.provider}` : ""}
+                  {event.provider ? `By ${event.provider}` : ""}
                 </Link>
               </p>
               <div className={style["flex-package-details"]}>
                 <span>
-                  <FaCircle color="#04ac6a" className={style["circle-icon"]} />
-                  <FaCircle color="#04ac6a" className={style["circle-icon"]} />
-                  <FaCircle color="#04ac6a" className={style["circle-icon"]} />
-                  <FaCircle color="#04ac6a" className={style["circle-icon"]} />
-                  <FaCircle color="#04ac6a" className={style["circle-icon"]} />
+                  {/* --- DYNAMIC RATING START --- */}
+                  {renderRatingCircles()}
                   <p className="mrg_left">
                     <a href="#0" className="text_underline">
-                      {event.reviewCount || 2471} reviews
+                      {eventRatings?.total_ratings || 0} reviews
                     </a>
                   </p>
+                  {/* --- DYNAMIC RATING END --- */}
                 </span>
                 <span>
                   <PiSealCheckFill className={style["PiSealCheckFill"]} />{" "}
@@ -194,15 +231,6 @@ const formattedPhotos = (event.event_photo_urls || []).map((photo) => ({
                   <div className="row">
                     <div className="col-md-12">
                       <div className={style["review-img-container"]}>
-                           {formattedPhotos.length > 0 ? (
-                  <Carousal
-                    packageDetailsReview={formattedPhotos}
-                    count={1}
-                    type="tour-package-details-reviews"
-                  />
-                ) : (
-                <img src="/images/placeholder.jpg" className="col-6" />
-                )}
                       </div>
                     </div>
                   </div>
@@ -239,70 +267,6 @@ const formattedPhotos = (event.event_photo_urls || []).map((photo) => ({
           </div>
         </div>
 
-        {/* <div className="container">
-          <div className="row pt-5">
-            <div className="col-md-12">
-              <h4>User ratings</h4>
-              <p className="mb-0">
-                <IoIosStar color="#FDCC0D" /> {event.rating || 4.2}. Very good (
-                {event.totalReviews || 13} reviews){" "}
-                <Link href="#0">See all reviews</Link>
-              </p>
-            </div>
-          </div>
-
-          <div className="row">
-            <div className="col-md-4">
-              <StarRatingBar
-                rating={event.rating || rating}
-                maxRating={maxRating}
-                totalReviews={event.totalReviews || totalReviews}
-              />
-            </div>
-            <div className="col-md-4">
-              <StarRatingBar
-                rating={event.rating || rating}
-                maxRating={maxRating}
-                totalReviews={event.totalReviews || totalReviews}
-              />
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-md-4">
-              <StarRatingBar
-                rating={event.rating || rating}
-                maxRating={maxRating}
-                totalReviews={event.totalReviews || totalReviews}
-              />
-            </div>
-            <div className="col-md-4">
-              <StarRatingBar
-                rating={event.rating || rating}
-                maxRating={maxRating}
-                totalReviews={event.totalReviews || totalReviews}
-              />
-            </div>
-          </div>
-          <div className="row pt-5">
-            <div className="col-md-4 col-8">
-              <h4>What guests loved most</h4>
-            </div>
-            <div className="col-md-4 col-4">
-              <Link className="float-right" href="#0">
-                See all reviews
-              </Link>
-            </div>
-          </div>
-          <div className="row pt-3">
-            <div className="col-md-8">
-              <Carousal
-                userRatingsCarosul={userRatingsCarosul}
-                count={2}
-                type="user-ratings-carosul"
-              />
-            </div>
-          </div>
-        </div> */}
         <div className="container">
           <div className="row pt-3">
             <div className="col-md-8">
@@ -340,7 +304,7 @@ const formattedPhotos = (event.event_photo_urls || []).map((photo) => ({
 
       {isPopupOpen && (
         <div className={style["popup-overlay"]}>
-          <EnhancedDatePicker onClose={handleClosePopup}  eventId={slug}/>
+          <EnhancedDatePicker onClose={handleClosePopup} eventId={slug} />
         </div>
       )}
     </>

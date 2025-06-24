@@ -689,7 +689,7 @@ function page() {
                       ))}
                       {activeFilter.type === "tag" && (
                         <button
-                          className="col-12 mt-2 btn btn-secondary"
+                          className="col-2xl-10 mt-2 btn btn-secondary"
                           onClick={clearFilter}
                         >
                           Clear Tag Filter

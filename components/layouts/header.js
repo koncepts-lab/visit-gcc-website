@@ -873,8 +873,8 @@ function Header() {
             className={style["navbar_sticky_mobile_container"]}
             style={{ width: "100%" }}
           >
-            <div className={`nav-item ${style["navbar_sticky_mobile"]} `}>
-              <Link className="nav-link active" href="/country">
+            <div className={`nav-item ${style["navbar_sticky_mobile"]} d-sm-none d-block`}>
+              <Link className="nav-link active d-flex flex-column" href="/country">
                 <img
                   src="../images/Explore.svg"
                   className={style["img-top-logo"]}
@@ -883,8 +883,17 @@ function Header() {
                 Explore
               </Link>
             </div>
-            <div className={`nav-item ${style["navbar_sticky_mobile"]}`}>
-              <Link className="nav-link active" href="/">
+             <div className={`nav-item ${style["navbar_sticky_mobile"]} d-sm-block d-none`}>
+              <Link className="nav-link active" href="/country">
+                <img
+                  src="../images/logo.svg"
+                  className={style[""]} style={{Height: '50px', Width: '55px' , marginTop: '-10px'}}
+                  alt="Explore"
+                />
+              </Link>
+            </div>
+            <div className={`nav-item ${style["navbar_sticky_mobile"]} d-sm-none d-block`}>
+              <Link className="nav-link active d-flex flex-column" href="/">
                 <img
                   src="../images/Plan.svg"
                   className={style["img-top-logo"]}
@@ -893,8 +902,8 @@ function Header() {
                 Plan
               </Link>
             </div>
-            <div className={`nav-item ${style["navbar_sticky_mobile"]}`}>
-              <Link className="nav-link active" href="/">
+            <div className={`nav-item ${style["navbar_sticky_mobile"]} d-sm-none d-block`}>
+              <Link className="nav-link active d-flex flex-column" href="/">
                 <img
                   src="../images/Event.svg"
                   className={style["img-top-logo"]}
@@ -903,8 +912,8 @@ function Header() {
                 Events
               </Link>
             </div>
-            <div className={`nav-item ${style["navbar_sticky_mobile"]}`}>
-              <Link className="nav-link active" href="/">
+            <div className={`nav-item ${style["navbar_sticky_mobile"]} d-sm-none d-block`}>
+              <Link className="nav-link active d-flex flex-column" href="/">
                 <img
                   src="../images/Book.svg"
                   className={style["img-top-logo"]}
@@ -915,10 +924,11 @@ function Header() {
             </div>
           </div>
           <Link className={`navbar-brand ${style["navbar_logo"]}`} href="/">
-            <img src="/images/logo.svg" alt="Logo" />
+            <img src="/images/logo.svg " alt="Logo" />
           </Link>
           <button
-            className={`navbar-toggler ${style["toggle-btn"]}`}
+            className={`navbar-toggler ${style["toggle-btn"]} ms-auto` }
+            style={{marginRight: '-25px'}}
             type="button"
             aria-expanded={menuOpen}
             aria-controls="collapsibleNavbar"
@@ -1074,14 +1084,18 @@ function Header() {
                   />
                 </Link>
               </li>
-              <li
+            
+            </ul>
+          </div>
+            <li
                 className={`nav-item ${style["navbar_sticky_hide"]} d-flex align-items-center position-relative`}
                 ref={profileDropdownRef}
               >
                 {!loading && !userData ? (
                   <Link
-                    className={`nav-link d-sm-block d-none ${style["login-link"]}`}
+                    className={`nav-link d-sm-block d-none ${style["login-link"]} `}
                     href="/login"
+
                   >
                     Login/Signup
                   </Link>
@@ -1165,8 +1179,6 @@ function Header() {
                   <span className="nav-link">{profileDisplayName}</span>
                 )}
               </li>
-            </ul>
-          </div>
         </div>
       </nav>
       <style jsx global>{`

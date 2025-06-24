@@ -6,7 +6,8 @@ import { FiPlus } from "react-icons/fi";
 import axios from "axios";
 
 function UpcomingEvents() {
-  const [expandedItems, setExpandedItems] = useState(false);
+  // Corrected state to hold the index of the expanded item, or null if none are expanded
+  const [expandedDateItem, setExpandedDateItem] = useState(null);
   const containerRef = useRef(null);
   const [expandedItemId, setExpandedItemId] = useState(null);
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -14,10 +15,13 @@ function UpcomingEvents() {
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
   const [slidesToShow, setSlidesToShow] = useState(2); // Default value
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [windowWidth, setWindowWidth] = useState(
+    typeof window !== "undefined" ? window.innerWidth : 0
+  );
 
-  const toggleExpand = () => {
-    setExpandedItems(!expandedItems);
+  // Corrected function to toggle expansion for a specific item by its index
+  const toggleExpand = (index) => {
+    setExpandedDateItem(expandedDateItem === index ? null : index);
   };
 
   const truncateDescription = (description, maxLength) => {
@@ -57,115 +61,30 @@ function UpcomingEvents() {
     };
     fetchEvents();
   }, []);
-  //   const events = [
-  //     {
-  //       id: 1,
-  //       heading:
-  //         "Pellentesque molestie ante vitae consectetur  Pellentesque molestie ante vitae consectetur",
-  //       description:
-  //         "Lorem Ipsum is dummy text Pellentesque molestie ante vitae consectetur Pellentesque molestie ante vitae consectetur",
-  //       image: "/images/best-picked/01.jpg",
-  //       provider: "Admin",
-  //       date: "02-Nov-2017",
-  //       type: "Family",
-  //       startDate: "15",
-  //       startMonth: "Mar",
-  //       endDate: "17",
-  //       endMonth: "Mar",
-  //     },
-  //     {
-  //       id: 2,
-  //       heading:
-  //         "Pellentesque molestie ante vitae consectetur  Pellentesque molestie ante vitae consectetur",
-  //       description:
-  //         "Lorem Ipsum is dummy text Pellentesque molestie ante vitae consectetur Pellentesque molestie ante vitae consectetur",
-  //       image: "/images/best-picked/02.jpg",
-  //       provider: "Admin",
-  //       date: "02-Nov-2017",
-  //       type: "Workshop",
-  //       startDate: "20",
-  //       startMonth: "Apr",
-  //       endDate: "22",
-  //       endMonth: "Apr",
-  //     },
-  //     {
-  //       id: 3,
-  //       heading: "Pellentesque molestie ante vitae consectetur.",
-  //       description:
-  //         "Lorem Ipsum is dummy text Pellentesque molestie ante vitae consectetur Pellentesque molestie ante vitae consectetur",
-  //       image: "/images/best-picked/03.jpg",
-  //       provider: "Admin",
-  //       date: "02-Nov-2017",
-  //       type: "Workshop",
-  //       startDate: "10",
-  //       startMonth: "May",
-  //       endDate: "12",
-  //       endMonth: "May",
-  //     },
-  //     {
-  //       id: 4,
-  //       heading: "Pellentesque molestie ante vitae consectetur.",
-  //       description:
-  //         "Lorem Ipsum is dummy text Pellentesque molestie ante vitae consectetur Pellentesque molestie ante vitae consectetur",
-  //       image: "/images/best-picked/01.jpg",
-  //       provider: "Admin",
-  //       date: "02-Nov-2017",
-  //       type: "Workshop",
-  //       startDate: "05",
-  //       startMonth: "Jun",
-  //       endDate: "07",
-  //       endMonth: "Jun",
-  //     },
-  //     {
-  //       id: 5,
-  //       heading: "Pellentesque molestie ante vitae consectetur.",
-  //       description:
-  //         "Lorem Ipsum is dummy text Pellentesque molestie ante vitae consectetur Pellentesque molestie ante vitae consectetur",
-  //       image: "/images/best-picked/02.jpg",
-  //       provider: "Admin",
-  //       date: "02-Nov-2017",
-  //       type: "Workshop",
-  //       startDate: "25",
-  //       startMonth: "Jul",
-  //       endDate: "27",
-  //       endMonth: "Jul",
-  //     },
-  //     {
-  //       id: 6,
-  //       heading: "Pellentesque molestie ante vitae consectetur.",
-  //       description:
-  //         "Lorem Ipsum is dummy text Pellentesque molestie ante vitae consectetur Pellentesque molestie ante vitae consectetur",
-  //       image: "/images/best-picked/03.jpg",
-  //       provider: "Admin",
-  //       date: "02-Nov-2017",
-  //       type: "Workshop",
-  //       startDate: "01",
-  //       startMonth: "Aug",
-  //       endDate: "03",
-  //       endMonth: "Aug",
-  //     },
-  //   ];
 
   const handleImageClick = (id) => {
     setExpandedItemId(expandedItemId === id ? null : id);
   };
 
   useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
+    // Check if window is defined for server-side rendering
+    if (typeof window !== "undefined") {
+      const handleResize = () => {
+        setWindowWidth(window.innerWidth);
+      };
 
-    window.addEventListener("resize", handleResize);
+      window.addEventListener("resize", handleResize);
+      // Set initial width
+      handleResize();
 
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
+      return () => {
+        window.removeEventListener("resize", handleResize);
+      };
+    }
   }, []);
 
   useEffect(() => {
-    // Determine slides to show based on screen width
     if (windowWidth >= 992) {
-      // lg or larger
       setSlidesToShow(2);
     } else {
       setSlidesToShow(1);
@@ -174,9 +93,11 @@ function UpcomingEvents() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentSlide(
-        (prevSlide) => (prevSlide + 1) % (events.length - slidesToShow + 1)
-      );
+      if (events.length > slidesToShow) {
+        setCurrentSlide(
+          (prevSlide) => (prevSlide + 1) % (events.length - slidesToShow + 1)
+        );
+      }
     }, 6000);
 
     return () => clearInterval(interval);
@@ -185,11 +106,10 @@ function UpcomingEvents() {
   useEffect(() => {
     if (containerRef.current) {
       const slideWidth = containerRef.current.offsetWidth / slidesToShow;
-      // Check if the window width is large enough for 80% scrolling
       const scrollAmount =
         windowWidth >= 992
           ? currentSlide * slideWidth * 0.8
-          : currentSlide * slideWidth; // Scroll 80% for lg and above, 100% for below
+          : currentSlide * slideWidth;
       containerRef.current.scrollTo({
         left: scrollAmount,
         behavior: "smooth",
@@ -276,8 +196,8 @@ function UpcomingEvents() {
                       const dynamicWidth = calculateDynamicWidth(index);
                       const isExpanded =
                         windowWidth >= 992 && index === currentSlide;
-                          const imageUrl = event.event_photo_urls[0] || "/images/placeholder.jpg"; // Use placeholder if 'image' is falsy
-
+                      const imageUrl =
+                        event.event_photo_urls[0] || "/images/placeholder.jpg"; // Use placeholder if 'image' is falsy
 
                       return (
                         <div
@@ -294,15 +214,17 @@ function UpcomingEvents() {
                         >
                           <div className={`${style["upcoming-item-padding"]}`}>
                             <div className={style["event-box"]}>
-                              <img
-                                src={imageUrl}
-                                className=""
-                                alt=""
-                                onClick={() => handleImageClick(event.id)}
-                              />
+                              <Link href={`/events/${event.id}`}>
+                                <img
+                                  src={imageUrl}
+                                  className=""
+                                  alt=""
+                                  onClick={() => handleImageClick(event.id)}
+                                />
+                              </Link>
                               <div className={style["event-scroll"]}>
                                 <Link
-                                  href="/event-details"
+                                  href={`/events/${event.id}`}
                                   className={`${style["event-upcoming-button"]} text-start`}
                                 >
                                   {event.event_type.title}
@@ -343,21 +265,44 @@ function UpcomingEvents() {
                                       right: "20px",
                                     }}
                                   >
-                                    {expandedItems && (
-                                      <>
-                                        <li>
-                                          <b>{event.date}</b>
-                                          <br />
-                                          {event.date}
-                                        </li>
-                                        <li>to</li>
-                                        <li>
-                                          {/* <b>{event.endDate}</b>
-                                <br />
-                                {event.endMonth} */}
-                                        </li>
-                                      </>
-                                    )}
+                                    {/* --- FIX START --- */}
+                                    {/* Corrected logic to show date only for the clicked item */}
+                                    {expandedDateItem === index &&
+                                      event.start_date &&
+                                      event.end_date &&
+                                      (() => {
+                                        const [startYear, startMonth, startDay] =
+                                          event.start_date.split("-");
+                                        const monthIndex = [
+                                          "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                                          "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+                                        ];
+                                        const monthStartName =
+                                          monthIndex[parseInt(startMonth, 10) - 1];
+
+                                        const [endYear, endMonth, endDay] =
+                                          event.end_date.split("-");
+                                        const monthEndName =
+                                          monthIndex[parseInt(endMonth, 10) - 1];
+
+                                        return (
+                                          <>
+                                            <li style={{ paddingInline: "5px" }}>
+                                              <b>{monthStartName}</b>
+                                              <br />
+                                              <b>{startDay}</b>
+                                            </li>
+                                            <li>to</li>
+                                            <li>
+                                              {" "}
+                                              <b>{monthEndName}</b>
+                                              <br />
+                                              <b>{endDay}</b>
+                                            </li>
+                                          </>
+                                        );
+                                      })()}
+                                    {/* --- FIX END --- */}
                                   </ul>
                                   <button
                                     className={style["btn-plus"]}
@@ -365,7 +310,8 @@ function UpcomingEvents() {
                                       marginTop: "-35px",
                                       right: "20px",
                                     }}
-                                    onClick={toggleExpand}
+                                    // Corrected onClick to pass the item's index
+                                    onClick={() => toggleExpand(index)}
                                   >
                                     <FiPlus />
                                   </button>
@@ -417,9 +363,11 @@ function UpcomingEvents() {
                     })}
                   </div>
                 </div>
-                <div className={style["pagination-dots"]}>
-                  {Array.from({ length: events.length - slidesToShow + 1 }).map(
-                    (_, index) => (
+                {events.length > slidesToShow && (
+                  <div className={style["pagination-dots"]}>
+                    {Array.from({
+                      length: events.length - slidesToShow + 1,
+                    }).map((_, index) => (
                       <span
                         key={index}
                         className={`${style["dot"]} ${
@@ -427,9 +375,9 @@ function UpcomingEvents() {
                         }`}
                         onClick={() => handleDotClick(index)}
                       />
-                    )
-                  )}
-                </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </div>
