@@ -887,7 +887,7 @@ function Header() {
               <Link className="navbar-brand active" href="/country">
                 <img
                   src="../images/logo.svg"
-                  className={style[""]} style={{maxHeight: '100px', maxWidth: '90px' , marginTop: '-10px'}}
+                  className={style[""]} style={{maxHeight: '100px', maxWidth: '110px' , marginTop: '-5px'}}
                   alt="Explore"
                 />
               </Link>
