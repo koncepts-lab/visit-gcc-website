@@ -1,0 +1,38 @@
+runtime: nodejs20 # Or nodejs18, nodejs16, etc. Check supported versions.
+# env: standard # Optional, as it's the default if 'env: flex' is not present
+
+# instance_class: F1 # Optional: controls instance size, e.g., F1, F2, F4
+                     # Default is F1. Adjust based on your Next.js app's needs.
+
+handlers:
+- url: /.*
+  secure: always
+  redirect_http_response_code: 301
+  script: auto
+
+# automatic_scaling: # Standard environment has different scaling parameters
+# min_instances: 1 # Example for standard
+# max_instances: 3 # Example for standard
+# target_cpu_utilization: 0.8 # Example for standard
+
+# resources: # Standard environment resources are defined by instance_class
+  # cpu: 1
+  # memory_gb: 0.5
+  # disk_size_gb: 10
+
+env_variables:
+  NODE_ENV: 'production'
+  NEXT_PUBLIC_API_URL: 'http://127.0.0.1/api/' # Still a concern - see previous note
+  # App Engine Standard injects PORT, your app should listen on process.env.PORT
+  # For Next.js, this is usually handled by `next start -p $PORT` which GAE does.
+
+# For Next.js, you need to ensure it's built before deployment.
+# You can do this in your package.json scripts or in Cloud Build.
+# App Engine Standard's build process will run `npm run build` by default if it exists.
+# Ensure your package.json has:
+# "scripts": {
+#   "dev": "next dev",
+#   "build": "next build",
+#   "start": "next start", // Important for GAE Standard
+#   "lint": "next lint"
+# }

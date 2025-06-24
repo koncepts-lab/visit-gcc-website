@@ -1,0 +1,50 @@
+steps:
+  # Generate .env file from app.yaml (This step remains the same)
+  # NOTE: App Engine Standard might not directly use a root .env file in the same way
+  # as a Docker build. Environment variables from app.yaml are directly injected.
+  # However, if your `next build` process needs these *during the build phase on Cloud Build*,
+  # this step can still be useful.
+  - name: 'bash'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        echo "Extracting env_variables from app.yaml to .env for build time if needed..."
+        grep 'env_variables:' -A 1000 app.yaml | tail -n +2 | sed 's/^  //g' > .env
+        echo "Contents of .env:"
+        cat .env
+
+  # Optional: Install dependencies and build the Next.js app
+  # App Engine Standard will also run `npm run build` if it exists in package.json
+  # during its own build process. You can do it here explicitly if you want more control
+  # or if your build needs .env variables available during Cloud Build.
+  - name: 'gcr.io/cloud-builders/npm' # Or 'yarn' if you use yarn
+    args: ['install']
+    # If your build needs NEXT_PUBLIC_ vars from .env, ensure they are set here or
+    # rely on App Engine to inject them from app.yaml for the final runtime.
+    # For build-time variables, you'd typically pass them explicitly or source .env.
+
+  - name: 'gcr.io/cloud-builders/npm' # Or 'yarn' if you use yarn
+    args: ['run', 'build']
+    # env:
+    #   - 'NEXT_PUBLIC_API_URL=${_NEXT_PUBLIC_API_URL}' # Example if passing as substitution
+
+  # Deploy to App Engine Standard (source deployment)
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'gcloud'
+    args:
+      - 'app'
+      - 'deploy'
+      - 'app.yaml'
+      # - '--project=$PROJECT_ID' # PROJECT_ID is usually automatically available
+      - '--quiet'
+      # - '--version=$COMMIT_SHA' # Optional: to version your deployments
+
+# No 'images' section needed as we are not building/pushing a custom image
+
+timeout: '1600s'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+#  substitutions: # If you need to pass variables like NEXT_PUBLIC_API_URL at build time
+#    _NEXT_PUBLIC_API_URL: 'your_production_api_url'

@@ -13,6 +13,12 @@ const ClientSideRouter = dynamic(
     ssr: false,
   }
 );
+const ClientSideRouter = dynamic(
+  () => import("../../components/layouts/ClientSideRouter"),
+  {
+    ssr: false,
+  }
+);
 
 export default function RootLayout({ children }) {
   const zohoWidgetCode =
@@ -61,6 +67,7 @@ export default function RootLayout({ children }) {
           }}
         />
       </head>
+
       <body>
         <noscript>
           <iframe
