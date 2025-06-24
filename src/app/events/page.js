@@ -123,10 +123,11 @@ const Country = () => {
     const fetchPastEvents = async () => {
       try {
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}events/past`
+          `${process.env.NEXT_PUBLIC_API_URL}events/get-lesser-known-events`
         );
-        const fetchedEvents = response.data.data;
+        const fetchedEvents = response.data;
         setLesserWonders(fetchedEvents);
+        console.log()
       } catch (err) {
         console.error("Error fetching past events:", err);
       }
@@ -423,6 +424,7 @@ const Country = () => {
           ? allEvents[0].event_photo_urls[0]
           : "/images/placeholder.jpg"                }
                 className={`img-fluid w-100`}
+                style={{maxHeight: '487px'}}
                 alt="Featured Event"
               />
             </div>

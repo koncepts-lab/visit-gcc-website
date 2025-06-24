@@ -125,6 +125,7 @@ font-weight: 600;
 
 .featured img{
   height: 110px;
+  width: 160px;
 }
 
     .promo_input::placeholder {

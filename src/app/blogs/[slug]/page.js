@@ -388,7 +388,7 @@ function Page() {
                           }}
                          className="ps-2" 
                         >
-                     <ul className="list-unstyled " >
+                     <ul className="gap-1" >
                         <li >
                           {result.heading}
                         </li>

@@ -17,7 +17,6 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 function RatingCarousel({ packageId, type }) {
-  // Normalize type to handle case sensitivity
   const normalizedType = typeof type === "string" ? type.toLowerCase() : type;
 
   // Validate the type prop
