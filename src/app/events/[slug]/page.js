@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, use } from "react";
-import { useParams } from "next/navigation"; // To extract the ID from the URL
+import { useParams } from "next/navigation"; 
 import Link from "next/link";
 import axios from "axios"; // Import Axios
 import style from "./style.module.css";
