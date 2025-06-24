@@ -883,11 +883,11 @@ function Header() {
                 Explore
               </Link>
             </div>
-             <div className={`nav-item ${style["navbar_sticky_mobile"]} d-sm-block d-none`}>
-              <Link className="nav-link active" href="/country">
+             <div className={` d-sm-block d-none`}>
+              <Link className="navbar-brand active" href="/country">
                 <img
                   src="../images/logo.svg"
-                  className={style[""]} style={{Height: '50px', Width: '55px' , marginTop: '-10px'}}
+                  className={style[""]} style={{maxHeight: '100px', maxWidth: '90px' , marginTop: '-10px'}}
                   alt="Explore"
                 />
               </Link>
