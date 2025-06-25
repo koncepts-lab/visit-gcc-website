@@ -1,22 +1,11 @@
-// TourPackage Component - Final Version
 
 "use client";
-
-// React and hooks
 import React, { useState, useEffect, useCallback } from "react";
-
-// External libraries
 import axios from "axios";
 import { Range } from "react-range";
-
-// Icons
 import { LuMenu } from "react-icons/lu";
 import { IoIosCloseCircleOutline } from "react-icons/io";
-
-// Local styles
 import style from "./style.module.css";
-
-// Custom components
 import Banner from "../../../components/banner/banner";
 import Carousal from "../../../components/carousel/Carousal";
 import HolidaysTab from "../../../components/tour-package/holidays-tab";
@@ -38,7 +27,7 @@ const TourPackage = () => {
   const [noResultsFound, setNoResultsFound] = useState(false);
 
   // Filter states
-  const [priceRange, setPriceRange] = useState([30, 8000]);
+  const [priceRange, setPriceRange] = useState([30, 10000]);
   const [durationRange, setDurationRange] = useState([1, 30]);
   const [selectedItems, setSelectedItems] = useState({}); // Stores selected accordion filter items
   const [isApiFiltered, setIsApiFiltered] = useState(false); // Tracks if the current filter set is from an API call
@@ -147,10 +136,8 @@ const TourPackage = () => {
       }
     };
     fetchAllAccordionData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Run only once on mount
+  }, []); 
 
-  // EFFECT 2: Fetch initial page data (all packages, carousels) on initial mount
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
@@ -177,7 +164,7 @@ const TourPackage = () => {
 
         const fetchedPackages = packagesRes.data.data || [];
         setAllPackages(fetchedPackages);
-        setFilteredPackages(fetchedPackages); // Set both master and display lists initially
+        setFilteredPackages(fetchedPackages);
 
         setTour_category(tourCategoryRes.data.data || []);
         setBestpicked(bestPickedRes.data.data || []);
@@ -192,12 +179,10 @@ const TourPackage = () => {
       }
     };
     fetchData();
-  }, []); // Run only once on mount
-
-  // Central filtering logic, memoized with useCallback for performance
+  }, []); 
+  
   const applyAllFilters = useCallback(
     (basePackages) => {
-      // Determine the source list to filter from
       let packagesToFilter =
         basePackages || (isApiFiltered ? filteredPackages : allPackages);
 
@@ -208,13 +193,11 @@ const TourPackage = () => {
         const adultPrice = parseFloat(pkg.adult_price) || 0;
         const duration = parseInt(pkg.number_of_days, 10) || 0;
 
-        // --- Local Filters (applied on top of any API results) ---
         const matchesPrice =
           adultPrice >= priceRange[0] && adultPrice <= priceRange[1];
         const matchesDuration =
           duration >= durationRange[0] && duration <= durationRange[1];
 
-        // Country filter is always local for better performance
         const countryIdFilter = selectedItems["COUNTRY"]?.[0];
         const matchesCountry = countryIdFilter
           ? pkg.country_id === countryIdFilter
@@ -225,11 +208,10 @@ const TourPackage = () => {
 
       setFilteredPackages(filtered);
 
-      // Check if any filters are active to determine if "No Results" should be shown
       const hasActiveFilters =
         Object.keys(selectedItems).length > 0 ||
         priceRange[0] !== 30 ||
-        priceRange[1] !== 8000 ||
+        priceRange[1] !== 10000 ||
         durationRange[0] !== 1 ||
         durationRange[1] !== 30;
 
@@ -336,7 +318,7 @@ const TourPackage = () => {
   };
 
   const clearAllFilters = () => {
-    setPriceRange([30, 8000]);
+    setPriceRange([30, 10000]);
     setDurationRange([1, 30]);
     setSelectedItems({});
     setIsApiFiltered(false);
@@ -375,7 +357,7 @@ const TourPackage = () => {
                   <Range
                     step={100}
                     min={30}
-                    max={8000}
+                    max={10000}
                     values={priceRange}
                     onChange={handlePriceRangeChange}
                     renderTrack={({ props, children }) => (

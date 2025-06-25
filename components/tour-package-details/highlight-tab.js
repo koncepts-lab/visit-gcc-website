@@ -93,91 +93,7 @@ const ItineraryContent = ({ itineraryItems, itemType }) => {
   );
 };
 
-// This component will now be used for attractions for the "InclusionsExclusions" tab
-const AttractionFeaturesRestrictionsContent = ({
-  features,
-  restrictions,
-  itemType,
-}) => (
-  <div>
-    {features && features.length > 0 && (
-      <div className="mb-4">
-        <h3 className="fw-bold mb-3" style={{ color: "#0d7a8b" }}>
-          What's Included (Features)
-        </h3>
-        {features.map((item, index) => (
-          <div
-            key={`feature-${item.id || index}`}
-            className={`mb-3 p-3 border rounded shadow-sm ${style.inclusionItem}`}
-          >
-            <button
-              className={`btn text-white fw-bold mb-2 ${style.featureTag}`}
-              style={{
-                backgroundColor: "#15a3ac",
-                borderRadius: "5px",
-                fontSize: "0.9rem",
-                padding: "0.3rem 0.75rem",
-                cursor: "default",
-              }}
-            >
-              {item.title || item.name || "Feature"}
-            </button>
-            {(item.description || item.content) && (
-              <p
-                className="ms-1 text-muted small mb-0"
-                style={{ fontSize: "0.875rem" }}
-              >
-                {item.description || item.content}
-              </p>
-            )}
-          </div>
-        ))}
-      </div>
-    )}
 
-    {restrictions && restrictions.length > 0 && (
-      <div className="mt-4">
-        <h3 className="fw-bold mb-3" style={{ color: "#0d7a8b" }}>
-          What's Not Included (Restrictions)
-        </h3>
-        {restrictions.map((item, index) => (
-          <div
-            key={`restriction-${item.id || index}`}
-            className={`mb-3 p-3 border rounded shadow-sm ${style.exclusionItem}`}
-          >
-            <button
-              className={`btn text-secondary fw-bold mb-2 ${style.exclusionTag}`}
-              style={{
-                backgroundColor: "#e9ecef",
-                color: "#495057",
-                borderRadius: "5px",
-                fontSize: "0.9rem",
-                padding: "0.3rem 0.75rem",
-                cursor: "default",
-              }}
-            >
-              {item.title || item.name || "Restriction"}
-            </button>
-            {(item.description || item.content) && (
-              <p
-                className="ms-1 text-muted small mb-0"
-                style={{ fontSize: "0.875rem" }}
-              >
-                {item.description || item.content}
-              </p>
-            )}
-          </div>
-        ))}
-      </div>
-    )}
-    {(!features || features.length === 0) &&
-      (!restrictions || restrictions.length === 0) && (
-        <p className="p-3 text-muted">
-          No specific features or restrictions listed for this attraction.
-        </p>
-      )}
-  </div>
-);
 
 const NoteContent = ({ notes, itemType }) => {
   // Assuming `notes` is a single string from itemDetails.note
@@ -364,16 +280,11 @@ export default function HighlightTab({ itemId, itemType = "packages" }) {
       case "InclusionsExclusions":
         if (itemType === "packages") {
           // This component fetches its own data based on packageId
-          return <PackageInclusionsAndExclusions packageId={itemId} />;
+          return <PackageInclusionsAndExclusions packageId={itemId} type="package"/>;
         } else if (itemType === "attractions") {
           // Pass fetched features and restrictions to the dynamic content component
-          return (
-            <AttractionFeaturesRestrictionsContent
-              features={attractionFeatures}
-              restrictions={attractionRestrictions}
-              itemType={itemType}
-            />
-          );
+                  return <PackageInclusionsAndExclusions packageId={itemId} type="attraction"/>;
+
         }
         return (
           <div className="p-4">Content not available for this item type.</div>

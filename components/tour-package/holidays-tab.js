@@ -13,140 +13,64 @@ const HolidaysTab = (props) => {
   const [activeTab, setActiveTab] = useState("all");
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [allPackages, setAllPackages] = useState([]);
-  const [filteredPackages, setFilteredPackages] = useState([]);
 
+  // --- 1. Fetch Themes and All Their Items in One Go ---
   useEffect(() => {
-    const fetchTabs = async () => {
+    const fetchAllData = async () => {
       setIsLoading(true);
+      setError(null);
       try {
-        const registerToken = localStorage.getItem("auth_token_register");
-        const loginToken = localStorage.getItem("auth_token_login");
-        let authToken = null;
+        const themesApiUrl =
+          props.type === "attractions"
+            ? `${process.env.NEXT_PUBLIC_API_URL}att-holiday-themes`
+            : `${process.env.NEXT_PUBLIC_API_URL}holiday-themes/get-package-holiday-themes`;
 
-        if (loginToken) {
-          authToken = loginToken;
-          console.log("Using login token for fetching packages.");
-        } else if (registerToken) {
-          authToken = registerToken;
-          console.log("Using register token for fetching packages.");
-        }
+        const response = await axios.get(themesApiUrl);
+        const fetchedThemes = response.data.data || response.data || [];
 
-        let response;
-        if (props.type === "attractions") {
-          response = await axios.get(
-            `${process.env.NEXT_PUBLIC_API_URL}att-holiday-themes`
-          );
-        } else {
-          response = await axios.get(
-            `${process.env.NEXT_PUBLIC_API_URL}holiday-themes`,
-            {
-              headers: {
-                Authorization: `Bearer ${authToken}`,
-              },
-            }
-          );
-        }
+        const itemsKey = props.type === "attractions" ? "attractions" : "packages";
 
-        const fetchedTabs = response.data.data || response.data || [];
-        const formattedTabs = fetchedTabs.map((tab) => ({
-          id: tab.uuid_id,
+        const formattedTabs = fetchedThemes.map((tab) => ({
+          id: tab.id,
           name: tab.title,
           description: tab.description,
+          // Store the relevant items directly in the tab object
+          items: tab[itemsKey] || [],
         }));
 
+        // Aggregate all items from all themes for the "All Themes" tab
+        let allItemsAggregated = [];
+        formattedTabs.forEach(tab => {
+          allItemsAggregated.push(...tab.items);
+        });
+
+        // Ensure items are unique in case one item belongs to multiple themes
+        const uniqueAllItems = Array.from(new Map(allItemsAggregated.map(item => [item.id, item])).values());
+        
         const allTabsData = [
           {
             id: "all",
             name: "All Themes",
-            description:
-              "Explore all our exciting holiday packages across various themes.",
+            description: `Explore all our exciting ${props.type || 'holiday packages'} across various themes.`,
+            items: uniqueAllItems,
           },
           ...formattedTabs,
         ];
 
         setTabsData(allTabsData);
-        setActiveTab("all"); // Set the first tab (All Themes) as active
-        setIsLoading(false);
+        setActiveTab("all"); // Set the initial active tab
+
       } catch (err) {
-        console.log("🚀 ~ fetchTabs ~ err:", err);
+        console.error("Error fetching holiday data:", err);
+        setError("Failed to fetch holiday data. Please try again.");
+      } finally {
         setIsLoading(false);
-        setError("Failed to fetch holiday themes. Please try again.");
       }
     };
-    fetchTabs();
-  }, []);
+    fetchAllData();
+  }, [props.type]); // Re-run only if the component type changes
 
-  useEffect(() => {
-    const fetchAllPackages = async () => {
-      try {
-        const registerToken = localStorage.getItem("auth_token_register");
-        const loginToken = localStorage.getItem("auth_token_login");
-        let authToken = null;
-
-        if (loginToken) {
-          authToken = loginToken;
-          console.log("Using login token for fetching packages.");
-        } else if (registerToken) {
-          authToken = registerToken;
-          console.log("Using register token for fetching packages.");
-        }
-
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}packages`
-        );
-        const fetchedPackages = response.data.data || response.data || [];
-        setAllPackages(fetchedPackages);
-        setFilteredPackages(fetchedPackages.slice(0, 5)); // Initially show all packages, max 5
-        setIsLoading(false);
-      } catch (err) {
-        setIsLoading(false);
-        setError("Failed to fetch packages. Please try again.");
-      }
-    };
-    fetchAllPackages();
-  }, []);
-
-  useEffect(() => {
-    const fetchPackagesByTheme = async () => {
-      // If "all" tab is selected, show all packages (max 5)
-      if (activeTab === "all") {
-        setFilteredPackages(allPackages.slice(0, 5));
-        return;
-      }
-
-      try {
-        const registerToken = localStorage.getItem("auth_token_register");
-        const loginToken = localStorage.getItem("auth_token_login");
-        let authToken = null;
-
-        if (loginToken) {
-          authToken = loginToken;
-          console.log("Using login token for fetching packages.");
-        } else if (registerToken) {
-          authToken = registerToken;
-          console.log("Using register token for fetching packages.");
-        }
-
-        setIsLoading(true);
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}holiday-themes/theme/get-by-theme?holiday_theme_id=${activeTab}`
-        );
-
-        const themePackages = response.data.data || response.data || [];
-        setFilteredPackages(themePackages.slice(0, 5)); // Show max 5 packages from the theme
-        setIsLoading(false);
-      } catch (err) {
-        setIsLoading(false);
-        setError("Failed to fetch packages for this theme. Please try again.");
-      }
-    };
-
-    if (activeTab) {
-      fetchPackagesByTheme();
-    }
-  }, [activeTab, allPackages]);
-
+  // Bootstrap JS import
   useEffect(() => {
     if (typeof window !== "undefined") {
       require("bootstrap/dist/js/bootstrap.bundle.min.js");
@@ -157,20 +81,23 @@ const HolidaysTab = (props) => {
     setActiveTab(tabId);
   };
 
-  const renderTabContent = (description) => {
-    // Get packages to display (already filtered by activeTab)
-    const displayPackages = filteredPackages;
+  // This function now receives the specific items it needs to render
+  const renderTabContent = (description, items = []) => {
+    // The items parameter defaults to an empty array to prevent errors
+    const displayItems = items;
+
+    // A graceful fallback for when there are fewer than 5 items
+    const getItem = (index) => displayItems[index] || {};
 
     return (
       <div className={`${style["documentation-container"]} p-0`}>
         <div className="container">
           <div className="row">
-            {/* First package */}
+            {/* First item */}
             <div className="col-md-6 p-0 d-flex pb-2 ms-md-0 ms-3">
               <img
                 src={
-                  displayPackages[0]?.photo_urls?.[0] ||
-                  "../images/tour/358-608.jpg"
+                  getItem(0).photo_urls?.[0] || "../images/tour/358-608.jpg"
                 }
                 className={`${style["img-Holidays"]} col-6`}
                 alt="Destination"
@@ -178,92 +105,74 @@ const HolidaysTab = (props) => {
               <div className={`col-6 p-0 ${style["vertical-center"]}`}>
                 <div className={style["tour-holidays-text"]}>
                   <h5>Destination</h5>
-                  <h6>{displayPackages[0]?.name || "UAE"}</h6>
+                  <h6>{getItem(0).name || "Destination Name"}</h6>
                   <span className={style["line"]}></span>
                   <p>{description}</p>
                   <ul>
-                    <li>
-                      <Link href="#0" className={style["fb"]}>
-                        <FaFacebookF />
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="#0" className={style["tw"]}>
-                        <FaTwitter />
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="#0" className={style["gp"]}>
-                        <FaGooglePlusG />
-                      </Link>
-                    </li>
+                    <li><Link href="#0" className={style["fb"]}><FaFacebookF /></Link></li>
+                    <li><Link href="#0" className={style["tw"]}><FaTwitter /></Link></li>
+                    <li><Link href="#0" className={style["gp"]}><FaGooglePlusG /></Link></li>
                   </ul>
                 </div>
               </div>
             </div>
 
-            {/* Second, third packages */}
+            {/* Second, third items */}
             <div className="col-md-3">
               <div className={style["tour-holidays-box"]}>
                 <img
                   src={
-                    displayPackages[1]?.photo_urls?.[0] ||
-                    "../images/tour/269-273.jpg"
+                    getItem(1).photo_urls?.[0] || "../images/tour/269-273.jpg"
                   }
                   className="w-100"
                   alt="Destination"
                 />
                 <span>
                   <h6>Destination</h6>
-                  <p>{displayPackages[1]?.name || "Saudi"}</p>
+                  <p>{getItem(1).name || "Destination Name"}</p>
                 </span>
               </div>
-              <div
-                className={`mb-0 ${style["tour-holidays-box"]} ${style["mobile-pb"]}`}
-              >
+              <div className={`mb-0 ${style["tour-holidays-box"]} ${style["mobile-pb"]}`}>
                 <img
                   src={
-                    displayPackages[2]?.photo_urls?.[0] ||
-                    "../images/tour/02.jpg"
+                    getItem(2).photo_urls?.[0] || "../images/tour/02.jpg"
                   }
                   className="w-100"
                   alt="Destination"
                 />
                 <span>
                   <h6>Destination</h6>
-                  <p>{displayPackages[2]?.name || "Saudi"}</p>
+                  <p>{getItem(2).name || "Destination Name"}</p>
                 </span>
               </div>
             </div>
 
-            {/* 4, 5 packages */}
+            {/* 4th, 5th items */}
             <div className="col-md-3">
               <div className={style["tour-holidays-box"]}>
                 <img
                   src={
-                    displayPackages[3]?.photo_urls?.[0] ||
-                    "../images/tour/03.jpg"
+                    getItem(3).photo_urls?.[0] || "../images/tour/03.jpg"
                   }
                   className="w-100"
                   alt="Destination"
                 />
                 <span>
                   <h6>Destination</h6>
-                  <p>{displayPackages[3]?.name || "Saudi"}</p>
+                  <p>{getItem(3).name || "Destination Name"}</p>
                 </span>
               </div>
               <div className={`mb-0 ${style["tour-holidays-box"]}`}>
                 <img
                   src={
-                    displayPackages[4]?.photo_urls?.[0] ||
-                    "../images/tour/04.jpg"
+                    getItem(4).photo_urls?.[0] || "../images/tour/04.jpg"
                   }
                   className="w-100"
                   alt="Destination"
                 />
                 <span>
                   <h6>Destination</h6>
-                  <p>{displayPackages[4]?.name || "Saudi"}</p>
+                  <p>{getItem(4).name || "Destination Name"}</p>
                 </span>
               </div>
             </div>
@@ -272,14 +181,6 @@ const HolidaysTab = (props) => {
       </div>
     );
   };
-
-  if (isLoading) {
-    return <p>Loading...</p>; // Or your loading component
-  }
-
-  if (error) {
-    return <p>Error: {error}</p>; // Or your error component
-  }
 
   return (
     <section className={style.innerpage}>
@@ -293,7 +194,7 @@ const HolidaysTab = (props) => {
                   id="myTab"
                   role="tablist"
                 >
-                  {tabsData.map((tab, index) => (
+                  {tabsData.map((tab) => (
                     <li
                       key={tab.id}
                       className={`nav-item ${style["country-nav-item"]}`}
@@ -303,12 +204,12 @@ const HolidaysTab = (props) => {
                         className={`nav-link border-0 ${
                           style["country-nav-link"]
                         } ${activeTab === tab.id ? "active" : ""}`}
-                        id={`${tab.id}-tab`}
+                        id={`${tab.id}-tab-button`}
                         data-bs-toggle="tab"
-                        data-bs-target={`#${tab.id}`}
+                        data-bs-target={`#${tab.id}-tab-pane`}
                         type="button"
                         role="tab"
-                        aria-controls={tab.id}
+                        aria-controls={`${tab.id}-tab-pane`}
                         aria-selected={activeTab === tab.id}
                         onClick={() => handleTabClick(tab.id)}
                       >
@@ -318,19 +219,25 @@ const HolidaysTab = (props) => {
                   ))}
                 </ul>
                 <div className="tab-content" id="myTabContent">
-                  {tabsData.map((tab, index) => (
-                    <div
-                      key={tab.id}
-                      className={`tab-pane fade ${
-                        activeTab === tab.id ? "show active" : ""
-                      }`}
-                      id={tab.id}
-                      role="tabpanel"
-                      aria-labelledby={`${tab.id}-tab`}
-                    >
-                      {renderTabContent(tab.description)}
-                    </div>
-                  ))}
+                  {isLoading ? (
+                    <div className="text-center p-5">Loading content...</div>
+                  ) : error ? (
+                     <div className="alert alert-warning text-center m-3">{error}</div>
+                  ) : (
+                    // Render a tab pane for EACH tab. React/Bootstrap will handle showing the active one.
+                    tabsData.map((tab) => (
+                      <div
+                        key={tab.id}
+                        className={`tab-pane fade ${ activeTab === tab.id ? "show active" : "" }`}
+                        id={`${tab.id}-tab-pane`}
+                        role="tabpanel"
+                        aria-labelledby={`${tab.id}-tab-button`}
+                      >
+                        {/* Render the content, passing the specific items for this tab */}
+                        {renderTabContent(tab.description, tab.items.slice(0, 5))}
+                      </div>
+                    ))
+                  )}
                 </div>
               </div>
             </div>

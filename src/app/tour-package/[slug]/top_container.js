@@ -244,11 +244,12 @@ export default function Top_container({ packageId }) {
             <div className={style["inclusions"]}>
               {Array.isArray(packageInclusions) &&
                 packageInclusions.map((inclusion) => (
-                  <span key={inclusion.id} className="d-flex flex-column">
+                  <span key={inclusion.id} className="d-flex flex-column justify-content-center">
                     <img
                       src={inclusion.inclusion_icon_url}
                       alt={inclusion.title}
-                      className={style["inclusion-icon"]}
+                      className={`mx-auto`}
+                      style={{ height: "50px", width: "50px" }}
                     />
                     <div className="clearfix"></div> {inclusion.title}
                   </span>
