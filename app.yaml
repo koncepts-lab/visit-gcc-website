@@ -23,6 +23,7 @@ handlers:
 env_variables:
   NODE_ENV: 'production'
   NEXT_PUBLIC_API_URL: 'https://api-dot-concrete-tuner-462815-s3.el.r.appspot.com/api/' # Still a concern - see previous note
+  NEXT_PUBLIC_RAZORPAY_KEY_ID: rzp_test_lERjL9ihUlvlHZ
   # App Engine Standard injects PORT, your app should listen on process.env.PORT
   # For Next.js, this is usually handled by `next start -p $PORT` which GAE does.
 
