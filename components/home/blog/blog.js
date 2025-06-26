@@ -3,13 +3,12 @@ import Link from "next/link";
 import style from "./blog.module.css";
 
 function SingleHomeBlog(props) {
-      const imageUrl = props.banner_image || "/images/placeholder.jpg";
+      const imageUrl = props.image || "/images/placeholder.jpg";
 
   return (
     <Link
       href={`/blogs/${props.link}`}
-      className={`item ${style["item-padding"]}`}
-    >
+      className={`item ${style["item-padding"]}`}>
       <div className={style["blog-box"]}>
         <img
           src={imageUrl}
