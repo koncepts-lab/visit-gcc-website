@@ -1,71 +1,88 @@
 "use client";
-
 import React, { useState, useEffect } from "react";
 import "react-calendar/dist/Calendar.css";
 import style from "./style.module.css";
 import Banner from "../../../components/banner/banner";
 import Link from "next/link";
 import Carousal from "../../../components/carousel/Carousal";
-
 import { IoIosArrowDown } from "react-icons/io";
 import { FaUser, FaRegHeart } from "react-icons/fa6";
 import { GoShare } from "react-icons/go";
 import Ask_ur_questions from "@components/ask_ur_questions/ask_ur_questions";
 import axios from "axios";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
+import { enqueueSnackbar } from "notistack";
 
 const Checkout = () => {
   const [isOpen, setIsOpen] = useState(false);
   const initialTime = 720;
   const [timeLeft, setTimeLeft] = useState(initialTime);
 
-  // MODIFIED: State to hold all booking data from API
-  const [bookingData, setBookingData] = useState(null); 
-  // MODIFIED: State to hold the type and ID from the booking data
-  const [bookingType, setBookingType] = useState('');
-  const [bookedItemId, setBookedItemId] = useState('');
+  const [bookingData, setBookingData] = useState(null);
+  const [slugPackage, setSlugPackage] = useState([]);
+  const router = useRouter();
 
-  // MODIFIED: Simplified initial state, will be populated by API
-  const [guests, setGuests] = useState({
-    adults: 0,
-    children: 0,
-    infants: 0,
+  const [errors, setErrors] = useState({});
+  const [isFormValid, setIsFormValid] = useState(false);
+
+  const [formData, setFormData] = useState({
+    pick_up_point: "",
+    contact_name: "",
+    contact_number: "",
+    email: "",
+    special_request: "",
+    add_ons: "",
+    country_code: "+91",
   });
 
   const [travellers, setTravellers] = useState([
     {
       id: 1,
-      lastName: "",
-      firstName: "",
-      idType: "",
-      idNumber: "",
+      last_name: "",
+      first_name: "",
+      id_type: "",
+      id_number: "",
       gender: "",
     },
   ]);
   const [nextTravellerId, setNextTravellerId] = useState(2);
+
   const searchParams = useSearchParams();
-
   const bookingId = searchParams.get("bookingId") || "";
-  
-  // REMOVED: Getting data from localStorage is no longer needed
-  // const jsonString = localStorage.getItem("booking_data");
-  // const dataString = localStorage.getItem("data");
-  // const data = JSON.parse(jsonString);
-  // const slugPackageData = JSON.parse(dataString);
 
-  const [slugPackage, setSlugPackage] = useState([]);
+  // useEffect to validate form in real-time
+  useEffect(() => {
+    const validateForm = () => {
+      const isFormDataValid =
+        formData.pick_up_point.trim() !== "" &&
+        formData.contact_name.trim() !== "" &&
+        formData.contact_number.trim() !== "" &&
+        /\S+@\S+\.\S+/.test(formData.email);
 
-  // This calculation is now a fallback, the primary total comes from the API
-  const calculateTotalPrice = () => {
-    if (bookingData && bookingData.booking && bookingData.booking.total_amount) {
-      return parseFloat(bookingData.booking.total_amount);
+      const areTravellersValid = travellers.every(
+        (t) =>
+          t.first_name.trim() !== "" &&
+          t.last_name.trim() !== "" &&
+          t.id_type.trim() !== "" &&
+          t.id_number.trim() !== "" &&
+          t.gender !== ""
+      );
+
+      setIsFormValid(isFormDataValid && areTravellersValid);
+    };
+
+    validateForm();
+  }, [formData, travellers]);
+
+  const handleFormChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: null }));
     }
-    return 0;
   };
-  const totalPrice = calculateTotalPrice();
 
-
-  const handleInputChange = (travellerId, field, value) => {
+  const handleTravellerInputChange = (travellerId, field, value) => {
     setTravellers((prevTravellers) =>
       prevTravellers.map((traveller) =>
         traveller.id === travellerId
@@ -73,6 +90,12 @@ const Checkout = () => {
           : traveller
       )
     );
+    const errorKey = `travelers.${travellers.findIndex(
+      (t) => t.id === travellerId
+    )}.${field}`;
+    if (errors[errorKey]) {
+      setErrors((prev) => ({ ...prev, [errorKey]: null }));
+    }
   };
 
   const handleGenderChange = (travellerId, gender) => {
@@ -83,49 +106,31 @@ const Checkout = () => {
     );
   };
 
-  const handleAddTraveller = () => {
-    setTravellers((prevTravellers) => [
-      ...prevTravellers,
-      {
-        id: nextTravellerId,
-        lastName: "",
-        firstName: "",
-        idType: "",
-        idNumber: "",
-        gender: "",
-      },
-    ]);
-    setNextTravellerId(nextTravellerId + 1);
-  };
+  const toggleAccordion = () => setIsOpen(!isOpen);
 
-  const toggleAccordion = () => {
-    setIsOpen(!isOpen);
-  };
-
-  // Timer effect
   useEffect(() => {
-    const interval = setInterval(() => {
-      setTimeLeft((prevTime) => {
-        if (prevTime <= 0) {
-          clearInterval(interval);
-          return 0;
-        }
-        return prevTime - 1;
-      });
-    }, 1000);
-
-    return () => clearInterval(interval);
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.async = true;
+    document.body.appendChild(script);
   }, []);
 
-  // Fetch 'Other Packages' data
+  useEffect(() => {
+    if (timeLeft > 0) {
+      const interval = setInterval(() => {
+        setTimeLeft((prevTime) => prevTime - 1);
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [timeLeft]);
+
   useEffect(() => {
     const fetchOtherPackageData = async () => {
       try {
         const response = await axios.get(
           `${process.env.NEXT_PUBLIC_API_URL}packages`
         );
-        const packageData = response.data.data || response.data || [];
-        setSlugPackage(packageData);
+        setSlugPackage(response.data.data || response.data || []);
       } catch (err) {
         console.error("Error fetching other packages:", err);
       }
@@ -135,62 +140,212 @@ const Checkout = () => {
 
   useEffect(() => {
     if (!bookingId) return;
-
     const fetchBookingData = async () => {
-      const loginToken = localStorage.getItem("auth_token_login");
-      const authToken = loginToken;
-
+      const authToken = localStorage.getItem("auth_token_login");
       if (!authToken) {
-        console.log("No auth token for booking data fetch.");
+        console.error("No auth token found.");
         return;
       }
       try {
         const response = await axios.get(
           `${process.env.NEXT_PUBLIC_API_URL}booking-details/${bookingId}`,
-          {
-            headers: { Authorization: `Bearer ${authToken}` },
-          }
+          { headers: { Authorization: `Bearer ${authToken}` } }
         );
-        const apiData = response.data.data || response.data || {};
+        const apiData = response.data || {};
         setBookingData(apiData);
-
-        setGuests({
-          adults: apiData.total_adults || 0,
-          children: apiData.total_children || 0,
-          infants: apiData.total_infants || 0,
-        });
-
-        const type = apiData.type;
-        setBookingType(type);
-
-        if (type === 'package' && apiData.booking) {
-            setBookedItemId(apiData.booking.package_id);
-        } else if (type === 'attraction' && apiData.booking) {
-            setBookedItemId(apiData.booking.attraction_id);
-        } else if (type === 'event' && apiData.booking) {
-            setBookedItemId(apiData.booking.event_id);
-        }
-
-        console.log("Booking Data from API:", apiData);
-        console.log("Booking Type:", type, "Booked Item ID:", bookedItemId);
-
-
+        if (apiData.booking?.email)
+          setFormData((prev) => ({ ...prev, email: apiData.booking.email }));
+        if (apiData.booking?.contact_name)
+          setFormData((prev) => ({
+            ...prev,
+            contact_name: apiData.booking.contact_name,
+          }));
       } catch (err) {
         console.error("Error fetching booking data:", err);
       }
     };
     fetchBookingData();
-  }, [bookingId]); // Rerun when bookingId changes
+  }, [bookingId]);
+
+  // MODIFIED: Razorpay logic updated to set a cookie before navigating.
+  const handlePayNow = async () => {
+    // --- All previous validation logic remains the same ---
+    setErrors({});
+    const authToken = localStorage.getItem("auth_token_login");
+    if (!authToken) {
+      enqueueSnackbar("You must be logged in to make a payment.", {
+        variant: "warning",
+      });
+      return;
+    }
+    let validationErrors = {};
+    if (!formData.pick_up_point.trim())
+      validationErrors.pick_up_point = ["Pick-up point is required."];
+    if (!formData.contact_name.trim())
+      validationErrors.contact_name = ["Contact name is required."];
+    if (!formData.contact_number.trim())
+      validationErrors.contact_number = ["Contact number is required."];
+    if (!formData.email.trim()) {
+      validationErrors.email = ["Email is required."];
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      validationErrors.email = ["Please enter a valid email address."];
+    }
+    travellers.forEach((t, index) => {
+      if (!t.first_name.trim())
+        validationErrors[`travelers.${index}.first_name`] = [
+          "First name is required.",
+        ];
+      if (!t.last_name.trim())
+        validationErrors[`travelers.${index}.last_name`] = [
+          "Last name is required.",
+        ];
+      if (!t.id_type.trim())
+        validationErrors[`travelers.${index}.id_type`] = [
+          "ID Type is required.",
+        ];
+      if (!t.id_number.trim())
+        validationErrors[`travelers.${index}.id_number`] = [
+          "ID Number is required.",
+        ];
+      if (!t.gender)
+        validationErrors[`travelers.${index}.gender`] = ["Gender is required."];
+    });
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      enqueueSnackbar("Please fill in all required fields correctly.", {
+        variant: "error",
+      });
+      return;
+    }
+    // --- End of validation ---
+
+    let orderDetails;
+    try {
+      const orderResponse = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}payment/create-order/${bookingId}`,
+        {},
+        { headers: { Authorization: `Bearer ${authToken}` } }
+      );
+      orderDetails = orderResponse.data;
+      if (!orderDetails.success) {
+        enqueueSnackbar(
+          orderDetails.message || "Failed to create payment order.",
+          { variant: "error" }
+        );
+        // Set cookie and navigate
+        router.replace("/");
+        return;
+      }
+    } catch (error) {
+      console.error("Error creating Razorpay order:", error);
+      enqueueSnackbar("Could not initiate payment. Please try again.", {
+        variant: "error",
+      });
+      // Set cookie and navigate
+      router.replace("/");
+      return;
+    }
+
+    const options = {
+      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+      amount: orderDetails.amount,
+      currency: orderDetails.currency,
+      name: orderDetails.name,
+      description: orderDetails.description,
+      order_id: orderDetails.order_id,
+      handler: async function (response) {
+        const finalCheckoutData = {
+          ...formData,
+          travelers: travellers,
+          razorpay_payment_id: response.razorpay_payment_id,
+          razorpay_order_id: response.razorpay_order_id,
+          razorpay_signature: response.razorpay_signature,
+        };
+        try {
+          const verifyResponse = await axios.post(
+            `${process.env.NEXT_PUBLIC_API_URL}payment/verify/${bookingId}`,
+            finalCheckoutData,
+            { headers: { Authorization: `Bearer ${authToken}` } }
+          );
+
+          if (verifyResponse.data.success) {
+            enqueueSnackbar("Booking confirmed successfully!", {
+              variant: "success",
+            });
+          } else {
+            enqueueSnackbar(
+              verifyResponse.data.message || "Payment verification failed.",
+              { variant: "error" }
+            );
+          }
+        } catch (error) {
+          if (error.response && error.response.status === 422) {
+            setErrors(error.response.data.errors);
+            enqueueSnackbar("Please review the errors on the form.", {
+              variant: "error",
+            });
+          } else {
+            console.error(
+              "Error verifying payment:",
+              error.response?.data || error
+            );
+            enqueueSnackbar(
+              "Payment verification failed. Please contact support.",
+              { variant: "error" }
+            );
+          }
+        } finally {
+          // This block runs whether verification succeeded or failed.
+          router.replace("/");
+        }
+      },
+      prefill: {
+        name: orderDetails.prefill.name,
+        email: orderDetails.prefill.email,
+      },
+      theme: { color: "#5ab2b3" },
+    };
+
+    if (window.Razorpay) {
+      const rzp = new window.Razorpay(options);
+      rzp.on("payment.failed", (response) => {
+        enqueueSnackbar("Payment failed: " + response.error.description, {
+          variant: "error",
+        });
+        console.error("Razorpay payment failed:", response.error);
+        // Set cookie and navigate
+        router.replace("/");
+      });
+      rzp.open();
+    } else {
+      enqueueSnackbar(
+        "Payment gateway is not available. Please refresh the page.",
+        { variant: "error" }
+      );
+    }
+  };
 
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
+
+  const totalPrice = bookingData
+    ? parseFloat(bookingData.booking.total_amount).toFixed(2)
+    : "0.00";
+  const totalAdults = bookingData?.total_adults || 0;
+  const totalChildren = bookingData?.total_children || 0;
+  const totalInfants = bookingData?.total_infants || 0;
+  const bookingItemName =
+    bookingData?.booking?.package?.name ||
+    bookingData?.booking?.event?.name ||
+    bookingData?.booking?.attraction?.name ||
+    "Your Booking";
 
   return (
     <div>
       <Banner />
       <div>
         <div className="">
-          <div className={`container ${style["checkout-package-details"]}`}>
+          <div className={`${style["checkout-package-details"]} container`}>
             <div className="row pt-5">
               <div className="col-md-8">
                 <h2 className="d-flex justify-content-between fw-bolder">
@@ -207,27 +362,18 @@ const Checkout = () => {
                   </button>
                 </h2>
                 <p style={{ fontSize: "14px", color: "black" }}>
-                  Guest Signup - Tour Package Booking{" "}
+                  Guest Signup - Tour Package Booking
                 </p>
-                <p className="fs-6">
-                  <Link href="/login">
-                    <span style={{ color: "#5ab2b3" }} className="fs-6">
-                      {" "}
-                      Register or Sign in
-                    </span>
-                  </Link>{" "}
-                  to Visitgcc.com to manage your bookings with ease!
-                </p>
-
+                <p className="fs-6"></p>
                 <div>
                   <h1 className="m-3 ms-0 pt-3 fw-bolder">
                     Personal Information
                   </h1>
                   <form className="col-xxl-10 col-xl-12">
-                    {travellers.map((traveller) => (
+                    {travellers.map((traveller, index) => (
                       <div key={traveller.id} className="pt-1">
                         <p
-                          className="align-items-center  fw-semibold"
+                          className="align-items-center fw-semibold"
                           style={{ color: "#5ab2b3", height: "12px" }}
                         >
                           <FaUser
@@ -235,74 +381,114 @@ const Checkout = () => {
                             className="me-3"
                             color="#e7e7e7"
                             style={{ marginTop: "-11px" }}
-                          />
+                          />{" "}
                           Adult{" "}
                         </p>
                         <div className="">
                           <div className="col-12">
                             <input
-                              className={`${style["promo_input"]} col-xl-5 col-lg-6 col-12 `}
+                              className={`${
+                                style["promo_input"]
+                              } col-xl-5 col-lg-6 col-12 ${
+                                errors[`travelers.${index}.last_name`]
+                                  ? style.error
+                                  : ""
+                              }`}
                               placeholder="LastName (in English)*"
-                              value={traveller.lastName}
+                              value={traveller.last_name}
                               onChange={(e) =>
-                                handleInputChange(
+                                handleTravellerInputChange(
                                   traveller.id,
-                                  "lastName",
+                                  "last_name",
                                   e.target.value
                                 )
                               }
                             />
                             <br className="d-xl-none d-lg-block" />
                             <input
-                              className={`${style["promo_input"]} ms-xxl-5 ms-xl-5 ms-md-0 col-xl-5 col-lg-6 col-12`}
+                              className={`${
+                                style["promo_input"]
+                              } ms-xxl-5 ms-xl-5 ms-md-0 col-xl-5 col-lg-6 col-12 ${
+                                errors[`travelers.${index}.first_name`]
+                                  ? style.error
+                                  : ""
+                              }`}
                               placeholder="First & middle name(in English)*"
-                              value={traveller.firstName}
+                              value={traveller.first_name}
                               onChange={(e) =>
-                                handleInputChange(
+                                handleTravellerInputChange(
                                   traveller.id,
-                                  "firstName",
+                                  "first_name",
                                   e.target.value
                                 )
                               }
                             />
+                            {errors[`travelers.${index}.last_name`] && (
+                              <p className="text-danger small">
+                                {errors[`travelers.${index}.last_name`][0]}
+                              </p>
+                            )}
+                            {errors[`travelers.${index}.first_name`] && (
+                              <p className="text-danger small">
+                                {errors[`travelers.${index}.first_name`][0]}
+                              </p>
+                            )}
                             <br />
                           </div>
                           <div className="col-12 pt-2">
                             <input
-                              className={`${style["promo_input"]} col-xl-5 col-lg-6 col-12`}
+                              className={`${
+                                style["promo_input"]
+                              } col-xl-5 col-lg-6 col-12 ${
+                                errors[`travelers.${index}.id_type`]
+                                  ? style.error
+                                  : ""
+                              }`}
                               placeholder="ID Type*"
-                              value={traveller.idType}
+                              value={traveller.id_type}
                               onChange={(e) =>
-                                handleInputChange(
+                                handleTravellerInputChange(
                                   traveller.id,
-                                  "idType",
+                                  "id_type",
                                   e.target.value
                                 )
                               }
                             />
                             <br className="d-xl-none d-lg-block" />
                             <input
-                              className={`${style["promo_input"]} ms-xxl-5 ms-xl-5 ms-md-0 col-xl-4 col-lg-6 col-12 `}
+                              className={`${
+                                style["promo_input"]
+                              } ms-xxl-5 ms-xl-5 ms-md-0 col-xl-4 col-lg-6 col-12 ${
+                                errors[`travelers.${index}.id_number`]
+                                  ? style.error
+                                  : ""
+                              }`}
                               placeholder="ID number*"
-                              value={traveller.idNumber}
+                              value={traveller.id_number}
                               onChange={(e) =>
-                                handleInputChange(
+                                handleTravellerInputChange(
                                   traveller.id,
-                                  "idNumber",
+                                  "id_number",
                                   e.target.value
                                 )
                               }
                             />
+                            {errors[`travelers.${index}.id_type`] && (
+                              <p className="text-danger small">
+                                {errors[`travelers.${index}.id_type`][0]}
+                              </p>
+                            )}
+                            {errors[`travelers.${index}.id_number`] && (
+                              <p className="text-danger small">
+                                {errors[`travelers.${index}.id_number`][0]}
+                              </p>
+                            )}
                           </div>
-                          {/* gender buttons  */}
                           <div
                             style={{ marginTop: "10px", marginBottom: "10px" }}
                           >
                             <button
                               type="button"
-                              className={`${
-                                traveller.gender === "male" ? "active" : ""
-                              }`}
                               onClick={() =>
                                 handleGenderChange(traveller.id, "male")
                               }
@@ -325,9 +511,7 @@ const Checkout = () => {
                             </button>
                             <button
                               type="button"
-                              className={`promo_input ${
-                                traveller.gender === "female" ? "active" : ""
-                              } ms-md-3 ms-2 `}
+                              className="ms-md-3 ms-2"
                               onClick={() =>
                                 handleGenderChange(traveller.id, "female")
                               }
@@ -348,6 +532,11 @@ const Checkout = () => {
                             >
                               Female
                             </button>
+                            {errors[`travelers.${index}.gender`] && (
+                              <p className="text-danger small d-block">
+                                {errors[`travelers.${index}.gender`][0]}
+                              </p>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -359,65 +548,116 @@ const Checkout = () => {
                       </h1>
                       <label>Pick-up point*</label>
                       <br />
-                      <select className={`${style["promo_select"]} col-12`}>
-                        <option>Please select pick-up point*</option>
-                      </select>
+                      <input
+                        className={`${style["promo_input"]} my-2 col-12 ${
+                          errors.pick_up_point ? style.error : ""
+                        }`}
+                        placeholder="Please enter pick-up point"
+                        name="pick_up_point"
+                        value={formData.pick_up_point}
+                        onChange={handleFormChange}
+                      />
+                      {errors.pick_up_point && (
+                        <p className="text-danger small">
+                          {errors.pick_up_point[0]}
+                        </p>
+                      )}
 
                       <label className="pe-0 me-0 pt-3">Special Requests</label>
                       <br />
                       <input
                         className={`${style["promo_input"]} my-2 col-12`}
                         placeholder="Please enter Special Requests"
+                        name="special_request"
+                        value={formData.special_request}
+                        onChange={handleFormChange}
                       />
 
                       <label className="pt-2">Package Addons</label>
                       <br />
-                      <select className={`${style["promo_select"]} col-12`}>
-                        <option>
-                          Add travel medical insurance details if required
-                        </option>
-                      </select>
+                      <input
+                        className={`${style["promo_input"]} my-2 col-12`}
+                        placeholder="Add travel medical insurance details if required"
+                        name="add_ons"
+                        value={formData.add_ons}
+                        onChange={handleFormChange}
+                      />
 
                       <h1 className="m-3 ms-0 pt-1 fw-bolder">Contact Info</h1>
                       <div className="d-flex flex-xl-row flex-md-column flex-column justify-content-between col-12 gap-xl-5 gap-lg-3">
                         <div className="col-xl-6 col-12">
-                          <label className="">Contact Name</label>
+                          <label className="">Contact Name*</label>
                           <br />
                           <input
-                            className={`${style["promo_input"]} my-2 col-12`}
-                            placeholder="Please enter contact name *"
+                            className={`${style["promo_input"]} my-2 col-12 ${
+                              errors.contact_name ? style.error : ""
+                            }`}
+                            placeholder="Please enter contact name"
+                            name="contact_name"
+                            value={formData.contact_name}
+                            onChange={handleFormChange}
                           />
+                          {errors.contact_name && (
+                            <p className="text-danger small">
+                              {errors.contact_name[0]}
+                            </p>
+                          )}
                         </div>
                         <div className="col-xl-6 col-lg-8 col-md-12 col-12">
-                          <label className="">Contact Number</label>
+                          <label className="">Contact Number*</label>
                           <br />
                           <select
+                            name="country_code"
+                            value={formData.country_code}
+                            onChange={handleFormChange}
                             className={`${style["promo_select"]} my-2`}
-                            style={{ width: "68px", paddingLeft: "5px" }}
+                            style={{ width: "80px", paddingLeft: "5px" }}
                           >
-                            <option>+918</option>
+                            <option value="+91">+91</option>
+                            <option value="+971">+971</option>
+                            <option value="+966">+966</option>
                           </select>
                           <input
-                            className={`${style["promo_input"]} my-2 ms-xl-1 ms-lg-1 ms-2`}
+                            className={`${
+                              style["promo_input"]
+                            } my-2 ms-xl-1 ms-lg-1 ms-2 ${
+                              errors.contact_number ? style.error : ""
+                            }`}
                             style={{ width: "240px" }}
-                            placeholder="Mobile Number*"
+                            placeholder="Mobile Number"
+                            name="contact_number"
+                            value={formData.contact_number}
+                            onChange={handleFormChange}
                           />
+                          {errors.contact_number && (
+                            <p className="text-danger small">
+                              {errors.contact_number[0]}
+                            </p>
+                          )}
                         </div>
                       </div>
                       <div className="my-2">
-                        <label className="pe-0 me-0">Email Address</label>
+                        <label className="pe-0 me-0">Email Address*</label>
                         <br />
                         <input
-                          className={`${style["promo_input"]} my-2 col-12`}
-                          placeholder="All important updates will be send to this email ID*"
+                          className={`${style["promo_input"]} my-2 col-12 ${
+                            errors.email ? style.error : ""
+                          }`}
+                          placeholder="All important updates will be send to this email ID"
+                          name="email"
+                          type="email"
+                          value={formData.email}
+                          onChange={handleFormChange}
                         />
+                        {errors.email && (
+                          <p className="text-danger small">{errors.email[0]}</p>
+                        )}
                       </div>
                     </div>
                   </form>
                 </div>
               </div>
-              
-              {/* MODIFIED: Price Summary Section */}
+
               <div className="col-md-4 my-md-0 my-5">
                 <label className="text-black fw-semibold fs-4">
                   Package Price
@@ -427,7 +667,6 @@ const Checkout = () => {
                   className="col-11 text-black-50 my-2"
                   style={{ height: "2px", borderTop: "3px dashed #e2e2e2" }}
                 />
-
                 <div
                   className="col-11 text-black pt-3"
                   style={{ borderBottom: "2px solid #e2e2e2" }}
@@ -437,47 +676,45 @@ const Checkout = () => {
                       <b>Price</b>
                     </span>
                   </h5>
-
-                  {guests.adults > 0 && (
-                    <div className="d-flex justify-content-between">
-                      <p className="text-black">
-                        {guests.adults} Adult{guests.adults > 1 ? "s" : ""}
-                      </p>
-                    </div>
+                  {totalAdults > 0 && (
+                    <p className="d-flex justify-content-between text-black">
+                      <span>
+                        {totalAdults} Adult{totalAdults > 1 ? "s" : ""}
+                      </span>
+                    </p>
                   )}
-
-                  {guests.children > 0 && (
-                    <div className="d-flex justify-content-between">
-                      <p className="text-black">
-                        {guests.children} Child
-                        {guests.children > 1 ? "ren" : ""}
-                      </p>
-                    </div>
+                  {totalChildren > 0 && (
+                    <p className="d-flex justify-content-between text-black">
+                      <span>
+                        {totalChildren} Child{totalChildren > 1 ? "ren" : ""}
+                      </span>
+                    </p>
                   )}
-
-                  {guests.infants > 0 && (
-                    <div className="d-flex justify-content-between">
-                      <p className="text-black">
-                        {guests.infants} Infant{guests.infants > 1 ? "s" : ""}
-                      </p>
-                    </div>
+                  {totalInfants > 0 && (
+                    <p className="d-flex justify-content-between text-black">
+                      <span>
+                        {totalInfants} Infant{totalInfants > 1 ? "s" : ""}
+                      </span>
+                    </p>
                   )}
-
                   <h5 className="pt-2 d-flex pb-1 justify-content-between col-11">
                     <span>
                       <b>Total</b>
                     </span>
                     <span>
-                      <b>AED {totalPrice.toFixed(2)}</b>
+                      <b>AED {totalPrice}</b>
                     </span>
                   </h5>
                 </div>
-                {/* End of Price Summary Section */}
-
                 <span className="col-10 ps-1 pt-2 d-flex justify-content-end">
-                  <button className={style["btn-one"]}>Pay Now</button>
+                  <button
+                    onClick={handlePayNow}
+                    className={style["btn-one"]}
+                    disabled={!isFormValid}
+                  >
+                    Pay Now
+                  </button>
                 </span>
-
                 <p className="col-lg-12 col-xl-12 col-12 pt-4 my-2">
                   By proceeding, I acknowledge that I have
                   <br className="d-lg-block d-none" />
@@ -503,7 +740,6 @@ const Checkout = () => {
                     }}
                   />
                 </button>
-
                 <div className="my-2">
                   <label className="text-black fw-semibold fs-4">
                     Promotions
@@ -534,8 +770,8 @@ const Checkout = () => {
                       <br />
                       <p>
                         {" "}
-                          The package price will refresh
-                        <br className="d-lg-block d-none" />   After
+                        The package price will refresh
+                        <br className="d-lg-block d-none" /> After
                       </p>
                     </div>
                     <div
@@ -555,7 +791,6 @@ const Checkout = () => {
                       </h1>
                     </div>
                   </div>
-
                   <div className="pt-3 d-flex flex-xl-row flex-md-column flex-column ">
                     <div className="col-lg-8 col-12 ">
                       <label className="text-black fw-semibold fs-4">
@@ -577,7 +812,6 @@ const Checkout = () => {
                       </button>
                     </div>
                   </div>
-
                   <div className="pt-2">
                     <div>
                       <label className="text-black fw-semibold fs-4">
@@ -607,9 +841,8 @@ const Checkout = () => {
         </div>
         <div className="container">
           <img
-src={
-      slugPackage?.[0]?.event_photo_urls?.[0] || "/images/blank.png"
-    }                        className="w-100"
+            src={slugPackage?.[0]?.event_photo_urls?.[0] || "/images/blank.png"}
+            className="w-100"
             style={{ height: "400px", borderRadius: "15px" }}
             alt="Banner"
           />
@@ -618,14 +851,15 @@ src={
             style={{ marginTop: "-33px" }}
           >
             <p className="text-black-50 ">
-              Date: <span className="text-white">{slugPackage?.[0]?.start_date}</span>
+              Date:{" "}
+              <span className="text-white">{slugPackage?.[0]?.start_date}</span>
             </p>
             <p className="text-black-50 ">
-              Tag: <span className="text-white"> {slugPackage?.[0]?.category}</span>
+              Tag:{" "}
+              <span className="text-white"> {slugPackage?.[0]?.category}</span>
             </p>
           </div>
         </div>
-
         <div className="container">
           <div className="row">
             <div className="col-md-12 pt-5 d-flex justify-content-center">
@@ -633,7 +867,6 @@ src={
             </div>
           </div>
         </div>
-
         <div className="container-fluid">
           <div className="row pt-2 pb-5">
             <div className="col-md-12">
@@ -652,5 +885,4 @@ src={
     </div>
   );
 };
-
 export default Checkout;
