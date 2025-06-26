@@ -33,12 +33,9 @@ const Checkout = () => {
 
   // --- State for Form Inputs ---
   const [formData, setFormData] = useState({
-    pick_up_point: "",
     contact_name: "",
     contact_number: "",
     email: "",
-    special_request: "",
-    add_ons: "",
     country_code: "+91",
   });
 
@@ -59,19 +56,25 @@ const Checkout = () => {
   const searchParams = useSearchParams();
   const bookingId = searchParams.get("bookingId") || "";
 
-  // useEffect to validate form in real-time
-  useEffect(() => {
+useEffect(() => {
     const validateForm = () => {
       if (!bookingDetails) return false;
 
+      // Condition 1: Form data (this is unchanged and correct)
       const isFormDataValid =
         formData.contact_name.trim() !== "" &&
         formData.contact_number.trim() !== "" &&
         /\S+@\S+\.\S+/.test(formData.email);
 
+      // --- REVISED VALIDATION FOR TRAVELLER COUNT ---
       const totalAdults = bookingDetails.total_adults || 0;
-      const areAllTravellersAdded = travellers.length === totalAdults;
+      const totalChildren = bookingDetails.total_children || 0;
+      const requiredTravellersCount = totalAdults + totalChildren;
+      
+      // Condition 2: Correct number of travellers (adults + children)
+      const areAllTravellersAdded = travellers.length === requiredTravellersCount;
 
+      // Condition 3: All traveller fields are filled (this is unchanged and correct)
       const areTravellersValid = travellers.every(
         (t) =>
           t.first_name.trim() !== "" &&
@@ -87,7 +90,7 @@ const Checkout = () => {
     };
 
     validateForm();
-  }, [formData, travellers, bookingDetails]);
+}, [formData, travellers, bookingDetails]);
 
   // --- Handlers for Form Inputs ---
   const handleFormChange = (e) => {
@@ -132,165 +135,153 @@ const Checkout = () => {
 
   // MODIFIED: Razorpay logic updated to set a cookie before navigating.
   const handlePayNow = async () => {
-    // --- All previous validation logic remains the same ---
-    setFormErrors({});
+    // --- Step 1: Frontend Validation ---
+    setFormErrors({}); // Clear previous errors
     const authToken = localStorage.getItem("auth_token_login");
     if (!authToken) {
-      enqueueSnackbar("You must be logged in to make a payment.", {
-        variant: "warning",
-      });
-      return;
-    }
-    let validationErrors = {};
-    if (!formData.contact_name.trim())
-      validationErrors.contact_name = ["Contact name is required."];
-    if (!formData.contact_number.trim())
-      validationErrors.contact_number = ["Contact number is required."];
-    if (!formData.email.trim()) {
-      validationErrors.email = ["Email is required."];
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      validationErrors.email = ["Please enter a valid email address."];
-    }
-    travellers.forEach((t, index) => {
-      if (!t.first_name.trim())
-        validationErrors[`travelers.${index}.first_name`] = [
-          "First name is required.",
-        ];
-      if (!t.last_name.trim())
-        validationErrors[`travelers.${index}.last_name`] = [
-          "Last name is required.",
-        ];
-      if (!t.id_type.trim())
-        validationErrors[`travelers.${index}.id_type`] = [
-          "ID Type is required.",
-        ];
-      if (!t.id_number.trim())
-        validationErrors[`travelers.${index}.id_number`] = [
-          "ID Number is required.",
-        ];
-      if (!t.gender)
-        validationErrors[`travelers.${index}.gender`] = ["Gender is required."];
-    });
-    if (bookingDetails && travellers.length < bookingDetails.total_adults) {
-      enqueueSnackbar(
-        `Please add details for all ${bookingDetails.total_adults} adults.`,
-        { variant: "warning" }
-      );
-      return;
-    }
-    if (Object.keys(validationErrors).length > 0) {
-      setFormErrors(validationErrors);
-      enqueueSnackbar("Please fill in all required fields correctly.", {
-        variant: "error",
-      });
-      return;
-    }
-    // --- End of validation ---
-
-    let orderDetails;
-    try {
-      const orderResponse = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}payment/create-order/${bookingId}`,
-        {},
-        { headers: { Authorization: `Bearer ${authToken}` } }
-      );
-      orderDetails = orderResponse.data;
-      if (!orderDetails.success) {
-        enqueueSnackbar(
-          orderDetails.message || "Failed to create payment order.",
-          { variant: "error" }
-        );
-        // Set cookie and navigate
-        router.replace("/");
+        enqueueSnackbar("You must be logged in to make a payment.", { variant: "warning" });
         return;
-      }
-    } catch (error) {
-      console.error("Error creating Razorpay order:", error);
-      enqueueSnackbar("Could not initiate payment. Please try again.", {
-        variant: "error",
-      });
-      // Set cookie and navigate
-      router.replace("/");
+    }
+
+    let validationErrors = {};
+
+    // Validate main form data
+    if (!formData.contact_name.trim()) validationErrors.contact_name = ["Contact name is required."];
+    if (!formData.contact_number.trim()) validationErrors.contact_number = ["Contact number is required."];
+    if (!formData.email.trim()) {
+        validationErrors.email = ["Email is required."];
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+        validationErrors.email = ["Please enter a valid email address."];
+    }
+    
+    // Validate each traveler's details
+    travellers.forEach((t, index) => {
+        if (!t.first_name.trim()) validationErrors[`travelers.${index}.first_name`] = ["First name is required."];
+        if (!t.last_name.trim()) validationErrors[`travelers.${index}.last_name`] = ["Last name is required."];
+        if (!t.id_type.trim()) validationErrors[`travelers.${index}.id_type`] = ["ID Type is required."];
+        if (!t.id_number.trim()) validationErrors[`travelers.${index}.id_number`] = ["ID Number is required."];
+        if (!t.gender) validationErrors[`travelers.${index}.gender`] = ["Gender is required."];
+    });
+
+    // Specific validation for events: ensure all travelers are added
+    if (bookingDetails && travellers.length < bookingDetails.total_adults) {
+      enqueueSnackbar(`Please add details for all ${bookingDetails.total_adults} adults.`, { variant: "warning" });
       return;
     }
 
-    const options = {
-      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-      amount: orderDetails.amount,
-      currency: orderDetails.currency,
-      name: orderDetails.name,
-      description: orderDetails.description,
-      order_id: orderDetails.order_id,
-      handler: async function (response) {
-        const finalCheckoutData = {
-          ...formData,
-          travelers: travellers,
-          razorpay_payment_id: response.razorpay_payment_id,
-          razorpay_order_id: response.razorpay_order_id,
-          razorpay_signature: response.razorpay_signature,
+    if (Object.keys(validationErrors).length > 0) {
+        setFormErrors(validationErrors);
+        enqueueSnackbar("Please fill in all required fields correctly.", { variant: "error" });
+        return;
+    }
+
+    // --- Step 2: Prepare the Data Payload ---
+    const finalCheckoutData = {
+      ...formData,
+      travelers: travellers,
+    };
+    
+    // Safely get the booking amount
+    const bookingAmount = bookingDetails ? parseFloat(bookingDetails.booking.total_amount) : 0;
+    
+    // --- Step 3: Check if the booking is free and route to the correct API ---
+    if (bookingAmount === 0) {
+        // --- A) HANDLE FREE BOOKING ---
+        try {
+            enqueueSnackbar("Confirming your free booking...", { variant: "info" });
+            const response = await axios.post(
+                `${process.env.NEXT_PUBLIC_API_URL}payment/confirm-free/${bookingId}`,
+                finalCheckoutData, // Send all form data to be saved
+                { headers: { Authorization: `Bearer ${authToken}` } }
+            );
+
+            if (response.data.success) {
+                enqueueSnackbar(response.data.message, { variant: "success" });
+                router.replace("/");
+            } else {
+                enqueueSnackbar(response.data.message || "Could not confirm booking.", { variant: "error" });
+            }
+        } catch (error) {
+            console.error("Error confirming free booking:", error.response?.data || error);
+            enqueueSnackbar(error.response?.data?.message || "An error occurred. Please try again.", { variant: "error" });
+        }
+    } else {
+        // --- B) HANDLE PAID BOOKING (RAZORPAY) ---
+        let orderDetails;
+        try {
+            const orderResponse = await axios.post(
+                `${process.env.NEXT_PUBLIC_API_URL}payment/create-order/${bookingId}`,
+                {},
+                { headers: { Authorization: `Bearer ${authToken}` } }
+            );
+            orderDetails = orderResponse.data;
+            if (!orderDetails.success) {
+                enqueueSnackbar(orderDetails.message || "Failed to create payment order.", { variant: "error" });
+                return;
+            }
+        } catch (error) {
+            console.error("Error creating Razorpay order:", error);
+            enqueueSnackbar("Could not initiate payment. Please try again.", { variant: "error" });
+            return;
+        }
+
+        const options = {
+            key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+            amount: orderDetails.amount,
+            currency: orderDetails.currency,
+            name: orderDetails.name,
+            description: orderDetails.description,
+            order_id: orderDetails.order_id,
+            handler: async function (response) {
+                const finalPaidCheckoutData = {
+                    ...finalCheckoutData,
+                    razorpay_payment_id: response.razorpay_payment_id,
+                    razorpay_order_id: response.razorpay_order_id,
+                    razorpay_signature: response.razorpay_signature,
+                };
+                try {
+                    const verifyResponse = await axios.post(
+                        `${process.env.NEXT_PUBLIC_API_URL}payment/verify/${bookingId}`,
+                        finalPaidCheckoutData,
+                        { headers: { Authorization: `Bearer ${authToken}` } }
+                    );
+
+                    if (verifyResponse.data.success) {
+                        enqueueSnackbar("Booking confirmed successfully!", { variant: "success" });
+                    } else {
+                        enqueueSnackbar(verifyResponse.data.message || "Payment verification failed.", { variant: "error" });
+                    }
+                } catch (error) {
+                    if (error.response && error.response.status === 422) {
+                        setFormErrors(error.response.data.errors);
+                        enqueueSnackbar("Please review the errors on the form.", { variant: "error" });
+                    } else {
+                        console.error("Error verifying payment:", error.response?.data || error);
+                        enqueueSnackbar("Payment verification failed. Please contact support.", { variant: "error" });
+                    }
+                } finally {
+                    router.replace("/");
+                }
+            },
+            prefill: {
+                name: orderDetails.prefill.name,
+                email: orderDetails.prefill.email,
+            },
+            theme: { color: "#5ab2b3" },
         };
 
-        try {
-          const verifyResponse = await axios.post(
-            `${process.env.NEXT_PUBLIC_API_URL}payment/verify/${bookingId}`,
-            finalCheckoutData,
-            { headers: { Authorization: `Bearer ${authToken}` } }
-          );
-          if (verifyResponse.data.success) {
-            enqueueSnackbar("Booking confirmed successfully!", {
-              variant: "success",
+        if (window.Razorpay) {
+            const rzp = new window.Razorpay(options);
+            rzp.on("payment.failed", (response) => {
+                enqueueSnackbar("Payment failed: " + response.error.description, { variant: "error" });
+                console.error("Razorpay payment failed:", response.error);
             });
-          } else {
-            enqueueSnackbar(
-              verifyResponse.data.message || "Payment verification failed.",
-              { variant: "error" }
-            );
-          }
-        } catch (error) {
-          if (error.response && error.response.status === 422) {
-            setFormErrors(error.response.data.errors);
-            enqueueSnackbar("Please review the errors on the form.", {
-              variant: "error",
-            });
-          } else {
-            console.error(
-              "Error verifying payment:",
-              error.response?.data || error
-            );
-            enqueueSnackbar(
-              "Payment verification failed. Please contact support.",
-              { variant: "error" }
-            );
-          }
-        } finally {
-          // This block runs whether verification succeeded or failed.
-          router.replace("/");
+            rzp.open();
+        } else {
+            enqueueSnackbar("Payment gateway is not available. Please refresh the page.", { variant: "error" });
         }
-      },
-      prefill: {
-        name: orderDetails.prefill.name,
-        email: orderDetails.prefill.email,
-      },
-      theme: { color: "#5ab2b3" },
-    };
-
-    if (window.Razorpay) {
-      const rzp = new window.Razorpay(options);
-      rzp.on("payment.failed", (resp) => {
-        enqueueSnackbar("Payment failed: " + resp.error.description, {
-          variant: "error",
-        });
-        // Set cookie and navigate
-        router.replace("/");
-      });
-      rzp.open();
-    } else {
-      enqueueSnackbar(
-        "Payment gateway is not available. Please refresh the page.",
-        { variant: "error" }
-      );
     }
-  };
+};
 
   // --- useEffect Hooks ---
   useEffect(() => {
@@ -322,44 +313,52 @@ const Checkout = () => {
     fetchOtherItems();
   }, []);
 
-  useEffect(() => {
+useEffect(() => {
     if (!bookingId) {
-      setError("Booking ID is missing.");
-      setIsLoading(false);
-      return;
+        setError("Booking ID is missing.");
+        setIsLoading(false);
+        return;
     }
     const authToken = localStorage.getItem("auth_token_login");
     if (!authToken) {
-      setError("Please log in to view your booking.");
-      setIsLoading(false);
-      return;
+        setError("Please log in to view your booking.");
+        setIsLoading(false);
+        return;
     }
 
     const fetchBookingData = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}booking-details/${bookingId}`,
-          { headers: { Authorization: `Bearer ${authToken}` } }
-        );
-        const apiData = response.data || {};
-        if (!apiData.booking) throw new Error("Invalid booking data from API.");
-        setBookingDetails(apiData);
-        if (apiData.booking.email)
-          setFormData((prev) => ({ ...prev, email: apiData.booking.email }));
-        if (apiData.booking.contact_name)
-          setFormData((prev) => ({
-            ...prev,
-            contact_name: apiData.booking.contact_name,
-          }));
-      } catch (err) {
-        console.error("Error fetching booking data:", err);
-        setError("Failed to fetch booking details.");
-      } finally {
-        setIsLoading(false);
-      }
+        try {
+            const response = await axios.get(
+                `${process.env.NEXT_PUBLIC_API_URL}booking-details/${bookingId}`,
+                { headers: { Authorization: `Bearer ${authToken}` } }
+            );
+            const apiData = response.data || {};
+
+            // --- THIS IS THE NEW CHECK ---
+            if (apiData.is_payable === false) {
+                enqueueSnackbar("This booking has already been completed.", { variant: "info" });
+                router.replace("/");
+                return; 
+            }
+            // --- END OF NEW CHECK ---
+
+            if (!apiData.booking) throw new Error("Invalid booking data from API.");
+            
+            setBookingDetails(apiData);
+            if (apiData.booking.email) setFormData((prev) => ({ ...prev, email: apiData.booking.email }));
+            if (apiData.booking.contact_name) setFormData((prev) => ({ ...prev, contact_name: apiData.booking.contact_name, }));
+        
+        } catch (err) {
+            console.error("Error fetching booking data:", err);
+            setError("Failed to fetch booking details.");
+            // Optionally redirect on error too
+            router.replace("/");
+        } finally {
+            setIsLoading(false);
+        }
     };
     fetchBookingData();
-  }, [bookingId]);
+}, [bookingId, router]); // Add 'router' to the dependency array
 
   // --- Helper Functions ---
   const formatDate = (dateString) => {
