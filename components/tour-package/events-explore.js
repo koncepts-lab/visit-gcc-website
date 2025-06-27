@@ -1,294 +1,223 @@
 "use client";
-import React, { useEffect } from 'react';
-import style from './style.module.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import ExploreEventsContainer from './event-responsive-masonry';
 
-const images = [
-    {
-        src: "/images/demo/01.jpg",
-        title: "Beautiful Yas Island and Dubai",
-        provider: "John Smith",
-        date: "04 July 2024",
-        rating: 4
-    },
-    {
-        src: "/images/demo/02.jpg",
-        title: "Dubai Jain Tour",
-        provider: "John Smith",
-        date: "04 July 2024",
-        rating: 5
-    },
-    {
-        src: "/images/demo/03.jpg",
-        title: "Dubai Extravaganza",
-        provider: "John Smith",
-        date: "04 July 2024",
-        rating: 3
-    },
-    {
-        src: "/images/demo/04.jpg",
-        title: "Dubai Miracle Garden",
-        provider: "John Smith",
-        date: "04 July 2024",
-        rating: 4
-    },
-    {
-        src: "/images/demo/03.jpg",
-        title: "Dubai Mall",
-        provider: "John Smith",
-        date: "04 July 2024",
-        rating: 5
-    },
-    {
-        src: "/images/demo/06.jpg",
-        title: "Dubai Aquarium & Underwater Zoo",
-        provider: "John Smith",
-        date: "04 July 2024",
-        rating: 3
-    },
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import style from "./style.module.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import ExploreEventsContainer from "./event-responsive-masonry";
 
+const EventsExploreTab = ({ events }) => {
+  const [allEvents, setAllEvents] = useState(events || []); // Events for the "All" tab
+  const [loadingEvents, setLoadingEvents] = useState(false);
+  const [errorEvents, setErrorEvents] = useState(null);
+  const [activeTab, setActiveTab] = useState("all"); // Use lowercase "all"
+  const [countries, setCountries] = useState([]); // Fetched countries
+  const [countryEvents, setCountryEvents] = useState({}); // Events per country, e.g., { "UAE": [...], "Bahrain": [...] }
 
-];
-const EventsExploreTab = ({  }) => {
-    const countryExplore = [
-        { id: 1, heading: 'Destination Heading', description: 'Luxury', image: "/images/blog/01.jpg" },
-        { id: 2, heading: 'Destination Heading', description: 'Culture', image: "/images/blog/02.jpg" },
-        { id: 3, heading: 'Destination Heading', description: 'Coastal Esscapes', image: "/images/blog/03.jpg" },
-        { id: 4, heading: 'Destination Heading', description: 'History', image: "/images/blog/04.jpg" },
-        { id: 5, heading: 'Destination Heading', description: 'Events', image: "/images/blog/01.jpg" },
-    ];
+  // Sync allEvents with the events prop whenever it changes
+  useEffect(() => {
+    setAllEvents(events || []);
+  }, [events]);
 
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-            require('bootstrap/dist/js/bootstrap.bundle.min.js');
-        }
-    }, []);
+  // Fetch countries from the API
+  useEffect(() => {
+    const fetchCountries = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}countries`
+        );
+        const fetchedCountries = response.data.data || response.data || [];
 
-    return (
-        <section className={style.innerpage} >
-            <div className={`container-fluid ${style['pr-0']}`}>
-                <div className="row pb-2">
-                    <div className="col-md-12">
-                        <div className={`pr-0 ${style['country-container-box']}`}>
-                            <div className={style['country-container']}>
-                                <ul className={`nav nav-tabs border-0 ${style['country-nav-tabs']}`} id="myTab" role="tablist">
-                                    <li className={`nav-item ${style['country-nav-item']}`} role="presentation">
-                                        <button
-                                            className={`nav-link active border-0 ${style['country-nav-link']} ${style['active-tab']}`}
-                                            id="All-tab"
-                                            data-bs-toggle="tab"
-                                            data-bs-target="#All"
-                                            type="button"
-                                            role="tab"
-                                            aria-controls="All"
-                                            aria-selected="true"
-                                        >
-                                            All
-                                        </button>
-                                    </li>
-                                    <li className={`nav-item ${style['country-nav-item']}`} role="presentation">
-                                        <button
-                                            className={`nav-link border-0 ${style['country-nav-link']}`}
-                                            id="UAE-tab"
-                                            data-bs-toggle="tab"
-                                            data-bs-target="#UAE"
-                                            type="button"
-                                            role="tab"
-                                            aria-controls="UAE"
-                                            aria-selected="false"
-                                        >
-                                            UAE
-                                        </button>
-                                    </li>
-                                    <li className={`nav-item ${style['country-nav-item']}`} role="presentation">
-                                        <button
-                                            className={`nav-link border-0 ${style['country-nav-link']}`}
-                                            id="Bahrain-tab"
-                                            data-bs-toggle="tab"
-                                            data-bs-target="#Bahrain"
-                                            type="button"
-                                            role="tab"
-                                            aria-controls="Bahrain"
-                                            aria-selected="false"
-                                        >
-                                            Bahrain
-                                        </button>
-                                    </li>
-                                    <li className={`nav-item ${style['country-nav-item']}`} role="presentation">
-                                        <button
-                                            className={`nav-link border-0 ${style['country-nav-link']}`}
-                                            id="Kuwait-tab"
-                                            data-bs-toggle="tab"
-                                            data-bs-target="#Kuwait"
-                                            type="button"
-                                            role="tab"
-                                            aria-controls="Kuwait"
-                                            aria-selected="false"
-                                        >
-                                        Kuwait
-                                        </button>
-                                    </li>
-                                    <li className={`nav-item ${style['country-nav-item']}`} role="presentation">
-                                        <button
-                                            className={`nav-link border-0 ${style['country-nav-link']}`}
-                                            id="Oman-tab"
-                                            data-bs-toggle="tab"
-                                            data-bs-target="#Oman"
-                                            type="button"
-                                            role="tab"
-                                            aria-controls="Oman"
-                                            aria-selected="false"
-                                        >
-                                        Oman
-                                        </button>
-                                    </li>
-                                    <li className={`nav-item ${style['country-nav-item']}`} role="presentation">
-                                        <button
-                                            className={`nav-link border-0 ${style['country-nav-link']}`}
-                                            id="saudi-arabia-tab"
-                                            data-bs-toggle="tab"
-                                            data-bs-target="#saudi-arabia"
-                                            type="button"
-                                            role="tab"
-                                            aria-controls="saudi-arabia"
-                                            aria-selected="false"
-                                        >
-                                        Saudi Arabia
-                                        </button>
-                                    </li>
-                                    <li className={`nav-item ${style['country-nav-item']}`} role="presentation">
-                                        <button
-                                            className={`nav-link border-0 ${style['country-nav-link']}`}
-                                            id="qatar-tab"
-                                            data-bs-toggle="tab"
-                                            data-bs-target="#qatar"
-                                            type="button"
-                                            role="tab"
-                                            aria-controls="qatar"
-                                            aria-selected="false"
-                                        >
-                                        Qatar
-                                        </button>
-                                    </li>
-                                </ul>
-                                <div className="tab-content" id="myTabContent">
-                                    <div
-                                        className="tab-pane fade show active"
-                                        id="All"
-                                        role="tabpanel"
-                                        aria-labelledby="All-tab"
-                                    >
-                                        <div className={`${style['documentation-container']} p-0`}>
-                                            <div className='container-fluid'>
-                                                <div className='row'>
-                                                    <div className='col-md-12 p-0'>
-                                                        <ExploreEventsContainer />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+        setCountries(fetchedCountries);
+      } catch (err) {
+        setErrorEvents("Failed to fetch countries. Please try again.");
+        console.error("Error fetching countries:", err);
+      }
+    };
+    fetchCountries();
+  }, []);
 
-{/*                                     
-                                    <div
-                                        className="tab-pane fade"
-                                        id="UAE"
-                                        role="tabpanel"
-                                        aria-labelledby="UAE-tab"
-                                    >
+  // Fetch events for a specific country when the tab is clicked
+  const fetchEventsByCountry = async (countryId) => {
+    try {
+      setLoadingEvents(true);
+      setErrorEvents(null);
+      let response;
 
-                                        <div className={style['documentation-container']}>
-                                            <div className='container'>
-                                                <div className='row'>
-                                                    <div className='col-md-12'>
-                                                        <h4>UAE</h4>
-                                                        <p>Here’s how you get the most out of boardme.</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        className="tab-pane fade"
-                                        id="Bahrain"
-                                        role="tabpanel"
-                                        aria-labelledby="Bahrain-tab"
-                                    >
-                                        <div className={style['documentation-container']}>
-                                            <div className='container'>
-                                                <div className='row'>
-                                                    <div className='col-md-12'>
-                                                        <h4>Bahrain</h4>
-                                                        <p>Here’s how you get the most out of boardme.</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        className="tab-pane fade"
-                                        id="Kuwait"
-                                        role="tabpanel"
-                                        aria-labelledby="Kuwait-tab"
-                                    >
-                                        <div className={style['documentation-container']}>
-                                            <div className='container'>
-                                                <div className='row'>
-                                                    <div className='col-md-12'>
-                                                        <h4>New Activities</h4>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> */}
-                                    {/* <div
-                                        className="tab-pane fade"
-                                        id="Oman"
-                                        role="tabpanel"
-                                        aria-labelledby="Oman-tab"
-                                    >
-                                        <div className={style['documentation-container']}>
-                                            <div className='container'>
-                                                <div className='row'>
-                                                    <div className='col-md-12'>
-                                                        <h4>Combo Offers</h4>
-                                                        <p>Here’s how you get the most out of boardme.</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> */}
-                                </div>
-                            </div>
+      if (countryId == "all") {
+        response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}events?country[]=${countryId}`
+        );
+      } else {
+        response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}events?country[]=${countryId}`
+        );
+      }
+
+      const fetchedEvents = response.data.data || response.data || [];
+      setCountryEvents((prev) => ({
+        ...prev,
+        [countryId]: fetchedEvents,
+      }));
+      setLoadingEvents(false);
+    } catch (err) {
+      setErrorEvents(`Failed to fetch events for country ${countryId}.`);
+      console.error(`Error fetching events for country ${countryId}:`, err);
+      setLoadingEvents(false);
+    }
+  };
+
+  const handleTabClick = (tabId) => {
+    setActiveTab(tabId);
+    if (tabId !== "all" && !countryEvents[tabId]) {
+      // Fetch events for the country if not already fetched, skip for "all"
+      fetchEventsByCountry(tabId);
+    }
+  };
+
+  const renderTabContent = (countryId) => {
+    if (countryId === "all") {
+      // Use lowercase "all"
+      if (loadingEvents)
+        return (
+          <div className="text-center p-5">
+            <div className="spinner-border text-primary" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+          </div>
+        );
+      if (errorEvents)
+        return (
+          <div className="p-4 text-center text-muted">
+            <h4>
+              Events in {countries.find((c) => c.uuid_id === countryId)?.name}
+            </h4>
+            <p>No events found for this country.</p>
+          </div>
+        );
+      if (allEvents.length === 0)
+        return (
+          <div className="text-center p-5 text-muted">
+            No events found at the moment.
+          </div>
+        );
+      return <ExploreEventsContainer events={allEvents} />;
+    }
+
+    // Render country-specific events
+    const countryEventsList = countryEvents[countryId] || [];
+    if (loadingEvents)
+      return (
+        <div className="text-center p-5">
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      );
+    if (errorEvents)
+      return (
+        <div className="p-4 text-center text-muted">
+          <h4>
+            Events in {countries.find((c) => c.uuid_id === countryId)?.name}
+          </h4>
+          <p>No events found for this country.</p>
+        </div>
+      );
+    if (!countryEvents[countryId])
+      return (
+        <div className="p-4 text-center text-muted">
+          <h4>
+            Events in {countries.find((c) => c.uuid_id === countryId)?.name}
+          </h4>
+          <p>Loading events...</p>
+        </div>
+      );
+    if (countryEventsList.length === 0)
+      return (
+        <div className="p-4 text-center text-muted">
+          <h4>
+            Events in {countries.find((c) => c.uuid_id === countryId)?.name}
+          </h4>
+          <p>No events found for this country.</p>
+        </div>
+      );
+    return <ExploreEventsContainer events={countryEventsList} />;
+  };
+
+  // Combine static "All" tab with fetched countries
+  const tabList = [
+    { uuid_id: "all", name: "All" }, // Static "All" tab
+    ...countries,
+  ];
+
+  return (
+    <section className={style.innerpage}>
+      <div className={`container-fluid`}>
+        <div className="row pb-2">
+          <div className="col-md-12">
+            <div className={`pr-0 ${style["country-container-box"]}`}>
+              <div className={style["country-container"]}>
+                <ul
+                  className={`nav nav-tabs border-0 ${style["country-nav-tabs"]}`}
+                  id="eventsTab"
+                  role="tablist"
+                >
+                  {tabList.map((country) => (
+                    <li
+                      className={`nav-item ${style["country-nav-item"]}`}
+                      role="presentation"
+                      key={country.uuid_id}
+                    >
+                      <button
+                        className={`nav-link border-0 ${
+                          style["country-nav-link"]
+                        } ${
+                          activeTab === country.uuid_id
+                            ? `active ${style["active-tab"]}`
+                            : ""
+                        }`}
+                        id={`${country.uuid_id}-events-tab`}
+                        data-bs-toggle="tab"
+                        data-bs-target={`#${country.uuid_id}-events-content`}
+                        type="button"
+                        role="tab"
+                        aria-controls={`${country.uuid_id}-events-content`}
+                        aria-selected={activeTab === country.uuid_id}
+                        onClick={() => handleTabClick(country.uuid_id)}
+                      >
+                        {country.name}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+                <div className="tab-content" id="eventsTabContent">
+                  {tabList.map((country) => (
+                    <div
+                      className={`tab-pane fade ${
+                        activeTab === country.uuid_id ? "show active" : ""
+                      }`}
+                      id={`${country.uuid_id}-events-content`}
+                      role="tabpanel"
+                      aria-labelledby={`${country.uuid_id}-events-tab`}
+                      key={`${country.uuid_id}-content`}
+                    >
+                      {activeTab === country.uuid_id && (
+                        <div
+                          className={`${style["documentation-container"]} p-0`}
+                        >
+                          {renderTabContent(country.uuid_id)}
                         </div>
+                      )}
                     </div>
+                  ))}
                 </div>
-
-           
-
-                {/* explore */}
-
-
-
-             
-                {/* CountryExplore */}
-
-            </div>       
-                    
-
-
-
-
-
-
-        </section>
-
-
-
-
-
-    );
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
 };
 
 export default EventsExploreTab;

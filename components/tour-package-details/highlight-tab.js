@@ -1,33 +1,298 @@
-"use client"; // Ensure this component is a Client Component
-
-import React, { useState } from "react";
-import style from "./style.module.css"; // Ensure correct path for styles
+"use client";
+import React, { useState, useEffect } from "react";
+import style from "./style.module.css"; // Your existing styles
 import { HiOutlineArrowLongRight } from "react-icons/hi2";
-function HighlightTab({ highlight }) {
-  // State to keep track of the active tab
-  const [activeTab, setActiveTab] = useState("Highlight");
+import axios from "axios";
+import PackageInclusionsAndExclusions from "@components/tour-package-details/package-inclusions"; // For packages
 
-  // Tab names
+// --- Content Sub-Components ---
+const HighlightContent = ({ highlightPoints, itemType }) => {
+  if (!highlightPoints || highlightPoints.length === 0) {
+    return (
+      <p className="p-3 text-muted">
+        No highlights available for this{" "}
+        {itemType === "packages" ? "package" : "attraction"}.
+      </p>
+    );
+  }
+  return (
+    <>
+      <h3 className="fw-bold mb-3">Highlight</h3>
+      {highlightPoints.map((point, index) => (
+        <div key={index} className="d-flex align-items-start mb-2">
+          <HiOutlineArrowLongRight
+            className="me-2 mt-1 text-primary"
+            size={20}
+          />
+          <p className="mb-0 fw-light">
+            {/* Assuming point can be a string or an object with a 'description' property */}
+            {typeof point === "object" && point.description
+              ? point.description
+              : typeof point === "string"
+              ? point
+              : "Highlight point not available"}
+          </p>
+        </div>
+      ))}
+    </>
+  );
+};
+
+const ItineraryContent = ({ itineraryItems, itemType }) => {
+  const [activeAccordion, setActiveAccordion] = useState(null);
+  const toggleAccordion = (index) =>
+    setActiveAccordion(activeAccordion === index ? null : index);
+
+  if (!itineraryItems || itineraryItems.length === 0) {
+    return (
+      <p className="p-3 text-muted">
+        No itinerary available for this{" "}
+        {itemType === "packages" ? "package" : "attraction"}.
+      </p>
+    );
+  }
+  return (
+    <>
+      <h3 className="fw-bold mb-3">Itinerary</h3>
+      <div>
+        {itineraryItems.map((item, index) => (
+          <div
+            key={item.id || `itinerary-${index}`}
+            className={style.accordion}
+          >
+            <div
+              className={`${style.accordionTab} `}
+              onClick={() => toggleAccordion(index)}
+            >
+              <h4 className="mb-0 d-flex align-items-center">
+                <HiOutlineArrowLongRight
+                  className="me-2 text-primary d-none d-md-inline"
+                  size={20}
+                />
+                {item.day
+                  ? `${item.day} - ${item.title}`
+                  : item.title || "Itinerary Step"}
+              </h4>
+              <span className={style.accordionIcon}>
+                {activeAccordion === index ? "−" : "+"}
+              </span>
+            </div>
+            {activeAccordion === index && (
+              <div className={style.accordionContent}>
+                {item.description ? (
+                  <div dangerouslySetInnerHTML={{ __html: item.description }} />
+                ) : (
+                  <p>Details not available.</p>
+                )}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </>
+  );
+};
+
+
+
+const NoteContent = ({ notes, itemType }) => {
+  // Assuming `notes` is a single string from itemDetails.note
+  if (!notes || typeof notes !== "string" || notes.trim() === "") {
+    return (
+      <p className="p-3 text-muted">
+        No important notes for this{" "}
+        {itemType === "packages" ? "package" : "attraction"}.
+      </p>
+    );
+  }
+  return (
+    <>
+      <h3 className="fw-bold mb-3">Important Note</h3>
+      {/* If notes is expected to be an array of objects, map it here */}
+      <div className="fw-light" dangerouslySetInnerHTML={{ __html: notes }} />
+    </>
+  );
+};
+
+export default function HighlightTab({ itemId, itemType = "packages" }) {
+  const [activeTab, setActiveTab] = useState("Highlight");
+  const [highlightData, setHighlightData] = useState([]);
+  const [itineraryData, setItineraryData] = useState([]);
+  // State specifically for attraction features and restrictions for the "InclusionsExclusions" tab
+  const [attractionFeatures, setAttractionFeatures] = useState([]);
+  const [attractionRestrictions, setAttractionRestrictions] = useState([]);
+  const [noteData, setNoteData] = useState(null); // Can be a string
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchDataForTab = async (tabName) => {
+      if (!itemId) {
+        setError(
+          `${itemType === "packages" ? "Package" : "Attraction"} ID is missing.`
+        );
+        setIsLoading(false);
+        return;
+      }
+
+      setIsLoading(true);
+      setError("");
+
+      try {
+        // Fetch main details for Highlight and Note first
+        if (tabName === "Highlight" || tabName === "Note") {
+          const endpoint =
+            itemType === "attractions"
+              ? `${process.env.NEXT_PUBLIC_API_URL}attractions/${itemId}`
+              : `${process.env.NEXT_PUBLIC_API_URL}packages/${itemId}`;
+          const response = await axios.get(endpoint);
+          const details = response.data.data || response.data;
+
+          if (tabName === "Highlight") {
+            const highlights = details?.highlight; // Ensure 'highlight' field exists in API response
+            if (highlights) {
+              setHighlightData(
+                Array.isArray(highlights)
+                  ? highlights
+                  : typeof highlights === "string"
+                  ? highlights
+                      .split("\n")
+                      .map((h) => h.trim())
+                      .filter((h) => h)
+                  : []
+              );
+            } else {
+              setHighlightData([]);
+            }
+          }
+          if (tabName === "Note") {
+            setNoteData(details?.note || null); // Assuming 'note' is a field in API response
+          }
+        } else if (tabName === "Itinerary") {
+          const endpoint =
+            itemType === "attractions"
+              ? `${process.env.NEXT_PUBLIC_API_URL}att-itineraries/attraction/get-by-attraction?attraction_id=${itemId}`
+              : `${process.env.NEXT_PUBLIC_API_URL}itineraries/package/get-by-package?package_id=${itemId}`;
+          const response = await axios.get(endpoint); // Added headers
+          setItineraryData(
+            (response.data.data || response.data || []).map((it) => ({
+              ...it,
+              title: it.title || `Day ${it.day}`,
+            }))
+          );
+        } else if (
+          tabName === "InclusionsExclusions" &&
+          itemType === "attractions"
+        ) {
+          // Fetch features and restrictions only for attractions in this tab
+          const featuresEndpoint = `${process.env.NEXT_PUBLIC_API_URL}att-inclusions/attraction/get-by-attraction?attraction_id=${itemId}`;
+          const restrictionsEndpoint = `${process.env.NEXT_PUBLIC_API_URL}att-exclusions/attraction/get-by-attraction?attraction_id=${itemId}`;
+
+          const [featuresResponse, restrictionsResponse] = await Promise.all([
+            axios.get(featuresEndpoint).catch((err) => {
+              console.warn(
+                `No features for attraction ${itemId}: ${err.message}`
+              );
+              return { data: { data: [] } };
+            }),
+            axios.get(restrictionsEndpoint).catch((err) => {
+              console.warn(
+                `No restrictions for attraction ${itemId}: ${err.message}`
+              );
+              return { data: { data: [] } };
+            }),
+          ]);
+
+          setAttractionFeatures(
+            featuresResponse.data.data || featuresResponse.data || []
+          );
+          setAttractionRestrictions(
+            restrictionsResponse.data.data || restrictionsResponse.data || []
+          );
+        }
+        // For packages, PackageInclusionsAndExclusions handles its own fetching, so no direct fetch here for that tab
+      } catch (err) {
+        console.error(
+          `Error fetching ${tabName} for ${itemType} ID ${itemId}:`,
+          err.response?.data || err.message
+        );
+        setError(`Failed to load ${tabName.toLowerCase()} data.`);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchDataForTab(activeTab);
+  }, [itemId, itemType, activeTab]);
+
   const tabs = [
     { name: "Highlight", label: "Highlight" },
     { name: "Itinerary", label: "Itinerary" },
-    { name: "InclusionsExclusions", label: "Package Inclusions & Exclusions" },
+    {
+      name: "InclusionsExclusions",
+      label: "Package Inclusions & Exclusions",
+    },
     { name: "Note", label: "Note" },
   ];
 
-  // Render tab content based on active tab
   const renderTabContent = () => {
+    // Handle loading/error specifically for tabs that fetch data in this parent component
+    if (
+      isLoading &&
+      (activeTab === "Highlight" ||
+        activeTab === "Itinerary" ||
+        activeTab === "Note" ||
+        (activeTab === "InclusionsExclusions" && itemType === "attractions"))
+    ) {
+      return (
+        <div className="text-center p-4">
+          <div className="spinner-border spinner-border-sm" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      );
+    }
+    if (
+      error &&
+      (activeTab === "Highlight" ||
+        activeTab === "Itinerary" ||
+        activeTab === "Note" ||
+        (activeTab === "InclusionsExclusions" && itemType === "attractions"))
+    ) {
+      return <div className="alert alert-warning text-center p-4">{error}</div>;
+    }
+
     switch (activeTab) {
       case "Highlight":
-        return <HighlightContent highlight={highlight} />;
+        return (
+          <HighlightContent
+            highlightPoints={highlightData}
+            itemType={itemType}
+          />
+        );
       case "Itinerary":
-        return <ItineraryContent />;
+        return (
+          <ItineraryContent
+            itineraryItems={itineraryData}
+            itemType={itemType}
+          />
+        );
       case "InclusionsExclusions":
-        return <InclusionsExclusionsContent />;
+        if (itemType === "packages") {
+          // This component fetches its own data based on packageId
+          return <PackageInclusionsAndExclusions packageId={itemId} type="package"/>;
+        } else if (itemType === "attractions") {
+          // Pass fetched features and restrictions to the dynamic content component
+                  return <PackageInclusionsAndExclusions packageId={itemId} type="attraction"/>;
+
+        }
+        return (
+          <div className="p-4">Content not available for this item type.</div>
+        );
       case "Note":
-        return <NoteContent />;
+        return <NoteContent notes={noteData} itemType={itemType} />;
       default:
-        return null;
+        return <div className="p-4">Select a tab to view details.</div>;
     }
   };
 
@@ -41,164 +306,14 @@ function HighlightTab({ highlight }) {
               activeTab === tab.name ? style.active : ""
             }`}
             onClick={() => setActiveTab(tab.name)}
+            // isLoading state managed by parent now more granularly
+            // disabled={isLoading}
           >
             {tab.label}
           </button>
         ))}
       </div>
-      <div className={style.tabContent}>{renderTabContent()}</div>
+      <div className={`${style.tabContent} mt-3`}>{renderTabContent()}</div>
     </div>
   );
 }
-
-// Accordion content component
-const HighlightContent = ({ highlight }) => {
-  return (
-    <>
-      <h3>Highlight</h3>
-      {highlight.map((tab, index) => (
-        <div key={index}>
-          <h4 className="fw-light">
-            <HiOutlineArrowLongRight /> {tab}
-          </h4>
-        </div>
-      ))}
-    </>
-  );
-};
-
-const ItineraryContent = () => {
-  // State to manage which accordion panel is open
-  const [activeAccordion, setActiveAccordion] = useState(null);
-
-  // List of accordion tabs and their content
-  const accordionTabs = [
-    {
-      name: "Day 1 - Arrival in Salalah",
-      content: (
-        <>
-          <p>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book. It has survived not
-            only five centuries, but also the leap into electronic typesetting,
-            remaining essentially unchanged. It was popularised in the 1960s
-            with the release of Letraset sheets containing Lorem Ipsum passages,
-            and more recently with desktop publishing software like Aldus
-            PageMaker including versions of Lorem Ipsum.
-          </p>
-        </>
-      ),
-    },
-    {
-      name: "Day 2 - Salalah City Tour Discover the Cultural Delights of Salalah",
-      content: (
-        <>
-          <p>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book. It has survived not
-            only five centuries, but also the leap into electronic typesetting,
-            remaining essentially unchanged. It was popularised in the 1960s
-            with the release of Letraset sheets containing Lorem Ipsum passages,
-            and more recently with desktop publishing software like Aldus
-            PageMaker including versions of Lorem Ipsum.
-          </p>
-        </>
-      ),
-    },
-    {
-      name: "Day 3 - East Salalah Tour Discover Nature's Wonders and Ancient Treasures",
-      content: (
-        <>
-          <p>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book. It has survived not
-            only five centuries, but also the leap into electronic typesetting,
-            remaining essentially unchanged. It was popularised in the 1960s
-            with the release of Letraset sheets containing Lorem Ipsum passages,
-            and more recently with desktop publishing software like Aldus
-            PageMaker including versions of Lorem Ipsum.
-          </p>
-        </>
-      ),
-    },
-    {
-      name: "Day 4 - Farewell Salalah",
-      content: (
-        <>
-          <p>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book. It has survived not
-            only five centuries, but also the leap into electronic typesetting,
-            remaining essentially unchanged. It was popularised in the 1960s
-            with the release of Letraset sheets containing Lorem Ipsum passages,
-            and more recently with desktop publishing software like Aldus
-            PageMaker including versions of Lorem Ipsum.
-          </p>
-        </>
-      ),
-    },
-  ];
-
-  // Toggle the active accordion panel
-  const toggleAccordion = (index) => {
-    setActiveAccordion(activeAccordion === index ? null : index);
-  };
-
-  return (
-    <>
-      <h3>Itinerary</h3>
-      <p>
-        Lorem Ipsum is simply dummy text of the printing and typesetting
-        industry. Lorem Ipsum has been the industry's standard dummy text ever
-        since the 1500s, when an unknown printer took a galley of type and
-        scrambled it to make a type specimen book. It has survived not only five
-        centuries, but also the leap into electronic typesetting, remaining
-        essentially unchanged
-      </p>
-      <div>
-        {accordionTabs.map((tab, index) => (
-          <div key={index} className={style.accordion}>
-            <div
-              className={`${style.accordionTab} ${
-                activeAccordion === index ? style.activeAccordion : ""
-              }`}
-              onClick={() => toggleAccordion(index)}
-            >
-              <h4>
-                <HiOutlineArrowLongRight /> {tab.name}
-              </h4>
-              <span className={style.accordionIcon}>
-                {activeAccordion === index ? "-" : "+"}
-              </span>
-            </div>
-            {activeAccordion === index && (
-              <div className={style.accordionContent}>{tab.content}</div>
-            )}
-          </div>
-        ))}
-      </div>
-    </>
-  );
-};
-
-const InclusionsExclusionsContent = () => (
-  <div>
-    <h4>Package Inclusions & Exclusions</h4>
-  </div>
-);
-
-const NoteContent = () => (
-  <div>
-    <h4>Important Note</h4>
-  </div>
-);
-
-export default HighlightTab;

@@ -15,11 +15,14 @@ import SinglePackageContainerReviewImage from "../tour-package-details/package-d
 import RatingCarousel from "../tour-package-details/RatingCarousel";
 import PakageDetailsOtherPackages from "../tour-package-details/pakage-details-other-packages";
 import CountryInspiration from "../countries/country-inspiration";
+import OtherBlogs from "@components/tour-package-details/other-blogs";
+
 // Import Slick Carousel and styles
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import FeaturedTravel from "../tour-package/featured-travel";
 import EventScroll from "../events/event-scroll";
+import EventDetailsOtherEvents from "@components/tour-package-details/event-details-other-events";
 
 const SlickCarousel = dynamic(() => import("react-slick"), {
   ssr: false,
@@ -35,13 +38,16 @@ function Carousal({
   userRatingsCarosul,
   pakageDetailsOtherPackages,
   count,
+  otherBlogs,
   type,
   bestPicked,
   featuredTravel,
   wonders,
   packageDetailsReview,
   packageDetailsReviewImage,
+  countryExperiance,
 }) {
+    const data = packages || events || eventScroll || country || experiences || blog || userRatingsCarosul || pakageDetailsOtherPackages || otherBlogs || bestPicked || featuredTravel || wonders || packageDetailsReview || packageDetailsReviewImage || countryExperiance;
   const Responsive = {
     dots:
       type !== "home-package" &&
@@ -49,7 +55,7 @@ function Carousal({
       type !== "home-experience" &&
       type !== "home-blog" &&
       type !== "upcoming-events",
-    infinite: true,
+    infinite: data && data.length > 1,
     speed: 500,
     slidesToShow: count,
     slidesToScroll: 1,
@@ -59,7 +65,10 @@ function Carousal({
       type !== "media-page-full-carosul" &&
       type !== "event-page-scroll" &&
       type !== "upcoming-events" &&
-      type !== "pakage-details-other-packages",
+      type !== "pakage-details-other-packages" &&
+      type !== "attraction-details-other-packages" &&
+      type !== "event-details-other-events",
+      
 
     responsive: [
       {
@@ -67,7 +76,7 @@ function Carousal({
         settings: {
           slidesToShow: 2,
           slidesToScroll: 1,
-          infinite: true,
+    infinite: data && data.length > 1,
           dots:
             type !== "home-package" &&
             type !== "home-event" &&
@@ -83,55 +92,55 @@ function Carousal({
           centerMode: type === "home-experience", // Enable center mode for 'home-experience'
           centerPadding: "50px", // Show half of the second item (adjust as needed)
           slidesToScroll: 1,
-          infinite: true,
+    infinite: data && data.length > 1,
           dots: false, // You can keep dots off for mobile if needed
         },
       },
     ],
   };
 
-  const countryExperiance = [
-    {
-      id: 1,
-      link: "https://www.google.com/",
-      heading: "Lorem Ipsum is dummy text",
-      description:
-        "Lorem Ipsum is dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s... ",
-      image: "/images/blog/01.jpg",
-    },
-    {
-      id: 2,
-      link: "https://www.google.com/",
-      heading: "Lorem Ipsum is dummy text",
-      description:
-        "Lorem Ipsum is dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s... ",
-      image: "/images/blog/01.jpg",
-    },
-    {
-      id: 3,
-      link: "https://www.google.com/",
-      heading: "Lorem Ipsum is dummy text",
-      description:
-        "Lorem Ipsum is dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s... ",
-      image: "/images/blog/01.jpg",
-    },
-    {
-      id: 4,
-      link: "https://www.google.com/",
-      heading: "Lorem Ipsum is dummy text",
-      description:
-        "Lorem Ipsum is dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s... ",
-      image: "/images/blog/01.jpg",
-    },
-    {
-      id: 5,
-      link: "https://www.google.com/",
-      heading: "Lorem Ipsum is dummy text",
-      description:
-        "Lorem Ipsum is dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s... ",
-      image: "/images/blog/01.jpg",
-    },
-  ];
+  // const countryExperiance = [
+  //   {
+  //     id: 1,
+  //     link: "https://www.google.com/",
+  //     heading: "Lorem Ipsum is dummy text",
+  //     description:
+  //       "Lorem Ipsum is dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s... ",
+  //     image: "/images/blog/01.jpg",
+  //   },
+  //   {
+  //     id: 2,
+  //     link: "https://www.google.com/",
+  //     heading: "Lorem Ipsum is dummy text",
+  //     description:
+  //       "Lorem Ipsum is dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s... ",
+  //     image: "/images/blog/01.jpg",
+  //   },
+  //   {
+  //     id: 3,
+  //     link: "https://www.google.com/",
+  //     heading: "Lorem Ipsum is dummy text",
+  //     description:
+  //       "Lorem Ipsum is dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s... ",
+  //     image: "/images/blog/01.jpg",
+  //   },
+  //   {
+  //     id: 4,
+  //     link: "https://www.google.com/",
+  //     heading: "Lorem Ipsum is dummy text",
+  //     description:
+  //       "Lorem Ipsum is dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s... ",
+  //     image: "/images/blog/01.jpg",
+  //   },
+  //   {
+  //     id: 5,
+  //     link: "https://www.google.com/",
+  //     heading: "Lorem Ipsum is dummy text",
+  //     description:
+  //       "Lorem Ipsum is dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s... ",
+  //     image: "/images/blog/01.jpg",
+  //   },
+  // ];
 
   return (
     // <SlickCarousel {...Responsive}>
@@ -143,10 +152,22 @@ function Carousal({
         packages.map((pkg) => (
           <div key={pkg.id} className="home-package-item">
             <SingleHomePackage
-              photo_url={pkg?.image || ""}
+              photo_url={pkg?.photo_urls[0] || ""}
               name={pkg.name}
               description={pkg.description}
-              link={pkg.id.toString()}
+              link={`/tour-package/${pkg.id.toString()}`}
+            />
+          </div>
+        ))}
+
+            {type === "home-attractions" &&
+        packages.map((pkg) => (
+          <div key={pkg.id} className="home-package-item">
+            <SingleHomePackage
+              photo_url={pkg?.photo_urls[0] || ""}
+              name={pkg.name}
+              description={pkg.description}
+              link={`/attractions/${pkg.id.toString()}`}
             />
           </div>
         ))}
@@ -164,11 +185,11 @@ function Carousal({
       {type === "home-blog" &&
         blog.map((b) => (
           <SingleHomeBlog
-            key={b.id}
-            image={b.image}
+            key={b.uuid_id}
+            image={b.main_image_url}
             heading={b.heading}
-            description={b.description}
-            link={b.link}
+            description={b.description1}
+            link={b.uuid_id}
           />
         ))}
 
@@ -176,11 +197,11 @@ function Carousal({
         events.map((event) => (
           <SingleHomeEvents
             key={event.id}
-            event_photo_urls={event?.image || ""}
+            event_photo_urls={event?.event_photo_urls?.[0] || ""}
             name={event.name}
-            date={event.date}
+            date={event.start_date}
             description={event.description}
-            link={event.link}
+            link={event.id.toString()}
           />
         ))}
       {type === "country-tab" &&
@@ -198,20 +219,25 @@ function Carousal({
         country.map((country) => (
           <CountryInspiration
             key={country.id}
-            image={country.image}
-            heading={country.heading}
+            image={country.event_photo_urls[0]}
+            heading={country.name}
             description={country.description}
-            link={country.link}
+            link={`/events/${country.id}`}
           />
         ))}
       {type === "country-Experiance" &&
         countryExperiance.map((experiance) => (
-          <CountryExperiance
-            key={experiance.id}
-            image={experiance.image}
-            heading={experiance.heading}
-            description={experiance.description}
-            link={experiance.link}
+          <CountryExperiance blogs={experiance} />
+        ))}
+
+          {type === "other-blogs" &&
+        otherBlogs?.map((otherblogs) => (
+          <OtherBlogs
+            key={otherblogs.uuid_id}
+            image={otherblogs.main_image_url}
+            heading={otherblogs.heading}
+            description={otherblogs.description1}
+            link={otherblogs.uuid_id}
           />
         ))}
 
@@ -219,43 +245,67 @@ function Carousal({
         featuredTravel.map((featuredTravel) => (
           <FeaturedTravel
             key={featuredTravel.id}
-            image={featuredTravel.image}
-            heading={featuredTravel.heading}
+            image={featuredTravel.photo_urls[0]}
+            heading={featuredTravel.name}
             description={featuredTravel.description}
-            link={featuredTravel.link}
+            id={featuredTravel.id}
+            link={`/tour-package/${featuredTravel.id}`}
+          />
+        ))}
+        
+         {type === "attraction-FeaturedTravel" &&
+        featuredTravel.map((featuredTravel) => (
+          <FeaturedTravel
+            key={featuredTravel.id}
+            image={featuredTravel.photo_urls[0]}
+            heading={featuredTravel.name}
+            description={featuredTravel.description}
+            id={featuredTravel.id}
+            link={`/attractions/${featuredTravel.id}`}
           />
         ))}
 
       {type === "tour-bestPicked" &&
         bestPicked.map((bestPicked) => (
-          <SingleBestPicked
-            key={bestPicked.id}
-            image={bestPicked.image}
-            heading={bestPicked.heading}
-            description={bestPicked.description}
-            link={bestPicked.link}
-          />
+          <SingleBestPicked packages={bestPicked} key={bestPicked.id} type="tour-bestPicked"/>
+        ))}
+
+            {type === "attraction-bestPicked" &&
+        bestPicked.map((bestPicked) => (
+          <SingleBestPicked packages={bestPicked} key={bestPicked.id} type="attraction-bestPicked"/>
         ))}
 
       {type === "tour-wonders" &&
         wonders.map((wonders) => (
           <Singlewonders
             key={wonders.id}
-            image={wonders.image}
-            heading={wonders.heading}
+            image={wonders.photo_urls[0]}
+            heading={wonders.name}
             description={wonders.description}
-            link={wonders.link}
+            link={`/tour-package/${wonders.id}`}
+            type="tour-wonders"
+
           />
         ))}
+
+ {type === "attraction-wonders" &&
+        wonders.map((wonders) => (
+          <Singlewonders
+            key={wonders.id}
+            image={wonders.photo_urls[0]}
+            heading={wonders.name}
+            description={wonders.description}
+            link={`/attractions/${wonders.id}`}
+            type="attraction-wonders"
+          />
+        ))}
+
       {type === "tour-package-details-reviews" &&
         packageDetailsReview.map((review) => (
-          <SinglePackageContainerReview
-            key={review.id}
-            image={review.image}
-            heading={review.heading}
-            description={review.description}
-          />
+          <SinglePackageContainerReview image={review.image} />
         ))}
+   
+
       {type === "tour-package-details-reviews-img" &&
         packageDetailsReviewImage.map((reviewImage) => (
           <SinglePackageContainerReviewImage
@@ -281,25 +331,27 @@ function Carousal({
 
       {type === "pakage-details-other-packages" &&
         pakageDetailsOtherPackages?.map((pakageDetailsOtherPackages) => (
-          <PakageDetailsOtherPackages
-            key={pakageDetailsOtherPackages.id}
-            image={pakageDetailsOtherPackages.image}
-            headingIcon={pakageDetailsOtherPackages.headingIcon}
-            heading={pakageDetailsOtherPackages.heading}
-            date={pakageDetailsOtherPackages.date}
-            description={pakageDetailsOtherPackages.description}
-            link={pakageDetailsOtherPackages.link}
-          />
+          <PakageDetailsOtherPackages packages={pakageDetailsOtherPackages} type={"pakage-details-other-packages"}/>
+        ))}
+        
+          {type === "attraction-details-other-packages" &&
+        pakageDetailsOtherPackages?.map((pakageDetailsOtherPackages) => (
+          <PakageDetailsOtherPackages packages={pakageDetailsOtherPackages} type={"attraction-details-other-packages"}/>
+        ))}
+
+      {type === "event-details-other-events" &&
+        pakageDetailsOtherPackages?.map((pakageDetailsOtherPackages) => (
+          <EventDetailsOtherEvents events={pakageDetailsOtherPackages} />
         ))}
 
       {type === "event-page-scroll" &&
-        eventScroll.map((eventScrollData, index) => (
+        eventScroll.map((eventScrollData) => (
           <EventScroll
-            key={index}
-            image={eventScrollData.image}
-            heading={eventScrollData.heading}
+            key={eventScrollData.id}
+            id={eventScrollData.id}
+            image={eventScrollData.event_photo_urls[0]}
+            heading={eventScrollData.name}
             description={eventScrollData.description}
-            link={eventScrollData.link}
           />
         ))}
 
@@ -325,10 +377,12 @@ function Carousal({
         wonders.map((wonders) => (
           <Singlewonders
             key={wonders.id}
-            image={wonders.image}
-            heading={wonders.heading}
+            image={wonders.event_photo_urls[0]}
+            heading={wonders.name}
             description={wonders.description}
-            link={wonders.link}
+            link={`/events/${wonders.id}`}
+            id={wonders.id}
+            type="past-events"
           />
         ))}
 

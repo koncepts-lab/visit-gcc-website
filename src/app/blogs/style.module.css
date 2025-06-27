@@ -110,7 +110,51 @@ border: none;
 
 .featured img{
   height: 110px;
+  width: 160px;
 }
+
+.category-popup {
+  position: fixed;
+  top: 50%;  
+  left: 50%; 
+  transform: translate(-50%, -50%);  
+  background: rgba(4, 4, 4, 0.765);
+  padding: 20px;
+  border-radius: 10px;
+  z-index: 9999;
+  animation: fadeIn 0.3s ease-out;
+  margin-left: auto;
+}
+
+.category-popup-inner{
+  background:transparent;
+  padding: 20px;
+  width: 100%;
+  color: white;
+}
+
+.title_category{
+  border: #e2e2e2 2px solid;
+  border-radius: 5px;
+  background-color: #189597;
+  color: white;
+  padding: 5px;
+}
+.category-popup-inner button.active-filter {
+  color: #189597;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 
     .promo_input::placeholder {
         color: black; 

@@ -5,6 +5,8 @@ import style from "./style.module.css";
 const ArrowIcon = () => <FaArrowRightLong />;
 
 function SinglePackageContainerReview(props) {
+  console.log("🚀 ~ image:", props);
+          const imageUrl = props.image || "/images/placeholder.jpg";      
   return (
     <>
       <style>
@@ -26,7 +28,7 @@ function SinglePackageContainerReview(props) {
       <div className="item">
         <div className={style["best-picked-box"]}>
           <img
-            src={props.image}
+            src={imageUrl}
             className="w-100 sm:h-auto responsive-image"
             style={{ height: "540px" }}
             alt={props.heading}

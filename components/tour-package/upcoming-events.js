@@ -1,236 +1,390 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from "react";
 import style from "./style.module.css";
-import Link from 'next/link';
+import Link from "next/link";
 import { FaUserCircle } from "react-icons/fa";
 import { FiPlus } from "react-icons/fi";
+import axios from "axios";
 
 function UpcomingEvents() {
-    const [expandedItems, setExpandedItems] = useState(false);
-    const containerRef = useRef(null);
-    const [expandedItemId, setExpandedItemId] = useState(null);
-    const [currentSlide, setCurrentSlide] = useState(0);
-    const [isDragging, setIsDragging] = useState(false);
-    const [startX, setStartX] = useState(0);
-    const [scrollLeft, setScrollLeft] = useState(0);
-    const [slidesToShow, setSlidesToShow] = useState(2); // Default value
-    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  // Corrected state to hold the index of the expanded item, or null if none are expanded
+  const [expandedDateItem, setExpandedDateItem] = useState(null);
+  const containerRef = useRef(null);
+  const [expandedItemId, setExpandedItemId] = useState(null);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
+  const [slidesToShow, setSlidesToShow] = useState(2); // Default value
+  const [windowWidth, setWindowWidth] = useState(
+    typeof window !== "undefined" ? window.innerWidth : 0
+  );
 
-    const toggleExpand = () => {
-        setExpandedItems(!expandedItems);
+  // Corrected function to toggle expansion for a specific item by its index
+  const toggleExpand = (index) => {
+    setExpandedDateItem(expandedDateItem === index ? null : index);
+  };
+
+  const truncateDescription = (description, maxLength) => {
+    if (!description) return "";
+    if (description.length <= maxLength) {
+      return description;
+    }
+    return description.substring(0, maxLength) + "...";
+  };
+
+  const truncateHeading = (heading, maxLength) => {
+    if (!heading) return "";
+    if (heading.length <= maxLength) {
+      return heading;
+    }
+    return heading.substring(0, maxLength) + "...";
+  };
+  const [events, setEvents] = useState([]);
+  const [allEvents, setAllEvents] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}events/upcoming`
+        );
+        const fetchedEvents = response.data.data;
+        setEvents(fetchedEvents);
+        setAllEvents(fetchedEvents);
+        setIsLoading(false);
+      } catch (err) {
+        console.error("Error fetching events:", err);
+        setIsLoading(false);
+        setError("Failed to fetch packages. Please try again.");
+      }
     };
+    fetchEvents();
+  }, []);
 
-    const truncateDescription = (description, maxLength) => {
-        if (!description) return "";
-        if (description.length <= maxLength) {
-            return description;
-        }
-        return description.substring(0, maxLength) + "...";
-    };
+  const handleImageClick = (id) => {
+    setExpandedItemId(expandedItemId === id ? null : id);
+  };
 
-    const truncateHeading = (heading, maxLength) => {
-        if (!heading) return "";
-        if (heading.length <= maxLength) {
-            return heading;
-        }
-        return heading.substring(0, maxLength) + "...";
-    };
+  useEffect(() => {
+    // Check if window is defined for server-side rendering
+    if (typeof window !== "undefined") {
+      const handleResize = () => {
+        setWindowWidth(window.innerWidth);
+      };
 
-    const eventsData = [
-        { id: 1, heading: 'Pellentesque molestie ante vitae consectetur  Pellentesque molestie ante vitae consectetur', description: 'Lorem Ipsum is dummy text Pellentesque molestie ante vitae consectetur Pellentesque molestie ante vitae consectetur', image: "/images/best-picked/01.jpg", provider: "Admin", date: "02-Nov-2017", type: "Family", startDate: "15", startMonth: "Mar", endDate: "17", endMonth: "Mar" },
-        { id: 2, heading: 'Pellentesque molestie ante vitae consectetur  Pellentesque molestie ante vitae consectetur', description: 'Lorem Ipsum is dummy text Pellentesque molestie ante vitae consectetur Pellentesque molestie ante vitae consectetur', image: "/images/best-picked/02.jpg", provider: "Admin", date: "02-Nov-2017", type: "Workshop", startDate: "20", startMonth: "Apr", endDate: "22", endMonth: "Apr" },
-        { id: 3, heading: 'Pellentesque molestie ante vitae consectetur.', description: 'Lorem Ipsum is dummy text Pellentesque molestie ante vitae consectetur Pellentesque molestie ante vitae consectetur', image: "/images/best-picked/03.jpg", provider: "Admin", date: "02-Nov-2017", type: "Workshop", startDate: "10", startMonth: "May", endDate: "12", endMonth: "May" },
-        { id: 4, heading: 'Pellentesque molestie ante vitae consectetur.', description: 'Lorem Ipsum is dummy text Pellentesque molestie ante vitae consectetur Pellentesque molestie ante vitae consectetur', image: "/images/best-picked/01.jpg", provider: "Admin", date: "02-Nov-2017", type: "Workshop", startDate: "05", startMonth: "Jun", endDate: "07", endMonth: "Jun" },
-        { id: 5, heading: 'Pellentesque molestie ante vitae consectetur.', description: 'Lorem Ipsum is dummy text Pellentesque molestie ante vitae consectetur Pellentesque molestie ante vitae consectetur', image: "/images/best-picked/02.jpg", provider: "Admin", date: "02-Nov-2017", type: "Workshop", startDate: "25", startMonth: "Jul", endDate: "27", endMonth: "Jul" },
-        { id: 6, heading: 'Pellentesque molestie ante vitae consectetur.', description: 'Lorem Ipsum is dummy text Pellentesque molestie ante vitae consectetur Pellentesque molestie ante vitae consectetur', image: "/images/best-picked/03.jpg", provider: "Admin", date: "02-Nov-2017", type: "Workshop", startDate: "01", startMonth: "Aug", endDate: "03", endMonth: "Aug" },
-    ];
+      window.addEventListener("resize", handleResize);
+      // Set initial width
+      handleResize();
 
-    const handleImageClick = (id) => {
-        setExpandedItemId(expandedItemId === id ? null : id);
-    };
+      return () => {
+        window.removeEventListener("resize", handleResize);
+      };
+    }
+  }, []);
 
-    useEffect(() => {
-        const handleResize = () => {
-            setWindowWidth(window.innerWidth);
-        };
+  useEffect(() => {
+    if (windowWidth >= 992) {
+      setSlidesToShow(2);
+    } else {
+      setSlidesToShow(1);
+    }
+  }, [windowWidth]);
 
-        window.addEventListener('resize', handleResize);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (events.length > slidesToShow) {
+        setCurrentSlide(
+          (prevSlide) => (prevSlide + 1) % (events.length - slidesToShow + 1)
+        );
+      }
+    }, 6000);
 
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, []);
+    return () => clearInterval(interval);
+  }, [events.length, slidesToShow]);
 
-    useEffect(() => {
-        // Determine slides to show based on screen width
-        if (windowWidth >= 992) { // lg or larger
-            setSlidesToShow(2);
-        } else {
-            setSlidesToShow(1);
-        }
-    }, [windowWidth]);
+  useEffect(() => {
+    if (containerRef.current) {
+      const slideWidth = containerRef.current.offsetWidth / slidesToShow;
+      const scrollAmount =
+        windowWidth >= 992
+          ? currentSlide * slideWidth * 0.8
+          : currentSlide * slideWidth;
+      containerRef.current.scrollTo({
+        left: scrollAmount,
+        behavior: "smooth",
+      });
+    }
+  }, [currentSlide, slidesToShow, windowWidth]);
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setCurrentSlide((prevSlide) => (prevSlide + 1) % (eventsData.length - slidesToShow + 1));
-        }, 6000);
+  const handleMouseDown = (e) => {
+    setIsDragging(true);
+    setStartX(e.pageX - containerRef.current.offsetLeft);
+    setScrollLeft(containerRef.current.scrollLeft);
+  };
 
-        return () => clearInterval(interval);
-    }, [eventsData.length, slidesToShow]);
+  const handleMouseLeave = () => {
+    setIsDragging(false);
+  };
 
-    useEffect(() => {
-        if (containerRef.current) {
-            const slideWidth = containerRef.current.offsetWidth / slidesToShow;
-            // Check if the window width is large enough for 80% scrolling
-            const scrollAmount = windowWidth >= 992 ? currentSlide * slideWidth * 0.8 : currentSlide * slideWidth; // Scroll 80% for lg and above, 100% for below
-            containerRef.current.scrollTo({
-                left: scrollAmount,
-                behavior: 'smooth',
-            });
-        }
-    }, [currentSlide, slidesToShow, windowWidth]);
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
 
-    const handleMouseDown = (e) => {
-        setIsDragging(true);
-        setStartX(e.pageX - containerRef.current.offsetLeft);
-        setScrollLeft(containerRef.current.scrollLeft);
-    };
+  const handleMouseMove = (e) => {
+    if (!isDragging || !containerRef.current) return;
+    e.preventDefault(); // Prevent text selection during drag
+    const x = e.pageX - containerRef.current.offsetLeft;
+    const walk = (x - startX) * 1; // Reduced scroll speed
+    containerRef.current.scrollLeft = scrollLeft - walk;
+  };
 
-    const handleMouseLeave = () => {
-        setIsDragging(false);
-    };
+  const handleDotClick = (index) => {
+    setCurrentSlide(index);
+  };
 
-    const handleMouseUp = () => {
-        setIsDragging(false);
-    };
+  // Function to calculate dynamic width based on expanded state
+  const calculateDynamicWidth = (index) => {
+    const isExpanded = windowWidth >= 992 && index === currentSlide; // Only expand on larger screens and if it's the current slide
+    const baseWidth = 100 / slidesToShow; // Width when not expanded
 
-    const handleMouseMove = (e) => {
-        if (!isDragging || !containerRef.current) return;
-        e.preventDefault(); // Prevent text selection during drag
-        const x = e.pageX - containerRef.current.offsetLeft;
-        const walk = (x - startX) * 1; // Reduced scroll speed
-        containerRef.current.scrollLeft = scrollLeft - walk;
-    };
+    let expandedWidth;
 
-    const handleDotClick = (index) => {
-        setCurrentSlide(index);
-    };
+    if (slidesToShow === 1) {
+      expandedWidth = isExpanded ? baseWidth : baseWidth; // Adjusted for single slide view
+    } else {
+      expandedWidth = isExpanded ? 60 : 40; // Adjusted for two slide view
+    }
 
-    // Function to calculate dynamic width based on expanded state
-    const calculateDynamicWidth = (index) => {
-        const isExpanded = windowWidth >= 992 && index === currentSlide; // Only expand on larger screens and if it's the current slide
-        const baseWidth = 100 / slidesToShow; // Width when not expanded
+    return expandedWidth;
+  };
 
-        let expandedWidth;
-
-        if (slidesToShow === 1) {
-            expandedWidth = isExpanded ? baseWidth : baseWidth; // Adjusted for single slide view
-        } else {
-            expandedWidth = isExpanded ? 60 : 40; // Adjusted for two slide view
-        }
-
-        return expandedWidth;
-    };
-
-    return (
-        <div className={`${style['upcoming-carousel-container-wrapper']}`}>
-            <div>
-                <div
+  return (
+    <section className={style["pakage-bes-picked"]}>
+      <div className="container-fluid">
+        <div className="row">
+          <div className="col-md-12">
+            <h3
+              className="pb-3"
+              style={{
+                marginInline: "auto",
+                fontWeight: 600,
+                width: "fit-content",
+              }}
+            >
+              {events.length > 0 ? "Upcoming Events" : ""}
+            </h3>
+          </div>
+          <div className="col-md-12">
+            <div className="upcoming-events-picked">
+              <div className={``}>
+                <div>
+                  <div
                     ref={containerRef}
-                    className={`${style['upcoming-carousel-container']} ${style['draggable']}`}
+                    className={`${style["upcoming-carousel-container"]} `}
                     onMouseDown={handleMouseDown}
                     onMouseLeave={handleMouseLeave}
                     onMouseUp={handleMouseUp}
                     onMouseMove={handleMouseMove}
                     style={{
-                        cursor: isDragging ? 'grabbing' : 'grab',
-                        userSelect: 'none',
-                        overflowX: 'hidden', // Hide scrollbar
+                      cursor: isDragging ? "grabbing" : "grab",
+                      userSelect: "none",
+                      overflowX: "hidden", // Hide scrollbar
                     }}
-                >
-                    {eventsData.map((event, index) => {
-                        const dynamicWidth = calculateDynamicWidth(index);
-                        const isExpanded = windowWidth >= 992 && index === currentSlide;
+                  >
+                    {events.map((event, index) => {
+                      const dynamicWidth = calculateDynamicWidth(index);
+                      const isExpanded =
+                        windowWidth >= 992 && index === currentSlide;
+                      const imageUrl =
+                        event.event_photo_urls[0] || "/images/placeholder.jpg"; // Use placeholder if 'image' is falsy
 
-                        return (
-                            <div
-                                key={index}
-                                className={`col-xl-${isExpanded ? 7 : 5} col-lg-${isExpanded ? 7 : 5} col-md-12 col-12 d-flex flex-row`}
-                                style={{
-                                    flex: `0 0 ${dynamicWidth}%`, // control width of item
-                                    maxWidth: `${dynamicWidth}%`,
-                                    transition: 'flex 0.3s ease-in-out, max-width 0.3s ease-in-out', // Smooth transition
-                                }}
-                            >
-                                <div className={`${style['upcoming-item-padding']}`}>
-                                    <div className={style['event-box']}>
-                                        <img src={event.image} className='' alt="" onClick={() => handleImageClick(event.id)} />
-                                        <div className={style['event-scroll']}>
-                                            <Link href="/event-details" className={`${style['event-upcoming-button']} text-start`}>
-                                                {event.type}
-                                            </Link>
-                                            <div className={style['event-scroll-text']}>
-                                                <span>
-                                                <span>
-                                                    <h4>{isExpanded ? truncateHeading(event.heading, 100) : truncateHeading(event.heading, 50)}</h4>
-                                                    <p className='text-black-50 d-lg-block d-none'>{isExpanded ? truncateDescription(event.description, 100) :truncateDescription(event.description, 50)} </p>
-                                                    <p className='text-black-50 d-lg-none d-block'>{truncateDescription(event.description, 120)} </p>
-
-                                                </span>
-                                                
-                                                </span>
-                                            </div>
-                                            <div className='border-top col-12 pt-3 pb-1'>
-                                                <ul className={style['plus-ul-upcoming']} style={{ paddingBottom: '90px', right: '20px' }}>
-                                                    {expandedItems && (
-                                                        <>
-                                                            <li>
-                                                                <b>{event.startDate}</b>
-                                                                <br />
-                                                                {event.startMonth}
-                                                            </li>
-                                                            <li>to</li>
-                                                            <li>
-                                                                <b>{event.endDate}</b>
-                                                                <br />
-                                                                {event.endMonth}
-                                                            </li>
-                                                        </>
-                                                    )}
-                                                </ul>
-                                                <button className={style['btn-plus']} style={{ marginTop: '-35px', right: '20px' }} onClick={toggleExpand}>
-                                                    <FiPlus />
-                                                </button>
-                                                <div className={` ${style['provider-date']} ps-xl-3 ps-lg-4 ps-4 d-flex flex-xl-row flex-lg-${isExpanded ? 'row' : 'column'}`} >
-                                                    <p  className={`pe-lg-${isExpanded ? '3' : '1'} pe-3`} >
-                                                        <span className={`pe-${isExpanded ? '3' : '1'} pe-3`}>
-                                                            <FaUserCircle size={27} color='grey' />
-                                                        </span>
-                                                        <span className='fw-semibold text-black-50 col-12'>BY: </span>
-                                                        {event.provider}
-                                                    </p>
-                                                    <span className={`pe-3 d-xl-${isExpanded ? 'block' : 'none'} d-lg-${isExpanded ? 'block' : 'none'}`} >|</span>
-                                                    <p className={` d-block d-lg-${isExpanded ? 'block' : 'none'}`}>{event.date}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                      return (
+                        <div
+                          key={index}
+                          className={`col-xl-${isExpanded ? 7 : 5} col-lg-${
+                            isExpanded ? 7 : 5
+                          } col-md-12 col-12 d-flex flex-row`}
+                          style={{
+                            flex: `0 0 ${dynamicWidth}%`, // control width of item
+                            maxWidth: `${dynamicWidth}%`,
+                            transition:
+                              "flex 0.3s ease-in-out, max-width 0.3s ease-in-out", // Smooth transition
+                          }}
+                        >
+                          <div className={`${style["upcoming-item-padding"]}`}>
+                            <div className={style["event-box"]}>
+                              <Link href={`/events/${event.id}`}>
+                                <img
+                                  src={imageUrl}
+                                  className=""
+                                  alt=""
+                                  onClick={() => handleImageClick(event.id)}
+                                />
+                              </Link>
+                              <div className={style["event-scroll"]}>
+                                <Link
+                                  href={`/events/${event.id}`}
+                                  className={`${style["event-upcoming-button"]} text-start`}
+                                >
+                                  {event.event_type.title}
+                                </Link>
+                                <div className={style["event-scroll-text"]}>
+                                  <span>
+                                    <span>
+                                      <h4>
+                                        {isExpanded
+                                          ? truncateHeading(event.name, 100)
+                                          : truncateHeading(event.name, 50)}
+                                      </h4>
+                                      <p className="text-black-50 d-lg-block d-none">
+                                        {isExpanded
+                                          ? truncateDescription(
+                                              event.description,
+                                              100
+                                            )
+                                          : truncateDescription(
+                                              event.description,
+                                              50
+                                            )}{" "}
+                                      </p>
+                                      <p className="text-black-50 d-lg-none d-block">
+                                        {truncateDescription(
+                                          event.description,
+                                          120
+                                        )}{" "}
+                                      </p>
+                                    </span>
+                                  </span>
                                 </div>
+                                <div className="border-top col-12 pt-3 pb-1">
+                                  <ul
+                                    className={style["plus-ul-upcoming"]}
+                                    style={{
+                                      paddingBottom: "90px",
+                                      right: "20px",
+                                    }}
+                                  >
+                                    {/* --- FIX START --- */}
+                                    {/* Corrected logic to show date only for the clicked item */}
+                                    {expandedDateItem === index &&
+                                      event.start_date &&
+                                      event.end_date &&
+                                      (() => {
+                                        const [startYear, startMonth, startDay] =
+                                          event.start_date.split("-");
+                                        const monthIndex = [
+                                          "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                                          "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+                                        ];
+                                        const monthStartName =
+                                          monthIndex[parseInt(startMonth, 10) - 1];
+
+                                        const [endYear, endMonth, endDay] =
+                                          event.end_date.split("-");
+                                        const monthEndName =
+                                          monthIndex[parseInt(endMonth, 10) - 1];
+
+                                        return (
+                                          <>
+                                            <li style={{ paddingInline: "5px" }}>
+                                              <b>{monthStartName}</b>
+                                              <br />
+                                              <b>{startDay}</b>
+                                            </li>
+                                            <li>to</li>
+                                            <li>
+                                              {" "}
+                                              <b>{monthEndName}</b>
+                                              <br />
+                                              <b>{endDay}</b>
+                                            </li>
+                                          </>
+                                        );
+                                      })()}
+                                    {/* --- FIX END --- */}
+                                  </ul>
+                                  <button
+                                    className={style["btn-plus"]}
+                                    style={{
+                                      marginTop: "-35px",
+                                      right: "20px",
+                                    }}
+                                    // Corrected onClick to pass the item's index
+                                    onClick={() => toggleExpand(index)}
+                                  >
+                                    <FiPlus />
+                                  </button>
+                                  <div
+                                    className={` ${
+                                      style["provider-date"]
+                                    } ps-xl-3 ps-lg-4 ps-4 d-flex flex-xl-row flex-lg-${
+                                      isExpanded ? "row" : "column"
+                                    }`}
+                                  >
+                                    <p
+                                      className={`pe-lg-${
+                                        isExpanded ? "3" : "1"
+                                      } pe-3`}
+                                    >
+                                      <span
+                                        className={`pe-${
+                                          isExpanded ? "3" : "1"
+                                        } pe-3`}
+                                      >
+                                        <FaUserCircle size={27} color="grey" />
+                                      </span>
+                                      <span className="fw-semibold text-black-50 col-12">
+                                        BY:{" "}
+                                      </span>
+                                      {event.provider}
+                                    </p>
+                                    <span
+                                      className={`pe-3 d-xl-${
+                                        isExpanded ? "block" : "none"
+                                      } d-lg-${isExpanded ? "block" : "none"}`}
+                                    >
+                                      |
+                                    </span>
+                                    <p
+                                      className={` d-block d-lg-${
+                                        isExpanded ? "block" : "none"
+                                      }`}
+                                    >
+                                      {event.date}
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
                             </div>
-                        );
+                          </div>
+                        </div>
+                      );
                     })}
+                  </div>
                 </div>
-            </div>
-            <div className={style['pagination-dots']}>
-                {Array.from({ length: eventsData.length - slidesToShow + 1 }).map((_, index) => (
-                    <span
+                {events.length > slidesToShow && (
+                  <div className={style["pagination-dots"]}>
+                    {Array.from({
+                      length: events.length - slidesToShow + 1,
+                    }).map((_, index) => (
+                      <span
                         key={index}
-                        className={`${style['dot']} ${index === currentSlide ? style['active'] : ''}`}
+                        className={`${style["dot"]} ${
+                          index === currentSlide ? style["active"] : ""
+                        }`}
                         onClick={() => handleDotClick(index)}
-                    />
-                ))}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
+          </div>
         </div>
-    );
+      </div>
+    </section>
+  );
 }
 
 export default UpcomingEvents;

@@ -1,43 +1,68 @@
 .accordion {
-    border-bottom: 1px solid #ddd;
-    /* margin-bottom: 15px; */
-    padding: 10px;
+  border-bottom: 1px solid #ddd;
+  /* margin-bottom: 15px; */
+  padding: 10px;
 }
 
 .accordionHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .title {
-    margin: 0;
-    flex: 1;
+  margin: 0;
+  flex: 1;
 }
 
 .sign {
-    margin-left: 10px;
-    font-size: 9px;
-    cursor: pointer;
+  margin-left: 10px;
+  font-size: 9px;
+  cursor: pointer;
 }
 
 .accordionContent {
-    /* padding: 10px 0; */
+  /* padding: 10px 0; */
 }
-.accordion ul { padding-left: 0; list-style: none;margin-bottom: 0; }
-.accordion ul li  {
-    font-size: 14px;
-    padding: 4px 0;
-    display: flex;
-    align-items: center;
+.accordion ul {
+  padding-left: 0;
+  list-style: none;
+  margin-bottom: 0;
 }
-.package-filter p{
-    font-size: 12px; 
+.accordion ul li {
+  font-size: 14px;
+  padding: 4px 0;
+  display: flex;
+  align-items: center;
 }
-.accordionContent h6{
-    padding: 15px 0;
+.package-filter p {
+  font-size: 12px;
 }
-.accordionContent  input {
-    height: auto;
-    margin-right: 5px;
+.accordionContent h6 {
+  padding: 15px 0;
+}
+.accordionContent input {
+  height: auto;
+  margin-right: 5px;
+}
+/* In your accordion.module.css file */
+
+.listItem {
+  padding: 8px 12px;
+  margin: 4px 0;
+  border-radius: 4px;
+  cursor: pointer; /* IMPORTANT: Shows the user it's clickable */
+  transition: background-color 0.2s ease-in-out;
+  list-style-type: none; /* Removes bullet points */
+}
+
+.listItem:hover {
+  background-color: #f0f0f0; /* A light hover effect */
+}
+
+/* This is the style for the "active" state */
+.selected {
+  background-color: #f0f0f0;
+  color: #00796b; /* A darker text color for contrast */
+  font-weight: 600; /* Makes the text bold */
 }

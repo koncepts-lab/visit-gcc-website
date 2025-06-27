@@ -1,35 +1,32 @@
-
-  .banner-search{
-    max-width: 500px;
-    margin: 0 auto;
-  
-  }
-  .banner-search input{
-    height: 60px;
-    background: #f8f8f800;
-    border-radius: 100px;
-    border-top-left-radius:100px !important;
-    border-bottom-left-radius:100px !important;
-    padding-left: 55px;
-    color: #fff !important;
-  }
-  .banner-search input:focus{
-    background: #f8f8f800 !important;
-    border: solid 1px #fff !important;
-
-  }
-
-  .banner-search button {
-    background: #f8f8f800;
-    border: none;
-    color: #ffffff;
-    font-size: 28px;
-    padding: 0 15px;
-    border-radius: 60px;
-    margin-right: -60px;
+.banner-search {
+  max-width: 500px;
+  margin: 0 auto;
+}
+.banner-search input {
+  height: 60px;
+  background: #f8f8f800;
+  border-radius: 100px;
+  border-top-left-radius: 100px !important;
+  border-bottom-left-radius: 100px !important;
+  padding-left: 55px;
+  color: #fff !important;
+}
+.banner-search input:focus {
+  background: #f8f8f800 !important;
+  border: solid 1px #fff !important;
 }
 
-  .banner-search button:hover{
-    background: #f8f8f800;
-    color: #135f74;
-  }
+.banner-search button {
+  background: #f8f8f800;
+  border: none;
+  color: #ffffff;
+  font-size: 28px;
+  padding: 0 15px;
+  border-radius: 60px;
+  margin-right: -60px;
+}
+
+.banner-search button:hover {
+  background: #f8f8f800;
+  color: #135f74;
+}

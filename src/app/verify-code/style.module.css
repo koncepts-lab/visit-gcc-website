@@ -1,72 +1,93 @@
 .otp-main {
-    height: 73vh;
-    align-self: center;
-  }
-  
-  .otp-container {
-    max-width: 500px;
-    background: linear-gradient(135deg, #f9f9f9, #ffffff);
-    border: 1px solid #e0e0e0;
-    border-radius: 15px;
-    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
-    padding: 2rem;
-    margin: auto;
-    margin-top: 200px;
-    text-align: center;
-  }
-  
-  .otp-main  h2 {
-    margin-bottom: 1em;
-    margin-left: auto;
-    width: 100%;
-    margin-right: auto;
-  }
+  height: 73vh;
+  align-self: center;
+}
 
-  
-  .otp-main form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .otp-main  label {
-    margin-top: 1em;
-    text-align: left;
-  }
-  
-  .otp-main  input {
-    padding: 0.5em;
-    margin-top: 0.5em;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .otp-main  button {
-    border-radius: 25px;
-    padding: 10px 20px;
-    font-size: 1rem;
-    margin-top: 1.5rem;
-  }
-  
-  .otp-main  button:disabled {
-    background-color: #ccc;
-  }
-  
-  .message {
-    margin-top: 1em;
-    font-weight: bold;
-  }
-  
-  .success {
-    color: green;
-  }
-  
-  .error {
-    color: red;
-  }
-  
-  .error-message {
-    color: red;
-    font-size: 0.9em;
-    margin-top: 0.5em;
-  }
-  
+.otp-container {
+  max-width: 500px;
+  background: linear-gradient(135deg, #f9f9f9, #ffffff);
+  border: 1px solid #e0e0e0;
+  border-radius: 15px;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  margin: auto;
+  margin-top: 200px;
+  text-align: center;
+}
+
+.otp-main h2 {
+  margin-bottom: 1em;
+  margin-left: auto;
+  width: 100%;
+  margin-right: auto;
+}
+.tab-buttons {
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  background-color: #f3f3f3;
+  overflow: hidden;
+}
+
+.tab-buttons button {
+  transition: all 0.3s ease-in-out;
+  background: #7fd2bad1;
+  border: solid 1px #ffffff;
+  color: #fff;
+}
+
+.tab-buttons .active {
+  color: white;
+  font-weight: bold;
+  border: none;
+}
+
+.tab-buttons button:hover {
+  background-color: #f0f0f0;
+}
+
+.otp-main form {
+  display: flex;
+  flex-direction: column;
+}
+
+.otp-main label {
+  margin-top: 1em;
+  text-align: left;
+}
+
+.otp-main input {
+  padding: 0.5em;
+  margin-top: 0.5em;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.otp-main submit {
+  border-radius: 25px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  margin-top: 1.5rem;
+}
+
+.otp-main button:disabled {
+  background-color: #ccc;
+}
+
+.message {
+  margin-top: 1em;
+  font-weight: bold;
+}
+
+.success {
+  color: green;
+}
+
+.error {
+  color: red;
+}
+
+.error-message {
+  color: red;
+  font-size: 0.9em;
+  margin-top: 0.5em;
+}
