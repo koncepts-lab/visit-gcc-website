@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import styles from "./accordion.module.css";
+import styles from "./Accordion.module.css";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 
 const Accordion = ({
