@@ -5,6 +5,14 @@ import Link from "next/link";
 
 const ArrowIcon = () => <FaArrowRightLong />;
 
+// 🧠 Helper to clamp description to 9 words
+function truncateToWords(text, wordLimit = 9) {
+  if (!text) return "";
+  const words = text.trim().split(/\s+/);
+  if (words.length <= wordLimit) return text;
+  return words.slice(0, wordLimit).join(" ") + "…";
+}
+
 function SingleBestPicked({ packages, type }) {
   return (
     <Link
@@ -14,7 +22,7 @@ function SingleBestPicked({ packages, type }) {
           : `/attractions/${packages.id}`
       }
     >
-      <div className={`item ${style["item-padding"]}`} >
+      <div className={`item ${style["item-padding"]}`}>
         <div className={style["best-picked-box"]}>
           <img
             src={packages?.photo_urls?.[0] || "/images/placeholder.jpg"}
@@ -24,7 +32,7 @@ function SingleBestPicked({ packages, type }) {
           />
           <span>
             <h4>{packages.name}</h4>
-            <p>{packages.description}</p>
+            <p>{truncateToWords(packages.description, 9)}</p>
           </span>
         </div>
       </div>

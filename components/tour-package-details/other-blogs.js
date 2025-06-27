@@ -15,17 +15,23 @@ function OtherBlogs(props) {
       >
         <div className={style["PakageDetailsOtherPackages"]}>
           <img
-            src={props.image}
+            src={props.image || "/images/placeholder.jpg"}
             className="w-100"
              onError={(e) => {
-    e.currentTarget.src = "/images/placeholder.jpg"; // Fallback if image fails to load
+    e.currentTarget.src = "/images/placeholder.jpg";
   }}
             alt=""
             style={{ height: "130px" }}
           />
           <div className={style["PakageDetailsOtherPackages-text"]}>
             <span>
-              <h4>{props.heading}</h4>
+              <h4 style={{
+height: '64px',
+                  display: '-webkit-box',
+                  WebkitLineClamp: 3, 
+                  WebkitBoxOrient: 'vertical',
+                  overflow: 'hidden'
+                }}>{props.heading}</h4>
               <p
                 style={{
                   width: "110px",

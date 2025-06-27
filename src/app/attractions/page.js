@@ -574,7 +574,7 @@ const AttractionsPage = () => {
                       <div className="col-md-12">
                         <Carousal
                           bestPicked={bestPicked}
-                          count={4}
+                          count={3}
                           type="attraction-bestPicked"
                         />
                       </div>

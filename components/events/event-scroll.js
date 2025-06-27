@@ -13,8 +13,19 @@ function EventScroll({ key, id, image, heading, description }) {
           <img src={imageUrl} className="w-100" style={{width: "360px", height: '263px'}} alt={heading || "Event"} /> {/* Added alt for accessibility */}
           <div className={style["event-scroll-text"]}>
             <span>
-              <h4>{heading}</h4>
-              <p>{description}</p>
+              <h4 style={{
+                              display: '-webkit-box',
+                              WebkitLineClamp: 3,  
+                              WebkitBoxOrient: 'vertical',
+                              overflow: 'hidden',
+                              height: '64px'
+                            }}>{heading}</h4>
+              <p  style={{
+                              display: '-webkit-box',
+                              WebkitLineClamp: 4,  
+                              WebkitBoxOrient: 'vertical',
+                              overflow: 'hidden'
+                            }}>{description}</p>
             </span>
             <span>
               <Link href={`/events/${id}`}>

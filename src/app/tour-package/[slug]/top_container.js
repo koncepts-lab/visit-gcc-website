@@ -211,7 +211,7 @@ export default function Top_container({ packageId }) {
             <section className={style["package-best-picked"]}>
               <div className="container">
                 <div className="row">
-                  <div className="col-md-12">
+                  <div className="col-md-12 ps-md-3">
                     <div className={style["review-img-container"]}>
                       {formattedPhotos.length > 0 ? (
                         <Carousal
@@ -246,7 +246,7 @@ export default function Top_container({ packageId }) {
                 packageInclusions.map((inclusion) => (
                   <span key={inclusion.id} className="d-flex flex-column justify-content-center">
                     <img
-                      src={inclusion.inclusion_icon_url}
+                      src={inclusion.inclusion_icon_url || "/images/placeholder.jpg"}
                       alt={inclusion.title}
                       className={`mx-auto`}
                       style={{ height: "50px", width: "50px" }}
@@ -266,7 +266,7 @@ export default function Top_container({ packageId }) {
                     className="d-flex flex-column justify-content-center"
                   >
                     <img
-                      src={theme.theme_icon_url}
+                      src={theme.theme_icon_url || "/images/placeholder.jpg"}
                       alt={theme.title}
                       className={` mx-auto`}
                       style={{ height: "50px", width: "50px" }}

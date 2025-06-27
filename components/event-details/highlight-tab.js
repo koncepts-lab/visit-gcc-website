@@ -2,12 +2,11 @@
 
 import React, { useState } from "react";
 import Slider from "react-slick";
-import style from "./style.module.css"; // Ensure correct path for styles
+import style from "./style.module.css"; 
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-// Importing icons
 import { HiOutlineArrowLongRight } from "react-icons/hi2";
 import { IoLocationSharp } from "react-icons/io5";
 import { IoIosCloudyNight, IoIosAirplane } from "react-icons/io";
@@ -16,7 +15,6 @@ import { GiCruiser } from "react-icons/gi";
 import { FaFerry, FaTrain } from "react-icons/fa";
 import Map from "@components/map/Map";
 
-// Main Tab Component
 const HighlightTab = ({
   highlight,
   photo,
@@ -86,18 +84,15 @@ const HighlightTab = ({
   );
 };
 
-// No Data Message Component
 const NoDataMessage = ({ message }) => (
   <div style={{ textAlign: "center", padding: "2rem", color: "#6c757d" }}>
     <p>{message}</p>
   </div>
 );
 
-// Highlight Tab Content
 const HighlightContent = ({ highlight }) => {
   const [activeAccordion, setActiveAccordion] = useState(null);
 
-  // Check if highlight data exists
   if (!highlight || highlight.trim() === "") {
     return (
       <NoDataMessage message="No highlight information available at the moment." />
@@ -123,9 +118,7 @@ const HighlightContent = ({ highlight }) => {
   );
 };
 
-// Photo Gallery Tab Content
 const PhotoGalleryEventHighlightsContent = ({ photoGallery }) => {
-  // Check if photo gallery data exists
   if (
     !photoGallery ||
     !Array.isArray(photoGallery) ||
@@ -181,7 +174,7 @@ const PhotoGalleryEventHighlightsContent = ({ photoGallery }) => {
         {photoGallery.map((image, index) => (
           <div key={index} className={style.carouselSlide}>
             <img
-              src={image}
+              src={image || "/images/placeholder.jpg"}
               alt={`Slide ${index + 1}`}
               className="rounded-4 col-sm-10 col-12"
               style={{ height: "252px" }}
@@ -193,9 +186,7 @@ const PhotoGalleryEventHighlightsContent = ({ photoGallery }) => {
   );
 };
 
-// FAQ Tab Content
 const FAQSectionContent = ({ faq }) => {
-  // Check if FAQ data exists
   if (!faq || faq.trim() === "") {
     return (
       <NoDataMessage message="No frequently asked questions available at the moment." />
@@ -205,14 +196,12 @@ const FAQSectionContent = ({ faq }) => {
   return (
     <div>
       <h4>FAQ Section</h4>
-      <p>{faq}</p>
+      <div dangerouslySetInnerHTML={{ __html: faq }} />
     </div>
   );
 };
 
-// Ticket Information Tab Content
 const TicketInformationContent = ({ ticket }) => {
-  // Check if ticket data exists
   if (!ticket || ticket.trim() === "") {
     return (
       <NoDataMessage message="No ticket information available at the moment." />
@@ -222,14 +211,12 @@ const TicketInformationContent = ({ ticket }) => {
   return (
     <div>
       <h4>Ticket Information</h4>
-      <p>{ticket}</p>
+      <div dangerouslySetInnerHTML={{ __html: ticket }} />
     </div>
   );
 };
 
-// Sponsors Tab Content
 const SponsorsAndPartnersContent = ({ sponsors }) => {
-  // Check if sponsors data exists
   if (!sponsors || sponsors.trim() === "") {
     return (
       <NoDataMessage message="No sponsors and partners information available at the moment." />
@@ -241,16 +228,16 @@ const SponsorsAndPartnersContent = ({ sponsors }) => {
       <h4>Sponsors and Partners</h4>
       <div className="container pt-2">
         <div className="row">
-          <p>{sponsors}</p>
+          <div className="col-12">
+            <div dangerouslySetInnerHTML={{ __html: sponsors }} />
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-// Venue Information Tab Content
 const VenueInformationContent = ({ venue, latitude, longitude }) => {
-  // Check if venue data exists
   const hasVenueData = venue && venue.trim() !== "";
   const hasCoordinates = latitude && longitude;
 
@@ -265,7 +252,13 @@ const VenueInformationContent = ({ venue, latitude, longitude }) => {
       <h4>Venue Information</h4>
       <div className="container">
         <div className={`row ${style["Legend-ul"]}`}>
-          {hasVenueData && <p>{venue}</p>}
+          {hasVenueData && (
+            <div
+              className="col-12"
+              dangerouslySetInnerHTML={{ __html: venue }}
+            />
+          )}
+
           {hasCoordinates ? (
             <Map latitude={latitude} longitude={longitude} />
           ) : (

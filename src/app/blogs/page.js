@@ -432,7 +432,7 @@ function page() {
                         src={ blogs?.main_image_url
         || "/images/placeholder.jpg"}
         onError={(e) => {
-    e.currentTarget.src = "/images/placeholder.jpg"; // Fallback if image fails to load
+    e.currentTarget.src = "/images/placeholder.jpg";
   }}
                         className="w-100"
                         style={{ height: "350px" }}
@@ -638,10 +638,10 @@ function page() {
                         <Link href={`/blogs/${features.uuid_id}`}>
                           <div className="d-flex gap-4">
                             <img src={features?.main_image_url || "/images/placeholder.jpg"}
-  alt="Feature image"
-  onError={(e) => {
-    e.currentTarget.src = "/images/placeholder.jpg"; // Fallback if image fails to load
-  }}/>
+                              alt="Feature image"
+                              onError={(e) => {
+                                e.currentTarget.src = "/images/placeholder.jpg"; 
+                              }}/>
                             <div>
                               <p
                                 style={{

@@ -16,14 +16,21 @@ function SingleHomeBlog(props) {
           alt=""
           style={{ height: "152px" }}
         />
-        <h4>{props.heading}</h4>
+        <h4 
+            style={{
+              height: '44px',
+        display: '-webkit-box',
+        WebkitLineClamp: 2,  
+        WebkitBoxOrient: 'vertical',
+        overflow: 'hidden'
+      }}>{props.heading}</h4>
         <p
-          style={{
-            width: "110px",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            whiteSpace: "nowrap",
-          }}
+    style={{
+        display: '-webkit-box',
+        WebkitLineClamp: 2,  
+        WebkitBoxOrient: 'vertical',
+        overflow: 'hidden'
+      }}
         >
           {props.description}
         </p>

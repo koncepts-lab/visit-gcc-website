@@ -21,8 +21,18 @@ function PakageDetailsOtherPackages(props) {
           />
           <div className={style["PakageDetailsOtherPackages-text"]}>
             <span>
-              <h4>{props.events.name}</h4>
-              <p style={{ fontSize: "14px" }}>{props.events.description}</p>
+              <h4 style={{
+                                         height: "65px", display: '-webkit-box',
+                                          WebkitLineClamp: 3, 
+                                          WebkitBoxOrient: 'vertical',
+                                          overflow: 'hidden'
+                                        }}>{props.events.name}</h4>
+              <p style={{     height: '84px',
+                                         fontSize: "14px", display: '-webkit-box',
+                                          WebkitLineClamp: 4, 
+                                          WebkitBoxOrient: 'vertical',
+                                          overflow: 'hidden'
+                                        }}>{props.events.description}</p>
             </span>
             <span>
               <Link href={`/events/${props.events.id}`}>

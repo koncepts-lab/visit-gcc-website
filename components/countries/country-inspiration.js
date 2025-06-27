@@ -14,8 +14,18 @@ function CountryInspiration(props) {
           <img src={props.image || "/images/placeholder.jpg"} className="w-100" style={{height: '286px'}} alt="" />
           <div className={style["country-explore-text"]}>
             <span>
-              <h4>{props.heading}</h4>
-              <p>{props.description}</p>
+              <h4 style={{height: '65px',
+                                         fontSize: "14px", display: '-webkit-box',
+                                          WebkitLineClamp: 3, 
+                                          WebkitBoxOrient: 'vertical',
+                                          overflow: 'hidden'
+                                        }}>{props.heading}</h4>
+              <p style={{height: '84px',
+                                         fontSize: "14px", display: '-webkit-box',
+                                          WebkitLineClamp: 4, 
+                                          WebkitBoxOrient: 'vertical',
+                                          overflow: 'hidden'
+                                        }}>{props.description}</p>
             </span>
             <span className={style["icon-next"]}>
               <div>
