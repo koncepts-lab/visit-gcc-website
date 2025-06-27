@@ -28,9 +28,8 @@ const ExploreEventsContainer = ({ events }) => {
     <ResponsiveMasonry>
       <Masonry>
         {events.map((event, i) => { 
-          const imageUrl = event.event_photo_urls.length > 0
-            ? event.event_photo_urls[0]
-            : "/images/placeholder.jpg"; 
+          const imageUrl = event.event_photo_urls[0]
+            || "/images/placeholder.jpg"; 
           return ( 
             <div key={i} className="masonry-item">
               <img
@@ -70,7 +69,12 @@ const ExploreEventsContainer = ({ events }) => {
 
                 <ul className={style["pakages-ul"]}>
                   <li>
-                    <p className="text-start">{event.description}</p>
+                    <p className="text-start" style={{
+                                     display: '-webkit-box',
+                                     WebkitLineClamp: 2,  
+                                     WebkitBoxOrient: 'vertical',
+                                     overflow: 'hidden'
+                                                                }}>{event.description}</p>
                   </li>
                 </ul>
 

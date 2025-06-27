@@ -14,9 +14,9 @@ function CountryExperiance(props) {
           <div className={style["front"]}>
             {/* front content */}
             <img
-              src={props.blogs.banner_image_url}
+              src={props.blogs.banner_image_url || "/images/placeholder.jpg"}
                           onError={(e) => {
-    e.currentTarget.src = "/images/placeholder.jpg"; // Fallback if image fails to load
+    e.currentTarget.src = "/images/placeholder.jpg"; 
   }}
               alt={props.blogs.heading}
               className="w-100" style={{height: '250px'}}
@@ -48,7 +48,12 @@ function CountryExperiance(props) {
             <h3>
               <FaTwitter />
             </h3>
-            <p>{props.blogs.description1}</p>
+            <p style={{
+                                                     fontSize: "14px", display: '-webkit-box',
+                                                      WebkitLineClamp: 4, 
+                                                      WebkitBoxOrient: 'vertical',
+                                                      overflow: 'hidden'
+                                                    }}>{props.blogs.description1}</p>
             {/* <Link
             href={`/blogs/${props.blogs.uuid_id}`}
             target=""

@@ -34,14 +34,12 @@ function Page() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const router = useRouter();
 
-  // Fetch event data when the component mounts or the ID changes
   useEffect(() => {
     const fetchEvent = async () => {
       setIsLoading(true);
       setError(null);
 
       try {
-        // Fetch event details
         const response = await axios.get(
           `${process.env.NEXT_PUBLIC_API_URL}events/${slug}`
         );
@@ -98,7 +96,7 @@ function Page() {
       setIsPopupOpen(true);
     } else {
       // Assuming enqueueSnackbar is globally available or imported elsewhere
-      // enqueueSnackbar("Please log in to Book.", { variant: "warning" });
+      enqueueSnackbar("Please log in to Book.", { variant: "warning" });
       router.push("/login");
     }
   };
@@ -229,8 +227,17 @@ function Page() {
               <section className={style["package-best-picked"]}>
                 <div className="container">
                   <div className="row">
-                    <div className="col-md-12">
+                    <div className="col-md-12 ps-md-3">
                       <div className={style["review-img-container"]}>
+                            {formattedPhotos.length > 0 ? (
+                        <Carousal
+                          packageDetailsReview={formattedPhotos}
+                          count={1}
+                          type="tour-package-details-reviews"
+                        />
+                      ) : (
+                        <img src="/images/placeholder.jpg" className="col-6" alt="placeholder"/>
+                      )}
                       </div>
                     </div>
                   </div>

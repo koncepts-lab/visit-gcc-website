@@ -16,12 +16,17 @@ function PakageDetailsOtherPackages({ packages, type }) {
           src={packages?.photo_urls?.[0] || "/images/placeholder.jpg"}
           className="w-100"
           alt={packages.name}
-          style={{ height: "146px" }}
+          style={{ height: "149px" }}
         />
         <div className={style["PakageDetailsOtherPackages-text"]}>
           <span>
-            <h4>{packages.name}</h4>
-            <p style={{ fontSize: "14px" }}>{packages.description}</p>
+            <h4 className="mb-3" style={{height: '49px'}}>{packages.name}</h4>
+            <p  style={{height: '84px',
+                           fontSize: "14px", display: '-webkit-box',
+                            WebkitLineClamp: 4, 
+                            WebkitBoxOrient: 'vertical',
+                            overflow: 'hidden'
+                          }}>{packages.description}</p>
           </span>
           <span>
             <FaChevronRight />

@@ -384,23 +384,10 @@ border-radius:15px 15px 0 0;
 
 
 .featured-travel {
-    float: left;
     width: 100%;
-    position: relative;
-    
+ background: #fff;
 }
-.featured-travel span {
-    float: left;
-    width: 100%;
-    position: relative;
-    margin-top: -66px;
-    padding: 10px 10px;
-    background: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
-}
+
 .pakage-bes-picked .item {
     border-radius:15px !important;
 }
@@ -409,9 +396,6 @@ border-radius:15px 15px 0 0;
 }
 .featured-travel img {
     border-radius: 15px;
-}
-.featured-travel span {
-    border-radius:0 0 15px 15px;
 }
 
 .item-padding{
@@ -454,6 +438,7 @@ background: linear-gradient(0deg, rgba(2,0,36,1) 54%, rgba(0,0,0,0) 100%);
     font-weight: 600 !important;
     margin-top: 10px;
     padding-top: 32px;
+    height: 93px;
     color: #fff;
     text-transform: unset;
 }

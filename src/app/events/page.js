@@ -106,6 +106,7 @@ const Country = () => {
           `${process.env.NEXT_PUBLIC_API_URL}events`
         );
         const fetchedEvents = response.data.data || response.data || [];
+        console.log(fetchedEvents);
         setAllEvents(fetchedEvents);
         setFilteredEvents(fetchedEvents);
         setIsLoading(false);
@@ -228,7 +229,6 @@ const Country = () => {
     });
   };
 
-  // Calendar date filter function
   const filterByCalendarDate = (events, selectedDate) => {
     const selectedDateString = selectedDate.toISOString().split("T")[0];
     return events.filter((event) => {
@@ -279,7 +279,6 @@ const Country = () => {
     }
   };
 
-  // Main filter function
   const applyAllFilters = async () => {
     let eventsToFilter = [...allEvents];
     const { priceRange, selectedDate, selectedItems } = filters;
@@ -419,20 +418,31 @@ const Country = () => {
           >
             <div className="col-md-6">
               <img
-                src={
-  allEvents[0]?.event_photo_urls && allEvents[0].event_photo_urls.length > 0
-          ? allEvents[0].event_photo_urls[0]
-          : "/images/placeholder.jpg"                }
-                className={`img-fluid w-100`}
-                style={{maxHeight: '487px'}}
-                alt="Featured Event"
+              src={
+              allEvents?.[0]?.event_photo_urls?.[0] || "/images/placeholder.jpg" }
+              onError={(e) => {
+              e.currentTarget.onerror = null; 
+              e.currentTarget.src = "/images/placeholder.jpg";}}
+              className="img-fluid w-100"
+              style={{ maxHeight: "487px", objectFit: "cover" }}
+              alt="Featured Event"
               />
             </div>
             <div className={`col-md-6 ${style["d-flex"]}`}>
               <div className={style["events-top-text"]}>
                 <h3>{allEvents[0]?.name}</h3>
-                <p className="mb-2">{allEvents[0]?.highlight}</p>
-                <p>{allEvents[0]?.description}</p>
+                <p className="mb-2" style={{
+                 display: '-webkit-box',
+                 WebkitLineClamp: 4,  
+                 WebkitBoxOrient: 'vertical',
+                 overflow: 'hidden'
+                                            }}>{allEvents[0]?.highlight}</p>
+                <p style={{
+                 display: '-webkit-box',
+                 WebkitLineClamp: 4,  
+                 WebkitBoxOrient: 'vertical',
+                 overflow: 'hidden'
+                                            }}>{allEvents[0]?.description}</p>
               </div>
             </div>
           </Link>

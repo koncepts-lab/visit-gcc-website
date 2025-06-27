@@ -34,17 +34,14 @@ const HolidaysTab = (props) => {
           id: tab.id,
           name: tab.title,
           description: tab.description,
-          // Store the relevant items directly in the tab object
           items: tab[itemsKey] || [],
         }));
 
-        // Aggregate all items from all themes for the "All Themes" tab
         let allItemsAggregated = [];
         formattedTabs.forEach(tab => {
           allItemsAggregated.push(...tab.items);
         });
 
-        // Ensure items are unique in case one item belongs to multiple themes
         const uniqueAllItems = Array.from(new Map(allItemsAggregated.map(item => [item.id, item])).values());
         
         const allTabsData = [

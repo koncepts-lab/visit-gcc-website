@@ -22,8 +22,13 @@ function SingleHomePackage({ link, photo_url, name, description }) {
         style={{ height: "230px" }}
       />
       <div className={style["home-packages-text"]}>
-        <h4>{name}</h4>
-        <p>{description}</p>
+        <h4 style={{height: '64px'}}>{name}</h4>
+        <p   style={{
+    display: '-webkit-box',
+    WebkitLineClamp: 2,  
+    WebkitBoxOrient: 'vertical',
+    overflow: 'hidden'
+  }}>{description}</p>
         <ArrowIcon />
       </div>
     </Link>
