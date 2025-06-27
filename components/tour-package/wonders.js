@@ -28,8 +28,8 @@ function Singlewonders(props) {
             alt={props.heading}
           />
           <span>
-            <h4 >{props.heading}</h4>
-            <p>{truncateToWords(props.description, 9)}</p>
+            <h4 >{truncateToWords(props.description, 6)}</h4>
+            <p style={{height: '52px'}}>{truncateToWords(props.description, 7)}</p>
           </span>
         </div>
       </Link>

@@ -25,7 +25,7 @@ const ExploreEventsContainer = ({ events }) => {
   };
 
   return (
-    <ResponsiveMasonry>
+    <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2, 1200: 3, 1500: 3 }}>
       <Masonry>
         {events.map((event, i) => { 
           const imageUrl = event.event_photo_urls[0]
@@ -34,12 +34,17 @@ const ExploreEventsContainer = ({ events }) => {
             <div key={i} className="masonry-item">
               <img
                 src={imageUrl}
-                style={{ width: "100%", display: "block" }}
+                style={{ width: "100%", display: "block" , minHeight: '244px'}}
                 alt={event.name || "Event Image"} 
               />
               <div className="event-masonry-item-content"
               >
-                <h5>{event.name}</h5>
+                <h5  style={{
+                                           display: '-webkit-box',
+                                            WebkitLineClamp: 3, 
+                                            WebkitBoxOrient: 'vertical',
+                                            overflow: 'hidden'
+                                          }}>{event.name}</h5>
                 <div className={style["provider-date"]}>
                   {event.provider && ( 
                     <>

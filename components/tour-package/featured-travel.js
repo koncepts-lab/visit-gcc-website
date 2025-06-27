@@ -25,7 +25,7 @@ function FeaturedTravel(props) {
           />
           <span>
             <div className="p-3">
-              <h4 style={{height: '54px'}}>{props.heading}</h4>
+              <h4 style={{height: '54px'}}>{truncateToWords(props.heading, 5)}</h4>
               <p className="text-black">
                 {truncateToWords(props.description, 8)}
               </p>

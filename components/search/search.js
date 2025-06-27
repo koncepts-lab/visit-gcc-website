@@ -38,7 +38,7 @@ const SearchComponent = () => {
     setError(null);
 
     try {
-      const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/search/general?q=${encodeURIComponent(
+      const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}search/general?q=${encodeURIComponent(
         query
       )}`;
       const response = await fetch(apiUrl);
