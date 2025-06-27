@@ -31,12 +31,10 @@ const TourPackageTab = ({
 
   // This is the main effect for handling filtering logic
   useEffect(() => {
-    // If the initial `packages` prop changes, update the state
-    // This is important if the parent component sends a new list of packages
     if (activeTab === 'default') {
         setFilteredPackages(packages || []);
     }
-  }, [packages]);
+  }, [packages, activeTab]);
 
 
   // This effect handles fetching data when a new tab is selected
@@ -45,17 +43,15 @@ const TourPackageTab = ({
       localStorage.getItem("auth_token_login") ||
       localStorage.getItem("auth_token_register");
 
-    // If "All Default" is selected, just use the packages from props.
     if (activeTab === "default") {
       setFilteredPackages(packages || []);
-      return; // Stop execution for the "default" tab
+      return;
     }
 
-    // For any other category tab, fetch data from the API.
     const fetchFilteredPackages = async () => {
       setIsLoading(true);
       setError(null);
-      setFilteredPackages([]); // Clear previous packages
+      setFilteredPackages([]);
 
       try {
         const response = await axios.get(
@@ -78,9 +74,9 @@ const TourPackageTab = ({
     };
 
     fetchFilteredPackages();
-  }, [activeTab]); // This effect now only depends on `activeTab`
+  }, [activeTab]);
 
-  // This effect fetches secondary details (icons, ratings, vendors) for the currently displayed packages
+  // This effect fetches secondary details and is now fully protected against loops
   useEffect(() => {
     const authToken =
       localStorage.getItem("auth_token_login") ||
@@ -94,6 +90,8 @@ const TourPackageTab = ({
         setIconsData((prev) => ({ ...prev, [packageId]: response.data || [] }));
       } catch (err) {
         console.error(`Error fetching icons for package ${packageId}:`, err);
+        // **FIX**: Mark as attempted (with null) to prevent re-fetching on error
+        setIconsData((prev) => ({ ...prev, [packageId]: null }));
       }
     };
 
@@ -108,11 +106,16 @@ const TourPackageTab = ({
         }));
       } catch (err) {
         console.error(`Error fetching ratings for package ${packageId}:`, err);
+        // **FIX**: Mark as attempted (with null) to prevent re-fetching on error
+        setRatingsData((prev) => ({ ...prev, [packageId]: null }));
       }
     };
 
     const fetchVendorInfo = async (packageId, vendorId) => {
-      if (!vendorId || !authToken) return;
+      if (!vendorId || !authToken) {
+        setVendorData((prev) => ({...prev, [packageId]: null })); // Mark as done if no vendorId
+        return;
+      }
 
       try {
         const vendorResponse = await axios.get(
@@ -121,7 +124,11 @@ const TourPackageTab = ({
         );
         const userId = vendorResponse.data?.user_id;
 
-        if (!userId) return;
+        if (!userId) {
+            // **FIX**: Mark as attempted even if no user_id is found
+            setVendorData((prev) => ({ ...prev, [packageId]: null }));
+            return;
+        };
 
         const userResponse = await axios.get(
           `${process.env.NEXT_PUBLIC_API_URL}app/get-user/${userId}`,
@@ -133,14 +140,18 @@ const TourPackageTab = ({
         setVendorData((prev) => ({ ...prev, [packageId]: vendorName }));
       } catch (err) {
         console.error(`Error fetching vendor info for package ${packageId}:`, err);
+        // **FIX**: Mark as attempted (with null) to prevent re-fetching on error
+        setVendorData((prev) => ({ ...prev, [packageId]: null }));
       }
     };
 
     if (filteredPackages && filteredPackages.length > 0) {
       filteredPackages.forEach((pkg) => {
-        if (!iconsData[pkg.id]) fetchIcons(pkg.id);
-        if (!ratingsData[pkg.id]) fetchRatings(pkg.id);
-        if (!vendorData[pkg.id] && pkg.vendor_id) fetchVendorInfo(pkg.id, pkg.vendor_id);
+        // **FIX**: The check and the function's catch block work together to prevent loops.
+        // This logic is now applied to all three data types.
+        if (iconsData[pkg.id] === undefined) fetchIcons(pkg.id);
+        if (ratingsData[pkg.id] === undefined) fetchRatings(pkg.id);
+        if (vendorData[pkg.id] === undefined && pkg.vendor_id) fetchVendorInfo(pkg.id, pkg.vendor_id);
       });
     }
   }, [filteredPackages]); 
@@ -193,7 +204,17 @@ const TourPackageTab = ({
                 <div className={style["provider-date"]}>
                   <p>{new Date(pkg.created_at).toLocaleDateString()}</p>
                 </div>
-                {/* <div className={style["star-section"]}> ... commented out code ... </div> */}
+                {/* Render ratings only if data exists (is not null or undefined) */}
+                {ratingsData[pkg.id] && (
+                  <Rating
+                      count={5}
+                      value={ratingsData[pkg.id]?.average_rating || 0}
+                      size={24}
+                      activeColor="#ffd700"
+                      edit={false}
+                  />
+                )}
+                {/* Render icons only if data exists and is an array with items */}
                 {iconsData[pkg.id] && iconsData[pkg.id].length > 0 && (
                   <ul className={style["pakages-ul"]}>
                     {iconsData[pkg.id].map((icon) => (
@@ -261,7 +282,7 @@ const TourPackageTab = ({
                         onClick={() => setActiveTab(tab.uuid_id)}
                         type="button"
                         role="tab"
-                        disabled={isLoading} // Disable tabs while loading
+                        disabled={isLoading} 
                       >
                         {tab.title}
                       </button>

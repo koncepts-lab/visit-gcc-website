@@ -488,7 +488,7 @@ function Page() {
           <div className="container-fluid">
             <div className="row pt-2 pb-1">
               <div className="col-md-12">
-                <Carousal otherBlogs={blogs} count={5} type="other-blogs" />
+                <Carousal otherBlogs={blogs} count={4} type="other-blogs" />
               </div>
             </div>
           </div>

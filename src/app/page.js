@@ -154,7 +154,7 @@ function Home() {
               <h3>Attractions</h3>
             </div>
             <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-4 col-sm-3 col-3 text-right">
-              <Link href="tour-package" className="float-right">
+              <Link href="/attractions" className="float-right">
                 View All
               </Link>
             </div>
