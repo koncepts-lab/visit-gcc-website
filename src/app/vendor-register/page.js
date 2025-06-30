@@ -22,25 +22,21 @@ function Page() {
     
     // Clear previous errors
     setFormErrors("");
-     //console.log("Form submitted with User ID:", userId, "and PAN:", panNumber);
 
     // Basic validation
     if (!userId || !panNumber) {
       setFormErrors("Both fields are required.");
-       //console.log("Error: Both fields are required.");
       return;
     }
 
     if (!validatePanNumber(panNumber)) {
       setFormErrors("Please enter a valid PAN number.");
-       //console.log("Error: Invalid PAN number format.");
       return;
     }
 
     // API call
     try {
       setIsLoading(true);
-       //console.log("Sending API request...");
 
       const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}vendors`, {
         user_id: userId,
@@ -48,12 +44,9 @@ function Page() {
       });
 
       // Log the successful response from the API
-       //console.log("API Response:", response.data);
 
       // Handle success
       enqueueSnackbar('Form submitted successfully!', { variant: 'success' });
-       //console.log("Form submission success");
-
       // Reset form
       setUserId("");
       setPanNumber("");
@@ -65,7 +58,6 @@ function Page() {
       enqueueSnackbar('Error submitting form', { variant: 'error' });
     } finally {
       setIsLoading(false);
-       //console.log("Form submission completed.");
     }
   };
 

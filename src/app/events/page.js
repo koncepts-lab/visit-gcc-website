@@ -106,7 +106,6 @@ const Country = () => {
           `${process.env.NEXT_PUBLIC_API_URL}events`
         );
         const fetchedEvents = response.data.data || response.data || [];
-         //console.log(fetchedEvents);
         setAllEvents(fetchedEvents);
         setFilteredEvents(fetchedEvents);
         setIsLoading(false);
@@ -128,7 +127,6 @@ const Country = () => {
         );
         const fetchedEvents = response.data;
         setLesserWonders(fetchedEvents);
-         //console.log()
       } catch (err) {
         console.error("Error fetching past events:", err);
       }

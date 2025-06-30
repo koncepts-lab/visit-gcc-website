@@ -28,7 +28,6 @@ export default function AttractionTopContainer({ packageId }) {
   const router = useRouter(); // MODIFIED: Instantiate the router
 
   useEffect(() => {
-     //console.log("Received packageId:", packageId);
 
     const fetchData = async () => {
       if (!packageId) {
@@ -47,18 +46,15 @@ export default function AttractionTopContainer({ packageId }) {
       try {
         // 1. Fetch Attraction Details
         const detailsEndpoint = `${process.env.NEXT_PUBLIC_API_URL}attractions/${packageId}`;
-         //console.log(`Fetching attraction details from: ${detailsEndpoint}`);
         const detailsResponse = await axios.get(detailsEndpoint); // No token needed as per previous requests
         const fetchedDetails =
           detailsResponse.data.data || detailsResponse.data;
         if (!fetchedDetails) throw new Error("No attraction details found.");
         setAttractionDetails(fetchedDetails);
-         //console.log("Attraction details:", fetchedDetails);
 
         // 2. Fetch Attraction Ratings (if applicable)
         const ratingsEndpoint = `${process.env.NEXT_PUBLIC_API_URL}attraction-review/${packageId}/ratings`;
         try {
-           //console.log(`Fetching attraction ratings from: ${ratingsEndpoint}`);
           const ratingsResponse = await axios.get(ratingsEndpoint); // No token needed
           setAttractionRatings(
             ratingsResponse.data.data || ratingsResponse.data || null

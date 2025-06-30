@@ -36,7 +36,6 @@ function Country() {
           `${process.env.NEXT_PUBLIC_API_URL}blog`
         );
         const allBlogs = response.data.data || response.data || [];
-         //console.log("🚀 ~ fetchBlogs ~ allBlogs:", allBlogs);
 
         setBlogs(allBlogs);
       } catch (err) {

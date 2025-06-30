@@ -48,7 +48,6 @@ function Page() {
           throw new Error("No event data found");
         }
         setEvent(eventData);
-         //console.log("Fetched event:", eventData);
 
         // Fetch event ratings
         const ratingsResponse = await axios.get(
@@ -76,7 +75,6 @@ function Page() {
           `${process.env.NEXT_PUBLIC_API_URL}events/related/${slug}`
         );
         setRelatedEvents(response.data);
-         //console.log("Related Events:", response);
         setIsLoading(false);
       } catch (err) {
         console.error("Error fetching event:", err);
