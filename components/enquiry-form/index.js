@@ -91,7 +91,6 @@ export default function EnquiryForm({ isOpen, onClose }) {
 
       // Log the raw response for debugging
       const text = await response.text();
-       //console.log("Raw response:", text);
 
       // Try to parse JSON, fallback if invalid
       let result;

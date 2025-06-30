@@ -53,10 +53,8 @@ function Comments({ blogId, style }) {
 
       if (loginToken) {
         authToken = loginToken;
-         //console.log("Using login token for fetching packages.");
       } else if (registerToken) {
         authToken = registerToken;
-         //console.log("Using register token for fetching packages.");
       }
 
       if (!authToken) {
@@ -106,10 +104,8 @@ function Comments({ blogId, style }) {
 
       if (loginToken) {
         authToken = loginToken;
-         //console.log("Using login token for fetching packages.");
       } else if (registerToken) {
         authToken = registerToken;
-         //console.log("Using register token for fetching packages.");
       }
 
       if (!authToken) {
@@ -122,7 +118,6 @@ function Comments({ blogId, style }) {
         headers: { Authorization: `Bearer ${authToken}` },
       });
       
-       //console.log(`Replies for comment ${commentId}:`, response.data);
 
       const repliesData = response.data.replies || [];
       
@@ -158,10 +153,8 @@ function Comments({ blogId, style }) {
 
         if (loginToken) {
           authToken = loginToken;
-           //console.log("Using login token for fetching packages.");
         } else if (registerToken) {
           authToken = registerToken;
-           //console.log("Using register token for fetching packages.");
         }
 
         if (!authToken) {
@@ -176,7 +169,6 @@ function Comments({ blogId, style }) {
         }, {
           headers: { Authorization: `Bearer ${authToken}` },
         });
-         //console.log("Add Comment Response:", response.data);
         
         // Fetch user details for the new comment
         const newCommentData = response.data;
@@ -202,10 +194,8 @@ function Comments({ blogId, style }) {
 
         if (loginToken) {
           authToken = loginToken;
-           //console.log("Using login token for fetching packages.");
         } else if (registerToken) {
           authToken = registerToken;
-           //console.log("Using register token for fetching packages.");
         }
 
         if (!authToken) {
@@ -220,7 +210,6 @@ function Comments({ blogId, style }) {
         }, {
           headers: { Authorization: `Bearer ${authToken}` },
         });
-         //console.log("Add Reply Response:", response.data);
         
         // Fetch user details for the new reply
         const newReplyData = response.data;

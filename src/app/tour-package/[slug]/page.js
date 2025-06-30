@@ -54,7 +54,6 @@ function Page() {
         );
 
         const AllPackage = response.data.data || response.data || [];
-         //console.log("packages Data:", AllPackage);
         setAllPackage(AllPackage);
 
         setIsLoading(false);

@@ -62,7 +62,6 @@ export async function POST(req) {
 
     // Verify transporter configuration
     await transporter.verify();
-     //console.log("Transporter configuration is valid.");
 
     // Send email
     await transporter.sendMail({
@@ -71,7 +70,6 @@ export async function POST(req) {
       subject: "New Traveller Enquiry Submission",
       html: emailTemplate,
     });
-     //console.log("Email sent successfully.");
 
     return new Response(
       JSON.stringify({ message: "Enquiry submitted successfully!" }),

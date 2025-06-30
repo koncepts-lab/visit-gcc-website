@@ -37,11 +37,9 @@ function Newsletter() {
       
            if (loginToken) {
               authToken = loginToken;
-               //console.log("Using login token for fetching packages.");
             }
             else if (registerToken) {
               authToken = registerToken;
-               //console.log("Using register token for fetching packages.");
             } 
       
             if (!authToken) {
@@ -61,7 +59,6 @@ function Newsletter() {
                   },
                 }
               ); 
-               //console.log(response.data)
               enqueueSnackbar("Successfully subscribed to the newsletter!", { variant: "success" });        setNewsletter({ name: "", email: "" });
             } catch (err) {
               console.error("Error subscribing to newsletter:", err);

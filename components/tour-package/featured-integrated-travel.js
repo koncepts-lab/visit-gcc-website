@@ -38,7 +38,6 @@ function FeaturedIntegratedTravel({ type = "packages" }) {
 
       // 4. The API URL is now built dynamically from our config object. No more if/else!
       const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}${config.apiPath}`;
-       //console.log(`Fetching from: ${apiUrl}`); // Great for debugging
 
       try {
         const response = await axios.get(apiUrl);

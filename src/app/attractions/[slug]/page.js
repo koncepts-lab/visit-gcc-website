@@ -34,7 +34,6 @@ function Page() {
         );
 
         const singlePackageData = response.data.data || response.data || [];
-         //console.log("packages Data:", singlePackageData);
         setSlugPackage(singlePackageData);
 
         setIsLoading(false);
@@ -56,7 +55,6 @@ function Page() {
         );
 
         const AllPackage = response.data.data || response.data || [];
-         //console.log("packages Data:", AllPackage);
         setAllPackage(AllPackage);
 
         setIsLoading(false);

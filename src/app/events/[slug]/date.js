@@ -35,10 +35,8 @@ const DatePickerWithHover = ({ onClose, eventId, type = "event" }) => {
 
         if (loginToken) {
           authToken = loginToken;
-           //console.log("Using login token for fetching events.");
         } else if (registerToken) {
           authToken = registerToken;
-           //console.log("Using register token for fetching events.");
         }
 
         const response = await axios.get(
@@ -46,7 +44,6 @@ const DatePickerWithHover = ({ onClose, eventId, type = "event" }) => {
         );
 
         const singleEventData = response.data.data || response.data || [];
-         //console.log("events Data:", singleEventData);
         setSlugEvent(singleEventData);
 
         if (!singleEventData.start_date || !singleEventData.end_date) {
@@ -153,7 +150,6 @@ const DatePickerWithHover = ({ onClose, eventId, type = "event" }) => {
       ticket_type: ticketType,
       rooms: [{ adults: room.adults, children: room.children, infants: room.infant }],
     };
-     //console.log("Submitting Booking Payload:", bookingData);
 
     const authToken = localStorage.getItem("auth_token_login") || localStorage.getItem("auth_token_register");
     if (!authToken) {
@@ -169,7 +165,6 @@ const DatePickerWithHover = ({ onClose, eventId, type = "event" }) => {
     })
     .then((response) => {
       const bookingId = response.data.data.id;
-       //console.log("Booking API Response:", response);
       setIsBooking(false);
       onClose();
       router.push(`/event-checkout?bookingId=${encodeURIComponent(bookingId)}`);

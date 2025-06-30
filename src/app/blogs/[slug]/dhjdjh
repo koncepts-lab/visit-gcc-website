@@ -98,7 +98,6 @@ function Page() {
           }); 
           const allCategories = response.data.data || response.data || []; 
     
-           //console.log("All categories:", allCategories); 
           setCategories(allCategories);
           setIsLoading(false);
     
@@ -135,7 +134,6 @@ function Page() {
           );
   
           const singleBlogData = blogResponse.data.data || blogResponse.data || [];
-           //console.log("Blog Data:", singleBlogData);
           setSlugBlogs(singleBlogData);
   
           // Fetch FAQ data
@@ -180,7 +178,6 @@ function Page() {
             }); 
             const allFeatured = response.data.data || response.data || []; 
       
-             //console.log("All Featured:", allFeatured); 
             setFeatured(allFeatured);
             setIsLoading(false);
       
@@ -209,7 +206,6 @@ function Page() {
               }
             }); 
             const allTags = response.data.data || response.data || []; 
-             //console.log("All Tags:", allTags); 
             setTags(allTags);
             setIsLoading(false);
       
@@ -270,7 +266,6 @@ const fetchReplies = async (commentId) => {
         }, {
           headers: { Authorization: `Bearer ${authToken}` },
         });
-         //console.log("Add Comment Response:", response.data); // Log the response after adding a comment
         setComments(prev => [...prev, response.data]);
         setNewComment("");
       } catch (err) {
@@ -289,7 +284,6 @@ const fetchReplies = async (commentId) => {
         }, {
           headers: { Authorization: `Bearer ${authToken}` },
         });
-         //console.log("Add Reply Response:", response.data);
         setComments(prev => prev.map(comment => {
           if (comment.uuid_id === commentId) {
             // Ensure comment.replies is always an array

@@ -126,8 +126,6 @@ const AttractionsPage = () => {
       const filterParams = buildQueryParams();
       const url = `${process.env.NEXT_PUBLIC_API_URL}attractions`;
 
-       //console.log("Fetching attractions with params:", filterParams); // Debug log
-
       const response = await axios.get(url, {
         params: filterParams, // Use params object instead of query string
         headers: authToken ? { Authorization: `Bearer ${authToken}` } : {},
