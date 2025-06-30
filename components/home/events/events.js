@@ -45,7 +45,12 @@ function SingleHomeEvents({ event_photo_urls, date, name, description, link }) {
           style={{ height: "214px" }}
         />
         <div className={style["date"]}>{formatDate(date)}</div>
-        <h4>{name}</h4>
+        <h4  style={{height: '64px',
+                display: '-webkit-box',
+                WebkitLineClamp: 3,  
+                WebkitBoxOrient: 'vertical',
+                overflow: 'hidden'
+              }}>{name}</h4>
         <p
             style={{
                 display: '-webkit-box',

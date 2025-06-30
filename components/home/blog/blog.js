@@ -26,6 +26,7 @@ function SingleHomeBlog(props) {
       }}>{props.heading}</h4>
         <p
     style={{
+      height: '45px',
         display: '-webkit-box',
         WebkitLineClamp: 2,  
         WebkitBoxOrient: 'vertical',

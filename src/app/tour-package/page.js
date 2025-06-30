@@ -148,8 +148,10 @@ const TourPackage = () => {
         setFilteredPackages(fetchedPackages);
 
         setTour_category(tourCategoryRes.data.data || []);
-        setBestpicked(bestPickedRes.data.data || []);
-        setLesserWonders(lesserWondersRes.data.data || []);
+        setBestpicked(bestPickedRes.data || []);
+                console.log("lesser ",lesserWondersRes.data);
+
+        setLesserWonders(lesserWondersRes.data || []);
       } catch (err) {
         setError("Failed to fetch initial page data. Please try again.");
         console.error("Data fetch error:", err);

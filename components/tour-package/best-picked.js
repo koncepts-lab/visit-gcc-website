@@ -32,7 +32,7 @@ function SingleBestPicked({ packages, type }) {
           />
           <span>
             <h4>{packages.name}</h4>
-            <p>{truncateToWords(packages.description, 9)}</p>
+            <p style={{height: '60px'}}>{truncateToWords(packages.description, 8)}</p>
           </span>
         </div>
       </div>
