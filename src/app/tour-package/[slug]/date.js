@@ -352,7 +352,7 @@ const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
         infants: room.infant,
       })),
     };
-    console.log("Submitting Booking Payload:", bookingData);
+     //console.log("Submitting Booking Payload:", bookingData);
 
     const authToken =
       localStorage.getItem("auth_token_login") ||
@@ -375,7 +375,7 @@ const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
       )
       .then((response) => {
         const bookingId = response.data.data.id;
-        console.log("Booking API Response:", response.data.data.id);
+         //console.log("Booking API Response:", response.data.data.id);
         localStorage.setItem("booking_data", JSON.stringify(bookingData));
         localStorage.setItem("data", JSON.stringify(slugPackage));
         onClose();

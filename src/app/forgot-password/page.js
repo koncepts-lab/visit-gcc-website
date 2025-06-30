@@ -86,7 +86,7 @@ const ForgotPasswordPage = () => {
         router.push(
           `/verify-code?tab=reset_password&email=${encodeURIComponent(email)}`
         );
-        console.log("Password reset link request successful", response.data);
+         //console.log("Password reset link request successful", response.data);
         setSubmittedEmail(email); // Store the email for the success message
         setShowSuccessView(true); // Trigger UI transformation
         enqueueSnackbar(

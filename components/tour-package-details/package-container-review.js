@@ -5,7 +5,7 @@ import style from "./style.module.css";
 const ArrowIcon = () => <FaArrowRightLong />;
 
 function SinglePackageContainerReview(props) {
-  console.log("🚀 ~ image:", props);
+   //console.log("🚀 ~ image:", props);
           const imageUrl = props.image || "/images/placeholder.jpg";      
   return (
     <>

@@ -149,7 +149,7 @@ const TourPackage = () => {
 
         setTour_category(tourCategoryRes.data.data || []);
         setBestpicked(bestPickedRes.data || []);
-                console.log("lesser ",lesserWondersRes.data);
+                 //console.log("lesser ",lesserWondersRes.data);
 
         setLesserWonders(lesserWondersRes.data || []);
       } catch (err) {

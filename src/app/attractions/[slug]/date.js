@@ -74,10 +74,10 @@ const DatePickerWithHover = ({ onClose, packageId, type = "attraction" }) => {
 
         if (loginToken) {
           authToken = loginToken;
-          console.log("Using login token for fetching packages.");
+           //console.log("Using login token for fetching packages.");
         } else if (registerToken) {
           authToken = registerToken;
-          console.log("Using register token for fetching packages.");
+           //console.log("Using register token for fetching packages.");
         }
 
         const response = await axios.get(
@@ -85,11 +85,11 @@ const DatePickerWithHover = ({ onClose, packageId, type = "attraction" }) => {
         );
 
         const singlePackageData = response.data.data || response.data || [];
-        console.log("packages Data:", singlePackageData);
+         //console.log("packages Data:", singlePackageData);
         setSlugPackage(singlePackageData);
 
         const numberOfDays = singlePackageData.number_of_days || 5;
-        console.log("Number of days from API:", numberOfDays);
+         //console.log("Number of days from API:", numberOfDays);
 
         if (!singlePackageData.start_date || !singlePackageData.end_date) {
           setCustomDateRange(true);
@@ -379,7 +379,7 @@ const DatePickerWithHover = ({ onClose, packageId, type = "attraction" }) => {
         infants: room.infant,
       })),
     };
-    console.log("Submitting Booking Payload:", bookingData);
+     //console.log("Submitting Booking Payload:", bookingData);
 
     const authToken =
       localStorage.getItem("auth_token_login") ||
@@ -402,8 +402,8 @@ const DatePickerWithHover = ({ onClose, packageId, type = "attraction" }) => {
       )
       .then((response) => {
         const bookingId = response.data.data.id;
-        console.log("Booking API Response:", response);
-        console.log("Booking API Response ID:", bookingId);
+         //console.log("Booking API Response:", response);
+         //console.log("Booking API Response ID:", bookingId);
 
         localStorage.setItem("booking_data", JSON.stringify(bookingData));
         localStorage.setItem("data", JSON.stringify(slugPackage));

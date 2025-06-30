@@ -69,7 +69,7 @@ const VerifyOtp = () => {
 
   const createProfile = async (token) => {
     try {
-      console.log("Creating profile with token:", token);
+       //console.log("Creating profile with token:", token);
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}profiles`,
         {},
@@ -81,25 +81,25 @@ const VerifyOtp = () => {
         }
       );
       
-      console.log("Profile creation response:", response.data);
+       //console.log("Profile creation response:", response.data);
       
       if (response.data.success) {
-        console.log("Profile created successfully:", response.data.message);
+         //console.log("Profile created successfully:", response.data.message);
         enqueueSnackbar("Profile created successfully!", { variant: "success" });
       } else {
-        console.log("Profile creation failed:", response.data.message);
+         //console.log("Profile creation failed:", response.data.message);
         enqueueSnackbar(response.data.message || "Failed to create profile", { variant: "warning" });
       }
     } catch (error) {
       console.error("Error creating profile:", error);
       if (error.response) {
-        console.log("Profile creation error response:", error.response.data);
+         //console.log("Profile creation error response:", error.response.data);
         enqueueSnackbar(
           error.response.data.message || "Failed to create profile",
           { variant: "warning" }
         );
       } else {
-        console.log("Profile creation network error");
+         //console.log("Profile creation network error");
         enqueueSnackbar("Network error while creating profile", { variant: "warning" });
       }
     }
@@ -318,7 +318,7 @@ const VerifyOtp = () => {
         });
         if (response.data.errors) {
           // Example: if backend returns specific field errors
-          console.log(response.data.errors);
+           //console.log(response.data.errors);
           if (response.data.errors.otp)
             setOtpError(response.data.errors.otp[0]);
           if (response.data.errors.password)
@@ -331,7 +331,7 @@ const VerifyOtp = () => {
         }
       }
     } catch (error) {
-      console.log("error", error);
+       //console.log("error", error);
       enqueueSnackbar("An error occurred. Please try again.", {
         variant: "error",
       });

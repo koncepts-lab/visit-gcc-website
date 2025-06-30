@@ -46,7 +46,7 @@ const TravelAccountProfile = () => {
     let authToken = loginToken || registerToken;
 
     if (!authToken) {
-      console.log("No auth token for user data fetch.");
+       //console.log("No auth token for user data fetch.");
       setIsUserDataLoading(false);
       return;
     }
@@ -124,7 +124,7 @@ const TravelAccountProfile = () => {
   };
 
   const proceedWithAccountDeletion = () => {
-    console.log("User confirmed account deletion from modal. Calling API...");
+     //console.log("User confirmed account deletion from modal. Calling API...");
     alert("Account deletion process initiated (API call to be implemented)!");
     setShowDeleteConfirmModal(false);
   };
@@ -250,7 +250,7 @@ const TravelAccountProfile = () => {
         // However, the "Undefined array key" error suggests the backend *expects* the keys.
         // So, we will send them with null if empty.
 
-        // console.log("Request Body for Profile Update:", finalRequestBody);
+        //  //console.log("Request Body for Profile Update:", finalRequestBody);
 
         const response = await axios.put(
           `${process.env.NEXT_PUBLIC_API_URL}profiles/user`, // Endpoint from your previous snippet

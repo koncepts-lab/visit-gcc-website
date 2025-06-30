@@ -237,7 +237,7 @@ function page() {
         );
         const allBlogs = response.data.data || response.data || [];
 
-        console.log(allBlogs.main_image_url);
+         //console.log(allBlogs.main_image_url);
         setBlogs(allBlogs);
 
         setIsLoading(false);
