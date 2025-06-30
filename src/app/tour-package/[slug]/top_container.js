@@ -49,7 +49,7 @@ export default function Top_container({ packageId }) {
         const inclusionsResponse = await axios.get(
           `${process.env.NEXT_PUBLIC_API_URL}packages/${packageId}/inclusions`
         );
-        console.log("inclusin", inclusionsResponse.data);
+        // //console.log("inclusin", inclusionsResponse.data);
         // --- FIX START ---
         // The API returns an object with a 'data' property which is the array.
         // We need to access response.data.data to get the array.

@@ -46,7 +46,7 @@ const SearchComponent = () => {
         throw new Error(`Network response was not ok: ${response.status}`);
       }
       const data = await response.json();
-      console.log("🚀 ~ handleSearch ~ data:", data);
+       //console.log("🚀 ~ handleSearch ~ data:", data);
 
       // Handle different response formats
       if (Array.isArray(data)) {
@@ -109,7 +109,7 @@ const SearchComponent = () => {
 
   // When a user selects a result from the dropdown
   const handleResultClick = (result) => {
-    console.log("🚀 ~ handleResultClick ~ result:", result);
+     //console.log("🚀 ~ handleResultClick ~ result:", result);
     // Set the input field to the selected result's text
     setQuery(result.name || result.heading || "");
     // Close the dropdown
@@ -133,7 +133,7 @@ const SearchComponent = () => {
       } else if (result.type === "blog") {
         url = `/blogs/${encodeURIComponent(result.uuid_id)}`;
       }
-      console.log("🚀 ~ handleResultClick ~ url:", url);
+       //console.log("🚀 ~ handleResultClick ~ url:", url);
 
       window.location.href = url;
     }

@@ -94,7 +94,7 @@ const HolidaysTab = (props) => {
             <div className="col-md-6 p-0 d-flex pb-2 ms-md-0 ms-3">
               <img
                 src={
-                  getItem(0).photo_urls?.[0] || "../images/tour/358-608.jpg"
+                  getItem(0).photo_urls?.[0] || "../images/placeholder.jpg"
                 }
                 className={`${style["img-Holidays"]} col-6`}
                 alt="Destination"
@@ -119,7 +119,7 @@ const HolidaysTab = (props) => {
               <div className={style["tour-holidays-box"]}>
                 <img
                   src={
-                    getItem(1).photo_urls?.[0] || "../images/tour/269-273.jpg"
+                    getItem(1).photo_urls?.[0] || "../images/placeholder.jpg"
                   }
                   className="w-100"
                   alt="Destination"
@@ -132,7 +132,7 @@ const HolidaysTab = (props) => {
               <div className={`mb-0 ${style["tour-holidays-box"]} ${style["mobile-pb"]}`}>
                 <img
                   src={
-                    getItem(2).photo_urls?.[0] || "../images/tour/02.jpg"
+                    getItem(2).photo_urls?.[0] || "../images/placeholder.jpg"
                   }
                   className="w-100"
                   alt="Destination"
@@ -149,7 +149,7 @@ const HolidaysTab = (props) => {
               <div className={style["tour-holidays-box"]}>
                 <img
                   src={
-                    getItem(3).photo_urls?.[0] || "../images/tour/03.jpg"
+                    getItem(3).photo_urls?.[0] || "../images/placeholder.jpg"
                   }
                   className="w-100"
                   alt="Destination"
@@ -162,7 +162,7 @@ const HolidaysTab = (props) => {
               <div className={`mb-0 ${style["tour-holidays-box"]}`}>
                 <img
                   src={
-                    getItem(4).photo_urls?.[0] || "../images/tour/04.jpg"
+                    getItem(4).photo_urls?.[0] || "../images/placeholder.jpg"
                   }
                   className="w-100"
                   alt="Destination"

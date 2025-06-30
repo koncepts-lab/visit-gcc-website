@@ -184,7 +184,7 @@ const TourPackageTab = ({
             <div key={pkg.id} className="masonry-item">
               <img
                 src={pkg?.photo_urls?.[0] || "/images/placeholder.jpg"}
-                style={{ width: "100%", display: "block" }}
+                style={{ width: "100%", minHeight: '268px', display: "block" }}
                 alt={pkg.name}
               />
               <div

@@ -254,7 +254,7 @@ const TourPackageTab = ({
                                 pkg?.photo_urls?.[0] || "/images/placeholder.jpg"
 
                             }
-                            style={{ width: "100%", display: "block" }}
+                            style={{ width: "100%", display: "block", minHeight: '268px' }}
                             alt={pkg.name}
                           />
                           <div className="tour-pakage-masonry-item-content"

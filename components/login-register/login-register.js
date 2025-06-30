@@ -148,7 +148,7 @@ const LoginRegisterTabs = () => {
       );
 
       if (response.status === 200 || response.status === 201) {
-        console.log("Login successful", response.data);
+         //console.log("Login successful", response.data);
         setloginEmail("");
         // enqueueSnackbar("Login Successfull!", { variant: "success" });
       } else {
@@ -179,7 +179,7 @@ const LoginRegisterTabs = () => {
       );
 
       if (response.status === 200 || response.status === 201) {
-        console.log("Registration successful:", response.data);
+         //console.log("Registration successful:", response.data);
         enqueueSnackbar("Registration Successful!", { variant: "success" });
 
          localStorage.setItem("first_name", registerFormData.first_name);
@@ -208,7 +208,7 @@ const LoginRegisterTabs = () => {
 
       if (error.response && error.response.data) {
         setFormErrors(error.response.data.errors || {});
-        console.log(error.response.data.message || "Registration failed.");
+         //console.log(error.response.data.message || "Registration failed.");
         enqueueSnackbar("Registration Failed!", { variant: "error" });
       }
     } finally {

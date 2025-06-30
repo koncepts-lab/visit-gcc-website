@@ -56,7 +56,7 @@ function Ask_ur_questions() {
         payload
       );
 
-      console.log('API Response:', response.data);
+       //console.log('API Response:', response.data);
 
       enqueueSnackbar('Question submitted successfully!', { variant: 'success' });
 
