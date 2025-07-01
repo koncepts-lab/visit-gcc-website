@@ -154,27 +154,26 @@ export default function Top_container({ packageId }) {
             <p>
               <Link href="#0">{vendorName || ""}</Link>
             </p>
-            <div className={style["flex-package-details"]}>
+            <div
+              className={`${style["flex-package-details"]} flex-column flex-lg-row`}
+            >
               <span>
                 {packageRatings && renderRatingCircles()}
                 <p className="pt-2">
                   {packageRatings?.total_ratings || 0} reviews
                 </p>
               </span>
-              <span>
+              <span className="mb-2 mb-lg-0 fs-8 fs-lg-7 d-flex align-items-start gap-2">
                 <PiSealCheckFill className={style["PiSealCheckFill"]} />{" "}
                 Recommended by 99% of travellers{" "}
-                {/* <IoMdInformationCircleOutline
-                  className={style["IoMdInformationCircleOutline"]}
-                /> */}
-              </span>
-              <span>
-                <button
-                  onClick={handleShareClick}
-                  style={{ border: "none", background: "none" }}
-                >
-                  <MdIosShare className={style["MdIosShare"]} />
-                </button>
+                <span>
+                  <button
+                    onClick={handleShareClick}
+                    style={{ border: "none", background: "none" }}
+                  >
+                    <MdIosShare className={style["MdIosShare"]} />
+                  </button>
+                </span>
               </span>
             </div>
           </div>
