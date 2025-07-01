@@ -230,11 +230,11 @@ select {
 
 .event-masonry-item-content {
   padding: 10px;
-   top: 0;
-   height: 100%;
+  top: 0;
+  height: 100%;
   width: 100%;
-  align-content: end; 
-   color: #fff;
+  align-content: end;
+  color: #fff;
   position: absolute;
   background: linear-gradient(0deg, rgba(0, 0, 0, 1) 6%, rgba(0, 0, 0, 0) 100%);
 }
@@ -637,4 +637,8 @@ body {
 
 .cursor-pointer {
   cursor: pointer;
+}
+html body .undefined {
+  border-bottom: none !important;
+  border: none !important;
 }

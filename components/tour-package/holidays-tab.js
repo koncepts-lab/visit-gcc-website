@@ -28,7 +28,8 @@ const HolidaysTab = (props) => {
         const response = await axios.get(themesApiUrl);
         const fetchedThemes = response.data.data || response.data || [];
 
-        const itemsKey = props.type === "attractions" ? "attractions" : "packages";
+        const itemsKey =
+          props.type === "attractions" ? "attractions" : "packages";
 
         const formattedTabs = fetchedThemes.map((tab) => ({
           id: tab.id,
@@ -38,17 +39,21 @@ const HolidaysTab = (props) => {
         }));
 
         let allItemsAggregated = [];
-        formattedTabs.forEach(tab => {
+        formattedTabs.forEach((tab) => {
           allItemsAggregated.push(...tab.items);
         });
 
-        const uniqueAllItems = Array.from(new Map(allItemsAggregated.map(item => [item.id, item])).values());
-        
+        const uniqueAllItems = Array.from(
+          new Map(allItemsAggregated.map((item) => [item.id, item])).values()
+        );
+
         const allTabsData = [
           {
             id: "all",
             name: "All Themes",
-            description: `Explore all our exciting ${props.type || 'holiday packages'} across various themes.`,
+            description: `Explore all our exciting ${
+              props.type || "holiday packages"
+            } across various themes.`,
             items: uniqueAllItems,
           },
           ...formattedTabs,
@@ -56,7 +61,6 @@ const HolidaysTab = (props) => {
 
         setTabsData(allTabsData);
         setActiveTab("all"); // Set the initial active tab
-
       } catch (err) {
         console.error("Error fetching holiday data:", err);
         setError("Failed to fetch holiday data. Please try again.");
@@ -93,9 +97,7 @@ const HolidaysTab = (props) => {
             {/* First item */}
             <div className="col-md-6 p-0 d-flex pb-2 ms-md-0 ms-3">
               <img
-                src={
-                  getItem(0).photo_urls?.[0] || "../images/placeholder.jpg"
-                }
+                src={getItem(0).photo_urls?.[0] || "../images/placeholder.jpg"}
                 className={`${style["img-Holidays"]} col-6`}
                 alt="Destination"
               />
@@ -105,11 +107,11 @@ const HolidaysTab = (props) => {
                   <h6>{getItem(0).name || "Destination Name"}</h6>
                   <span className={style["line"]}></span>
                   <p>{description}</p>
-                  <ul>
+                  {/* <ul>
                     <li><Link href="#0" className={style["fb"]}><FaFacebookF /></Link></li>
                     <li><Link href="#0" className={style["tw"]}><FaTwitter /></Link></li>
                     <li><Link href="#0" className={style["gp"]}><FaGooglePlusG /></Link></li>
-                  </ul>
+                  </ul> */}
                 </div>
               </div>
             </div>
@@ -129,7 +131,9 @@ const HolidaysTab = (props) => {
                   <p>{getItem(1).name || "Destination Name"}</p>
                 </span>
               </div>
-              <div className={`mb-0 ${style["tour-holidays-box"]} ${style["mobile-pb"]}`}>
+              <div
+                className={`mb-0 ${style["tour-holidays-box"]} ${style["mobile-pb"]}`}
+              >
                 <img
                   src={
                     getItem(2).photo_urls?.[0] || "../images/placeholder.jpg"
@@ -219,19 +223,26 @@ const HolidaysTab = (props) => {
                   {isLoading ? (
                     <div className="text-center p-5">Loading content...</div>
                   ) : error ? (
-                     <div className="alert alert-warning text-center m-3">{error}</div>
+                    <div className="alert alert-warning text-center m-3">
+                      {error}
+                    </div>
                   ) : (
                     // Render a tab pane for EACH tab. React/Bootstrap will handle showing the active one.
                     tabsData.map((tab) => (
                       <div
                         key={tab.id}
-                        className={`tab-pane fade ${ activeTab === tab.id ? "show active" : "" }`}
+                        className={`tab-pane fade ${
+                          activeTab === tab.id ? "show active" : ""
+                        }`}
                         id={`${tab.id}-tab-pane`}
                         role="tabpanel"
                         aria-labelledby={`${tab.id}-tab-button`}
                       >
                         {/* Render the content, passing the specific items for this tab */}
-                        {renderTabContent(tab.description, tab.items.slice(0, 5))}
+                        {renderTabContent(
+                          tab.description,
+                          tab.items.slice(0, 5)
+                        )}
                       </div>
                     ))
                   )}
