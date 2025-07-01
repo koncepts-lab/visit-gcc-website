@@ -237,7 +237,7 @@ function page() {
         );
         const allBlogs = response.data.data || response.data || [];
 
-         //console.log(allBlogs.main_image_url);
+        //console.log(allBlogs.main_image_url);
         setBlogs(allBlogs);
 
         setIsLoading(false);
@@ -358,7 +358,7 @@ function page() {
 
       if (window.innerWidth <= 992) {
         window.scrollBy(0, 400);
-     }
+      }
     } catch (err) {
       console.error("Error fetching blogs by tag:", err);
       enqueueSnackbar("Failed to fetch blogs by tag", { variant: "error" });
@@ -429,11 +429,10 @@ function page() {
                   >
                     <Link href={`/blogs/${blogs.uuid_id}`}>
                       <img
-                        src={ blogs?.main_image_url
-        || "/images/placeholder.jpg"}
-        onError={(e) => {
-    e.currentTarget.src = "/images/placeholder.jpg";
-  }}
+                        src={blogs?.main_image_url || "/images/placeholder.jpg"}
+                        onError={(e) => {
+                          e.currentTarget.src = "/images/placeholder.jpg";
+                        }}
                         className="w-100"
                         style={{ height: "350px" }}
                         alt="Banner"
@@ -570,7 +569,7 @@ function page() {
                   )}
                 </div>
                 <div
-                  className={`${style["categories"]} d-lg-none d-block pt-3`}
+                  className={`${style["categories"]} d-lg-none d-block pt-3 position-relative`}
                 >
                   <p
                     className={`${style["title_category"]}`}
@@ -580,22 +579,30 @@ function page() {
                   </p>
                   {isCategoryPopupOpen && (
                     <div
-                      className={`${style["category-popup"]} d-lg-none d-block container`}
+                      className={` position-absolute w-100 shadow`}
+                      style={{
+                        top: "100%",
+                        left: "0",
+                        zIndex: 1000,
+                        backgroundColor: "#009597",
+                        borderRadius: "8px",
+                        maxHeight: "300px",
+                        overflowY: "auto",
+                      }}
                     >
-                      <div className={`${style["category-popup-inner"]}`}>
+                      <div className={`${style["category-popup-inner"]} p-3`}>
                         <button
-                          className={`ms-auto fs-4 text-white col-12 d-flex justify-content-end`}
+                          className={`btn-close btn-close-white ms-auto d-block mb-2 bg-transparent border-0`}
                           onClick={() => setIsCategoryPopupOpen(false)}
-                        >
-                          X
-                        </button>
+                          aria-label="Close"
+                        ></button>
 
                         {categories.map((cat) => (
                           <button
-                            className={`col-12 d-flex justify-content-between ${
+                            className={`w-100 d-flex justify-content-between border-0 bg-transparent py-2 px-3 mb-1 rounded ${
                               activeFilter.type === "category" &&
                               activeFilter.id === cat.uuid_id
-                                ? style["active-filter"]
+                                ? "text-dark"
                                 : "text-white"
                             }`}
                             key={cat.uuid_id}
@@ -603,9 +610,27 @@ function page() {
                               fetchBlogsByCategory(cat.uuid_id);
                               setIsCategoryPopupOpen(false);
                             }}
+                            style={{
+                              transition: "background-color 0.2s",
+                              cursor: "pointer",
+                            }}
+                            onMouseEnter={(e) =>
+                              (e.target.style.backgroundColor =
+                                "rgba(255,255,255,0.1)")
+                            }
+                            onMouseLeave={(e) =>
+                              (e.target.style.backgroundColor = "transparent")
+                            }
                           >
-                            {cat.category}{" "}
-                            <span className="pe-1">
+                            <span>{cat.category}</span>
+                            <span
+                              className={`badge  rounded-pill ${
+                                activeFilter.type === "category" &&
+                                activeFilter.id === cat.uuid_id
+                                  ? "text-dark"
+                                  : "text-white"
+                              }`}
+                            >
                               {cat.blogCount ||
                                 categoryCounts[cat.uuid_id] ||
                                 0}
@@ -615,7 +640,7 @@ function page() {
 
                         {activeFilter.type === "category" && (
                           <button
-                            className="col-12 mt-2 btn btn-secondary text-white"
+                            className="w-100 mt-2 btn btn-outline-light btn-sm"
                             onClick={clearFilterAndCloseCategoryPopup}
                           >
                             Clear Category Filter
@@ -637,11 +662,16 @@ function page() {
                       >
                         <Link href={`/blogs/${features.uuid_id}`}>
                           <div className="d-flex gap-4">
-                            <img src={features?.main_image_url || "/images/placeholder.jpg"}
+                            <img
+                              src={
+                                features?.main_image_url ||
+                                "/images/placeholder.jpg"
+                              }
                               alt="Feature image"
                               onError={(e) => {
-                                e.currentTarget.src = "/images/placeholder.jpg"; 
-                              }}/>
+                                e.currentTarget.src = "/images/placeholder.jpg";
+                              }}
+                            />
                             <div>
                               <p
                                 style={{
