@@ -60,21 +60,34 @@ const LoginRegisterTabs = () => {
     return panRegex.test(pan);
   };
 
-  const validatePasswords = () => {
+  // Fix for the confirm password eye icon - replace this line:
+  {
+    showPassword ? <BsEyeSlashFill /> : <BsEyeFill />;
+  }
+
+  // With this line:
+  {
+    showConfirmPassword ? <BsEyeSlashFill /> : <BsEyeFill />;
+  }
+
+  // Also, to make the error disappear in real-time as the user types,
+  // modify the validatePasswords function to be called on every input change:
+
+  const validatePasswords = (currentFormData = registerFormData) => {
     const errors = { ...formErrors };
 
-    if (!registerFormData.password) {
+    if (!currentFormData.password) {
       errors.password = "Password is required";
-    } else if (registerFormData.password.length < 6) {
+    } else if (currentFormData.password.length < 6) {
       errors.password = "Password must be at least 6 characters";
     } else {
       delete errors.password;
     }
 
-    if (!registerFormData.password_confirmation) {
+    if (!currentFormData.password_confirmation) {
       errors.password_confirmation = "Please confirm your password";
     } else if (
-      registerFormData.password !== registerFormData.password_confirmation
+      currentFormData.password !== currentFormData.password_confirmation
     ) {
       errors.password_confirmation = "Passwords do not match";
     } else {
@@ -84,6 +97,8 @@ const LoginRegisterTabs = () => {
     setFormErrors(errors);
     return !errors.password && !errors.password_confirmation;
   };
+
+  // And update the handleInputChange function to validate passwords in real-time:
 
   const validateForm = () => {
     let errors = {};
@@ -119,12 +134,18 @@ const LoginRegisterTabs = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setRegisterFormData({
+    const updatedFormData = {
       ...registerFormData,
       [name]: value,
-    });
-  };
+    };
 
+    setRegisterFormData(updatedFormData);
+
+    // Validate passwords in real-time when password fields change
+    if (name === "password" || name === "password_confirmation") {
+      validatePasswords(updatedFormData);
+    }
+  };
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -182,8 +203,8 @@ const LoginRegisterTabs = () => {
          //console.log("Registration successful:", response.data);
         enqueueSnackbar("Registration Successful!", { variant: "success" });
 
-         localStorage.setItem("first_name", registerFormData.first_name);
-         localStorage.setItem("last_name", registerFormData.last_name);
+        localStorage.setItem("first_name", registerFormData.first_name);
+        localStorage.setItem("last_name", registerFormData.last_name);
 
         setRegisterFormData({
           first_name: "",

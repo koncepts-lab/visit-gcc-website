@@ -302,7 +302,7 @@ const OneVisa = () => {
           {/* Left side - Title and Logo */}
           <div className="col-lg-3 col-md-6 mb-4 mb-md-0" style={{}}>
             <img
-              src="/images/one-visa/why-this-visa.jpg"
+              src="/images/one-visa/Why-this-visa.jpg"
               style={{ width: "80%", height: "80%" }}
             />
           </div>
@@ -434,7 +434,7 @@ const OneVisa = () => {
                 />
 
                 <h5 className="card-title">Easy Multi Access</h5>
-                <p className="card-text">
+                <p className="card-text" style={{ minHeight: "72px" }}>
                   Enter any GCC country multiple times with a single
                   application.
                 </p>
@@ -454,7 +454,7 @@ const OneVisa = () => {
                 />
 
                 <h5 className="card-title">Cost-Effective</h5>
-                <p className="card-text">
+                <p className="card-text" style={{ minHeight: "72px" }}>
                   Save 60% compared to individual visa costs.
                 </p>
                 <a href="#" className="text-primary">

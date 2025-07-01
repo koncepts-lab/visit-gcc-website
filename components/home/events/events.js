@@ -6,8 +6,7 @@ import { FaArrowRightLong } from "react-icons/fa6";
 const ArrowIcon = () => <FaArrowRightLong />;
 
 function SingleHomeEvents({ event_photo_urls, date, name, description, link }) {
-
-    const imageUrl = event_photo_urls || "/images/placeholder.jpg";
+  const imageUrl = event_photo_urls || "/images/placeholder.jpg";
 
   function formatDate(isoDateString) {
     // Return early if the input is not valid
@@ -45,19 +44,28 @@ function SingleHomeEvents({ event_photo_urls, date, name, description, link }) {
           style={{ height: "214px" }}
         />
         <div className={style["date"]}>{formatDate(date)}</div>
-        <h4  style={{height: '64px',
-                display: '-webkit-box',
-                WebkitLineClamp: 3,  
-                WebkitBoxOrient: 'vertical',
-                overflow: 'hidden'
-              }}>{name}</h4>
+        <h4
+          style={{
+            height: "64px",
+            display: "-webkit-box",
+            WebkitLineClamp: 3,
+            WebkitBoxOrient: "vertical",
+            overflow: "hidden",
+          }}
+        >
+          {name}
+        </h4>
         <p
-            style={{
-                display: '-webkit-box',
-                WebkitLineClamp: 4,  
-                WebkitBoxOrient: 'vertical',
-                overflow: 'hidden'
-              }}>{description}</p>
+          style={{
+            display: "-webkit-box",
+            WebkitLineClamp: 4,
+            WebkitBoxOrient: "vertical",
+            overflow: "hidden",
+            minHeight: "90px",
+          }}
+        >
+          {description}
+        </p>
       </div>
     </Link>
   );

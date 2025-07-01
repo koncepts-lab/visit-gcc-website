@@ -23,8 +23,8 @@ const Banner = () => {
       image: "../images/Explore.svg",
       hoverImage: "../images/Explore Mouse Over.svg", // Assumed hover image path
       onClick: handleScroll,
-      isLink: false,
-      link: "",
+      isLink: true,
+      link: "/",
     },
     {
       id: 2,
@@ -41,14 +41,14 @@ const Banner = () => {
       image: "../images/Event.svg",
       hoverImage: "../images/Event Mouse Over.svg", // Assumed hover image path
       onClick: null,
-      isLink: false,
-      link: "",
+      isLink: true,
+      link: "/events",
     },
     {
       id: 4,
       title: "Book",
       image: "../images/Book.svg",
-      hoverImage: "../images/Book Mouse Over.svg", 
+      hoverImage: "../images/Book Mouse Over.svg",
       onClick: null,
       isLink: false,
       link: "",

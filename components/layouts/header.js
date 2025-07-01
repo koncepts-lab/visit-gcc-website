@@ -7,8 +7,8 @@ import Link from "next/link";
 import style from "./style.module.css";
 import { CgProfile } from "react-icons/cg";
 import { useRouter } from "next/navigation";
-import { useSnackbar } from "notistack";
 import ChangePasswordForm from "./ChangePasswordForm";
+import { enqueueSnackbar } from "notistack";
 
 import {
   Settings,
@@ -49,7 +49,6 @@ function Header() {
   const router = useRouter();
   const profileDropdownRef = useRef(null);
   const mobileMenuRef = useRef(null);
-  const { enqueueSnackbar } = useSnackbar();
 
   const genderOptions = [
     { value: "", label: "Select Gender...", disabled: true },
@@ -138,7 +137,10 @@ function Header() {
       setLoading(false);
     }
   };
-
+  const handleLogin = async (e) => {
+    router.push("/login");
+    setMenuOpen(false);
+  };
   // Function to handle successful password change
   const handlePasswordChangeSuccess = () => {
     setShowChangePassword(false); // Hide the form
@@ -777,11 +779,8 @@ function Header() {
         <>
           <MobileMenuItem label="Currency" value={selectedCurrency} />
           <MobileMenuItem label="Country" value={selectedCountry} />
-          <MobileMenuItem
-            label="Email address"
-            value={userData?.email}
-          />
-  
+          <MobileMenuItem label="Email address" value={userData?.email} />
+
           <MobileMenuItem
             label="Change Password"
             onClick={() => setShowChangePassword(true)}
@@ -873,8 +872,13 @@ function Header() {
             className={style["navbar_sticky_mobile_container"]}
             style={{ width: "100%" }}
           >
-            <div className={`nav-item ${style["navbar_sticky_mobile"]} d-sm-none d-block`}>
-              <Link className="nav-link active d-flex flex-column" href="/country">
+            <div
+              className={`nav-item ${style["navbar_sticky_mobile"]} d-sm-none d-block`}
+            >
+              <Link
+                className="nav-link active d-flex flex-column"
+                href="/country"
+              >
                 <img
                   src="../images/Explore.svg"
                   className={style["img-top-logo"]}
@@ -883,16 +887,23 @@ function Header() {
                 Explore
               </Link>
             </div>
-             <div className={` d-sm-block d-none`}>
+            <div className={` d-sm-block d-none`}>
               <Link className="navbar-brand active" href="/country">
                 <img
                   src="../images/logo.svg"
-                  className={style[""]} style={{maxHeight: '100px', maxWidth: '110px' , marginTop: '-5px'}}
+                  className={style[""]}
+                  style={{
+                    maxHeight: "100px",
+                    maxWidth: "110px",
+                    marginTop: "-5px",
+                  }}
                   alt="Explore"
                 />
               </Link>
             </div>
-            <div className={`nav-item ${style["navbar_sticky_mobile"]} d-sm-none d-block`}>
+            <div
+              className={`nav-item ${style["navbar_sticky_mobile"]} d-sm-none d-block`}
+            >
               <Link className="nav-link active d-flex flex-column" href="/">
                 <img
                   src="../images/Plan.svg"
@@ -902,7 +913,9 @@ function Header() {
                 Plan
               </Link>
             </div>
-            <div className={`nav-item ${style["navbar_sticky_mobile"]} d-sm-none d-block`}>
+            <div
+              className={`nav-item ${style["navbar_sticky_mobile"]} d-sm-none d-block`}
+            >
               <Link className="nav-link active d-flex flex-column" href="/">
                 <img
                   src="../images/Event.svg"
@@ -912,7 +925,9 @@ function Header() {
                 Events
               </Link>
             </div>
-            <div className={`nav-item ${style["navbar_sticky_mobile"]} d-sm-none d-block`}>
+            <div
+              className={`nav-item ${style["navbar_sticky_mobile"]} d-sm-none d-block`}
+            >
               <Link className="nav-link active d-flex flex-column" href="/">
                 <img
                   src="../images/Book.svg"
@@ -927,8 +942,8 @@ function Header() {
             <img src="/images/logo.svg " alt="Logo" />
           </Link>
           <button
-            className={`navbar-toggler ${style["toggle-btn"]} ms-auto` }
-            style={{marginRight: '-25px'}}
+            className={`navbar-toggler ${style["toggle-btn"]} ms-auto`}
+            style={{ marginRight: "-25px" }}
             type="button"
             aria-expanded={menuOpen}
             aria-controls="collapsibleNavbar"
@@ -961,7 +976,10 @@ function Header() {
                   className="py-3 px-3 d-flex align-items-center justify-content-between text-white w-100"
                   style={{ backgroundColor: "#169496" }}
                 >
-                  <div className="d-flex align-items-center gap-2">
+                  <button
+                    onClick={handleLogin}
+                    className="d-flex align-items-center gap-2 bg-transparent border-0 text-white"
+                  >
                     {userData ? (
                       <img
                         src={
@@ -987,7 +1005,7 @@ function Header() {
                           : "Login for best deals & offers"}
                       </div>
                     </div>
-                  </div>
+                  </button>
                   <button
                     className="btn text-white p-0"
                     style={{ fontSize: "2rem", lineHeight: 1 }}
@@ -997,14 +1015,14 @@ function Header() {
                     ×
                   </button>
                 </li>
-{showChangePassword ? (
-        <ChangePasswordForm
-        />
-      ) : userData ? (
-        <LoggedInMobileMenu />
-      ) : (
-        <GuestMobileMenu />
-      )}              </ul>
+                {showChangePassword ? (
+                  <ChangePasswordForm />
+                ) : userData ? (
+                  <LoggedInMobileMenu />
+                ) : (
+                  <GuestMobileMenu />
+                )}{" "}
+              </ul>
             )}
             <ul
               className={`navbar-nav ${style["navbar-nav-c"]} d-none d-sm-flex`}
@@ -1084,101 +1102,97 @@ function Header() {
                   />
                 </Link>
               </li>
-            
             </ul>
           </div>
-            <li
-                className={`nav-item ${style["navbar_sticky_hide"]} d-flex align-items-center position-relative`}
-                ref={profileDropdownRef}
+          <li
+            className={`nav-item ${style["navbar_sticky_hide"]} d-flex align-items-center position-relative`}
+            ref={profileDropdownRef}
+          >
+            {!loading && !userData ? (
+              <Link
+                className={`nav-link d-sm-block d-none ${style["login-link"]} `}
+                href="/login"
               >
-                {!loading && !userData ? (
-                  <Link
-                    className={`nav-link d-sm-block d-none ${style["login-link"]} `}
-                    href="/login"
-
-                  >
-                    Login/Signup
-                  </Link>
-                ) : !loading && userData ? (
+                Login/Signup
+              </Link>
+            ) : !loading && userData ? (
+              <div className={`nav-item d-none d-sm-flex position-relative`}>
+                <button
+                  className={`nav-link ${style["login_profile"]} btn btn-link text-decoration-none p-2`}
+                  onClick={toggleProfileDropdown}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                  }}
+                  aria-haspopup="true"
+                  aria-expanded={profileDropdownOpen}
+                >
+                  <CgProfile size={24} />
+                  <span>{profileDisplayName}</span>
+                </button>
+                {profileDropdownOpen && (
                   <div
-                    className={`nav-item d-none d-sm-flex position-relative`}
+                    className="position-absolute bg-white shadow-lg border rounded"
+                    style={{
+                      top: "100%",
+                      right: "0",
+                      minWidth: "280px",
+                      zIndex: 1050,
+                      marginTop: "8px",
+                    }}
                   >
-                    <button
-                      className={`nav-link ${style["login_profile"]} btn btn-link text-decoration-none p-2`}
-                      onClick={toggleProfileDropdown}
+                    <Link
+                      href="/profile"
+                      className="p-3 border-bottom d-flex justify-content-between align-items-center text-dark text-decoration-none"
                       style={{
-                        background: "none",
-                        border: "none",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "8px",
+                        fontSize: "16px",
+                        color: "#000",
+                        textTransform: "capitalize",
+                        flexDirection: "row",
                       }}
-                      aria-haspopup="true"
-                      aria-expanded={profileDropdownOpen}
                     >
-                      <CgProfile size={24} />
-                      <span>{profileDisplayName}</span>
-                    </button>
-                    {profileDropdownOpen && (
-                      <div
-                        className="position-absolute bg-white shadow-lg border rounded"
-                        style={{
-                          top: "100%",
-                          right: "0",
-                          minWidth: "280px",
-                          zIndex: 1050,
-                          marginTop: "8px",
-                        }}
+                      <span>Your Profile</span>{" "}
+                      <ChevronRight size={18} className="text-muted" />
+                    </Link>
+                    <div className="p-3 border-bottom d-flex justify-content-between align-items-center">
+                      <span>Currency</span>{" "}
+                      <span className="text-muted">{selectedCurrency}</span>
+                    </div>
+                    <div className="p-3 border-bottom d-flex justify-content-between align-items-center">
+                      <span>Country</span>{" "}
+                      <span className="text-muted">{selectedCountry}</span>
+                    </div>
+                    <Link
+                      href="mailto:support@example.com"
+                      style={{
+                        fontSize: "16px",
+                        color: "#000",
+                        textTransform: "capitalize",
+                        flexDirection: "row",
+                      }}
+                      className="p-3 border-bottom d-flex justify-content-between align-items-center text-dark text-decoration-none"
+                    >
+                      <span>Support</span>{" "}
+                      <ChevronRight size={18} className="text-muted" />
+                    </Link>
+                    <div className="p-3">
+                      <button
+                        onClick={handleLogout}
+                        className="btn btn-link text-danger p-0 text-decoration-none text-start w-100"
                       >
-                        <Link
-                          href="/profile"
-                          className="p-3 border-bottom d-flex justify-content-between align-items-center text-dark text-decoration-none"
-                          style={{
-                            fontSize: "16px",
-                            color: "#000",
-                            textTransform: "capitalize",
-                            flexDirection: "row",
-                          }}
-                        >
-                          <span>Your Profile</span>{" "}
-                          <ChevronRight size={18} className="text-muted" />
-                        </Link>
-                        <div className="p-3 border-bottom d-flex justify-content-between align-items-center">
-                          <span>Currency</span>{" "}
-                          <span className="text-muted">{selectedCurrency}</span>
-                        </div>
-                        <div className="p-3 border-bottom d-flex justify-content-between align-items-center">
-                          <span>Country</span>{" "}
-                          <span className="text-muted">{selectedCountry}</span>
-                        </div>
-                        <Link
-                          href="mailto:support@example.com"
-                          style={{
-                            fontSize: "16px",
-                            color: "#000",
-                            textTransform: "capitalize",
-                            flexDirection: "row",
-                          }}
-                          className="p-3 border-bottom d-flex justify-content-between align-items-center text-dark text-decoration-none"
-                        >
-                          <span>Support</span>{" "}
-                          <ChevronRight size={18} className="text-muted" />
-                        </Link>
-                        <div className="p-3">
-                          <button
-                            onClick={handleLogout}
-                            className="btn btn-link text-danger p-0 text-decoration-none text-start w-100"
-                          >
-                            Logout
-                          </button>
-                        </div>
-                      </div>
-                    )}
+                        Logout
+                      </button>
+                    </div>
                   </div>
-                ) : (
-                  <span className="nav-link">{profileDisplayName}</span>
                 )}
-              </li>
+              </div>
+            ) : (
+              <span className="nav-link">{profileDisplayName}</span>
+            )}
+          </li>
         </div>
       </nav>
       <style jsx global>{`

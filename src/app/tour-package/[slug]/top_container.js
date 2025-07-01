@@ -220,7 +220,11 @@ export default function Top_container({ packageId }) {
                           type="tour-package-details-reviews"
                         />
                       ) : (
-                        <img src="/images/placeholder.jpg" className="col-6" alt="placeholder"/>
+                        <img
+                          src="/images/placeholder.jpg"
+                          className="col-6"
+                          alt="placeholder"
+                        />
                       )}
                     </div>
                   </div>
@@ -240,41 +244,54 @@ export default function Top_container({ packageId }) {
 
         <div className="row mt-5">
           <div className={`col-md-7 ${style["border-right"]}`}>
-            <h3 className="pt-2">Inclusions</h3>
-            <div className={style["inclusions"]}>
-              {Array.isArray(packageInclusions) &&
-                packageInclusions.map((inclusion) => (
-                  <span key={inclusion.id} className="d-flex flex-column justify-content-center">
-                    <img
-                      src={inclusion.inclusion_icon_url || "/images/placeholder.jpg"}
-                      alt={inclusion.title}
-                      className={`mx-auto`}
-                      style={{ height: "50px", width: "50px" }}
-                    />
-                    <div className="clearfix"></div> {inclusion.title}
-                  </span>
-                ))}
-            </div>
+            {Array.isArray(packageInclusions) &&
+              packageInclusions.length > 0 && (
+                <>
+                  <h3 className="pt-2">Inclusions</h3>
+                  <div className={style["inclusions"]}>
+                    {packageInclusions.map((inclusion) => (
+                      <span
+                        key={inclusion.id}
+                        className="d-flex flex-column justify-content-center"
+                      >
+                        <img
+                          src={
+                            inclusion.inclusion_icon_url ||
+                            "/images/placeholder.jpg"
+                          }
+                          alt={inclusion.title}
+                          className={`mx-auto`}
+                          style={{ height: "50px", width: "50px" }}
+                        />
+                        <div className="clearfix"></div> {inclusion.title}
+                      </span>
+                    ))}
+                  </div>
+                </>
+              )}
           </div>
           <div className="col-md-5">
-            <h3 className="pt-2">Themes</h3>
-            <div className={style["inclusions"]}>
-              {Array.isArray(packageThemes) &&
-                packageThemes.map((theme) => (
-                  <span
-                    key={theme.id}
-                    className="d-flex flex-column justify-content-center"
-                  >
-                    <img
-                      src={theme.theme_icon_url || "/images/placeholder.jpg"}
-                      alt={theme.title}
-                      className={` mx-auto`}
-                      style={{ height: "50px", width: "50px" }}
-                    />
-                    <div className="clearfix"></div> {theme.title}
-                  </span>
-                ))}
-            </div>
+            {Array.isArray(packageThemes) && packageThemes.length > 0 && (
+              <>
+                <h3 className="pt-2">Themes</h3>
+                <div className={style["inclusions"]}>
+                  {packageThemes.map((theme) => (
+                    <span
+                      key={theme.id}
+                      className="d-flex flex-column justify-content-center"
+                    >
+                      <img
+                        src={theme.theme_icon_url || "/images/placeholder.jpg"}
+                        alt={theme.title}
+                        className={` mx-auto`}
+                        style={{ height: "50px", width: "50px" }}
+                      />
+                      <div className="clearfix"></div> {theme.title}
+                    </span>
+                  ))}
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
