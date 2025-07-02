@@ -139,7 +139,7 @@ function Header() {
   };
   const handleLogin = async (e) => {
     router.push("/login");
-    setMenuOpen(false);
+    toggleMenu();
   };
   // Function to handle successful password change
   const handlePasswordChangeSuccess = () => {
@@ -619,10 +619,7 @@ function Header() {
             {value ? (
               <>
                 {" "}
-                <span
-                  className="text-muted me-2"
-                  style={{ fontSize: "0.9em", textTransform: "capitalize" }}
-                >
+                <span className="text-muted me-2" style={{ fontSize: "0.8em" }}>
                   {value}
                 </span>{" "}
                 {!isNavigation && !onClick && fieldKey && (
