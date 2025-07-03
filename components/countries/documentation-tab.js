@@ -243,7 +243,7 @@ const DocumentationTabs = () => {
                           </div>
                         </div>
                         <div className="row g-4">
-                          <div className="col-lg-4 px-0 d-flex gap-2">
+                          {/* <div className="col-lg-4 px-0 d-flex gap-2">
                             <span>
                               <img
                                 src="../images/icons/general-information/Currancy.svg"
@@ -258,7 +258,7 @@ const DocumentationTabs = () => {
                                 AED (1 USD ≈ 3.67 AED)
                               </p>
                             </div>
-                          </div>
+                          </div> */}
                           <div className="col-lg-4 px-0 d-flex gap-2">
                             <span>
                               <img

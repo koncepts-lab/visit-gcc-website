@@ -55,7 +55,6 @@ function Header() {
     { value: "Male", label: "Male" },
     { value: "Female", label: "Female" },
     { value: "Other", label: "Other" },
-    { value: "Prefer not to say", label: "Prefer not to say" },
   ];
 
   const accountMenuItems = [
@@ -138,7 +137,7 @@ function Header() {
     }
   };
   const handleLogin = async (e) => {
-    router.push("/login");
+    userData ? router.push("/profile") : router.push("/login");
     toggleMenu();
   };
   // Function to handle successful password change
@@ -221,7 +220,7 @@ function Header() {
       updatedFirstName = editingFirstName.trim();
       updatedLastName = editingLastName.trim();
     } else {
-      const allMenuItems = [...accountMenuItems, ...settingsMenuItems];
+      const allMenuItems = [...accountMenuItems];
       const currentItemConfig = allMenuItems.find(
         (item) => item.fieldKey === editingField
       );
@@ -453,6 +452,24 @@ function Header() {
       e.stopPropagation();
       handleStartEditing(fieldKey, value || "");
     };
+
+    // Format date for display only, without changing the underlying `value`
+    let displayValue = value;
+    if (fieldKey === "Date of Birth" && value) {
+      try {
+        const date = new Date(value);
+        // Adjust for timezone to prevent showing the previous day
+        const userTimezoneOffset = date.getTimezoneOffset() * 60000;
+        const adjustedDate = new Date(date.getTime() + userTimezoneOffset);
+
+        const dateOptions = { day: "2-digit", month: "long", year: "numeric" };
+        displayValue = adjustedDate.toLocaleDateString("en-GB", dateOptions);
+      } catch (e) {
+        // Fallback to original value if formatting fails
+        displayValue = value;
+      }
+    }
+
     if (isCurrentlyEditingThisField) {
       if (fieldKey === "Display Name") {
         return (
@@ -619,8 +636,15 @@ function Header() {
             {value ? (
               <>
                 {" "}
-                <span className="text-muted me-2" style={{ fontSize: "0.8em" }}>
-                  {value}
+                <span
+                  className="text-muted me-2"
+                  style={{
+                    fontSize: "0.8em",
+                    textTransform:
+                      label === "Email address" ? "none" : "capitalize",
+                  }}
+                >
+                  {displayValue} {/* Use the formatted displayValue here */}
                 </span>{" "}
                 {!isNavigation && !onClick && fieldKey && (
                   <button
@@ -994,7 +1018,7 @@ function Header() {
                     ) : (
                       <CgProfile size={40} />
                     )}
-                    <div>
+                    <div className="text-start">
                       <div className="fw-bold">{profileDisplayName}</div>
                       <div className="small">
                         {userData

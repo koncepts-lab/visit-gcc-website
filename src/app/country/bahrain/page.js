@@ -2,6 +2,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Link from "next/link";
 import style from "./style.module.css";
 import Banner from "@components/banner/banner";
 import Tabs from "@components/countries/tabs";
@@ -36,7 +37,7 @@ function Country() {
           `${process.env.NEXT_PUBLIC_API_URL}blog`
         );
         const allBlogs = response.data.data || response.data || [];
-         //console.log("🚀 ~ fetchBlogs ~ allBlogs:", allBlogs);
+        //console.log("🚀 ~ fetchBlogs ~ allBlogs:", allBlogs);
 
         setBlogs(allBlogs);
       } catch (err) {
@@ -90,16 +91,16 @@ function Country() {
                 </div>
               </div>
               <div className="row">
-                <div className="col-md-12 text-center mt-4">
+                <Link className="col-md-12 text-center mt-4" href="/events">
                   <button className={style["btn-one"]}>Full List</button>
-                </div>
+                </Link>
               </div>
             </div>
           </div>
           {/* CountryExplore */}
         </div>
       </section>
-
+      {/* 
       <div className={style["section-normal"]}>
         <div className="container">
           <div className="row">
@@ -131,7 +132,7 @@ function Country() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       <div className={style["section-documentation"]}>
         <div className={style["section-normal"]}>

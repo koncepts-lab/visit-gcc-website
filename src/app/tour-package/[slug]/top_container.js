@@ -157,9 +157,9 @@ export default function Top_container({ packageId }) {
             <div
               className={`${style["flex-package-details"]} flex-column flex-lg-row`}
             >
-              <span>
-                {packageRatings && renderRatingCircles()}
-                <p className="pt-2">
+              <span className="d-flex flex-row flex-lg-column align-items-start gap-2">
+                <div>{packageRatings && renderRatingCircles()}</div>
+                <p className="pt-0">
                   {packageRatings?.total_ratings || 0} reviews
                 </p>
               </span>
@@ -260,7 +260,7 @@ export default function Top_container({ packageId }) {
                           }
                           alt={inclusion.title}
                           className={`mx-auto`}
-                          style={{ height: "50px", width: "50px" }}
+                          style={{ height: "30px", width: "30px" }}
                         />
                         <div className="clearfix"></div> {inclusion.title}
                       </span>
@@ -283,7 +283,7 @@ export default function Top_container({ packageId }) {
                         src={theme.theme_icon_url || "/images/placeholder.jpg"}
                         alt={theme.title}
                         className={` mx-auto`}
-                        style={{ height: "50px", width: "50px" }}
+                        style={{ height: "30px", width: "30px" }}
                       />
                       <div className="clearfix"></div> {theme.title}
                     </span>

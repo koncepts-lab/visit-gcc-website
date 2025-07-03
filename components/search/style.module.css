@@ -1,32 +1,56 @@
+/* =================================================== */
+/*  YOUR EDITED AND CORRECTED CSS BLOCK
+/* =================================================== */
+
+/* --- Container for the Search Bar --- */
 .banner-search {
   max-width: 500px;
   margin: 0 auto;
 }
-.banner-search input {
-  height: 60px;
-  background: #f8f8f800;
-  border-radius: 100px;
-  border-top-left-radius: 100px !important;
-  border-bottom-left-radius: 100px !important;
-  padding-left: 55px;
-  color: #fff !important;
-}
-.banner-search input:focus {
-  background: #f8f8f800 !important;
-  border: solid 1px #fff !important;
-}
 
+/* --- Search Button (Icon) --- */
 .banner-search button {
-  background: #f8f8f800;
+  background: transparent; /* Use 'transparent' instead of a color with 00 alpha */
   border: none;
-  color: #ffffff;
   font-size: 28px;
   padding: 0 15px;
   border-radius: 60px;
   margin-right: -60px;
+  z-index: 5; /* Ensure button is on top of the input field */
+  color: #ffffff; /* Explicitly set default icon color */
+  transition: color 0.2s ease-in-out; /* Add smooth transition for hover */
 }
 
 .banner-search button:hover {
-  background: #f8f8f800;
+  background: transparent;
   color: #135f74;
+}
+
+/* --- Search Input Field --- */
+/* Default State (Not Focused) */
+.banner-search input {
+  /* This targets the input specifically */
+  height: 60px;
+  background: transparent;
+  border-radius: 100px !important; /* Force radius on all corners */
+  padding-left: 55px; /* Space for the icon */
+  border: 1px solid rgba(255, 255, 255, 0.5); /* A visible default border */
+  color: #fff !important; /* Keep default text white */
+  transition: all 0.3s ease-in-out;
+}
+
+/* Placeholder Text Styling */
+
+/* --- The "Frosted Glass" Effect on Focus --- */
+/* This is the SINGLE, CONSOLIDATED rule for the focused state */
+.banner-search input:focus {
+  /* 1. The Glass Effect */
+  opacity: 0.5;
+  /* 2. Text and Border Readability */
+  color: black !important; /* Black text for contrast */
+
+  /* 3. Maintain the border radius */
+  border-radius: 100px !important;
+
+  /* 4. A subtle focus ring for accessibility */
 }

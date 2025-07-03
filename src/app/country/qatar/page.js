@@ -2,6 +2,7 @@
 import React from "react";
 import axios from "axios";
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import style from "./style.module.css";
 import Banner from "../../../../components/banner/banner";
 import Countries from "../../../../components/countries/countries";
@@ -90,9 +91,9 @@ function Country() {
                 </div>
               </div>
               <div className="row">
-                <div className="col-md-12 text-center mt-4">
+                <Link className="col-md-12 text-center mt-4" href="/events">
                   <button className={style["btn-one"]}>Full List</button>
-                </div>
+                </Link>
               </div>
             </div>
           </div>
@@ -100,7 +101,7 @@ function Country() {
         </div>
       </section>
 
-      <div className={style["section-normal"]}>
+      {/* <div className={style["section-normal"]}>
         <div className="container">
           <div className="row">
             <div className="col-md-12 pb-3">
@@ -131,7 +132,7 @@ function Country() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       <div className={style["section-documentation"]}>
         <div className={style["section-normal"]}>
