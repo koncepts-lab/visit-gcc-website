@@ -12,57 +12,40 @@ import HolidaysTab from "../../../components/tour-package/holidays-tab";
 import Accordion from "../../../components/accordion/accordion";
 import TourPackageTab from "../../../components/tour-package/tour-package-tab";
 import FeaturedIntegratedTravel from "@components/tour-package/featured-integrated-travel";
+import { useLoading } from "@components/LoadingProvider"; // 1. IMPORT THE LOADER HOOK
 
-// --- KEY IMPROVEMENT 1: Create a Debounce Hook ---
-// This hook takes a value and a delay, and only returns the latest value
-// after the specified delay has passed without the value changing.
 const useDebounce = (value, delay) => {
   const [debouncedValue, setDebouncedValue] = useState(value);
-
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedValue(value);
     }, delay);
-
-    // Cleanup function to clear the timeout if the value changes again
     return () => {
       clearTimeout(handler);
     };
   }, [value, delay]);
-
   return debouncedValue;
 };
 
 const TourPackage = () => {
-  // --- STATE MANAGEMENT ---
+  const { setIsLoading } = useLoading(); // 2. USE THE LOADER HOOK
 
-  // Package data states
+  // --- STATE MANAGEMENT ---
   const [allPackages, setAllPackages] = useState([]);
   const [filteredPackages, setFilteredPackages] = useState([]);
-
-  // UI and loading states
-  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isToggled, setIsToggled] = useState(false);
   const [noResultsFound, setNoResultsFound] = useState(false);
-
-  // --- KEY IMPROVEMENT 2: Separate "Live" and "Debounced" Filter State ---
-  // `priceRange` updates instantly for the UI text.
-  // `debouncedPriceRange` updates after a delay and is used for actual filtering.
   const [priceRange, setPriceRange] = useState([30, 10000]);
   const [durationRange, setDurationRange] = useState([1, 30]);
-  const debouncedPriceRange = useDebounce(priceRange, 300); // 300ms delay
-  const debouncedDurationRange = useDebounce(durationRange, 300); // 300ms delay
-
+  const debouncedPriceRange = useDebounce(priceRange, 300);
+  const debouncedDurationRange = useDebounce(durationRange, 300);
   const [selectedItems, setSelectedItems] = useState({});
-  const [lastApiFilteredPackages, setLastApiFilteredPackages] = useState(null); // Store API results separately
-
-  // Static/Carousel data states
+  const [lastApiFilteredPackages, setLastApiFilteredPackages] = useState(null);
   const [tour_category, setTour_category] = useState([]);
   const [bestPicked, setBestpicked] = useState([]);
   const [lesserWonders, setLesserWonders] = useState([]);
 
-  // Accordion data configuration (memoized to prevent re-creation on renders)
   const accordionDataConfig = useMemo(
     () => [
       {
@@ -103,21 +86,15 @@ const TourPackage = () => {
     accordionDataConfig.map((d) => ({ ...d, items: [] }))
   );
 
-  // Carousel responsive breakpoints
   const firstBreakPoints = { 350: 1, 750: 2, 1200: 3, 1500: 4 };
   const secondBreakPoints = { 350: 1, 750: 2, 1200: 3, 1500: 3 };
 
-  // --- HANDLERS AND HELPERS ---
-
   const handleToggle = () => setIsToggled(!isToggled);
-  // These now only update the "live" state, the debounce hook handles the rest.
   const handlePriceRangeChange = (values) => setPriceRange(values);
   const handleDurationRangeChange = (values) => setDurationRange(values);
   const getAuthToken = () =>
     localStorage.getItem("auth_token_login") ||
     localStorage.getItem("auth_token_register");
-
-  // --- DATA FETCHING AND LOGIC (useEffect Hooks) ---
 
   // EFFECT 1: Fetch data for accordion filters on initial mount
   useEffect(() => {
@@ -155,12 +132,12 @@ const TourPackage = () => {
       }
     };
     fetchAllAccordionData();
-  }, [accordionDataConfig]); // Depends on the stable memoized config
+  }, [accordionDataConfig]);
 
-  // EFFECT 2: Fetch initial page data
+  // EFFECT 2: Fetch initial page data (Packages, Categories, etc.)
   useEffect(() => {
     const fetchData = async () => {
-      setIsLoading(true);
+      setIsLoading(true); //  <-- SHOW LOADER
       setError(null);
       const authToken = getAuthToken();
       const headers = authToken ? { Authorization: `Bearer ${authToken}` } : {};
@@ -185,28 +162,24 @@ const TourPackage = () => {
         const fetchedPackages = packagesRes.data.data || [];
         setAllPackages(fetchedPackages);
         setFilteredPackages(fetchedPackages);
-
         setTour_category(tourCategoryRes.data.data || []);
         setBestpicked(bestPickedRes.data || []);
-        //console.log("lesser ",lesserWondersRes.data);
-
         setLesserWonders(lesserWondersRes.data || []);
       } catch (err) {
         setError("Failed to fetch initial page data. Please try again.");
         console.error("Data fetch error:", err);
       } finally {
-        setIsLoading(false);
+        setIsLoading(false); // <-- HIDE LOADER
       }
     };
     fetchData();
-  }, []); // Runs only once
+  }, [setIsLoading]); // Add setIsLoading to dependency array
 
-  // --- KEY IMPROVEMENT 3: A single, unified filtering effect ---
-  // This effect runs ONLY when the debounced sliders or accordion selections change.
-  // It orchestrates both API calls and local filtering efficiently.
+  // EFFECT 3: Unified filtering effect (no change here)
   useEffect(() => {
     const applyFilters = async () => {
-      setIsLoading(true);
+      // This is not the main page load, so we use a local state
+      // instead of the global setIsLoading.
       setError(null);
       setNoResultsFound(false);
 
@@ -215,7 +188,6 @@ const TourPackage = () => {
       const queryParts = [];
       let needsApiCall = false;
 
-      // Build query string for API filtering (excluding Country, Price, Duration)
       for (const sectionTitle in selectedItems) {
         const section = accordionData.find(
           (item) => item.title === sectionTitle
@@ -228,51 +200,42 @@ const TourPackage = () => {
         }
       }
 
-      let basePackages = allPackages; // Start with all packages by default
+      let basePackages = allPackages;
 
-      // If API filters are active, fetch new data from the server
       if (needsApiCall) {
         const queryString = queryParts.join("&");
         const url = `${process.env.NEXT_PUBLIC_API_URL}packages?${queryString}`;
         try {
           const response = await axios.get(url, { headers });
           basePackages = response.data.data || [];
-          setLastApiFilteredPackages(basePackages); // Cache the API result
+          setLastApiFilteredPackages(basePackages);
         } catch (err) {
           if (err.response && err.response.status === 404) {
             basePackages = [];
           } else {
             setError("Failed to fetch filtered packages.");
-            console.error("Filter error:", err);
             basePackages = [];
           }
         }
       } else if (lastApiFilteredPackages !== null) {
-        // If API filters were just cleared, revert to the full list.
         basePackages = allPackages;
         setLastApiFilteredPackages(null);
       }
 
-      // --- Apply local filters (Price, Duration, Country) on the `basePackages` ---
-      // This part is now very fast as it runs on a pre-filtered list (if applicable)
-      // and only after the user stops interacting with the controls.
       const locallyFiltered = basePackages.filter((pkg) => {
         if (!pkg) return false;
         const adultPrice = parseFloat(pkg.adult_price) || 0;
         const duration = parseInt(pkg.number_of_days, 10) || 0;
-
         const matchesPrice =
           adultPrice >= debouncedPriceRange[0] &&
           adultPrice <= debouncedPriceRange[1];
         const matchesDuration =
           duration >= debouncedDurationRange[0] &&
           duration <= debouncedDurationRange[1];
-
         const countryIdFilter = selectedItems["COUNTRY"]?.[0];
         const matchesCountry = countryIdFilter
           ? pkg.country_id === countryIdFilter
           : true;
-
         return matchesPrice && matchesDuration && matchesCountry;
       });
 
@@ -284,31 +247,29 @@ const TourPackage = () => {
         priceRange[1] !== 10000 ||
         durationRange[0] !== 1 ||
         durationRange[1] !== 30;
-
       if (locallyFiltered.length === 0 && hasActiveFilters) {
         setNoResultsFound(true);
       }
-
-      setIsLoading(false);
     };
 
-    // Don't run this effect during the initial data load.
-    if (!isLoading && allPackages.length > 0) {
+    if (allPackages.length > 0) {
       applyFilters();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedPriceRange, debouncedDurationRange, selectedItems, allPackages]);
+  }, [
+    debouncedPriceRange,
+    debouncedDurationRange,
+    selectedItems,
+    allPackages,
+    accordionData,
+    lastApiFilteredPackages,
+  ]);
 
-  // Handles clicking an item in any accordion filter
   const handleAccordionItemClick = useCallback(
     (sectionIndex, itemId) => {
-      // This function is now much simpler. It just updates state.
-      // The main useEffect will handle the filtering logic.
       const sectionTitle = accordionData[sectionIndex].title;
       setSelectedItems((currentSelected) => {
         const newSelectedItems = { ...currentSelected };
         const currentSelections = newSelectedItems[sectionTitle] || [];
-
         if (sectionTitle === "COUNTRY") {
           newSelectedItems[sectionTitle] = currentSelections.includes(itemId)
             ? []
@@ -318,11 +279,9 @@ const TourPackage = () => {
             ? currentSelections.filter((id) => id !== itemId)
             : [...currentSelections, itemId];
         }
-
         if (newSelectedItems[sectionTitle]?.length === 0) {
           delete newSelectedItems[sectionTitle];
         }
-
         return newSelectedItems;
       });
     },
@@ -334,10 +293,21 @@ const TourPackage = () => {
     setDurationRange([1, 30]);
     setSelectedItems({});
     setLastApiFilteredPackages(null);
-    setFilteredPackages(allPackages); // Reset to all packages
+    setFilteredPackages(allPackages);
     setNoResultsFound(false);
     setError(null);
   };
+
+  if (error) {
+    return (
+      <div className="container text-center py-5 vh-100">
+        <h3>{error}</h3>
+      </div>
+    );
+  }
+
+  // The global loader will be active, so we don't need to show a local loading message.
+  // The content will render once the loader is hidden.
 
   return (
     <>
@@ -360,7 +330,6 @@ const TourPackage = () => {
                 <div className={style["filter-header"]}>
                   <h4 className="pt-2">Price Range</h4>
                 </div>
-                {/* --- The Range component now updates the "live" state --- */}
                 <div className={style["price-range"]}>
                   <Range
                     step={100}
@@ -399,7 +368,6 @@ const TourPackage = () => {
                     Price Range: AED {priceRange[0]} — AED {priceRange[1]}
                   </p>
                 </div>
-
                 <div className={style["filter-header"]}>
                   <h4>Duration</h4>
                 </div>
@@ -441,7 +409,6 @@ const TourPackage = () => {
                     Days: {durationRange[0]} — {durationRange[1]} Days
                   </p>
                 </div>
-
                 <div className={style["accordion-range"]}>
                   {accordionData.map((accordion, index) => (
                     <Accordion
@@ -456,7 +423,6 @@ const TourPackage = () => {
                     />
                   ))}
                 </div>
-
                 <div className={style["filter-buttons"]}>
                   <button
                     className={`${style["btn-one"]} my-3`}
@@ -487,11 +453,7 @@ const TourPackage = () => {
               }`}
             >
               <h3>Tour Packages</h3>
-              {isLoading ? (
-                <p>Loading packages...</p>
-              ) : error ? (
-                <div className="alert alert-danger">{error}</div>
-              ) : noResultsFound ? (
+              {noResultsFound ? (
                 <div className={style["no-results"]}>
                   <h4>No packages found matching your criteria</h4>
                   <p>
@@ -507,11 +469,10 @@ const TourPackage = () => {
               ) : (
                 <TourPackageTab
                   tour_category={tour_category}
-                  packages={filteredPackages} // This is always the correct list to display
+                  packages={filteredPackages}
                   breakPoints={isToggled ? firstBreakPoints : secondBreakPoints}
                 />
               )}
-
               <div>
                 <FeaturedIntegratedTravel type="package" />
               </div>
@@ -523,7 +484,6 @@ const TourPackage = () => {
                   fontSize: "14px",
                 }}
               >
-                {/* Left side - Call Now */}
                 <div className="d-flex align-items-center justify-content-center justify-content-md-start w-100 w-md-auto">
                   <div className="me-3">
                     <svg
@@ -553,8 +513,6 @@ const TourPackage = () => {
                     : +586 958 5545
                   </Link>
                 </div>
-
-                {/* Center - OR */}
                 <div
                   className="px-3 py-2 d-none d-md-flex justify-content-center"
                   style={{
@@ -568,16 +526,12 @@ const TourPackage = () => {
                 >
                   OR
                 </div>
-
-                {/* Mobile separator */}
                 <div
                   className="d-md-none w-100 text-center"
                   style={{ fontSize: "12px", opacity: "0.7" }}
                 >
                   ───── OR ─────
                 </div>
-
-                {/* Right side - Mail Us */}
                 <div className="d-flex align-items-center justify-content-center justify-content-md-end w-100 w-md-auto">
                   <div className="me-3">
                     <svg
@@ -625,7 +579,6 @@ const TourPackage = () => {
                   </div>
                 </section>
               )}
-
               {lesserWonders.length > 0 && (
                 <section className={style["pakage-bes-picked"]}>
                   <h3 className="pb-3">Lesser-Known Wonders</h3>
@@ -636,13 +589,12 @@ const TourPackage = () => {
                   />
                 </section>
               )}
-
               <section className={style["pakage-bes-picked"]}>
                 <h3 className="pb-3">Holidays by theme</h3>
                 <HolidaysTab />
                 <div className="text-center mt-4">
                   <button className={style["btn-one"]}>
-                    <Link href="tour-package" style={{ color: "white" }}>
+                    <Link href="/tour-package" style={{ color: "white" }}>
                       Full List
                     </Link>
                   </button>

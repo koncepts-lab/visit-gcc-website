@@ -1,11 +1,13 @@
-// app/layout.js
-
 "use client";
-import { Inter } from "next/font/google";
-import "./globals.css";
+import React from "react"; // Add React import
 import "bootstrap/dist/css/bootstrap.css";
+import "./globals.css";
 import dynamic from "next/dynamic";
 import Script from "next/script";
+
+// --- IMPORTS FOR LOADER AND SNACKBAR ---
+import { LoadingProvider } from "../../components/LoadingProvider";
+import { SnackbarProvider } from "notistack";
 
 const ClientSideRouter = dynamic(
   () => import("../../components/layouts/ClientSideRouter"),
@@ -19,13 +21,11 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head>
         <title>Visit GCC</title>
-        {/* ✅ Zoho PageSense */}
+        {/* All your existing script tags remain here */}
         <Script
           src="https://cdn.pagesense.io/js/visitgcc/c93ebcb0810846a887fea3d6acafa8e0.js"
           strategy="afterInteractive"
         />
-
-        {/* ✅ Google Analytics */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-LTQG8F1Z2K"
           strategy="afterInteractive"
@@ -42,8 +42,6 @@ export default function RootLayout({ children }) {
             `,
           }}
         />
-
-        {/* ✅ Google Tag Manager */}
         <Script
           id="gtm-script"
           strategy="afterInteractive"
@@ -68,9 +66,19 @@ export default function RootLayout({ children }) {
             style={{ display: "none", visibility: "hidden" }}
           ></iframe>
         </noscript>
-        <ClientSideRouter>{children}</ClientSideRouter>
 
-        {/* ✅ Updated Zoho SalesIQ Implementation */}
+        {/* --- WRAP YOUR APP WITH THE PROVIDERS --- */}
+        <SnackbarProvider
+          maxSnack={3}
+          anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+          autoHideDuration={3000}
+        >
+          <LoadingProvider>
+            <ClientSideRouter>{children}</ClientSideRouter>
+          </LoadingProvider>
+        </SnackbarProvider>
+
+        {/* Zoho SalesIQ Scripts remain at the end */}
         <Script
           id="zoho-salesiq-setup"
           strategy="afterInteractive"
@@ -83,7 +91,6 @@ export default function RootLayout({ children }) {
             `,
           }}
         />
-
         <Script
           id="zsiqscript"
           src="https://salesiq.zohopublic.com/widget?wc=siqc87d41d642b596ee8f7dc3c0674465b98a307bd386e607f660ba2dbf57cbcadd"

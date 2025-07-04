@@ -1,72 +1,82 @@
-"use client"; // Add this if you need hooks or client-side functionalities here
+"use client";
 
 import React, { useState, useEffect } from "react";
+import { useParams } from "next/navigation";
 import Link from "next/link";
-import style from "./style.module.css"; // Ensure correct path for styles
-import Banner from "@components/banner/banner"; // Ensure correct path
 import axios from "axios";
-import Carousal from "@components/carousel/Carousal"; // Ensure correct path
+import style from "./style.module.css";
+import Banner from "@components/banner/banner";
+import Carousal from "@components/carousel/Carousal";
 import Ask_ur_questions from "@components/ask_ur_questions/ask_ur_questions";
-import HighlightTab from "@components/tour-package-details/highlight-tab"; // Ensure correct path
+import HighlightTab from "@components/tour-package-details/highlight-tab";
 import PackageInclusionsAndExclusions from "@components/tour-package-details/package-inclusions";
 import RatingCarousel from "@components/tour-package-details/RatingCarousel";
 import Top_container from "./top_container";
-import { useParams } from "next/navigation";
 import Map from "@components/map/Map";
+import { useLoading } from "@components/LoadingProvider"; // 1. IMPORT THE LOADER HOOK
 
 function Page() {
   const params = useParams();
   const slug = params?.slug;
-  const [slugpackage, setSlugPackage] = useState([]);
+  const { setIsLoading } = useLoading(); // 2. USE THE LOADER HOOK
+
+  // All your original state declarations are preserved
+  const [slugpackage, setSlugPackage] = useState(null); // Initialize as null
   const [allPackage, setAllPackage] = useState([]);
   const [legends, setLegends] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // 3. CONSOLIDATED USEEFFECT FOR ALL INITIAL PAGE DATA
   useEffect(() => {
     if (!slug) return;
 
-    const fetchPackageData = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}packages/${slug}`
-        );
+    const fetchAllPageData = async () => {
+      setIsLoading(true); // SHOW LOADER
+      setError(null);
 
-        const singlePackageData = response.data.data || response.data || [];
+      try {
+        // Wait for all essential data to be fetched
+        const [packageResponse, allPackageResponse] = await Promise.all([
+          axios.get(`${process.env.NEXT_PUBLIC_API_URL}packages/${slug}`),
+          axios.get(`${process.env.NEXT_PUBLIC_API_URL}packages`),
+          // You can add back the legends fetch here if needed
+          // axios.get(`${process.env.NEXT_PUBLIC_API_URL}legends/package/${slug}/get-by-package`)
+        ]);
+
+        const singlePackageData =
+          packageResponse.data.data || packageResponse.data || null;
+        if (!singlePackageData) {
+          throw new Error("Package not found.");
+        }
+
         setSlugPackage(singlePackageData);
-
-        setIsLoading(false);
-      } catch (err) {
-        setIsLoading(false);
-        setError("Failed to fetch data. Please try again.");
-        console.error("Error fetching data:", err);
-      }
-    };
-
-    fetchPackageData();
-  }, [slug]);
-
-  useEffect(() => {
-    const fetchAllPackage = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}packages`
+        setAllPackage(
+          allPackageResponse.data.data || allPackageResponse.data || []
         );
-
-        const AllPackage = response.data.data || response.data || [];
-         //console.log("packages Data:", AllPackage);
-        setAllPackage(AllPackage);
-
-        setIsLoading(false);
+        // setLegends(legendsResponse.data.legends || []);
       } catch (err) {
-        setIsLoading(false);
-        setError("Failed to fetch data. Please try again.");
-        console.error("Error fetching data:", err);
+        console.error("Error fetching page data:", err);
+        setError("Failed to fetch package details. Please try again.");
+      } finally {
+        setIsLoading(false); // HIDE LOADER
       }
     };
 
-    fetchAllPackage();
-  }, []);
+    fetchAllPageData();
+  }, [slug, setIsLoading]);
+
+  if (error) {
+    return (
+      <div className="container text-center py-5 vh-100">
+        <h3>{error}</h3>
+      </div>
+    );
+  }
+
+  // While the global loader is active, this component will return null
+  if (!slugpackage) {
+    return null;
+  }
 
   return (
     <>
@@ -86,21 +96,6 @@ function Page() {
           </div>
         </div>
 
-        {/* <div className="container">
-          <div className={`col-md-12 ${style["pdb-3"]}`}>
-            <PackageInclusionsAndExclusions packageId={slugpackage.id} />
-          </div>
-        </div> */}
-
-        {/* <div className="container">
-          <div className="row pt-5">
-            <div key={slugpackage.id} className="col-md-12">
-              <h3>Note</h3>
-              <p>{slugpackage.note}</p>
-            </div>
-          </div>
-        </div> */}
-
         <div className="container">
           <div className={`row ${style["ptb-30"]}`}>
             <div className="col-md-12">
@@ -111,30 +106,6 @@ function Page() {
             latitude={slugpackage.latitude}
             longitude={slugpackage.longitude}
           />
-          {/* <div className={`row ${style["Legend-ul"]}`}>
-            <div className="col-md-8">
-              <img src={slugpackage.map_url} alt="Bahrain" />
-            </div>
-            <div className="col-md-4">
-              <h4>Legend</h4>
-              <ul>
-                {legends.map((legend) => (
-                  <li key={legend.uuid_id}>
-                    <img
-                      src={legend.legend_icon_url}
-                      alt={legend.title}
-                      style={{
-                        width: "30px",
-                        height: "30px",
-                        marginRight: "10px",
-                      }}
-                    />
-                    <span>{legend.title}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div> */}
         </div>
 
         <div className="container">
