@@ -99,7 +99,7 @@ const SearchComponent = () => {
         </button>
         <input
           type="text"
-          className="form-control" // No more dynamic class needed here
+          className="form-control fw-3" // No more dynamic class needed here
           aria-label="Enter text to search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}

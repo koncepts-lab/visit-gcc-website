@@ -145,3 +145,61 @@
     font-size: 14px;
   }
 }
+/* In: your style.module.css file */
+/* REMOVE the old .stickyFooter and .stickyPayButton styles and REPLACE with these */
+
+/* --- STICKY PAY CORNER CARD FOR MOBILE --- */
+.stickyPayContainer {
+  display: none; /* Hidden by default on desktop */
+  position: fixed;
+  /* Position it above a potential bottom mobile menu. Adjust as needed. */
+  bottom: 70px;
+  right: 1rem; /* 16px from the right edge */
+
+  /* Styling for the floating card look */
+  background-color: #ffffff;
+  padding: 0.75rem 1rem;
+  border-radius: 50px; /* Pill shape */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  z-index: 999;
+
+  /* Internal layout */
+  align-items: center;
+  gap: 1rem; /* Space between the price and the button */
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Specific styling for the price text inside the container */
+.stickyPayContainer .priceText {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Specific styling for the button inside the container */
+.stickyPayContainer button {
+  background-color: #5ab2b3;
+  color: white;
+  border: none;
+  padding: 0.5rem 1.25rem;
+  border-radius: 50px;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.stickyPayContainer button:disabled {
+  background-color: #a9d9da;
+  cursor: not-allowed;
+}
+
+/* Media query to show the container only on mobile */
+@media (max-width: 768px) {
+  .stickyPayContainer {
+    display: flex; /* Makes the container visible */
+  }
+
+  /* Add padding to the bottom of the page to prevent content from being hidden */
+  .checkoutPageContainer {
+    padding-bottom: 120px;
+  }
+}

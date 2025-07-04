@@ -6,7 +6,7 @@ import Banner from "../../../components/banner/banner";
 import Link from "next/link";
 import Carousal from "../../../components/carousel/Carousal";
 import { IoIosArrowDown } from "react-icons/io";
-import { FaUser, FaRegHeart } from "react-icons/fa6";
+import { FaUser, FaRegHeart, FaTrashAlt } from "react-icons/fa";
 import { GoShare } from "react-icons/go";
 import Ask_ur_questions from "@components/ask_ur_questions/ask_ur_questions";
 import axios from "axios";
@@ -200,15 +200,33 @@ const Checkout = () => {
   const searchParams = useSearchParams();
   const bookingId = searchParams.get("bookingId") || "";
 
-  // useEffect to validate form in real-time
+  const addTraveller = () => {
+    setTravellers([
+      ...travellers,
+      {
+        id: nextTravellerId,
+        last_name: "",
+        first_name: "",
+        id_type: "",
+        id_number: "",
+        gender: "",
+      },
+    ]);
+    setNextTravellerId(nextTravellerId + 1);
+  };
+
+  const removeTraveller = (idToRemove) => {
+    setTravellers(
+      travellers.filter((traveller) => traveller.id !== idToRemove)
+    );
+  };
+
   useEffect(() => {
     const validateForm = () => {
-      // MODIFIED: Removed pick_up_point from validation
       const isFormDataValid =
         formData.contact_name.trim() !== "" &&
         formData.contact_number.trim() !== "" &&
         /\S+@\S+\.\S+/.test(formData.email);
-
       const areTravellersValid = travellers.every(
         (t) =>
           t.first_name.trim() !== "" &&
@@ -217,10 +235,8 @@ const Checkout = () => {
           t.id_number.trim() !== "" &&
           t.gender !== ""
       );
-
       setIsFormValid(isFormDataValid && areTravellersValid);
     };
-
     validateForm();
   }, [formData, travellers]);
 
@@ -302,7 +318,6 @@ const Checkout = () => {
           { headers: { Authorization: `Bearer ${authToken}` } }
         );
         const apiData = response.data || {};
-
         if (apiData.is_payable === false) {
           enqueueSnackbar("This booking has already been completed.", {
             variant: "info",
@@ -310,7 +325,6 @@ const Checkout = () => {
           router.replace("/");
           return;
         }
-
         setBookingData(apiData);
         if (apiData.booking?.email)
           setFormData((prev) => ({ ...prev, email: apiData.booking.email }));
@@ -523,7 +537,6 @@ const Checkout = () => {
 
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
-
   const totalPrice = bookingData
     ? parseFloat(bookingData.booking.total_amount).toFixed(2)
     : "0.00";
@@ -537,489 +550,440 @@ const Checkout = () => {
     "Your Booking";
 
   return (
-    <div>
+    // Add the class here for the padding-bottom rule
+    <div className={style.checkoutPageContainer}>
       <Banner />
-      <div className="">
-        <div className={`${style["checkout-package-details"]} container`}>
-          <div className="row pt-5">
-            <div className="col-md-8">
-              <h2 className="d-flex justify-content-between fw-bolder">
-                Tour Package Booking Checkout
-                <button
-                  className="rounded-2 fw-semibold fs-6 px-1 bg-white"
-                  style={{
-                    border: "4px solid #5ab2b3",
-                    color: "#5ab2b3",
-                    height: "39px",
-                  }}
-                >
-                  Customizable
-                </button>
-              </h2>
-              <p style={{ fontSize: "14px", color: "black" }}>
-                Guest Signup - Tour Package Booking
-              </p>
-              <div className="pt-3">
-                <h1 className="ms-0 fw-bolder">Personal Information</h1>
-                <form className="col-xxl-10 col-xl-12">
-                  {travellers.map((traveller, index) => (
-                    <div key={traveller.id} className="pt-1">
-                      <p
-                        className="align-items-center fw-semibold"
-                        style={{ color: "#5ab2b3", height: "12px" }}
-                      >
-                        <FaUser
-                          size={23}
-                          className="me-3"
-                          color="#e7e7e7"
-                          style={{ marginTop: "-11px" }}
-                        />{" "}
-                        Adult
-                      </p>
-                      <div className="col-12">
-                        <input
-                          className={`${
-                            style["promo_input"]
-                          } col-xl-5 col-lg-6 col-12 ${
-                            errors[`travelers.${index}.last_name`]
-                              ? style.error
-                              : ""
-                          }`}
-                          placeholder="LastName (in English)*"
-                          value={traveller.last_name}
-                          onChange={(e) =>
-                            handleTravellerInputChange(
-                              traveller.id,
-                              "last_name",
-                              e.target.value
-                            )
-                          }
-                        />
-                        <br className="d-xl-none d-lg-block" />
-                        <input
-                          className={`${
-                            style["promo_input"]
-                          } ms-xxl-5 ms-xl-5 ms-md-0 col-xl-5 col-lg-6 col-12 ${
-                            errors[`travelers.${index}.first_name`]
-                              ? style.error
-                              : ""
-                          }`}
-                          placeholder="First & middle name(in English)*"
-                          value={traveller.first_name}
-                          onChange={(e) =>
-                            handleTravellerInputChange(
-                              traveller.id,
-                              "first_name",
-                              e.target.value
-                            )
-                          }
-                        />
-                        {errors[`travelers.${index}.last_name`] && (
-                          <p className="text-danger small">
-                            {errors[`travelers.${index}.last_name`][0]}
-                          </p>
-                        )}
-                        {errors[`travelers.${index}.first_name`] && (
-                          <p className="text-danger small">
-                            {errors[`travelers.${index}.first_name`][0]}
-                          </p>
-                        )}
-                        <br />
-                      </div>
-                      <div className="col-12 pt-2">
-                        <input
-                          className={`${
-                            style["promo_input"]
-                          } col-xl-5 col-lg-6 col-12 ${
-                            errors[`travelers.${index}.id_type`]
-                              ? style.error
-                              : ""
-                          }`}
-                          placeholder="ID Type*"
-                          value={traveller.id_type}
-                          onChange={(e) =>
-                            handleTravellerInputChange(
-                              traveller.id,
-                              "id_type",
-                              e.target.value
-                            )
-                          }
-                        />
-                        <br className="d-xl-none d-lg-block" />
-                        <input
-                          className={`${
-                            style["promo_input"]
-                          } ms-xxl-5 ms-xl-5 ms-md-0 col-xl-4 col-lg-6 col-12 ${
-                            errors[`travelers.${index}.id_number`]
-                              ? style.error
-                              : ""
-                          }`}
-                          placeholder="ID number*"
-                          value={traveller.id_number}
-                          onChange={(e) =>
-                            handleTravellerInputChange(
-                              traveller.id,
-                              "id_number",
-                              e.target.value
-                            )
-                          }
-                        />
-                        {errors[`travelers.${index}.id_type`] && (
-                          <p className="text-danger small">
-                            {errors[`travelers.${index}.id_type`][0]}
-                          </p>
-                        )}
-                        {errors[`travelers.${index}.id_number`] && (
-                          <p className="text-danger small">
-                            {errors[`travelers.${index}.id_number`][0]}
-                          </p>
-                        )}
-                      </div>
-                      <div style={{ marginTop: "10px", marginBottom: "10px" }}>
-                        <button
-                          type="button"
-                          onClick={() =>
-                            handleGenderChange(traveller.id, "male")
-                          }
-                          style={{
-                            backgroundColor:
-                              traveller.gender === "male" ? "#5ab2b3" : "white",
-                            color:
-                              traveller.gender === "male" ? "white" : "#686767",
-                            padding: "5px 45px",
-                            fontSize: "13px",
-                            border: "#e2e2e2 2px solid",
-                            borderRadius: "5px",
-                          }}
-                        >
-                          Male
-                        </button>
-                        <button
-                          type="button"
-                          className="ms-md-3 ms-2"
-                          onClick={() =>
-                            handleGenderChange(traveller.id, "female")
-                          }
-                          style={{
-                            backgroundColor:
-                              traveller.gender === "female"
-                                ? "#5ab2b3"
-                                : "white",
-                            color:
-                              traveller.gender === "female"
-                                ? "white"
-                                : "#686767",
-                            padding: "5px 42px",
-                            fontSize: "13px",
-                            border: "#e2e2e2 2px solid",
-                            borderRadius: "5px",
-                          }}
-                        >
-                          Female
-                        </button>
-                        {errors[`travelers.${index}.gender`] && (
-                          <p className="text-danger small d-block">
-                            {errors[`travelers.${index}.gender`][0]}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-
-                  {/* Travel Details and Contact Info Section */}
-                  <div>
-                    <h1 className="m-2 pt-2 pb-2 ms-0 fw-bolder">
-                      Travel Details
-                    </h1>
-                    <label>Pick-up point</label>
-                    <br />
-                    <input
-                      className={`${style["promo_input"]} my-2 col-12 ${
-                        errors.pick_up_point ? style.error : ""
-                      }`}
-                      placeholder="Please enter pick-up point"
-                      name="pick_up_point"
-                      value={formData.pick_up_point}
-                      onChange={handleFormChange}
-                    />
-                    {errors.pick_up_point && (
-                      <p className="text-danger small">
-                        {errors.pick_up_point[0]}
-                      </p>
-                    )}
-
-                    <label className="pe-0 me-0 pt-3">Special Requests</label>
-                    <br />
-                    <input
-                      className={`${style["promo_input"]} my-2 col-12`}
-                      placeholder="Please enter Special Requests"
-                      name="special_request"
-                      value={formData.special_request}
-                      onChange={handleFormChange}
-                    />
-
-                    <label className="pt-2">Package Addons</label>
-                    <br />
-                    <input
-                      className={`${style["promo_input"]} my-2 col-12`}
-                      placeholder="Add travel medical insurance details if required"
-                      name="add_ons"
-                      value={formData.add_ons}
-                      onChange={handleFormChange}
-                    />
-
-                    <h1 className="m-3 ms-0 pt-1 fw-bolder">Contact Info</h1>
-                    <div className="d-flex flex-xl-row flex-md-column flex-column justify-content-between col-12 gap-xl-5 gap-lg-3">
-                      <div className="col-xl-6 col-12">
-                        <label className="">Contact Name*</label>
-                        <br />
-                        <input
-                          className={`${style["promo_input"]} my-2 col-12 ${
-                            errors.contact_name ? style.error : ""
-                          }`}
-                          placeholder="Please enter contact name"
-                          name="contact_name"
-                          value={formData.contact_name}
-                          onChange={handleFormChange}
-                        />
-                        {errors.contact_name && (
-                          <p className="text-danger small">
-                            {errors.contact_name[0]}
-                          </p>
-                        )}
-                      </div>
-                      <div className="col-xl-6 col-lg-8 col-md-12 col-12">
-                        <label className="">Contact Number*</label>
-                        <br />
-                        <select
-                          name="country_code"
-                          value={formData.country_code}
-                          onChange={handleFormChange}
-                          className={`${style["promo_select"]} my-2`}
-                        >
-                          {countryCodes.map((country) => (
-                            <option
-                              key={`${country.name}-${country.code}`}
-                              value={country.code}
-                            >
-                              {country.code}
-                            </option>
-                          ))}
-                        </select>
-                        <input
-                          className={`${
-                            style["promo_input"]
-                          } my-2 ms-xl-1 ms-lg-1 ms-2 ${
-                            errors.contact_number ? style.error : ""
-                          }`}
-                          style={{ width: "240px" }}
-                          placeholder="Mobile Number"
-                          name="contact_number"
-                          value={formData.contact_number}
-                          onChange={handleFormChange}
-                        />
-                        {errors.contact_number && (
-                          <p className="text-danger small">
-                            {errors.contact_number[0]}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                    <div className="my-2">
-                      <label className="pe-0 me-0">Email Address*</label>
-                      <br />
-                      <input
-                        className={`${style["promo_input"]} my-2 col-12 ${
-                          errors.email ? style.error : ""
-                        }`}
-                        placeholder="All important updates will be send to this email ID"
-                        name="email"
-                        type="email"
-                        value={formData.email}
-                        onChange={handleFormChange}
-                      />
-                      {errors.email && (
-                        <p className="text-danger small">{errors.email[0]}</p>
-                      )}
-                    </div>
-                  </div>
-                </form>
-              </div>
-            </div>
-
-            <div className="col-md-4 my-md-0 my-5">
-              <label className="text-black fw-semibold fs-4">
-                Package Price
-              </label>
-              <br />
-              <div
-                className="col-11 text-black-50 my-2"
-                style={{ height: "2px", borderTop: "3px dashed #e2e2e2" }}
-              />
-              <div
-                className="col-11 text-black pt-3"
-                style={{ borderBottom: "2px solid #e2e2e2" }}
-              >
-                <h5 className="pt-2 d-flex pb-2 justify-content-between col-11">
-                  <span>
-                    <b>Price</b>
-                  </span>
-                </h5>
-                {totalAdults > 0 && (
-                  <p className="d-flex justify-content-between text-black">
-                    <span>
-                      {totalAdults} Adult{totalAdults > 1 ? "s" : ""}
-                    </span>
-                  </p>
-                )}
-                {totalChildren > 0 && (
-                  <p className="d-flex justify-content-between text-black">
-                    <span>
-                      {totalChildren} Child{totalChildren > 1 ? "ren" : ""}
-                    </span>
-                  </p>
-                )}
-                {totalInfants > 0 && (
-                  <p className="d-flex justify-content-between text-black">
-                    <span>
-                      {totalInfants} Infant{totalInfants > 1 ? "s" : ""}
-                    </span>
-                  </p>
-                )}
-                <h5 className="pt-2 d-flex pb-1 justify-content-between col-11">
-                  <span>
-                    <b>Total</b>
-                  </span>
-                  <span>
-                    <b>AED {totalPrice}</b>
-                  </span>
-                </h5>
-              </div>
-              <span className="col-10 ps-1 pt-2 d-flex justify-content-end">
-                <button
-                  onClick={handlePayNow}
-                  className={style["btn-one"]}
-                  disabled={!isFormValid}
-                >
-                  Pay Now
-                </button>
-              </span>
-              <p className="col-lg-12 col-xl-12 col-12 pt-4 my-2">
-                By proceeding, I acknowledge that I have
-                <br className="d-lg-block d-none" />
-                read and agree to the Company Terms &{" "}
-                <br className="d-lg-block d-none" />
-                Conditions and Privacy Statement.
-              </p>
-              <button
-                className="bg-white col-11 d-flex justify-content-between"
-                style={{ border: "none", color: "#5ab2b3" }}
-                onClick={toggleAccordion}
-              >
-                <span className="fw-semibold">
-                  Cancellation & <br className="d-lg-none d-md-block d-none" />{" "}
-                  Date Change{" "}
-                </span>
-                <IoIosArrowDown
-                  color="grey"
-                  size={22}
-                  style={{
-                    transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
-                    transition: "transform 0.3s ease",
-                  }}
-                />
-              </button>
-              <div className="my-2">
-                <label className="text-black fw-semibold fs-4">
-                  Promotions
-                </label>
-                <br />
-                <label className="pt-1">Promo code</label>
-                <br />
-                <div>
-                  <input
-                    className={`${style["promo_input"]} col-xl-8 col-lg-7 col-md-10`}
-                    style={{ height: "35px" }}
-                  />
+      <div>
+        <div className="">
+          <div className={`${style["checkout-package-details"]} container`}>
+            <div className="row pt-5">
+              <div className="col-md-8">
+                <h2 className="d-flex justify-content-between fw-bolder">
+                  Tour Package Booking Checkout
                   <button
-                    className={`${style["btn-one"]} my-lg-0 my-md-1 my-2`}
-                    style={{ padding: "6px 10px" }}
-                  >
-                    Apply
-                  </button>
-                </div>
-                <div className="pt-4 d-flex flex-xl-row flex-lg-column flex-column">
-                  <div>
-                    <label
-                      className="text-black fw-semibold"
-                      style={{ fontSize: "1.42rem" }}
-                    >
-                      Complete Booking In
-                    </label>
-                    <br />
-                    <p>
-                      {" "}
-                      The package price will refresh
-                      <br className="d-lg-block d-none" /> After
-                    </p>
-                  </div>
-                  <div
-                    className="rounded-pill align-content-center ms-3"
+                    className="rounded-2 fw-semibold fs-6 px-1 bg-white"
                     style={{
-                      height: "85px",
-                      width: "85px",
                       border: "4px solid #5ab2b3",
+                      color: "#5ab2b3",
+                      height: "39px",
                     }}
                   >
-                    <h1 className="align-items-center align-self-center d-flex flex-column ms-2 my-1 text-black-50">
-                      <span style={{ fontSize: "23px" }}>
-                        {minutes < 10 ? `0${minutes}` : minutes}:
-                        {seconds < 10 ? `0${seconds}` : seconds}
-                      </span>
-                      <span style={{ fontSize: "12px" }}>mins</span>
-                    </h1>
-                  </div>
+                    Customizable
+                  </button>
+                </h2>
+                <p style={{ fontSize: "14px", color: "black" }}>
+                  Guest Signup - Tour Package Booking
+                </p>
+                <div className="pt-3">
+                  <h1 className="ms-0 fw-bolder">Personal Information</h1>
+                  <form className="col-xxl-10 col-xl-12">
+                    {travellers.map((traveller, index) => (
+                      <div
+                        key={traveller.id}
+                        className="pt-1 mb-4 border-bottom pb-3"
+                      >
+                        <div className="d-flex justify-content-between align-items-center mb-2">
+                          <p
+                            className="align-items-center fw-semibold mb-0"
+                            style={{ color: "#5ab2b3" }}
+                          >
+                            <FaUser
+                              size={23}
+                              className="me-3"
+                              color="#e7e7e7"
+                              style={{ marginTop: "-5px" }}
+                            />
+                            Traveller {index + 1}
+                          </p>
+                          {index > 0 && (
+                            <button
+                              type="button"
+                              className="btn btn-sm btn-outline-danger d-flex align-items-center"
+                              onClick={() => removeTraveller(traveller.id)}
+                            >
+                              <FaTrashAlt size={12} className="me-1" /> Remove
+                            </button>
+                          )}
+                        </div>
+                        <div className="col-12">
+                          <input
+                            className={`${style["promo_input"]} col-xl-5 col-lg-6 col-12`}
+                            placeholder="LastName (in English)*"
+                            value={traveller.last_name}
+                            onChange={(e) =>
+                              handleTravellerInputChange(
+                                traveller.id,
+                                "last_name",
+                                e.target.value
+                              )
+                            }
+                          />
+                          <br className="d-xl-none d-lg-block" />
+                          <input
+                            className={`${style["promo_input"]} ms-xxl-5 ms-xl-5 ms-md-0 col-xl-5 col-lg-6 col-12`}
+                            placeholder="First & middle name(in English)*"
+                            value={traveller.first_name}
+                            onChange={(e) =>
+                              handleTravellerInputChange(
+                                traveller.id,
+                                "first_name",
+                                e.target.value
+                              )
+                            }
+                          />
+                        </div>
+                        <div className="col-12 pt-2">
+                          <input
+                            className={`${style["promo_input"]} col-xl-5 col-lg-6 col-12`}
+                            placeholder="ID Type*"
+                            value={traveller.id_type}
+                            onChange={(e) =>
+                              handleTravellerInputChange(
+                                traveller.id,
+                                "id_type",
+                                e.target.value
+                              )
+                            }
+                          />
+                          <br className="d-xl-none d-lg-block" />
+                          <input
+                            className={`${style["promo_input"]} ms-xxl-5 ms-xl-5 ms-md-0 col-xl-4 col-lg-6 col-12`}
+                            placeholder="ID number*"
+                            value={traveller.id_number}
+                            onChange={(e) =>
+                              handleTravellerInputChange(
+                                traveller.id,
+                                "id_number",
+                                e.target.value
+                              )
+                            }
+                          />
+                        </div>
+                        <div
+                          style={{ marginTop: "10px", marginBottom: "10px" }}
+                        >
+                          <button
+                            type="button"
+                            onClick={() =>
+                              handleGenderChange(traveller.id, "male")
+                            }
+                            style={{
+                              backgroundColor:
+                                traveller.gender === "male"
+                                  ? "#5ab2b3"
+                                  : "white",
+                              color:
+                                traveller.gender === "male"
+                                  ? "white"
+                                  : "#686767",
+                              padding: "5px 45px",
+                              fontSize: "13px",
+                              border: "#e2e2e2 2px solid",
+                              borderRadius: "5px",
+                            }}
+                          >
+                            Male
+                          </button>
+                          <button
+                            type="button"
+                            className="ms-md-3 ms-2"
+                            onClick={() =>
+                              handleGenderChange(traveller.id, "female")
+                            }
+                            style={{
+                              backgroundColor:
+                                traveller.gender === "female"
+                                  ? "#5ab2b3"
+                                  : "white",
+                              color:
+                                traveller.gender === "female"
+                                  ? "white"
+                                  : "#686767",
+                              padding: "5px 42px",
+                              fontSize: "13px",
+                              border: "#e2e2e2 2px solid",
+                              borderRadius: "5px",
+                            }}
+                          >
+                            Female
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+
+                    {bookingData?.type === "package" && (
+                      <div className="text-center my-3">
+                        <button
+                          type="button"
+                          className="btn btn-outline-primary"
+                          onClick={addTraveller}
+                        >
+                          + Add another traveller
+                        </button>
+                      </div>
+                    )}
+
+                    <div>
+                      <h1 className="m-2 pt-2 pb-2 ms-0 fw-bolder">
+                        Travel Details
+                      </h1>
+                      <label>Pick-up point</label>
+                      <br />
+                      <input
+                        className={`${style["promo_input"]} my-2 col-12`}
+                        placeholder="Please enter pick-up point"
+                        name="pick_up_point"
+                        value={formData.pick_up_point}
+                        onChange={handleFormChange}
+                      />
+                      <label className="pe-0 me-0 pt-3">Special Requests</label>
+                      <br />
+                      <input
+                        className={`${style["promo_input"]} my-2 col-12`}
+                        placeholder="Please enter Special Requests"
+                        name="special_request"
+                        value={formData.special_request}
+                        onChange={handleFormChange}
+                      />
+                      <label className="pt-2">Package Addons</label>
+                      <br />
+                      <input
+                        className={`${style["promo_input"]} my-2 col-12`}
+                        placeholder="Add travel medical insurance details if required"
+                        name="add_ons"
+                        value={formData.add_ons}
+                        onChange={handleFormChange}
+                      />
+                      <h1 className="m-3 ms-0 pt-1 fw-bolder">Contact Info</h1>
+                      <div className="d-flex flex-xl-row flex-md-column flex-column justify-content-between col-12 gap-xl-5 gap-lg-3">
+                        <div className="col-xl-6 col-12">
+                          <label className="">Contact Name*</label>
+                          <br />
+                          <input
+                            className={`${style["promo_input"]} my-2 col-12`}
+                            placeholder="Please enter contact name"
+                            name="contact_name"
+                            value={formData.contact_name}
+                            onChange={handleFormChange}
+                          />
+                        </div>
+                        <div className="col-xl-6 col-lg-8 col-md-12 col-12">
+                          <label className="">Contact Number*</label>
+                          <br />
+                          <select
+                            name="country_code"
+                            value={formData.country_code}
+                            onChange={handleFormChange}
+                            className={`${style["promo_select"]} my-2`}
+                          >
+                            {countryCodes.map((country) => (
+                              <option
+                                key={`${country.name}-${country.code}`}
+                                value={country.code}
+                              >
+                                {country.code}
+                              </option>
+                            ))}
+                          </select>
+                          <input
+                            className={`${style["promo_input"]} my-2 ms-xl-1 ms-lg-1 ms-2`}
+                            style={{ width: "240px" }}
+                            placeholder="Mobile Number"
+                            name="contact_number"
+                            value={formData.contact_number}
+                            onChange={handleFormChange}
+                          />
+                        </div>
+                      </div>
+                      <div className="my-2">
+                        <label className="pe-0 me-0">Email Address*</label>
+                        <br />
+                        <input
+                          className={`${style["promo_input"]} my-2 col-12`}
+                          placeholder="All important updates will be send to this email ID"
+                          name="email"
+                          type="email"
+                          value={formData.email}
+                          onChange={handleFormChange}
+                        />
+                      </div>
+                    </div>
+                  </form>
                 </div>
-                <div className="pt-3 d-flex flex-xl-row flex-md-column flex-column ">
-                  <div className="col-lg-8 col-12 ">
-                    <label className="text-black fw-semibold fs-4">
-                      Loyalty Rewards
-                    </label>
-                    <br />
-                    <p>
-                      Enroll in our loyalty program{" "}
-                      <br className="d-lg-block d-none" /> to earn travel
-                      rewards on future bookings
+              </div>
+              <div className="col-md-4 my-md-0 my-5">
+                <label className="text-black fw-semibold fs-4">
+                  Package Price
+                </label>
+                <br />
+                <div
+                  className="col-11 text-black-50 my-2"
+                  style={{ height: "2px", borderTop: "3px dashed #e2e2e2" }}
+                />
+                <div
+                  className="col-11 text-black pt-3"
+                  style={{ borderBottom: "2px solid #e2e2e2" }}
+                >
+                  <h5 className="pt-2 d-flex pb-2 justify-content-between col-11">
+                    <span>
+                      <b>Price</b>
+                    </span>
+                  </h5>
+                  {totalAdults > 0 && (
+                    <p className="d-flex justify-content-between text-black">
+                      <span>
+                        {totalAdults} Adult{totalAdults > 1 ? "s" : ""}
+                      </span>
                     </p>
-                  </div>
-                  <div className="align-content-center">
+                  )}
+                  {totalChildren > 0 && (
+                    <p className="d-flex justify-content-between text-black">
+                      <span>
+                        {totalChildren} Child{totalChildren > 1 ? "ren" : ""}
+                      </span>
+                    </p>
+                  )}
+                  {totalInfants > 0 && (
+                    <p className="d-flex justify-content-between text-black">
+                      <span>
+                        {totalInfants} Infant{totalInfants > 1 ? "s" : ""}
+                      </span>
+                    </p>
+                  )}
+                  <h5 className="pt-2 d-flex pb-1 justify-content-between col-11">
+                    <span>
+                      <b>Total</b>
+                    </span>
+                    <span>
+                      <b>AED {totalPrice}</b>
+                    </span>
+                  </h5>
+                </div>
+                <span className="col-10 ps-1 pt-2 d-flex justify-content-end">
+                  <button
+                    onClick={handlePayNow}
+                    className={style["btn-one"]}
+                    disabled={!isFormValid}
+                  >
+                    Pay Now
+                  </button>
+                </span>
+                <p className="col-lg-12 col-xl-12 col-12 pt-4 my-2">
+                  By proceeding, I acknowledge that I have
+                  <br className="d-lg-block d-none" /> read and agree to the
+                  Company Terms & <br className="d-lg-block d-none" />{" "}
+                  Conditions and Privacy Statement.
+                </p>
+                <button
+                  className="bg-white col-11 d-flex justify-content-between"
+                  style={{ border: "none", color: "#5ab2b3" }}
+                  onClick={toggleAccordion}
+                >
+                  <span className="fw-semibold">
+                    Cancellation &{" "}
+                    <br className="d-lg-none d-md-block d-none" /> Date Change{" "}
+                  </span>
+                  <IoIosArrowDown
+                    color="grey"
+                    size={22}
+                    style={{
+                      transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
+                      transition: "transform 0.3s ease",
+                    }}
+                  />
+                </button>
+                <div className="my-2">
+                  <label className="text-black fw-semibold fs-4">
+                    Promotions
+                  </label>
+                  <br />
+                  <label className="pt-1">Promo code</label>
+                  <br />
+                  <div>
+                    <input
+                      className={`${style["promo_input"]} col-xl-8 col-lg-7 col-md-10`}
+                      style={{ height: "35px" }}
+                    />
                     <button
                       className={`${style["btn-one"]} my-lg-0 my-md-1 my-2`}
                       style={{ padding: "6px 10px" }}
                     >
-                      Learn More
+                      Apply
                     </button>
                   </div>
-                </div>
-                <div className="pt-2">
-                  <div>
-                    <label className="text-black fw-semibold fs-4">
-                      Social Sharing Incentive
-                    </label>
-                    <br />
-                    <p className=" fw-normal pt-1">
-                      {" "}
-                      Travel & Save! Share your tour booking and
-                      <br className="d-lg-block d-none" />
-                      unlock exclusive travel perks!
-                    </p>
-                    <div className="d-flex gap-3 pt-1">
-                      <button className={`${style["ordinary_button"]}`}>
-                        <GoShare size={21} /> Share
+                  <div className="pt-4 d-flex flex-xl-row flex-lg-column flex-column">
+                    <div>
+                      <label
+                        className="text-black fw-semibold"
+                        style={{ fontSize: "1.42rem" }}
+                      >
+                        Complete Booking In
+                      </label>
+                      <br />
+                      <p>
+                        {" "}
+                        The package price will refresh
+                        <br className="d-lg-block d-none" /> After
+                      </p>
+                    </div>
+                    <div
+                      className="rounded-pill align-content-center ms-3"
+                      style={{
+                        height: "85px",
+                        width: "85px",
+                        border: "4px solid #5ab2b3",
+                      }}
+                    >
+                      <h1 className="align-items-center align-self-center d-flex flex-column ms-2 my-1 text-black-50">
+                        <span style={{ fontSize: "23px" }}>
+                          {minutes < 10 ? `0${minutes}` : minutes}:
+                          {seconds < 10 ? `0${seconds}` : seconds}
+                        </span>
+                        <span style={{ fontSize: "12px" }}>mins</span>
+                      </h1>
+                    </div>
+                  </div>
+                  <div className="pt-3 d-flex flex-xl-row flex-md-column flex-column ">
+                    <div className="col-lg-8 col-12 ">
+                      <label className="text-black fw-semibold fs-4">
+                        Loyalty Rewards
+                      </label>
+                      <br />
+                      <p>
+                        Enroll in our loyalty program{" "}
+                        <br className="d-lg-block d-none" /> to earn travel
+                        rewards on future bookings
+                      </p>
+                    </div>
+                    <div className="align-content-center">
+                      <button
+                        className={`${style["btn-one"]} my-lg-0 my-md-1 my-2`}
+                        style={{ padding: "6px 10px" }}
+                      >
+                        Learn More
                       </button>
-                      <button className={`${style["ordinary_button"]}`}>
-                        <FaRegHeart size={20} /> Save
-                      </button>
+                    </div>
+                  </div>
+                  <div className="pt-2">
+                    <div>
+                      <label className="text-black fw-semibold fs-4">
+                        Social Sharing Incentive
+                      </label>
+                      <br />
+                      <p className=" fw-normal pt-1">
+                        {" "}
+                        Travel & Save! Share your tour booking and
+                        <br className="d-lg-block d-none" />
+                        unlock exclusive travel perks!
+                      </p>
+                      <div className="d-flex gap-3 pt-1">
+                        <button className={`${style["ordinary_button"]}`}>
+                          <GoShare size={21} /> Share
+                        </button>
+                        <button className={`${style["ordinary_button"]}`}>
+                          <FaRegHeart size={20} /> Save
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1066,9 +1030,21 @@ const Checkout = () => {
             </div>
           </div>
         </div>
-        <div>
-          <Ask_ur_questions />
-        </div>
+      </div>
+      <div>
+        <Ask_ur_questions />
+      </div>
+
+      {/* --- STICKY FOOTER FOR MOBILE --- */}
+      <div className={style.stickyPayContainer}>
+        <div className={style.priceText}>AED {totalPrice}</div>
+        <button
+          onClick={handlePayNow}
+          style={{ backgroundColor: "#149699" }}
+          disabled={!isFormValid}
+        >
+          Pay Now
+        </button>
       </div>
     </div>
   );

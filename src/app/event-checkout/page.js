@@ -959,6 +959,17 @@ const Checkout = () => {
       <div>
         <Ask_ur_questions />
       </div>
+      {/* --- STICKY FOOTER FOR MOBILE --- */}
+      <div className={style.stickyPayContainer}>
+        <div className={style.priceText}>AED {totalAmount}</div>
+        <button
+          onClick={handlePayNow}
+          style={{ backgroundColor: "#149699" }}
+          disabled={!isFormValid}
+        >
+          Pay Now
+        </button>
+      </div>
     </div>
   );
 };

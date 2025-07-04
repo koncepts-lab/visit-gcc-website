@@ -5,7 +5,7 @@ import style from "./style.module.css";
 import Link from "next/link";
 import { MdOutlineCancel } from "react-icons/md";
 import axios from "axios";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 import { FaSpinner } from "react-icons/fa"; // Imported for the loader icon
 
 const DatePickerWithHover = ({ onClose, eventId, type = "event" }) => {
@@ -14,7 +14,7 @@ const DatePickerWithHover = ({ onClose, eventId, type = "event" }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [customDateRange, setCustomDateRange] = useState(false);
-  const [room, setRoom] = useState({ adults: 0, children: 0, infant: 0 });
+  const [room, setRoom] = useState({ adults: 1, children: 0, infant: 0 });
   const [showRoomAlert, setShowRoomAlert] = useState(false);
   const [customerCountry, setCustomerCountry] = useState("UAE");
   const [eventDateRange, setEventDateRange] = useState({
@@ -23,7 +23,7 @@ const DatePickerWithHover = ({ onClose, eventId, type = "event" }) => {
   });
   const [initialCalendarMonth, setInitialCalendarMonth] = useState(new Date());
   const [ticketType, setTicketType] = useState("VIP");
-  const router = useRouter(); 
+  const router = useRouter();
   const [isBooking, setIsBooking] = useState(false);
 
   useEffect(() => {
@@ -35,10 +35,10 @@ const DatePickerWithHover = ({ onClose, eventId, type = "event" }) => {
 
         if (loginToken) {
           authToken = loginToken;
-           //console.log("Using login token for fetching events.");
+          //console.log("Using login token for fetching events.");
         } else if (registerToken) {
           authToken = registerToken;
-           //console.log("Using register token for fetching events.");
+          //console.log("Using register token for fetching events.");
         }
 
         const response = await axios.get(
@@ -46,7 +46,7 @@ const DatePickerWithHover = ({ onClose, eventId, type = "event" }) => {
         );
 
         const singleEventData = response.data.data || response.data || [];
-         //console.log("events Data:", singleEventData);
+        //console.log("events Data:", singleEventData);
         setSlugEvent(singleEventData);
 
         if (!singleEventData.start_date || !singleEventData.end_date) {
@@ -80,10 +80,12 @@ const DatePickerWithHover = ({ onClose, eventId, type = "event" }) => {
   const handleIncrement = (type) => {
     setRoom((prevRoom) => {
       if (type === "infant") {
-        if (prevRoom.infant < 3) return { ...prevRoom, infant: prevRoom.infant + 1 };
+        if (prevRoom.infant < 3)
+          return { ...prevRoom, infant: prevRoom.infant + 1 };
       } else {
         const currentTotal = prevRoom.adults + prevRoom.children;
-        if (currentTotal < 9) return { ...prevRoom, [type]: prevRoom[type] + 1 };
+        if (currentTotal < 9)
+          return { ...prevRoom, [type]: prevRoom[type] + 1 };
         else {
           setShowRoomAlert(true);
           setTimeout(() => setShowRoomAlert(false), 3000);
@@ -95,7 +97,8 @@ const DatePickerWithHover = ({ onClose, eventId, type = "event" }) => {
 
   const handleDecrement = (type) => {
     setRoom((prevRoom) => {
-      if (prevRoom[type] > 0) return { ...prevRoom, [type]: prevRoom[type] - 1 };
+      if (prevRoom[type] > 0)
+        return { ...prevRoom, [type]: prevRoom[type] - 1 };
       return prevRoom;
     });
     if (showRoomAlert) setShowRoomAlert(false);
@@ -123,7 +126,12 @@ const DatePickerWithHover = ({ onClose, eventId, type = "event" }) => {
 
   const formatDate = (date) => {
     if (!(date instanceof Date) || isNaN(date)) return "Invalid date";
-    const options = { year: "numeric", month: "short", day: "numeric", weekday: "short" };
+    const options = {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      weekday: "short",
+    };
     return date.toLocaleDateString(undefined, options);
   };
 
@@ -151,11 +159,15 @@ const DatePickerWithHover = ({ onClose, eventId, type = "event" }) => {
       end_date: toYyyyMmDd(selectedDate),
       customer_country: customerCountry,
       ticket_type: ticketType,
-      rooms: [{ adults: room.adults, children: room.children, infants: room.infant }],
+      rooms: [
+        { adults: room.adults, children: room.children, infants: room.infant },
+      ],
     };
-     //console.log("Submitting Booking Payload:", bookingData);
+    //console.log("Submitting Booking Payload:", bookingData);
 
-    const authToken = localStorage.getItem("auth_token_login") || localStorage.getItem("auth_token_register");
+    const authToken =
+      localStorage.getItem("auth_token_login") ||
+      localStorage.getItem("auth_token_register");
     if (!authToken) {
       setError("Authentication token not found. Please log in.");
       return;
@@ -164,21 +176,31 @@ const DatePickerWithHover = ({ onClose, eventId, type = "event" }) => {
     setIsBooking(true);
     setError(null);
 
-    axios.post(`${process.env.NEXT_PUBLIC_API_URL}book/${type}/${eventId}`, bookingData, {
-      headers: { Authorization: `Bearer ${authToken}` },
-    })
-    .then((response) => {
-      const bookingId = response.data.data.id;
-       //console.log("Booking API Response:", response);
-      setIsBooking(false);
-      onClose();
-      router.push(`/event-checkout?bookingId=${encodeURIComponent(bookingId)}`);
-    })
-    .catch((error) => {
-      console.error("Error booking event:", error);
-      setError(error.response?.data?.message || "Failed to book event. Please try again.");
-      setIsBooking(false);
-    });
+    axios
+      .post(
+        `${process.env.NEXT_PUBLIC_API_URL}book/${type}/${eventId}`,
+        bookingData,
+        {
+          headers: { Authorization: `Bearer ${authToken}` },
+        }
+      )
+      .then((response) => {
+        const bookingId = response.data.data.id;
+        //console.log("Booking API Response:", response);
+        setIsBooking(false);
+        onClose();
+        router.push(
+          `/event-checkout?bookingId=${encodeURIComponent(bookingId)}`
+        );
+      })
+      .catch((error) => {
+        console.error("Error booking event:", error);
+        setError(
+          error.response?.data?.message ||
+            "Failed to book event. Please try again."
+        );
+        setIsBooking(false);
+      });
   };
 
   const customStyles = `
@@ -208,25 +230,37 @@ const DatePickerWithHover = ({ onClose, eventId, type = "event" }) => {
     `;
 
   const renderDayContents = (day) => <div className="date-cell">{day}</div>;
-  
+
   // --- MODIFIED SECTION: Logic to disable the proceed button ---
-  const isProceedDisabled = !selectedDate || (room.adults === 0 && room.children === 0) || isBooking;
+  const isProceedDisabled =
+    !selectedDate || (room.adults === 0 && room.children === 0) || isBooking;
 
   if (isLoading) return <p>Loading...</p>;
   if (error && !slugEvent) return <p>Error: {error}</p>;
 
   return (
     <div className={`bg-white ${style["date-pick-container"]}`}>
-      <div className="flex justify-between items-center" style={{ backgroundColor: "#fcfafb", borderRadius: "11px" }}>
+      <div
+        className="flex justify-between items-center"
+        style={{ backgroundColor: "#fcfafb", borderRadius: "11px" }}
+      >
         <h3 className="font-semibold">Check Price & Availability</h3>
-        <button onClick={onClose} className={`${style["date-close-btn"]}`}>×</button>
+        <button onClick={onClose} className={`${style["date-close-btn"]}`}>
+          ×
+        </button>
       </div>
-      <div className={`bg-white rounded-lg shadow-xl p-lg-6 p-2 ${style["date-pick"]}`}>
+      <div
+        className={`bg-white rounded-lg shadow-xl p-lg-6 p-2 ${style["date-pick"]}`}
+      >
         <div className={`${style["date-left"]}`}>
-          <p className="py-2 ms-2">Departure Data Selected: {displaySelectedDateAndTime()}</p>
+          <p className="py-2 ms-2">
+            Departure Data Selected: {displaySelectedDateAndTime()}
+          </p>
           <style>{customStyles}</style>
           <div className="relative">
-            {customDateRange && <div className="custom-date-range-badge">Choose Any Date</div>}
+            {customDateRange && (
+              <div className="custom-date-range-badge">Choose Any Date</div>
+            )}
             <DatePicker
               selected={selectedDate}
               onChange={handleDateChange}
@@ -241,46 +275,114 @@ const DatePickerWithHover = ({ onClose, eventId, type = "event" }) => {
         </div>
 
         <div className={style["date-right"]}>
-          <div className={` ${style["room-section"]} d-flex flex-column justify-content-between`}>
+          <div
+            className={` ${style["room-section"]} d-flex flex-column justify-content-between`}
+          >
             <div>
               <h4 className="text-xl font-semibold">Book A Session</h4>
-              <div className="d-flex flex-row justify-content-around col-12 my-3">
+              <div
+                className="d-flex flex-row justify-content-around col-12 my-3"
+                style={{ flexWrap: "wrap" }}
+              >
                 <div>
                   <p style={{ height: "10px" }}>Adult(s)</p>
                   <div style={{ display: "flex", gap: "0px" }}>
-                    <button onClick={() => handleDecrement("adults")} className={style["numberdecrement"]}>-</button>
-                    <span style={{ padding: "1px 10px", fontSize: "20px", border: "1px solid" }}>{room.adults}</span>
-                    <button onClick={() => handleIncrement("adults")} className={style["numberincrement"]}>+</button>
+                    <button
+                      onClick={() => handleDecrement("adults")}
+                      className={style["numberdecrement"]}
+                    >
+                      -
+                    </button>
+                    <span
+                      style={{
+                        padding: "1px 10px",
+                        fontSize: "20px",
+                        border: "1px solid",
+                      }}
+                    >
+                      {room.adults}
+                    </span>
+                    <button
+                      onClick={() => handleIncrement("adults")}
+                      className={style["numberincrement"]}
+                    >
+                      +
+                    </button>
                   </div>
                   <p className="date_right_para">(12+ years)</p>
                 </div>
                 <div>
                   <p style={{ height: "10px" }}>Children</p>
                   <div style={{ display: "flex", gap: "0px" }}>
-                    <button onClick={() => handleDecrement("children")} className={style["numberdecrement"]}>-</button>
-                    <span style={{ padding: "1px 10px", fontSize: "20px", border: "1px solid" }}>{room.children}</span>
-                    <button onClick={() => handleIncrement("children")} className={style["numberincrement"]}>+</button>
+                    <button
+                      onClick={() => handleDecrement("children")}
+                      className={style["numberdecrement"]}
+                    >
+                      -
+                    </button>
+                    <span
+                      style={{
+                        padding: "1px 10px",
+                        fontSize: "20px",
+                        border: "1px solid",
+                      }}
+                    >
+                      {room.children}
+                    </span>
+                    <button
+                      onClick={() => handleIncrement("children")}
+                      className={style["numberincrement"]}
+                    >
+                      +
+                    </button>
                   </div>
                   <p className="date_right_para">(Below 12 years)</p>
                 </div>
                 <div>
                   <p style={{ height: "10px" }}>Infant</p>
                   <div style={{ display: "flex", gap: "0px" }}>
-                    <button onClick={() => handleDecrement("infant")} className={style["numberdecrement"]}>-</button>
-                    <span style={{ padding: "1px 10px", fontSize: "20px", border: "1px solid" }}>{room.infant}</span>
-                    <button onClick={() => handleIncrement("infant")} className={style["numberincrement"]}>+</button>
+                    <button
+                      onClick={() => handleDecrement("infant")}
+                      className={style["numberdecrement"]}
+                    >
+                      -
+                    </button>
+                    <span
+                      style={{
+                        padding: "1px 10px",
+                        fontSize: "20px",
+                        border: "1px solid",
+                      }}
+                    >
+                      {room.infant}
+                    </span>
+                    <button
+                      onClick={() => handleIncrement("infant")}
+                      className={style["numberincrement"]}
+                    >
+                      +
+                    </button>
                   </div>
                   <p className="date_right_para">(Below 2 years)</p>
                 </div>
               </div>
-              {showRoomAlert && <div className="room-alert">Maximum of 9 guests (excluding infants) reached.</div>}
+              {showRoomAlert && (
+                <div className="room-alert">
+                  Maximum of 9 guests (excluding infants) reached.
+                </div>
+              )}
             </div>
           </div>
           <div className="my-md-4 my-1 pe-2">
-            <label className="text-black">Ticket Type*</label><br />
+            <label className="text-black">Ticket Type*</label>
+            <br />
             <select
               className={`form-select col-xl-11 col-lg-12 col-12 fw-semibold my-1`}
-              style={{ maxHeight: "200px", overflowY: "auto", boxShadow: "none" }}
+              style={{
+                maxHeight: "200px",
+                overflowY: "auto",
+                boxShadow: "none",
+              }}
               value={ticketType}
               onChange={(e) => setTicketType(e.target.value)}
             >
@@ -300,7 +402,7 @@ const DatePickerWithHover = ({ onClose, eventId, type = "event" }) => {
                 border: "none",
                 fontSize: "20px",
                 padding: "14px",
-                cursor: isProceedDisabled ? 'not-allowed' : 'pointer',
+                cursor: isProceedDisabled ? "not-allowed" : "pointer",
                 opacity: isProceedDisabled ? 0.6 : 1,
               }}
               disabled={isProceedDisabled}
