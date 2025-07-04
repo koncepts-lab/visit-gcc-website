@@ -16,6 +16,7 @@ import RatingCarousel from "../tour-package-details/RatingCarousel";
 import PakageDetailsOtherPackages from "../tour-package-details/pakage-details-other-packages";
 import CountryInspiration from "../countries/country-inspiration";
 import OtherBlogs from "@components/tour-package-details/other-blogs";
+import SingleHomeAttraction from "../home/packages/home-attraction";
 
 // Import Slick Carousel and styles
 import "slick-carousel/slick/slick.css";
@@ -47,7 +48,22 @@ function Carousal({
   packageDetailsReviewImage,
   countryExperiance,
 }) {
-    const data = packages || events || eventScroll || country || experiences || blog || userRatingsCarosul || pakageDetailsOtherPackages || otherBlogs || bestPicked || featuredTravel || wonders || packageDetailsReview || packageDetailsReviewImage || countryExperiance;
+  const data =
+    packages ||
+    events ||
+    eventScroll ||
+    country ||
+    experiences ||
+    blog ||
+    userRatingsCarosul ||
+    pakageDetailsOtherPackages ||
+    otherBlogs ||
+    bestPicked ||
+    featuredTravel ||
+    wonders ||
+    packageDetailsReview ||
+    packageDetailsReviewImage ||
+    countryExperiance;
   const Responsive = {
     dots:
       type !== "home-package" &&
@@ -68,7 +84,6 @@ function Carousal({
       type !== "pakage-details-other-packages" &&
       type !== "attraction-details-other-packages" &&
       type !== "event-details-other-events",
-      
 
     responsive: [
       {
@@ -76,7 +91,7 @@ function Carousal({
         settings: {
           slidesToShow: 2,
           slidesToScroll: 1,
-    infinite: data && data.length > 1,
+          infinite: data && data.length > 1,
           dots:
             type !== "home-package" &&
             type !== "home-event" &&
@@ -92,7 +107,7 @@ function Carousal({
           centerMode: type === "home-experience", // Enable center mode for 'home-experience'
           centerPadding: "50px", // Show half of the second item (adjust as needed)
           slidesToScroll: 1,
-    infinite: data && data.length > 1,
+          infinite: data && data.length > 1,
           dots: false, // You can keep dots off for mobile if needed
         },
       },
@@ -160,10 +175,10 @@ function Carousal({
           </div>
         ))}
 
-            {type === "home-attractions" &&
+      {type === "home-attractions" &&
         packages.map((pkg) => (
           <div key={pkg.id} className="home-package-item">
-            <SingleHomePackage
+            <SingleHomeAttraction
               photo_url={pkg?.photo_urls[0] || ""}
               name={pkg.name}
               description={pkg.description}
@@ -230,7 +245,7 @@ function Carousal({
           <CountryExperiance blogs={experiance} />
         ))}
 
-          {type === "other-blogs" &&
+      {type === "other-blogs" &&
         otherBlogs?.map((otherblogs) => (
           <OtherBlogs
             key={otherblogs.uuid_id}
@@ -252,8 +267,8 @@ function Carousal({
             link={`/tour-package/${featuredTravel.id}`}
           />
         ))}
-        
-         {type === "attraction-FeaturedTravel" &&
+
+      {type === "attraction-FeaturedTravel" &&
         featuredTravel.map((featuredTravel) => (
           <FeaturedTravel
             key={featuredTravel.id}
@@ -267,12 +282,20 @@ function Carousal({
 
       {type === "tour-bestPicked" &&
         bestPicked.map((bestPicked) => (
-          <SingleBestPicked packages={bestPicked} key={bestPicked.id} type="tour-bestPicked"/>
+          <SingleBestPicked
+            packages={bestPicked}
+            key={bestPicked.id}
+            type="tour-bestPicked"
+          />
         ))}
 
-            {type === "attraction-bestPicked" &&
+      {type === "attraction-bestPicked" &&
         bestPicked.map((bestPicked) => (
-          <SingleBestPicked packages={bestPicked} key={bestPicked.id} type="attraction-bestPicked"/>
+          <SingleBestPicked
+            packages={bestPicked}
+            key={bestPicked.id}
+            type="attraction-bestPicked"
+          />
         ))}
 
       {type === "tour-wonders" &&
@@ -284,11 +307,10 @@ function Carousal({
             description={wonders.description}
             link={`/tour-package/${wonders.id}`}
             type="tour-wonders"
-
           />
         ))}
 
- {type === "attraction-wonders" &&
+      {type === "attraction-wonders" &&
         wonders.map((wonders) => (
           <Singlewonders
             key={wonders.id}
@@ -304,7 +326,6 @@ function Carousal({
         packageDetailsReview.map((review) => (
           <SinglePackageContainerReview image={review.image} />
         ))}
-   
 
       {type === "tour-package-details-reviews-img" &&
         packageDetailsReviewImage.map((reviewImage) => (
@@ -331,12 +352,18 @@ function Carousal({
 
       {type === "pakage-details-other-packages" &&
         pakageDetailsOtherPackages?.map((pakageDetailsOtherPackages) => (
-          <PakageDetailsOtherPackages packages={pakageDetailsOtherPackages} type={"pakage-details-other-packages"}/>
+          <PakageDetailsOtherPackages
+            packages={pakageDetailsOtherPackages}
+            type={"pakage-details-other-packages"}
+          />
         ))}
-        
-          {type === "attraction-details-other-packages" &&
+
+      {type === "attraction-details-other-packages" &&
         pakageDetailsOtherPackages?.map((pakageDetailsOtherPackages) => (
-          <PakageDetailsOtherPackages packages={pakageDetailsOtherPackages} type={"attraction-details-other-packages"}/>
+          <PakageDetailsOtherPackages
+            packages={pakageDetailsOtherPackages}
+            type={"attraction-details-other-packages"}
+          />
         ))}
 
       {type === "event-details-other-events" &&

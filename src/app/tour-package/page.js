@@ -396,7 +396,7 @@ const TourPackage = () => {
                     )}
                   />
                   <p>
-                    Price Range: ${priceRange[0]} — ${priceRange[1]}
+                    Price Range: AED {priceRange[0]} — AED {priceRange[1]}
                   </p>
                 </div>
 

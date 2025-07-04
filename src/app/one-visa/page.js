@@ -233,11 +233,10 @@ const OneVisa = () => {
                           {card.description}
                         </p>{" "}
                         {/* Made text smaller */}
-                        <a href="#" className="text-primary mt-auto">
+                        {/* <a href="#" className="text-primary mt-auto">
                           {" "}
-                          {/* mt-auto to push link to bottom */}
                           READ MORE
-                        </a>
+                        </a> */}
                       </div>
                     </div>
                   ))}
@@ -438,9 +437,9 @@ const OneVisa = () => {
                   Enter any GCC country multiple times with a single
                   application.
                 </p>
-                <a href="#" className="text-primary">
+                {/* <a href="#" className="text-primary">
                   READ MORE
-                </a>
+                </a> */}
               </div>
             </div>
 
@@ -457,9 +456,9 @@ const OneVisa = () => {
                 <p className="card-text" style={{ minHeight: "72px" }}>
                   Save 60% compared to individual visa costs.
                 </p>
-                <a href="#" className="text-primary">
+                {/* <a href="#" className="text-primary">
                   READ MORE
-                </a>
+                </a> */}
               </div>
             </div>
 
@@ -476,9 +475,9 @@ const OneVisa = () => {
                   Projected to boost GCC tourism revenue by $30B annually by
                   2030.
                 </p>
-                <a href="#" className="text-primary">
+                {/* <a href="#" className="text-primary">
                   READ MORE
-                </a>
+                </a> */}
               </div>
             </div>
           </div>

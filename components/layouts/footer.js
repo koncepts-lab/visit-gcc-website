@@ -84,10 +84,10 @@ function Footer() {
 
       <div className="mobile-footer">
         <div className="mobile-footer-container">
-          <div>
+          <Link href={"/invest-in-gcc"}>
             <img src="../images/inv-gcc.svg" height={40} alt="Plan Bahrain" />
-          </div>
-          <div>
+          </Link>
+          <Link href="/one-visa">
             <img
               src="../images/one-visa.svg"
               height={40}
@@ -95,10 +95,10 @@ function Footer() {
               max-width={"50px"}
               alt="Explore Bahrain"
             />
-          </div>
-          <div>
+          </Link>
+          <Link href={"/"}>
             <img src="../images/gcc-stays.svg" height={40} alt="Book Bahrain" />
-          </div>
+          </Link>
         </div>
       </div>
     </>

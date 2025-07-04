@@ -158,7 +158,11 @@ function Home() {
                 View All
               </Link>
             </div>
-            <Carousal packages={attractions} count={3} type="home-attractions" />
+            <Carousal
+              packages={attractions}
+              count={4}
+              type="home-attractions"
+            />
           </div>
         </div>
       </div>

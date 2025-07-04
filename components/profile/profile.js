@@ -46,7 +46,7 @@ const TravelAccountProfile = () => {
     let authToken = loginToken || registerToken;
 
     if (!authToken) {
-       //console.log("No auth token for user data fetch.");
+      //console.log("No auth token for user data fetch.");
       setIsUserDataLoading(false);
       return;
     }
@@ -124,7 +124,7 @@ const TravelAccountProfile = () => {
   };
 
   const proceedWithAccountDeletion = () => {
-     //console.log("User confirmed account deletion from modal. Calling API...");
+    //console.log("User confirmed account deletion from modal. Calling API...");
     alert("Account deletion process initiated (API call to be implemented)!");
     setShowDeleteConfirmModal(false);
   };
@@ -152,8 +152,17 @@ const TravelAccountProfile = () => {
     const [isPopupLoading, setIsPopupLoading] = useState(false); // For popup edits
 
     const handleEditField = (fieldName, currentValue) => {
+      const valueToSet =
+        fieldName === "Gender"
+          ? currentValue.toLowerCase()
+          : currentValue || "";
+
+      console.log("🚀 ~ handleEditField ~ fieldName:", fieldName);
+      console.log("🚀 ~ handleEditField ~ currentValue:", currentValue);
+      console.log("🚀 ~ handleEditField ~ valueToSet:", valueToSet);
+
       setEditingField(fieldName);
-      setEditValue(currentValue || "");
+      setEditValue(valueToSet);
     };
 
     const handleCancelEdit = () => {
@@ -372,7 +381,7 @@ const TravelAccountProfile = () => {
             requestBody.birthday = editValue || null; // Allow empty date to be sent as null
             break;
           case "gender":
-            requestBody.gender = editValue;
+            requestBody.gender = editValue.toLowerCase();
             break;
           case "city of residence":
             requestBody.city_of_residence = editValue;
@@ -553,7 +562,27 @@ const TravelAccountProfile = () => {
       }
 
       // Display mode
-      const displayValue = item.value || ` ${item.label} `;
+      let displayValue = item.value;
+      if (item.field === "Birthday" && item.value) {
+        try {
+          const date = new Date(item.value);
+          // Adjust for timezone to prevent showing the previous day
+          const userTimezoneOffset = date.getTimezoneOffset() * 60000;
+          const adjustedDate = new Date(date.getTime() + userTimezoneOffset);
+
+          const dateOptions = {
+            day: "2-digit",
+            month: "long",
+            year: "numeric",
+          };
+          displayValue = adjustedDate.toLocaleDateString("en-GB", dateOptions);
+        } catch (e) {
+          // Fallback to original value if formatting fails
+          displayValue = item.value;
+        }
+      }
+      const finalDisplayValue = displayValue || ` ${item.label} `;
+
       return (
         <>
           <div>
@@ -562,9 +591,10 @@ const TravelAccountProfile = () => {
               style={{
                 color: item.value ? "#333" : "#757575",
                 fontSize: "16px",
+                textTransform: "capitalize",
               }}
             >
-              {displayValue}
+              {finalDisplayValue}
             </span>
           </div>
           <button
@@ -731,9 +761,6 @@ const TravelAccountProfile = () => {
                       <option value="Male">Male</option>
                       <option value="Female">Female</option>
                       <option value="Other">Other</option>
-                      <option value="Prefer not to say">
-                        Prefer not to say
-                      </option>
                     </select>
                   </div>
                   <div className="mb-3">
@@ -1463,7 +1490,10 @@ const TravelAccountProfile = () => {
             </div>
           </div>
 
-          <div className="col-lg-9 col-md-8" style={{ marginTop: "80px" }}>
+          <div
+            className="col-lg-9 col-md-8 mb-5 mb-lg-0"
+            style={{ marginTop: "80px" }}
+          >
             <div className="text-start mb-3">
               <h2
                 className="fw-bold mb-3"

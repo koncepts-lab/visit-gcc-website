@@ -25,7 +25,22 @@ import {
 
 const ITEMS_PER_PAGE = 3;
 
-function page() {
+// Helper function to format dates
+const formatDate = (dateString) => {
+  if (!dateString) return "";
+  try {
+    const date = new Date(dateString);
+    const userTimezoneOffset = date.getTimezoneOffset() * 60000;
+    const adjustedDate = new Date(date.getTime() + userTimezoneOffset);
+    const options = { day: "numeric", month: "long", year: "numeric" };
+    return adjustedDate.toLocaleDateString("en-GB", options);
+  } catch (error) {
+    console.error("Error formatting date:", dateString, error);
+    return dateString; // Fallback to original string on error
+  }
+};
+
+function Page() {
   const { enqueueSnackbar } = useSnackbar();
   const [currentPage, setCurrentPage] = useState(1);
   const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
@@ -391,7 +406,7 @@ function page() {
       <Banner />
       <section className={style["blogs-page"]}>
         <div className={``}>
-          <div className="row">
+          {/* <div className="row">
             {currentBlogs.length > 0 && (
               <div className="d-flex justify-content-center">
                 <img
@@ -401,7 +416,7 @@ function page() {
                 />
               </div>
             )}
-          </div>
+          </div> */}
         </div>
         <div className={`container ${style["blogs-page-container"]} pt-5`}>
           <h1
@@ -442,7 +457,7 @@ function page() {
                         {blogs.heading}
                       </p>
                       <p className="">
-                        Date: <span>{blogs.creation_date}</span>
+                        Date: <span>{formatDate(blogs.creation_date)}</span>
                       </p>
                     </Link>
 
@@ -680,7 +695,7 @@ function page() {
                                   height: "10px",
                                 }}
                               >
-                                {features.creation_date}
+                                {formatDate(features.creation_date)}
                               </p>
                               <p
                                 style={{ fontWeight: "500" }}
@@ -766,4 +781,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;
