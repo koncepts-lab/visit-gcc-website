@@ -991,6 +991,8 @@ function Header() {
                   alignItems: "initial",
                   justifyContent: "start",
                   overflowY: "auto",
+                  WebkitOverflowScrolling: "touch", // Enable momentum scrolling on iOS
+                  height: "100vh",
                 }}
               >
                 <li

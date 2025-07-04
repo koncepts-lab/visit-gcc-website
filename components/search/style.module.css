@@ -31,6 +31,7 @@
 .banner-search input {
   /* This targets the input specifically */
   height: 60px;
+  font-weight: 500;
   background: transparent;
   border-radius: 100px !important; /* Force radius on all corners */
   padding-left: 55px; /* Space for the icon */
