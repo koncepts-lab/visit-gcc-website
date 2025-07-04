@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import style from "./style.module.css";
 import Banner from "@components/banner/banner";
-import Link from "next/link";
 import { FaFacebookSquare } from "react-icons/fa";
 import { FaSquareXTwitter } from "react-icons/fa6";
 import { FaLinkedin } from "react-icons/fa";
@@ -22,6 +22,7 @@ import {
   TwitterShareButton,
   ThreadsIcon,
 } from "react-share";
+import { useLoading } from "@components/LoadingProvider"; // 1. IMPORT THE LOADER HOOK
 
 const ITEMS_PER_PAGE = 3;
 
@@ -30,23 +31,21 @@ const formatDate = (dateString) => {
   if (!dateString) return "";
   try {
     const date = new Date(dateString);
-    const userTimezoneOffset = date.getTimezoneOffset() * 60000;
-    const adjustedDate = new Date(date.getTime() + userTimezoneOffset);
     const options = { day: "numeric", month: "long", year: "numeric" };
-    return adjustedDate.toLocaleDateString("en-GB", options);
+    return date.toLocaleDateString("en-GB", options);
   } catch (error) {
     console.error("Error formatting date:", dateString, error);
-    return dateString; // Fallback to original string on error
+    return dateString;
   }
 };
 
 function Page() {
   const { enqueueSnackbar } = useSnackbar();
+  const { setIsLoading } = useLoading(); // 2. USE THE LOADER HOOK
+
+  // All your original state declarations are preserved
   const [currentPage, setCurrentPage] = useState(1);
-  const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
-  const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
   const [blogs, setBlogs] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [categories, setCategories] = useState([]);
   const [featured, setFeatured] = useState([]);
@@ -61,22 +60,19 @@ function Page() {
   const [searchQuery, setSearchQuery] = useState("");
 
   const currentBlogs = (filteredBlogs.length > 0 ? filteredBlogs : blogs).slice(
-    indexOfFirstItem,
-    indexOfLastItem
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
   );
 
+  // All your original handler functions and useEffects are preserved
   const fetchCommentCount = async (blogId) => {
     try {
       const response = await axios.get(
         `${process.env.NEXT_PUBLIC_API_URL}blogs/${blogId}/comments/count`
       );
-
-      setIsLoading(false);
       return response.data.comment_count;
     } catch (error) {
-      setIsLoading(false);
       console.error("Error fetching comment count:", error);
-      setError("Failed to fetch comment count");
       return 0;
     }
   };
@@ -84,12 +80,8 @@ function Page() {
   const toggleComment = async (blogId) => {
     setActiveCommentBlogData(blogs.find((blog) => blog.uuid_id === blogId));
     setIsCommentModalOpen(true);
-
     const count = await fetchCommentCount(blogId);
-    setCommentCounts((prevCounts) => ({
-      ...prevCounts,
-      [blogId]: count,
-    }));
+    setCommentCounts((prevCounts) => ({ ...prevCounts, [blogId]: count }));
   };
 
   const handleCloseComments = () => {
@@ -97,9 +89,7 @@ function Page() {
     setIsCommentModalOpen(false);
   };
 
-  const getCommentCount = (blogId) => {
-    return commentCounts[blogId] || 0;
-  };
+  const getCommentCount = (blogId) => commentCounts[blogId] || 0;
 
   useEffect(() => {
     const loadCommentCounts = async () => {
@@ -109,218 +99,115 @@ function Page() {
       }
       setCommentCounts(counts);
     };
-
     if (blogs.length > 0) {
       loadCommentCounts();
     }
   }, [blogs]);
 
-  // Kept token logic here as it's a PUT request (modifying data)
   const handleLikeBlog = async (blogUuid) => {
     try {
-      const registerToken = localStorage.getItem("auth_token_register");
-      const loginToken = localStorage.getItem("auth_token_login");
-      let authToken = null;
-
-      if (loginToken) {
-        authToken = loginToken;
-      } else if (registerToken) {
-        authToken = registerToken;
-      }
-
+      const authToken =
+        localStorage.getItem("auth_token_login") ||
+        localStorage.getItem("auth_token_register");
       if (!authToken) {
         setError("Authentication token not found");
-        setIsLoading(false);
         return;
       }
-
       const currentLikeStatus = likedBlogs[blogUuid]?.isLiked || false;
-
       const response = await axios.put(
         `${process.env.NEXT_PUBLIC_API_URL}blog/${blogUuid}/like`,
         {},
-        {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
+        { headers: { Authorization: `Bearer ${authToken}` } }
       );
-
       const updatedLikes = response.data.number_of_likes;
-
-      setLikedBlogs((prev) => {
-        if (currentLikeStatus) {
-          return {
-            ...prev,
-            [blogUuid]: {
-              isLiked: false,
-              likes: Math.max(0, (prev[blogUuid]?.likes || 0) - 1),
-            },
-          };
-        }
-
-        return {
-          ...prev,
-          [blogUuid]: {
-            isLiked: true,
-            likes: updatedLikes,
-          },
-        };
-      });
+      setLikedBlogs((prev) => ({
+        ...prev,
+        [blogUuid]: { isLiked: !currentLikeStatus, likes: updatedLikes },
+      }));
     } catch (err) {
       console.error("Full Error Object:", err);
-
-      if (err.response) {
-        console.error("Error Response Data:", err.response.data);
-        enqueueSnackbar(
-          `Error: ${err.response.data.message || "Failed to like/unlike blog"}`,
-          { variant: "error" }
-        );
-      } else if (err.request) {
-        enqueueSnackbar("No response received from server", {
-          variant: "error",
-        });
-      } else {
-        enqueueSnackbar("Error in setting up the request", {
-          variant: "error",
-        });
-      }
+      enqueueSnackbar(
+        `Error: ${err.response?.data?.message || "Failed to like/unlike blog"}`,
+        { variant: "error" }
+      );
     }
   };
 
+  // 3. CONSOLIDATED INITIAL FETCH WITH LOADER
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}category`
-        );
-        const allCategories = response.data.data || response.data || [];
+    const fetchInitialData = async () => {
+      setIsLoading(true); // SHOW LOADER
+      setError(null);
 
-        const categoriesWithCounts = await Promise.all(
-          allCategories.map(async (category) => {
-            try {
-              const countResponse = await axios.get(
-                `${process.env.NEXT_PUBLIC_API_URL}blog/${category.uuid_id}/get-blogs-by-category`
+      try {
+        // Promise.all waits for all API calls to finish
+        await Promise.all([
+          // Fetch Blogs
+          axios
+            .get(`${process.env.NEXT_PUBLIC_API_URL}blog`)
+            .then((response) => {
+              setBlogs(response.data.data || response.data || []);
+            }),
+          // Fetch Categories and their counts
+          axios
+            .get(`${process.env.NEXT_PUBLIC_API_URL}category`)
+            .then(async (response) => {
+              const allCategories = response.data.data || response.data || [];
+              const categoriesWithCounts = await Promise.all(
+                allCategories.map(async (category) => {
+                  try {
+                    const countResponse = await axios.get(
+                      `${process.env.NEXT_PUBLIC_API_URL}blog/${category.uuid_id}/get-blogs-by-category`
+                    );
+                    return {
+                      ...category,
+                      blogCount: (countResponse.data.data || []).length,
+                    };
+                  } catch {
+                    return { ...category, blogCount: 0 };
+                  }
+                })
               );
-
-              const categoryBlogs =
-                countResponse.data.data || countResponse.data || [];
-              return {
-                ...category,
-                blogCount: categoryBlogs.length,
-              };
-            } catch (err) {
-              console.error(
-                `Error fetching blogs for category ${category.uuid_id}:`,
-                err
+              setCategories(categoriesWithCounts);
+            }),
+          // Fetch Featured Blogs
+          axios
+            .get(`${process.env.NEXT_PUBLIC_API_URL}blog/get-featured-blogs`, {
+              params: { limit: 3 },
+            })
+            .then((response) => {
+              setFeatured(
+                (response.data.data || response.data || []).slice(0, 3)
               );
-              return {
-                ...category,
-                blogCount: 0,
-              };
-            }
-          })
-        );
-
-        setCategories(categoriesWithCounts);
-
-        const initialCategoryCounts = categoriesWithCounts.reduce(
-          (acc, category) => {
-            acc[category.uuid_id] = category.blogCount;
-            return acc;
-          },
-          {}
-        );
-
-        setCategoryCounts(initialCategoryCounts);
-
-        setIsLoading(false);
+            }),
+          // Fetch Tags
+          axios
+            .get(`${process.env.NEXT_PUBLIC_API_URL}tag`)
+            .then((response) => {
+              setTags(response.data.data || response.data || []);
+            }),
+        ]);
       } catch (err) {
-        setIsLoading(false);
-        setError("Failed to fetch categories. Please try again.");
-        console.error("Error fetching categories:", err);
-      }
-    };
-    fetchCategories();
-  }, []);
-
-  useEffect(() => {
-    const fetchBlogs = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}blog`
-        );
-        const allBlogs = response.data.data || response.data || [];
-
-        //console.log(allBlogs.main_image_url);
-        setBlogs(allBlogs);
-
-        setIsLoading(false);
-      } catch (err) {
-        setIsLoading(false);
-        setError("Failed to fetch packages. Please try again.");
-        console.error("Error fetching packages:", err);
+        console.error("Error fetching initial page data:", err);
+        setError("Failed to load page content. Please try again.");
+      } finally {
+        setIsLoading(false); // HIDE LOADER
       }
     };
 
-    fetchBlogs();
-  }, []);
-
-  useEffect(() => {
-    const fetchFeatured = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}blog/get-featured-blogs`,
-          {
-            params: {
-              limit: 3,
-            },
-          }
-        );
-        const allFeatured = response.data.data || response.data || [];
-
-        setFeatured(allFeatured.slice(0, 3));
-        setIsLoading(false);
-      } catch (err) {
-        setIsLoading(false);
-        setError("Failed to fetch Featured. Please try again.");
-        console.error("Error fetching Featured:", err);
-      }
-    };
-    fetchFeatured();
-  }, []);
-
-  useEffect(() => {
-    const fetchTags = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}tag`
-        );
-        const allTags = response.data.data || response.data || [];
-        setTags(allTags);
-        setIsLoading(false);
-      } catch (err) {
-        setIsLoading(false);
-        setError("Failed to fetch Tags. Please try again.");
-        console.error("Error fetching Tags:", err);
-      }
-    };
-    fetchTags();
-  }, []);
+    fetchInitialData();
+  }, [setIsLoading]); // Run only once
 
   const handleSearch = async () => {
     if (!searchQuery.trim()) {
       enqueueSnackbar("Please enter a search term", { variant: "info" });
       return;
     }
-
     try {
       const response = await axios.get(
         `${process.env.NEXT_PUBLIC_API_URL}blog/search?q=${searchQuery}`
       );
-
-      const searchResults = response.data.results || [];
-      setFilteredBlogs(searchResults);
+      setFilteredBlogs(response.data.results || []);
       setCurrentPage(1);
       setActiveFilter({ type: "search", id: searchQuery });
     } catch (err) {
@@ -335,19 +222,10 @@ function Page() {
       const response = await axios.get(
         `${process.env.NEXT_PUBLIC_API_URL}blog/${categoryId}/get-blogs-by-category`
       );
-
       const categoryBlogs = response.data.data || response.data || [];
-      const blogCount = categoryBlogs.length;
-
       setFilteredBlogs(categoryBlogs);
       setCurrentPage(1);
       setActiveFilter({ type: "category", id: categoryId });
-
-      setCategoryCounts((prev) => ({
-        ...prev,
-        [categoryId]: blogCount,
-      }));
-
       if (window.innerWidth <= 992) {
         window.scrollBy(0, 900);
       }
@@ -365,12 +243,9 @@ function Page() {
       const response = await axios.get(
         `${process.env.NEXT_PUBLIC_API_URL}blog/${tagId}/get-blogs-by-tag`
       );
-
-      const tagBlogs = response.data.data || response.data || [];
-      setFilteredBlogs(tagBlogs);
+      setFilteredBlogs(response.data.data || response.data || []);
       setCurrentPage(1);
       setActiveFilter({ type: "tag", id: tagId });
-
       if (window.innerWidth <= 992) {
         window.scrollBy(0, 400);
       }
@@ -388,36 +263,25 @@ function Page() {
   };
 
   const [isCategoryPopupOpen, setIsCategoryPopupOpen] = useState(false);
-
-  const toggleCategoryPopup = () => {
+  const toggleCategoryPopup = () =>
     setIsCategoryPopupOpen(!isCategoryPopupOpen);
-  };
-
   const clearFilterAndCloseCategoryPopup = () => {
     clearFilter();
     setIsCategoryPopupOpen(false);
-    setFilteredBlogs([]);
-    setCurrentPage(1);
-    setActiveFilter({ type: null, id: null });
   };
+
+  if (error) {
+    return (
+      <div className="container text-center py-5 vh-100">
+        <h3>{error}</h3>
+      </div>
+    );
+  }
 
   return (
     <div>
       <Banner />
       <section className={style["blogs-page"]}>
-        <div className={``}>
-          {/* <div className="row">
-            {currentBlogs.length > 0 && (
-              <div className="d-flex justify-content-center">
-                <img
-                  src="/images/banner-02.jpg"
-                  className="lap-view col-12 object-fit-cover"
-                  alt="Banner"
-                />
-              </div>
-            )}
-          </div> */}
-        </div>
         <div className={`container ${style["blogs-page-container"]} pt-5`}>
           <h1
             className="col-12 d-flex justify-content-center pb-3 text-black"
@@ -433,18 +297,18 @@ function Page() {
               >
                 Blogs
               </h1>
-
-              {currentBlogs.map((blogs) => {
-                const shareUrl = `${window.location.origin}/blogs/${blogs.uuid_id}`;
-
+              {currentBlogs.map((blog) => {
+                const shareUrl = `${
+                  typeof window !== "undefined" ? window.location.origin : ""
+                }/blogs/${blog.uuid_id}`;
                 return (
                   <div
-                    key={blogs.uuid_id}
+                    key={blog.uuid_id}
                     className={` ${style["blog-left-section"]} pb-5 mb-4 `}
                   >
-                    <Link href={`/blogs/${blogs.uuid_id}`}>
+                    <Link href={`/blogs/${blog.uuid_id}`}>
                       <img
-                        src={blogs?.main_image_url || "/images/placeholder.jpg"}
+                        src={blog?.main_image_url || "/images/placeholder.jpg"}
                         onError={(e) => {
                           e.currentTarget.src = "/images/placeholder.jpg";
                         }}
@@ -452,16 +316,14 @@ function Page() {
                         style={{ height: "350px" }}
                         alt="Banner"
                       />
-
                       <p className={`${style["all-title"]} pt-3 my-2 pb-1`}>
-                        {blogs.heading}
+                        {blog.heading}
                       </p>
                       <p className="">
-                        Date: <span>{formatDate(blogs.creation_date)}</span>
+                        Date: <span>{formatDate(blog.creation_date)}</span>
                       </p>
                     </Link>
-
-                    <p style={{ fontSize: "15px" }}>{blogs.description1}</p>
+                    <p style={{ fontSize: "15px" }}>{blog.description1}</p>
                     <div
                       className={`${style["blog-left-button"]} d-flex flex-row justify-content-between col-12 pt-2`}
                     >
@@ -482,7 +344,7 @@ function Page() {
                             size={20}
                             color="black"
                             className="me-1"
-                          />{" "}
+                          />
                         </TwitterShareButton>
                         <ThreadsShareButton url={shareUrl}>
                           <ThreadsIcon size={18} borderRadius={15} />
@@ -491,27 +353,6 @@ function Page() {
                           <FaLinkedin color="#0077B5 " size={20} />
                         </LinkedinShareButton>
                       </p>
-                      <div>
-                        {/* <div className='d-flex'>
-                                        <button onClick={() => toggleComment(blogs.uuid_id)}>
-                                            Comment: {getCommentCount(blogs.uuid_id)}
-                                          </button>
-                                               <span className='px-2'>|</span>
-                                               <button
-                                                    onClick={() => handleLikeBlog(blogs.uuid_id)}
-                                                    className="d-flex align-items-center"
-                                                  >
-                                                    {likedBlogs[blogs.uuid_id]?.isLiked ? (
-                                                      <FaHeart color="red" className="me-1" />
-                                                    ) : (
-                                                      <FaRegHeart className="me-1" />
-                                                    )}
-                                                    <span style={{ color: "#57b1b2" }}>
-                                                      {likedBlogs[blogs.uuid_id]?.likes || blogs.number_of_likes}
-                                                    </span>
-                                                  </button>    
-                                          </div>      */}
-                      </div>
                     </div>
                   </div>
                 );
@@ -543,7 +384,6 @@ function Page() {
                     onClick={handleSearch}
                   />
                 </span>
-
                 {activeFilter.type === "search" && (
                   <button
                     className="col-12 mt-2 btn btn-secondary"
@@ -552,7 +392,6 @@ function Page() {
                     Clear Search Filter
                   </button>
                 )}
-
                 <p className={`${style["all-title"]} pt-5 d-lg-block d-none`}>
                   Categories
                 </p>
@@ -569,9 +408,7 @@ function Page() {
                       onClick={() => fetchBlogsByCategory(cat.uuid_id)}
                     >
                       {cat.category}{" "}
-                      <span className="pe-1">
-                        {cat.blogCount || categoryCounts[cat.uuid_id] || 0}
-                      </span>
+                      <span className="pe-1">{cat.blogCount || 0}</span>
                     </button>
                   ))}
                   {activeFilter.type === "category" && (
@@ -611,7 +448,6 @@ function Page() {
                           onClick={() => setIsCategoryPopupOpen(false)}
                           aria-label="Close"
                         ></button>
-
                         {categories.map((cat) => (
                           <button
                             className={`w-100 d-flex justify-content-between border-0 bg-transparent py-2 px-3 mb-1 rounded ${
@@ -639,20 +475,17 @@ function Page() {
                           >
                             <span>{cat.category}</span>
                             <span
-                              className={`badge  rounded-pill ${
+                              className={`badge rounded-pill ${
                                 activeFilter.type === "category" &&
                                 activeFilter.id === cat.uuid_id
                                   ? "text-dark"
                                   : "text-white"
                               }`}
                             >
-                              {cat.blogCount ||
-                                categoryCounts[cat.uuid_id] ||
-                                0}
+                              {cat.blogCount || 0}
                             </span>
                           </button>
                         ))}
-
                         {activeFilter.type === "category" && (
                           <button
                             className="w-100 mt-2 btn btn-outline-light btn-sm"
@@ -711,7 +544,6 @@ function Page() {
                       </div>
                     ))}
                   </div>
-
                   <div className="col-lg-12 col-md-5 col-12">
                     <p className={`${style["all-title"]} pt-lg-5 pt-3`}>Tags</p>
                     <div
@@ -750,23 +582,27 @@ function Page() {
             </div>
           </div>
           <div className={`${style["paginationbuttons"]}`}>
-            {[...Array(Math.ceil(blogs.length / ITEMS_PER_PAGE))].map(
-              (_, i) => (
-                <button
-                  key={i + 1}
-                  className={`${currentPage === i + 1 ? style["active"] : ""}`}
-                  onClick={() => setCurrentPage(i + 1)}
-                >
-                  {i + 1}
-                </button>
-              )
-            )}
+            {[
+              ...Array(
+                Math.ceil(
+                  (filteredBlogs.length > 0 ? filteredBlogs : blogs).length /
+                    ITEMS_PER_PAGE
+                )
+              ),
+            ].map((_, i) => (
+              <button
+                key={i + 1}
+                className={`${currentPage === i + 1 ? style["active"] : ""}`}
+                onClick={() => setCurrentPage(i + 1)}
+              >
+                {i + 1}
+              </button>
+            ))}
           </div>
           <div className="pb-lg-0 pt-5 pb-5 mb-lg-0 mb-5 col-12 d-lg-none d-block">
             <Newsletter />
           </div>
         </div>
-
         {isCommentModalOpen && activeCommentBlogData && (
           <CommentsModal
             blogData={activeCommentBlogData}

@@ -6,88 +6,65 @@ import Banner from "../../components/banner/banner";
 import Countries from "../../components/countries/countries";
 import Carousal from "../../components/carousel/Carousal";
 import axios from "axios";
+import { useLoading } from "../../components/LoadingProvider"; // 1. IMPORT THE LOADER HOOK
 
 function Home() {
-  // State for packages and events
+  // State for packages, events, blogs, and attractions
   const [packages, setPackages] = useState([]);
   const [events, setEvents] = useState([]);
   const [blogs, setBlogs] = useState([]);
   const [attractions, setAttractions] = useState([]);
-  const [loading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchAllBlog = async () => {
-      try {
-        const blogResponse = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}blog`
-        );
+  // 2. USE THE LOADER HOOK
+  const { setIsLoading } = useLoading();
 
-        const Blogdata = blogResponse.data.data || blogResponse.data || [];
-        setBlogs(Blogdata);
-        setIsLoading(false);
+  useEffect(() => {
+    const fetchAllData = async () => {
+      setIsLoading(true); // 3. SHOW THE LOADER
+      setError(null);
+
+      try {
+        // Use Promise.all to fetch all data concurrently for better performance
+        const [
+          packagesResponse,
+          eventsResponse,
+          blogsResponse,
+          attractionsResponse,
+        ] = await Promise.all([
+          axios.get(`${process.env.NEXT_PUBLIC_API_URL}packages`),
+          axios.get(`${process.env.NEXT_PUBLIC_API_URL}events`),
+          axios.get(`${process.env.NEXT_PUBLIC_API_URL}blog`),
+          axios.get(`${process.env.NEXT_PUBLIC_API_URL}attractions`),
+        ]);
+
+        // Set state for each data type
+        setPackages(packagesResponse.data.data || packagesResponse.data || []);
+        setEvents(eventsResponse.data.data || []);
+        setBlogs(blogsResponse.data.data || blogsResponse.data || []);
+        setAttractions(attractionsResponse.data.data || []);
       } catch (err) {
-        setIsLoading(false);
-        setError("Failed to fetch All Blogs. Please try again.");
-        console.error("Error fetching data:", err);
+        console.error("Failed to fetch homepage data:", err);
+        setError("Could not load content. Please try refreshing the page.");
+      } finally {
+        setIsLoading(false); // 4. HIDE THE LOADER after all fetches are done
       }
     };
 
-    fetchAllBlog();
-  }, []);
-  useEffect(() => {
-    const fetchPackages = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}packages`
-        );
-        const allPackages = response.data.data || response.data || [];
-        setPackages(allPackages);
-        setIsLoading(false);
-      } catch (err) {
-        setIsLoading(false);
-        setError("Failed to fetch packages. Please try again.");
-        console.error("Error fetching packages:", err);
-      }
-    };
+    fetchAllData();
+  }, [setIsLoading]); // Dependency array ensures this runs once on component mount
 
-    fetchPackages();
-  }, []);
-  useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}events`
-        );
+  // If there was an error, you might want to display a message
+  if (error) {
+    return (
+      <div className="container text-center py-5">
+        <h3>Something went wrong</h3>
+        <p>{error}</p>
+      </div>
+    );
+  }
 
-        setEvents(response.data.data);
-        setIsLoading(false);
-      } catch (err) {
-        setIsLoading(false);
-        setError("Failed to fetch packages. Please try again.");
-        console.error("Error fetching packages:", err);
-      }
-    };
-
-    fetchEvents();
-  }, []);
-  useEffect(() => {
-    const fetchAttractions = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}attractions`
-        );
-        setAttractions(response.data.data);
-        setIsLoading(false);
-      } catch (err) {
-        setIsLoading(false);
-        setError("Failed to fetch attractions. Please try again.");
-        console.error("Error fetching attractions:", err);
-      }
-    };
-    fetchAttractions();
-  }, []);
-
+  // The global loader will cover the screen, so no need for a local loading return
   return (
     <>
       <Banner />

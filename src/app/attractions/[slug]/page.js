@@ -1,106 +1,94 @@
-"use client"; // Add this if you need hooks or client-side functionalities here
+"use client";
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import style from "./style.module.css"; // Ensure correct path for styles
-import Banner from "@components/banner/banner"; // Ensure correct path
+import style from "./style.module.css";
+import Banner from "@components/banner/banner";
 import axios from "axios";
-import Carousal from "@components/carousel/Carousal"; // Ensure correct path
+import Carousal from "@components/carousel/Carousal";
 import Ask_ur_questions from "@components/ask_ur_questions/ask_ur_questions";
-import HighlightTab from "@components/tour-package-details/highlight-tab"; // Ensure correct path
+import HighlightTab from "@components/tour-package-details/highlight-tab";
 import PackageInclusionsAndExclusions from "@components/tour-package-details/package-inclusions";
 import RatingCarousel from "@components/tour-package-details/RatingCarousel";
 import Top_container from "./top_container";
 import { useParams } from "next/navigation";
 import Map from "@components/map/Map";
+import { useLoading } from "@components/LoadingProvider"; // 1. IMPORT THE LOADER HOOK
 
 function Page() {
   const params = useParams();
   const slug = params?.slug;
-  const [slugpackage, setSlugPackage] = useState([]);
+  const [slugpackage, setSlugPackage] = useState(null); // Initialize as null
   const [allPackage, setAllPackage] = useState([]);
-  // const [legends, setLegends] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [relatedAttractions, setRelatedAttractions] = useState([]);
+
+  // 2. USE THE LOADER HOOK
+  const { setIsLoading } = useLoading();
 
   useEffect(() => {
     if (!slug) return;
 
-    const fetchPackageData = async () => {
+    const fetchPageData = async () => {
+      setIsLoading(true); // 3. SHOW THE LOADER
+      setError(null);
+
       try {
-        const response = await axios.get(
+        // Fetch the main attraction details first
+        const attractionResponse = await axios.get(
           `${process.env.NEXT_PUBLIC_API_URL}attractions/${slug}`
         );
+        const singlePackageData =
+          attractionResponse.data.data || attractionResponse.data || null;
 
-        const singlePackageData = response.data.data || response.data || [];
-         //console.log("packages Data:", singlePackageData);
+        if (!singlePackageData) {
+          throw new Error("Attraction not found.");
+        }
+
         setSlugPackage(singlePackageData);
 
-        setIsLoading(false);
+        // Now fetch all related data concurrently
+        await Promise.all([
+          // Fetch "all attractions" for other carousels/uses if needed
+          axios
+            .get(`${process.env.NEXT_PUBLIC_API_URL}attractions`)
+            .then((res) => {
+              setAllPackage(res.data.data || res.data || []);
+            }),
+          // Fetch related attractions based on the ID of the current attraction
+          axios
+            .get(
+              `${process.env.NEXT_PUBLIC_API_URL}attractions/related/${singlePackageData.id}`
+            )
+            .then((res) => {
+              setRelatedAttractions(res.data || []);
+            }),
+        ]);
       } catch (err) {
-        setIsLoading(false);
-        setError("Failed to fetch data. Please try again.");
-        console.error("Error fetching data:", err);
+        console.error("Error fetching attraction page data:", err);
+        setError("Failed to load attraction details. Please try again.");
+      } finally {
+        setIsLoading(false); // 4. HIDE THE LOADER
       }
     };
 
-    fetchPackageData();
-  }, [slug]);
+    fetchPageData();
+  }, [slug, setIsLoading]);
 
-  useEffect(() => {
-    const fetchAllPackage = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}attractions`
-        );
+  if (error) {
+    return (
+      <div className="container text-center py-5 vh-100">
+        <h3>{error}</h3>
+      </div>
+    );
+  }
 
-        const AllPackage = response.data.data || response.data || [];
-         //console.log("packages Data:", AllPackage);
-        setAllPackage(AllPackage);
+  // The loader will cover the screen, so we can return null or a minimal skeleton
+  // while the initial data is being fetched.
+  if (!slugpackage) {
+    return null;
+  }
 
-        setIsLoading(false);
-      } catch (err) {
-        setIsLoading(false);
-        setError("Failed to fetch data. Please try again.");
-        console.error("Error fetching data:", err);
-      }
-    };
-
-    fetchAllPackage();
-  }, []);
-
-  // useEffect(() => {
-  //   const fetchLegends = async () => {
-  //     if (!slug) return;
-
-  //     try {
-  //       const response = await axios.get(
-  //         `${process.env.NEXT_PUBLIC_API_URL}legends/package/${slug}/get-by-package`
-  //       );
-
-  //       const legendsData = response.data.legends || [];
-  //       setLegends(legendsData);
-  //     } catch (err) {
-  //       console.error("Error fetching legends:", err);
-  //     }
-  //   };
-
-  //   fetchLegends();
-  // }, [slug]);
-  useEffect(() => {
-    const fetchRelatedAttractions = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}attractions/related/${slugpackage.id}`
-        );
-        setRelatedAttractions(response.data);
-      } catch (err) {
-        console.error("Error fetching related attractions:", err);
-      }
-    };
-    fetchRelatedAttractions();
-  }, [slug]);
   return (
     <>
       <Banner />
@@ -119,12 +107,6 @@ function Page() {
           </div>
         </div>
 
-        {/* <div className="container">
-          <div className={`col-md-12 ${style["pdb-3"]}`}>
-            <PackageInclusionsAndExclusions packageId={slug} />
-          </div>
-        </div> */}
-
         <div className="container">
           <div className="row pt-5">
             <div key={slugpackage.id} className="col-md-12">
@@ -141,30 +123,6 @@ function Page() {
             </div>
           </div>
 
-          {/* <div className={`row ${style["Legend-ul"]}`}>
-            <div className="col-md-8">
-              <img src={slugpackage.map_url} alt="Bahrain" />
-            </div>
-            <div className="col-md-4">
-              <h4>Legend</h4>
-              <ul>
-                {legends.map((legend) => (
-                  <li key={legend.uuid_id}>
-                    <img
-                      src={legend.legend_icon_url}
-                      alt={legend.title}
-                      style={{
-                        width: "30px",
-                        height: "30px",
-                        marginRight: "10px",
-                      }}
-                    />
-                    <span>{legend.title}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div> */}
           <Map
             latitude={slugpackage.latitude}
             longitude={slugpackage.longitude}

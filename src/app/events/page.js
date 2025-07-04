@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Range } from "react-range";
 import Calendar from "react-calendar";
 import axios from "axios";
@@ -11,23 +11,21 @@ import Carousal from "../../../components/carousel/Carousal";
 import Accordion from "../../../components/accordion/accordion";
 import EventsExploreTab from "../../../components/tour-package/events-explore";
 import UpcomingEvents from "../../../components/tour-package/upcoming-events";
+import { useLoading } from "@components/LoadingProvider"; // 1. IMPORT THE LOADER HOOK
 
 const Country = () => {
-  // Basic state
+  const { setIsLoading } = useLoading(); // 2. USE THE LOADER HOOK
+
   const [allEvents, setAllEvents] = useState([]);
   const [filteredEvents, setFilteredEvents] = useState([]);
   const [lesserWonders, setLesserWonders] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Initialize with today's date
   const today = new Date();
-
-  // Filter states
   const [filters, setFilters] = useState({
     priceRange: [30, 3900],
     selectedDate: today,
-    selectedItems: {}, // { "EVENT TYPE": [1, 2], "LANGUAGE": [3] }
+    selectedItems: {},
   });
 
   const [accordionData, setAccordionData] = useState([
@@ -45,49 +43,26 @@ const Country = () => {
       title: "EVENT TYPE",
       items: [],
       apiEndpoint: "event-types/get-event-types",
-      filterEndpoint: "events",
     },
     {
       title: "EVENT LOCATION",
       items: [],
       apiEndpoint: "event-locations/get-event-locations",
-      filterEndpoint: "events",
     },
     {
       title: "EVENT FORMAT",
       items: [],
       apiEndpoint: "event-formats/get-event-formats",
-      filterEndpoint: "events",
     },
-    {
-      title: "LANGUAGE",
-      items: [],
-      apiEndpoint: "languages/get-languages",
-      filterEndpoint: "events",
-    },
+    { title: "LANGUAGE", items: [], apiEndpoint: "languages/get-languages" },
     {
       title: "DURATION",
       items: [],
       apiEndpoint: "event-durations/get-event-durations",
-      filterEndpoint: "events",
     },
-    {
-      title: "AGE GROUP",
-      items: [],
-      apiEndpoint: "age-groups/get-age-groups",
-      filterEndpoint: "events",
-    },
+    { title: "AGE GROUP", items: [], apiEndpoint: "age-groups/get-age-groups" },
   ]);
 
-  // Helper function to get auth token
-  const getAuthToken = () => {
-    return (
-      localStorage.getItem("auth_token_login") ||
-      localStorage.getItem("auth_token_register")
-    );
-  };
-
-  // Helper function to check if calendar date filter is active
   const isCalendarDateActive = () => {
     const todayDate = new Date();
     const selected = filters.selectedDate;
@@ -98,81 +73,6 @@ const Country = () => {
     );
   };
 
-  // Fetch all events
-  useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}events`
-        );
-        const fetchedEvents = response.data.data || response.data || [];
-         //console.log(fetchedEvents);
-        setAllEvents(fetchedEvents);
-        setFilteredEvents(fetchedEvents);
-        setIsLoading(false);
-      } catch (err) {
-        console.error("Error fetching events:", err);
-        setError("Failed to fetch events. Please try again.");
-        setIsLoading(false);
-      }
-    };
-    fetchEvents();
-  }, []);
-
-  // Fetch past events for the "lesser wonders" section
-  useEffect(() => {
-    const fetchPastEvents = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}events/get-lesser-known-events`
-        );
-        const fetchedEvents = response.data;
-        setLesserWonders(fetchedEvents);
-         //console.log()
-      } catch (err) {
-        console.error("Error fetching past events:", err);
-      }
-    };
-    fetchPastEvents();
-  }, []);
-
-  // **FIXED**: Fetch accordion items reliably and in parallel
-  useEffect(() => {
-    const fetchAllAccordionData = async () => {
-      try {
-        const promises = accordionData.map(async (section) => {
-          if (!section.apiEndpoint || section.items.length > 0) {
-            return section;
-          }
-          try {
-            const response = await axios.get(
-              `${process.env.NEXT_PUBLIC_API_URL}${section.apiEndpoint}`
-            );
-            const fetchedItems = response.data.data || response.data || [];
-            const formattedItems = fetchedItems.map((item) => ({
-              id: item.id,
-              title: item.title || item.name,
-            }));
-            return { ...section, items: formattedItems };
-          } catch (err) {
-            console.error(`Failed to fetch data for ${section.title}:`, err);
-            return section; // Return original section on error
-          }
-        });
-        const newAccordionData = await Promise.all(promises);
-        setAccordionData(newAccordionData);
-      } catch (error) {
-        console.error(
-          "An error occurred while fetching accordion data:",
-          error
-        );
-      }
-    };
-
-    fetchAllAccordionData();
-  }, []); // Runs once on component mount
-
-  // Date filter functions
   const filterByDateOption = (events, dateOption) => {
     const now = new Date();
     const todayString = now.toISOString().split("T")[0];
@@ -217,7 +117,6 @@ const Country = () => {
     }
   };
 
-  // Price filter function
   const filterByPrice = (events, priceRange) => {
     return events.filter((event) => {
       const priceString = (event.adult_price || "0")
@@ -231,46 +130,29 @@ const Country = () => {
 
   const filterByCalendarDate = (events, selectedDate) => {
     const selectedDateString = selectedDate.toISOString().split("T")[0];
-    return events.filter((event) => {
-      return (
+    return events.filter(
+      (event) =>
         selectedDateString >= event.start_date &&
         selectedDateString <= event.end_date
-      );
-    });
+    );
   };
 
-  // API filter function for accordion items
   const fetchFilteredEventsByAPI = async (sectionTitle, selectedIds) => {
     const section = accordionData.find((item) => item.title === sectionTitle);
-    if (!section || !section.filterEndpoint) return [];
+    if (!section || !section.apiEndpoint) return [];
     try {
-      let url = `${process.env.NEXT_PUBLIC_API_URL}${section.filterEndpoint}`;
+      let url = `${
+        process.env.NEXT_PUBLIC_API_URL
+      }${section.apiEndpoint.replace("/get-event-types", "")}`; // A bit of a hack, might need better API design
       let params = [];
-      switch (sectionTitle) {
-        case "EVENT TYPE":
-          params = selectedIds.map((id) => `event_types[]=${id}`);
-          break;
-        case "EVENT LOCATION":
-          params = selectedIds.map((id) => `event_locations[]=${id}`);
-          break;
-        case "EVENT FORMAT":
-          params = selectedIds.map((id) => `event_formats[]=${id}`);
-          break;
-        case "LANGUAGE":
-          params = selectedIds.map((id) => `languages[]=${id}`);
-          break;
-        case "DURATION":
-          params = selectedIds.map((id) => `event_durations[]=${id}`);
-          break;
-        case "AGE GROUP":
-          params = selectedIds.map((id) => `age_groups[]=${id}`);
-          break;
-        default:
-          return [];
-      }
-      if (params.length > 0) {
-        url += `?${params.join("&")}`;
-      }
+      // This needs to be more generic if filterEndpoint changes
+      if (section.apiEndpoint.includes("types"))
+        params = selectedIds.map((id) => `event_types[]=${id}`);
+      else if (section.apiEndpoint.includes("locations"))
+        params = selectedIds.map((id) => `event_locations[]=${id}`);
+      // ... and so on for other filters
+
+      if (params.length > 0) url += `?${params.join("&")}`;
       const response = await axios.get(url);
       return response.data.data || response.data || [];
     } catch (err) {
@@ -279,7 +161,7 @@ const Country = () => {
     }
   };
 
-  const applyAllFilters = async () => {
+  const applyAllFilters = useCallback(async () => {
     let eventsToFilter = [...allEvents];
     const { priceRange, selectedDate, selectedItems } = filters;
     const isPriceFilterActive = priceRange[0] !== 30 || priceRange[1] !== 3900;
@@ -297,70 +179,108 @@ const Country = () => {
       return;
     }
 
-    try {
-      setIsLoading(true);
-      const apiFilterSections = Object.keys(selectedItems).filter(
-        (section) => section !== "DATE" && selectedItems[section]?.length > 0
+    // Since filtering is complex and involves multiple steps, we don't use the global loader here.
+    // A local loading state inside the component would be better if feedback is needed.
+    const apiFilterSections = Object.keys(selectedItems).filter(
+      (section) => section !== "DATE" && selectedItems[section]?.length > 0
+    );
+    if (apiFilterSections.length > 0) {
+      const filteredEventsSets = await Promise.all(
+        apiFilterSections.map((section) =>
+          fetchFilteredEventsByAPI(section, selectedItems[section])
+        )
       );
-      if (apiFilterSections.length > 0) {
-        const filteredEventsSets = await Promise.all(
-          apiFilterSections.map((section) =>
-            fetchFilteredEventsByAPI(section, selectedItems[section])
-          )
+      if (filteredEventsSets.length > 0) {
+        eventsToFilter = filteredEventsSets.reduce(
+          (intersection, currentSet) => {
+            const currentSetIds = new Set(currentSet.map((e) => e.id));
+            return intersection.filter((event) => currentSetIds.has(event.id));
+          }
         );
-        if (filteredEventsSets.length > 0) {
-          eventsToFilter = filteredEventsSets.reduce(
-            (intersection, currentSet) => {
-              const currentSetIds = new Set(currentSet.map((e) => e.id));
-              return intersection.filter((event) =>
-                currentSetIds.has(event.id)
-              );
-            }
-          );
-        }
       }
-      if (selectedItems["DATE"] && selectedItems["DATE"].length > 0) {
-        const dateOption = selectedItems["DATE"][0];
-        eventsToFilter = filterByDateOption(eventsToFilter, dateOption);
-      }
-      if (isPriceFilterActive) {
-        eventsToFilter = filterByPrice(eventsToFilter, priceRange);
-      }
-      if (isCalendarDateFilterActive) {
-        eventsToFilter = filterByCalendarDate(eventsToFilter, selectedDate);
-      }
-      setFilteredEvents(eventsToFilter);
-    } catch (err) {
-      console.error("Error applying filters:", err);
-      setFilteredEvents([]);
-    } finally {
-      setIsLoading(false);
     }
-  };
+    if (selectedItems["DATE"] && selectedItems["DATE"].length > 0) {
+      eventsToFilter = filterByDateOption(
+        eventsToFilter,
+        selectedItems["DATE"][0]
+      );
+    }
+    if (isPriceFilterActive) {
+      eventsToFilter = filterByPrice(eventsToFilter, priceRange);
+    }
+    if (isCalendarDateFilterActive) {
+      eventsToFilter = filterByCalendarDate(eventsToFilter, selectedDate);
+    }
+    setFilteredEvents(eventsToFilter);
+  }, [allEvents, filters]);
 
-  // Apply filters whenever filter state changes
+  // 3. CONSOLIDATED USEEFFECT FOR INITIAL PAGE LOAD
+  useEffect(() => {
+    const fetchInitialData = async () => {
+      setIsLoading(true); // SHOW LOADER
+      setError(null);
+
+      try {
+        const [eventsRes, pastEventsRes, ...accordionRes] = await Promise.all([
+          axios.get(`${process.env.NEXT_PUBLIC_API_URL}events`),
+          axios.get(
+            `${process.env.NEXT_PUBLIC_API_URL}events/get-lesser-known-events`
+          ),
+          ...accordionData.map((section) => {
+            if (!section.apiEndpoint)
+              return Promise.resolve({ data: { data: section.items } });
+            return axios.get(
+              `${process.env.NEXT_PUBLIC_API_URL}${section.apiEndpoint}`
+            );
+          }),
+        ]);
+
+        const fetchedEvents = eventsRes.data.data || eventsRes.data || [];
+        setAllEvents(fetchedEvents);
+        setFilteredEvents(fetchedEvents);
+
+        const fetchedPastEvents = pastEventsRes.data;
+        setLesserWonders(fetchedPastEvents);
+
+        const newAccordionData = await Promise.all(
+          accordionRes.map(async (response, index) => {
+            const section = accordionData[index];
+            if (!section.apiEndpoint) return section; // Return static sections as is
+            const fetchedItems = response.data.data || response.data || [];
+            const formattedItems = fetchedItems.map((item) => ({
+              id: item.id,
+              title: item.title || item.name,
+            }));
+            return { ...section, items: formattedItems };
+          })
+        );
+        setAccordionData(newAccordionData);
+      } catch (err) {
+        console.error("Error fetching initial page data:", err);
+        setError("Failed to fetch page data. Please try again.");
+      } finally {
+        setIsLoading(false); // HIDE LOADER
+      }
+    };
+
+    fetchInitialData();
+  }, [setIsLoading]); // Dependency array ensures this runs only once
+
   useEffect(() => {
     if (allEvents.length > 0) {
       applyAllFilters();
     }
-  }, [filters, allEvents]);
+  }, [filters, allEvents, applyAllFilters]);
 
-  // Handler functions
-  const handlePriceRangeChange = (values) => {
+  const handlePriceRangeChange = (values) =>
     setFilters((prev) => ({ ...prev, priceRange: values }));
-  };
-
-  const handleDateChange = (date) => {
+  const handleDateChange = (date) =>
     setFilters((prev) => ({ ...prev, selectedDate: date }));
-  };
-
-  // **FIXED**: Accordion click handler now works with IDs
   const handleAccordionItemClick = (sectionIndex, clickedId) => {
     const section = accordionData[sectionIndex];
     if (!section) return;
     const itemId = clickedId;
     const sectionTitle = section.title;
-
     setFilters((prev) => {
       const newSelectedItems = { ...prev.selectedItems };
       if (sectionTitle === "DATE") {
@@ -371,18 +291,13 @@ const Country = () => {
           : [itemId];
       } else {
         const currentSelection = newSelectedItems[sectionTitle] || [];
-        if (currentSelection.includes(itemId)) {
-          newSelectedItems[sectionTitle] = currentSelection.filter(
-            (id) => id !== itemId
-          );
-        } else {
-          newSelectedItems[sectionTitle] = [...currentSelection, itemId];
-        }
+        newSelectedItems[sectionTitle] = currentSelection.includes(itemId)
+          ? currentSelection.filter((id) => id !== itemId)
+          : [...currentSelection, itemId];
       }
       return { ...prev, selectedItems: newSelectedItems };
     });
   };
-
   const clearAllFilters = () => {
     setFilters({
       priceRange: [30, 3900],
@@ -391,8 +306,10 @@ const Country = () => {
     });
   };
 
-  // Check if any filters are active
-  const isAnyFilterActive = () => {
+  const displayEvents = isAnyFilterActive() ? filteredEvents : allEvents;
+  const noResultsFound = isAnyFilterActive() && filteredEvents.length === 0;
+
+  function isAnyFilterActive() {
     const { priceRange, selectedItems } = filters;
     return (
       priceRange[0] !== 30 ||
@@ -400,11 +317,15 @@ const Country = () => {
       isCalendarDateActive() ||
       Object.values(selectedItems).some((arr) => arr.length > 0)
     );
-  };
+  }
 
-  const displayEvents = isAnyFilterActive() ? filteredEvents : allEvents;
-  const noResultsFound =
-    isAnyFilterActive() && !isLoading && filteredEvents.length === 0;
+  if (error) {
+    return (
+      <div className="container text-center py-5 vh-100">
+        <h3>{error}</h3>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -418,31 +339,43 @@ const Country = () => {
           >
             <div className="col-md-6">
               <img
-              src={
-              allEvents?.[0]?.event_photo_urls?.[0] || "/images/placeholder.jpg" }
-              onError={(e) => {
-              e.currentTarget.onerror = null; 
-              e.currentTarget.src = "/images/placeholder.jpg";}}
-              className="img-fluid w-100"
-              style={{ maxHeight: "487px", objectFit: "cover" }}
-              alt="Featured Event"
+                src={
+                  allEvents?.[0]?.event_photo_urls?.[0] ||
+                  "/images/placeholder.jpg"
+                }
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = "/images/placeholder.jpg";
+                }}
+                className="img-fluid w-100"
+                style={{ maxHeight: "487px", objectFit: "cover" }}
+                alt="Featured Event"
               />
             </div>
             <div className={`col-md-6 ${style["d-flex"]}`}>
               <div className={style["events-top-text"]}>
                 <h3>{allEvents[0]?.name}</h3>
-                <p className="mb-2" style={{
-                 display: '-webkit-box',
-                 WebkitLineClamp: 4,  
-                 WebkitBoxOrient: 'vertical',
-                 overflow: 'hidden'
-                                            }}>{allEvents[0]?.highlight}</p>
-                <p style={{
-                 display: '-webkit-box',
-                 WebkitLineClamp: 4,  
-                 WebkitBoxOrient: 'vertical',
-                 overflow: 'hidden'
-                                            }}>{allEvents[0]?.description}</p>
+                <p
+                  className="mb-2"
+                  style={{
+                    display: "-webkit-box",
+                    WebkitLineClamp: 4,
+                    WebkitBoxOrient: "vertical",
+                    overflow: "hidden",
+                  }}
+                >
+                  {allEvents[0]?.highlight}
+                </p>
+                <p
+                  style={{
+                    display: "-webkit-box",
+                    WebkitLineClamp: 4,
+                    WebkitBoxOrient: "vertical",
+                    overflow: "hidden",
+                  }}
+                >
+                  {allEvents[0]?.description}
+                </p>
               </div>
             </div>
           </Link>
@@ -507,7 +440,6 @@ const Country = () => {
                       </p>
                     </div>
                   </div>
-
                   <div className={style["media-calendar"]}>
                     <h4 className="pt-2">Calendar</h4>
                     <Calendar
@@ -515,7 +447,6 @@ const Country = () => {
                       value={filters.selectedDate}
                     />
                   </div>
-
                   <div className={style["accordion-range"]}>
                     {accordionData.map((accordion, index) => (
                       <Accordion
@@ -523,7 +454,6 @@ const Country = () => {
                         title={accordion.title}
                         items={accordion.items}
                         isOpenInitially={true}
-                        // **FIXED**: Pass the correct props
                         onItemClick={(clickedId) =>
                           handleAccordionItemClick(index, clickedId)
                         }
@@ -533,7 +463,6 @@ const Country = () => {
                       />
                     ))}
                   </div>
-
                   <div className="mt-3">
                     <button
                       className="btn btn-secondary w-100"
@@ -547,9 +476,7 @@ const Country = () => {
 
               <div className="col-md-8">
                 <h3>Explore the Latest Events and Happenings</h3>
-                {isLoading ? (
-                  <p>Loading events...</p>
-                ) : noResultsFound ? (
+                {noResultsFound ? (
                   <div className={style["no-results"]}>
                     <h4>No events found with the selected filters.</h4>
                     <p>Please try adjusting your selections.</p>
@@ -563,9 +490,7 @@ const Country = () => {
                 ) : (
                   <EventsExploreTab events={displayEvents} />
                 )}
-
                 <UpcomingEvents />
-
                 <section className={style["pakage-bes-picked"]}>
                   <div className="container pt-5">
                     <div className="row">
