@@ -190,7 +190,7 @@ function Home() {
         <div className="container">
           <div className="row">
             <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-8 col-sm-9 col-9 pdb-3">
-              <h3>Latest Blog Posts</h3>
+              <h3>Updates</h3>
             </div>
             <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-4 col-sm-3 col-3 pdb-3 text-right">
               <Link href="/blogs" className="float-right">

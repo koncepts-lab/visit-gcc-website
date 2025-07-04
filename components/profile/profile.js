@@ -11,10 +11,15 @@ const formatDate = (dateString) => {
   if (!dateString) return "N/A";
   try {
     const date = new Date(dateString);
+
+    // Using 'en-GB' locale to get the "DD Month YYYY" format.
+    // 'day' is set to 'numeric' to get '10' instead of '10th'.
     const options = { day: "numeric", month: "long", year: "numeric" };
-    return date.toLocaleDateString("en-US", options);
+
+    return date.toLocaleDateString("en-GB", options);
   } catch (error) {
-    return dateString;
+    console.error("Error formatting date:", error); // Good practice to log the error
+    return dateString; // Fallback to the original string if something goes wrong
   }
 };
 
@@ -73,8 +78,8 @@ const BookingDetailsModal = ({ bookingItem, onClose }) => {
                         <th>#</th>
                         <th>Name</th>
                         <th>Gender</th>
-                        <th>ID Type</th>
-                        <th>ID Number</th>
+                        <th style={{ textWrap: "nowrap" }}>ID Type</th>
+                        <th style={{ textWrap: "nowrap" }}>ID Number</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -1256,7 +1261,7 @@ const TravelAccountProfile = () => {
     >
       <div className="container">
         <div className="row g-4">
-          <div className="col-lg-3 col-md-4" style={{ marginTop: "175px" }}>
+          <div className="col-lg-3 col-md-4 marginTop">
             <div
               className="card border-0 shadow-sm"
               style={{ borderRadius: "12px" }}
@@ -1565,6 +1570,15 @@ const TravelAccountProfile = () => {
         .status-cancelled {
           background-color: #dc3545;
         }
+        .marginTop {
+          margin-top: 175px;
+        }
+        @media (max-width: 768px) {
+            .marginTop {
+              margin-top: 30px;
+            }
+
+        
       `}</style>
     </div>
   );

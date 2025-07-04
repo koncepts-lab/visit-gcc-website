@@ -1,108 +1,104 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
-import { FaFacebookF, FaWhatsapp } from "react-icons/fa";
-import { RiTwitterXFill } from "react-icons/ri";
-import { FaInstagram } from "react-icons/fa6";
+import { Facebook, Instagram, Twitter } from "lucide-react"; // Using lucide-react for clean icons
+import style from "./style.module.css"; // We'll use a CSS module for cleaner styling
 
-function Footer() {
+const Footer = () => {
+  // Data for the links to make the code cleaner
+  const quickLinks = [
+    { href: "/country/uae", text: "UAE" },
+    { href: "/country/saudi-arabia", text: "Saudi Arabia" },
+    { href: "/country/qatar", text: "Qatar" },
+    { href: "/country/oman", text: "Oman" },
+    { href: "/country/kuwait", text: "Kuwait" },
+    { href: "/country/bahrain", text: "Bahrain" },
+    { href: "/one-visa", text: "One visa" },
+    { href: "/events", text: "Events" },
+    { href: "/attractions", text: "Attractions" },
+  ];
+
+  const visitGccLinks = [
+    { href: "/about-us", text: "About Us" },
+    { href: "/support", text: "Support" },
+    { href: "/partner-with-us", text: "Partner with us" },
+    { href: "/terms-of-use", text: "Terms of Use" },
+    { href: "/privacy-policy", text: "Privacy" },
+    { href: "/security", text: "Security" },
+  ];
+
+  const socialLinks = [
+    { href: "https://facebook.com", icon: <Facebook size={20} /> },
+    { href: "https://instagram.com", icon: <Instagram size={20} /> },
+    { href: "https://twitter.com", icon: <Twitter size={20} /> },
+  ];
+
   return (
-    <>
-      <footer>
-        <div className="container">
-          <div className="row">
-            <div className="col-md-2">
-              <Link className="navbar-brand" href="/">
-                <img src="/images/logo.svg" alt="" />
-              </Link>
-            </div>
+    <footer className={style.footer}>
+      <div className={`container ${style.footerContainer}`}>
+        {/* Column 1: Logo */}
+        <div className={style.logoColumn}>
+          <Link href="/">
+            <img
+              src="/images/logo.svg"
+              alt="Visit GCC Logo"
+              className={style.footerLogo}
+            />
+          </Link>
+        </div>
 
-            <div className="col-md-8 footer-links">
-              <ul className="mb-3">
-                <li>
-                  <Link href="#0">About Us</Link>
-                </li>
-                <li>
-                  <Link href="#0">Careers</Link>
-                </li>
-                <li>
-                  <Link href="#0">FAQs</Link>
-                </li>
-                <li>
-                  <Link href="#0">Support</Link>
-                </li>
-                <li>
-                  <Link href="#0">Organize Your Trip</Link>
-                </li>
-                <li>
-                  <Link href="#0">Your Visa Guide</Link>
-                </li>
-                <li>
-                  <Link href="#0">GCC Event Schedule</Link>
-                </li>
-              </ul>
-              <ul>
-                <li>© 2024 Visit GCC.</li>
-                <li>
-                  <Link href="#0">Privacy</Link>
-                </li>
-                <li>
-                  <Link href="#0">Security</Link>
-                </li>
-                <li>
-                  <Link href="#0">Terms of Use</Link>
-                </li>
-              </ul>
+        {/* Column 2: Links */}
+        <div className={style.linksColumn}>
+          <div className={style.linkGroup}>
+            <h6 className={style.linkHeader}>Quick links</h6>
+            <div className={style.linkList}>
+              {quickLinks.map((link) => (
+                <Link
+                  key={link.text}
+                  href={link.href}
+                  className={style.footerLink}
+                >
+                  {link.text}
+                </Link>
+              ))}
             </div>
-
-            <div className="col-md-2">
-              <ul className="social-media">
-                <li>
-                  <Link href="#0">
-                    <FaFacebookF />
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#0">
-                    <FaWhatsapp />
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#0">
-                    <FaInstagram />
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#0">
-                    <RiTwitterXFill />
-                  </Link>
-                </li>
-              </ul>
+          </div>
+          <div className={`${style.linkGroup} ${style.marginTopMobile}`}>
+            <h6 className={style.linkHeader}>Visitgcc</h6>
+            <div className={style.linkList}>
+              {visitGccLinks.map((link) => (
+                <Link
+                  key={link.text}
+                  href={link.href}
+                  className={style.footerLink}
+                >
+                  {link.text}
+                </Link>
+              ))}
             </div>
           </div>
         </div>
-      </footer>
 
-      <div className="mobile-footer">
-        <div className="mobile-footer-container">
-          <Link href={"/invest-in-gcc"}>
-            <img src="../images/inv-gcc.svg" height={40} alt="Plan Bahrain" />
-          </Link>
-          <Link href="/one-visa">
-            <img
-              src="../images/one-visa.svg"
-              height={40}
-              className="rotating-image"
-              max-width={"50px"}
-              alt="Explore Bahrain"
-            />
-          </Link>
-          <Link href={"/"}>
-            <img src="../images/gcc-stays.svg" height={40} alt="Book Bahrain" />
-          </Link>
+        {/* Column 3: Social Media */}
+        <div className={style.socialColumn}>
+          <div className={style.socialIcons}>
+            {socialLinks.map((social, index) => (
+              <a
+                key={index}
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={style.socialIconLink}
+              >
+                {social.icon}
+              </a>
+            ))}
+          </div>
         </div>
       </div>
-    </>
+    </footer>
   );
-}
+};
 
 export default Footer;
