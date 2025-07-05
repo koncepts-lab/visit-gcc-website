@@ -16,19 +16,23 @@ function SingleHomePackage({ link, photo_url, name, description }) {
     >
       <div className={style["bg-black-shade"]}></div>
       <img
-        src={imageUrl} 
+        src={imageUrl}
         className="w-100"
-        alt={name || "Package Image"} 
-        style={{ height: "230px" }}
+        alt={name || "Package Image"}
+        style={{ height: "244px" }}
       />
       <div className={style["home-packages-text"]}>
-        <h4 style={{height: '64px'}}>{name}</h4>
-        <p   style={{
-    display: '-webkit-box',
-    WebkitLineClamp: 2,  
-    WebkitBoxOrient: 'vertical',
-    overflow: 'hidden'
-  }}>{description}</p>
+        <h4 style={{ height: "64px" }}>{name}</h4>
+        <p
+          style={{
+            display: "-webkit-box",
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: "vertical",
+            overflow: "hidden",
+          }}
+        >
+          {description}
+        </p>
         <ArrowIcon />
       </div>
     </Link>
