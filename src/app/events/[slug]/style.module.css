@@ -262,15 +262,16 @@
 /* //////////////////////////////////  popup css /////////////////////////////// */
 .popup-overlay {
   position: fixed;
-  top: 0;
+  top: 5px;
   left: 0;
   width: 100%;
   height: 100%;
+  padding-block: 10px;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 2000;
+  z-index: 10001;
   overflow-y: auto;
 }
 
@@ -412,8 +413,7 @@
     flex-direction: column;
     justify-content: space-between;
     padding: 20px 0px 20px 20px;
-      height: 480px;
-
+    height: 480px;
   }
   .date-left {
     width: 100%;
@@ -421,13 +421,13 @@
   }
 
   .popup-overlay {
-    z-index: 2000;
+    z-index: 10001;
   }
 }
 
 @media (max-width: 992px) {
   .popup-overlay {
-    z-index: 2000;
+    z-index: 10001;
   }
 }
 
@@ -448,8 +448,7 @@
     flex-direction: column;
     justify-content: space-between;
     padding: 0px 0px 10px 10px;
-      height: 480px;
-
+    height: 480px;
   }
   .date-left {
     width: 100%;
@@ -510,8 +509,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 3000;
+    z-index: 10001;
     overflow-y: auto;
+    padding-block: 10px;
   }
 }
 .style_modalOverlay__b1jMX {
