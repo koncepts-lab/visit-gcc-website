@@ -71,14 +71,18 @@ function Home() {
       <Countries />
 
       {/* home-packages */}
-      <div className={style["home-packages"]}>
+      <div className={style["home-packages"]} style={{ paddingBottom: "0px" }}>
         <div className="container">
           <div className="row" style={{ paddingBlock: "36px" }}>
             <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-8 col-sm-9 col-9 pdb-3">
               <h3>GCC Packages</h3>
             </div>
             <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-4 col-sm-3 col-3 pdb-3 text-right">
-              <Link href="/tour-package" className="float-right">
+              <Link
+                href="/tour-package"
+                className="float-right"
+                style={{ fontSize: "17px" }}
+              >
                 View All
               </Link>
             </div>
@@ -113,7 +117,11 @@ function Home() {
               <h3>Upcoming events</h3>
             </div>
             <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-4 col-sm-3 col-3 pdb-3 text-right">
-              <Link href="/events" className="float-right">
+              <Link
+                href="/events"
+                className="float-right"
+                style={{ fontSize: "17px" }}
+              >
                 View All
               </Link>
             </div>
@@ -131,7 +139,11 @@ function Home() {
               <h3 className="mb-4">Attractions</h3>
             </div>
             <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-4 col-sm-3 col-3 text-right">
-              <Link href="/attractions" className="float-right">
+              <Link
+                href="/attractions"
+                className="float-right"
+                style={{ fontSize: "17px" }}
+              >
                 View All
               </Link>
             </div>
@@ -170,7 +182,11 @@ function Home() {
               <h3>Updates</h3>
             </div>
             <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-4 col-sm-3 col-3 pdb-3 text-right">
-              <Link href="/blogs" className="float-right">
+              <Link
+                href="/blogs"
+                className="float-right"
+                style={{ fontSize: "17px" }}
+              >
                 View All
               </Link>
             </div>

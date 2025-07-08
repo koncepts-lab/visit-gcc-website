@@ -35,69 +35,90 @@ const Footer = () => {
   ];
 
   return (
-    <footer className={style.footer}>
-      <div className={`container ${style.footerContainer}`}>
-        {/* Column 1: Logo */}
-        <div className={style.logoColumn}>
-          <Link href="/">
+    <>
+      <footer className={style.footer}>
+        <div className={`container ${style.footerContainer}`}>
+          {/* Column 1: Logo */}
+          <div className={style.logoColumn}>
+            <Link href="/">
+              <img
+                src="/images/logo.svg"
+                alt="Visit GCC Logo"
+                className={style.footerLogo}
+              />
+            </Link>
+          </div>
+
+          {/* Column 2: Links */}
+          <div className={style.linksColumn}>
+            <div className={style.linkGroup}>
+              <h6 className={style.linkHeader}>Quick links</h6>
+              <div className={style.linkList}>
+                {quickLinks.map((link) => (
+                  <Link
+                    key={link.text}
+                    href={link.href}
+                    className={style.footerLink}
+                  >
+                    {link.text}
+                  </Link>
+                ))}
+              </div>
+            </div>
+            <div className={`${style.linkGroup} ${style.marginTopMobile}`}>
+              <h6 className={style.linkHeader}>Visitgcc</h6>
+              <div className={style.linkList}>
+                {visitGccLinks.map((link) => (
+                  <Link
+                    key={link.text}
+                    href={link.href}
+                    className={style.footerLink}
+                  >
+                    {link.text}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Column 3: Social Media */}
+          <div className={style.socialColumn}>
+            <div className={style.socialIcons}>
+              {socialLinks.map((social, index) => (
+                <a
+                  key={index}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={style.socialIconLink}
+                >
+                  {social.icon}
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+      </footer>
+      <div className="mobile-footer">
+        <div className="mobile-footer-container">
+          <Link href={"/invest-in-gcc"}>
+            <img src="../images/inv-gcc.svg" height={40} alt="Plan Bahrain" />
+          </Link>
+          <Link href="/one-visa">
             <img
-              src="/images/logo.svg"
-              alt="Visit GCC Logo"
-              className={style.footerLogo}
+              src="../images/one-visa.svg"
+              height={40}
+              className="rotating-image"
+              max-width={"50px"}
+              alt="Explore Bahrain"
             />
           </Link>
-        </div>
-
-        {/* Column 2: Links */}
-        <div className={style.linksColumn}>
-          <div className={style.linkGroup}>
-            <h6 className={style.linkHeader}>Quick links</h6>
-            <div className={style.linkList}>
-              {quickLinks.map((link) => (
-                <Link
-                  key={link.text}
-                  href={link.href}
-                  className={style.footerLink}
-                >
-                  {link.text}
-                </Link>
-              ))}
-            </div>
-          </div>
-          <div className={`${style.linkGroup} ${style.marginTopMobile}`}>
-            <h6 className={style.linkHeader}>Visitgcc</h6>
-            <div className={style.linkList}>
-              {visitGccLinks.map((link) => (
-                <Link
-                  key={link.text}
-                  href={link.href}
-                  className={style.footerLink}
-                >
-                  {link.text}
-                </Link>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Column 3: Social Media */}
-        <div className={style.socialColumn}>
-          <div className={style.socialIcons}>
-            {socialLinks.map((social, index) => (
-              <a
-                key={index}
-                href={social.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={style.socialIconLink}
-              >
-                {social.icon}
-              </a>
-            ))}
-          </div>
+          <Link href={"/"}>
+            <img src="../images/gcc-stays.svg" height={40} alt="Book Bahrain" />
+          </Link>
         </div>
       </div>
-    </footer>
+    </>
   );
 };
 

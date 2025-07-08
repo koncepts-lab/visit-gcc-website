@@ -21,8 +21,27 @@ function SingleHomePackage({ link, photo_url, name, description }) {
         alt={name || "Package Image"}
         style={{ height: "244px" }}
       />
-      <div className={style["home-packages-text"]}>
-        <h4 style={{ height: "64px" }}>{name}</h4>
+      <div
+        className={style["home-packages-text"]}
+        style={{
+          top: "0px",
+          bottom: "0px",
+          right: "0px",
+          marginTop: "0px",
+          position: "absolute",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          height: "100%",
+        }}
+      >
+        <h4
+          style={{
+            height: "64px",
+          }}
+        >
+          {name}
+        </h4>
         <p
           style={{
             display: "-webkit-box",
