@@ -147,7 +147,7 @@ export default function Top_container({ packageId }) {
     <div>
       <div className={`container ${style["container-package-details"]}`}>
         <div className="row">
-          <div className="col-md-7">
+          <div className="col-md-7" style={{ marginLeft: "20px" }}>
             <h3>
               {packageDetails.number_of_days} DAYS IN {packageDetails.name}
             </h3>
@@ -177,7 +177,7 @@ export default function Top_container({ packageId }) {
               </span>
             </div>
           </div>
-          <div className="col-md-6 col-lg-5">
+          <div className="col-md-6 col-lg-5" style={{ marginLeft: "20px" }}>
             <div className={style["flex-package-details-right"]}>
               <span className={style["min-w"]}>
                 <p>Starting From</p>

@@ -20,18 +20,31 @@ function PakageDetailsOtherPackages({ packages, type }) {
         />
         <div className={style["PakageDetailsOtherPackages-text"]}>
           <span>
-            <h4 className="mb-3"  style={{height: '64px',
-                           fontSize: "14px", display: '-webkit-box',
-                            WebkitLineClamp: 3, 
-                            WebkitBoxOrient: 'vertical',
-                            overflow: 'hidden'
-                          }}>{packages.name}</h4>
-            <p  style={{height: '84px',
-                           fontSize: "14px", display: '-webkit-box',
-                            WebkitLineClamp: 4, 
-                            WebkitBoxOrient: 'vertical',
-                            overflow: 'hidden'
-                          }}>{packages.description}</p>
+            <h4
+              className="mb-3"
+              style={{
+                height: "52px",
+                fontSize: "14px",
+                display: "-webkit-box",
+                WebkitLineClamp: 3,
+                WebkitBoxOrient: "vertical",
+                overflow: "hidden",
+              }}
+            >
+              {packages.name}
+            </h4>
+            <p
+              style={{
+                height: "84px",
+                fontSize: "14px",
+                display: "-webkit-box",
+                WebkitLineClamp: 4,
+                WebkitBoxOrient: "vertical",
+                overflow: "hidden",
+              }}
+            >
+              {packages.description}
+            </p>
           </span>
           <span>
             <FaChevronRight />

@@ -897,7 +897,8 @@ function Header() {
               className={`nav-item ${style["navbar_sticky_mobile"]} d-sm-none d-block`}
             >
               <Link
-                className="nav-link active d-flex flex-column"
+                className="nav-link active d-flex flex-column align-items-center"
+                style={{ marginLeft: "-20px" }}
                 href="/country"
               >
                 <img
@@ -908,7 +909,7 @@ function Header() {
                 Explore
               </Link>
             </div>
-            <div className={` d-sm-block d-none`}>
+            <div className={` d-sm-flex d-none`}>
               <Link className="navbar-brand active" href="/country">
                 <img
                   src="../images/logo.svg"
@@ -925,7 +926,10 @@ function Header() {
             <div
               className={`nav-item ${style["navbar_sticky_mobile"]} d-sm-none d-block`}
             >
-              <Link className="nav-link active d-flex flex-column" href="/">
+              <Link
+                className="nav-link active d-flex flex-column align-items-center"
+                href="/"
+              >
                 <img
                   src="../images/Plan.svg"
                   className={style["img-top-logo"]}
@@ -937,7 +941,10 @@ function Header() {
             <div
               className={`nav-item ${style["navbar_sticky_mobile"]} d-sm-none d-block`}
             >
-              <Link className="nav-link active d-flex flex-column" href="/">
+              <Link
+                className="nav-link active d-flex flex-column align-items-center"
+                href="/"
+              >
                 <img
                   src="../images/Event.svg"
                   className={style["img-top-logo"]}
@@ -949,7 +956,10 @@ function Header() {
             <div
               className={`nav-item ${style["navbar_sticky_mobile"]} d-sm-none d-block`}
             >
-              <Link className="nav-link active d-flex flex-column" href="/">
+              <Link
+                className="nav-link active d-flex flex-column align-items-center"
+                href="/"
+              >
                 <img
                   src="../images/Book.svg"
                   className={style["img-top-logo"]}

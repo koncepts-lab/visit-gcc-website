@@ -571,9 +571,9 @@ const Checkout = () => {
                     Customizable
                   </button>
                 </h2>
-                <p style={{ fontSize: "14px", color: "black" }}>
+                {/* <p style={{ fontSize: "14px", color: "black" }}>
                   Guest Signup - Tour Package Booking
-                </p>
+                </p> */}
                 <div className="pt-3">
                   <h1 className="ms-0 fw-bolder">Personal Information</h1>
                   <form className="col-xxl-10 col-xl-12">

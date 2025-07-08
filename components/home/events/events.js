@@ -8,13 +8,13 @@ const ArrowIcon = () => <FaArrowRightLong />;
 function SingleHomeEvents({ event_photo_urls, date, name, description, link }) {
   const imageUrl = event_photo_urls || "/images/placeholder.jpg";
 
+  // --- MODIFICATION IS HERE ---
   function formatDate(isoDateString) {
     // Return early if the input is not valid
     if (!isoDateString) {
       return "";
     }
 
-    // Create a Date object from the input string
     const date = new Date(isoDateString);
 
     // Check if the created date is valid
@@ -22,18 +22,18 @@ function SingleHomeEvents({ event_photo_urls, date, name, description, link }) {
       return "";
     }
 
-    // Get the day and add a leading zero if it's a single digit (e.g., 5 -> "05")
-    const day = String(date.getDate()).padStart(2, "0");
+    // Define the options for the "25 July 2025" format
+    const options = {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    };
 
-    // Get the month (which is 0-indexed), add 1, and add a leading zero
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-
-    // Get the full year
-    const year = date.getFullYear();
-
-    // Combine the parts into the desired format
-    return `${day}-${month}-${year}`;
+    // Use toLocaleDateString with the 'en-GB' locale to get the correct order
+    return date.toLocaleDateString("en-GB", options);
   }
+  // --- END OF MODIFICATION ---
+
   return (
     <Link href={`/events/${link}`} className={`item ${style["item-padding"]}`}>
       <div className={style["event-box"]}>

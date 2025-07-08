@@ -31,11 +31,10 @@ const TourPackageTab = ({
 
   // This is the main effect for handling filtering logic
   useEffect(() => {
-    if (activeTab === 'default') {
-        setFilteredPackages(packages || []);
+    if (activeTab === "default") {
+      setFilteredPackages(packages || []);
     }
   }, [packages, activeTab]);
-
 
   // This effect handles fetching data when a new tab is selected
   useEffect(() => {
@@ -113,7 +112,7 @@ const TourPackageTab = ({
 
     const fetchVendorInfo = async (packageId, vendorId) => {
       if (!vendorId || !authToken) {
-        setVendorData((prev) => ({...prev, [packageId]: null })); // Mark as done if no vendorId
+        setVendorData((prev) => ({ ...prev, [packageId]: null })); // Mark as done if no vendorId
         return;
       }
 
@@ -125,10 +124,10 @@ const TourPackageTab = ({
         const userId = vendorResponse.data?.user_id;
 
         if (!userId) {
-            // **FIX**: Mark as attempted even if no user_id is found
-            setVendorData((prev) => ({ ...prev, [packageId]: null }));
-            return;
-        };
+          // **FIX**: Mark as attempted even if no user_id is found
+          setVendorData((prev) => ({ ...prev, [packageId]: null }));
+          return;
+        }
 
         const userResponse = await axios.get(
           `${process.env.NEXT_PUBLIC_API_URL}app/get-user/${userId}`,
@@ -139,7 +138,10 @@ const TourPackageTab = ({
 
         setVendorData((prev) => ({ ...prev, [packageId]: vendorName }));
       } catch (err) {
-        console.error(`Error fetching vendor info for package ${packageId}:`, err);
+        console.error(
+          `Error fetching vendor info for package ${packageId}:`,
+          err
+        );
         // **FIX**: Mark as attempted (with null) to prevent re-fetching on error
         setVendorData((prev) => ({ ...prev, [packageId]: null }));
       }
@@ -151,10 +153,11 @@ const TourPackageTab = ({
         // This logic is now applied to all three data types.
         if (iconsData[pkg.id] === undefined) fetchIcons(pkg.id);
         if (ratingsData[pkg.id] === undefined) fetchRatings(pkg.id);
-        if (vendorData[pkg.id] === undefined && pkg.vendor_id) fetchVendorInfo(pkg.id, pkg.vendor_id);
+        if (vendorData[pkg.id] === undefined && pkg.vendor_id)
+          fetchVendorInfo(pkg.id, pkg.vendor_id);
       });
     }
-  }, [filteredPackages]); 
+  }, [filteredPackages]);
 
   const renderContent = () => {
     if (isLoading) {
@@ -184,7 +187,7 @@ const TourPackageTab = ({
             <div key={pkg.id} className="masonry-item">
               <img
                 src={pkg?.photo_urls?.[0] || "/images/placeholder.jpg"}
-                style={{ width: "100%", minHeight: '268px', display: "block" }}
+                style={{ width: "100%", minHeight: "268px", display: "block" }}
                 alt={pkg.name}
               />
               <div
@@ -202,16 +205,20 @@ const TourPackageTab = ({
               >
                 <h5>{pkg.name}</h5>
                 <div className={style["provider-date"]}>
-                  <p>{new Date(pkg.created_at).toLocaleDateString()}</p>
+                  {new Date(pkg.created_at).toLocaleDateString("en-GB", {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                  })}{" "}
                 </div>
                 {/* Render ratings only if data exists (is not null or undefined) */}
                 {ratingsData[pkg.id] && (
                   <Rating
-                      count={5}
-                      value={ratingsData[pkg.id]?.average_rating || 0}
-                      size={24}
-                      activeColor="#ffd700"
-                      edit={false}
+                    count={5}
+                    value={ratingsData[pkg.id]?.average_rating || 0}
+                    size={24}
+                    activeColor="#ffd700"
+                    edit={false}
                   />
                 )}
                 {/* Render icons only if data exists and is an array with items */}
@@ -282,7 +289,7 @@ const TourPackageTab = ({
                         onClick={() => setActiveTab(tab.uuid_id)}
                         type="button"
                         role="tab"
-                        disabled={isLoading} 
+                        disabled={isLoading}
                       >
                         {tab.title}
                       </button>

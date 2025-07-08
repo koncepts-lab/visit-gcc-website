@@ -479,13 +479,16 @@ const OneVisa = () => {
               </div>
             ))}
           </div>
-          <div className="d-flex justify-content-center mt-4">
+          <div
+            className="d-flex justify-content-center mt-4 gap-2"
+            style={{ height: "fit-content" }}
+          >
             <button
               className="btn btn-link text-dark"
               type="button"
               data-bs-target="#visaSlider"
               data-bs-slide="prev"
-              style={{ fontSize: "24px" }}
+              style={{ padding: "0px", height: "fit-content" }}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -507,7 +510,7 @@ const OneVisa = () => {
               type="button"
               data-bs-target="#visaSlider"
               data-bs-slide="next"
-              style={{ fontSize: "24px" }}
+              style={{ padding: "0px", height: "fit-content" }}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -708,6 +711,7 @@ const OneVisa = () => {
           <div className="d-xl-none mb-4">
             <select
               className="form-select form-select-lg"
+              style={{ borderColor: "rgb(200, 168, 103)" }}
               value={activeStakeholder}
               onChange={(e) => setActiveStakeholder(e.target.value)}
             >
