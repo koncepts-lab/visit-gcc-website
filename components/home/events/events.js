@@ -51,6 +51,7 @@ function SingleHomeEvents({ event_photo_urls, date, name, description, link }) {
             WebkitLineClamp: 3,
             WebkitBoxOrient: "vertical",
             overflow: "hidden",
+            marginTop: "20px",
           }}
         >
           {name}

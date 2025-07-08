@@ -110,7 +110,7 @@ const SearchComponent = () => {
         />
         {query && (
           <button
-            className="btn btn-outline-secondary"
+            className="btn btn-outline-secondary no-hover-effect" // <-- Add your custom class here
             type="button"
             onClick={handleClearFilter}
             title="Clear search"
