@@ -144,7 +144,9 @@ function Page() {
                   {event.provider ? `By ${event.provider}` : ""}
                 </Link>
               </p>
-              <div className={style["flex-package-details"]}>
+              <div
+                className={`${style["flex-package-details"]} d-flex flex-column flex-lg-row`}
+              >
                 <span>
                   {renderRatingCircles()}
                   <p className="mrg_left">
@@ -153,19 +155,21 @@ function Page() {
                     </a>
                   </p>
                 </span>
-                <span>
-                  <PiSealCheckFill className={style["PiSealCheckFill"]} />{" "}
-                  Recommended by {event.recommendationPercentage || 99}% of
-                  travellers{" "}
-                </span>
-                <span>
-                  <button
-                    onClick={handleShareClick}
-                    style={{ border: "none", background: "none" }}
-                  >
-                    <MdIosShare className={style["MdIosShare"]} />
-                  </button>
-                </span>
+                <div className="d-flex align-items-start gap-2 mb-3">
+                  <span>
+                    <PiSealCheckFill className={style["PiSealCheckFill"]} />{" "}
+                    Recommended by {event.recommendationPercentage || 99}% of
+                    travellers{" "}
+                  </span>
+                  <span>
+                    <button
+                      onClick={handleShareClick}
+                      style={{ border: "none", background: "none" }}
+                    >
+                      <MdIosShare className={style["MdIosShare"]} />
+                    </button>
+                  </span>
+                </div>
               </div>
             </div>
             <div className="col-md-5">

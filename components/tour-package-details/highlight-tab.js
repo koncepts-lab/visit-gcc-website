@@ -17,7 +17,7 @@ const HighlightContent = ({ highlightPoints, itemType }) => {
   }
   return (
     <>
-      <h3 className="fw-bold mb-3">Highlight</h3>
+      <h3 className="fw-medium mb-3">Highlight</h3>
       {highlightPoints.map((point, index) => (
         <div key={index} className="d-flex align-items-start mb-2">
           <HiOutlineArrowLongRight
@@ -53,7 +53,7 @@ const ItineraryContent = ({ itineraryItems, itemType }) => {
   }
   return (
     <>
-      <h3 className="fw-bold mb-3">Itinerary</h3>
+      <h3 className="fw-medium mb-3">Itinerary</h3>
       <div>
         {itineraryItems.map((item, index) => (
           <div
@@ -93,8 +93,6 @@ const ItineraryContent = ({ itineraryItems, itemType }) => {
   );
 };
 
-
-
 const NoteContent = ({ notes, itemType }) => {
   // Assuming `notes` is a single string from itemDetails.note
   if (!notes || typeof notes !== "string" || notes.trim() === "") {
@@ -107,7 +105,7 @@ const NoteContent = ({ notes, itemType }) => {
   }
   return (
     <>
-      <h3 className="fw-bold mb-3">Important Note</h3>
+      <h3 className="fw-medium mb-3">Important Note</h3>
       {/* If notes is expected to be an array of objects, map it here */}
       <div className="fw-light" dangerouslySetInnerHTML={{ __html: notes }} />
     </>
@@ -280,11 +278,17 @@ export default function HighlightTab({ itemId, itemType = "packages" }) {
       case "InclusionsExclusions":
         if (itemType === "packages") {
           // This component fetches its own data based on packageId
-          return <PackageInclusionsAndExclusions packageId={itemId} type="package"/>;
+          return (
+            <PackageInclusionsAndExclusions packageId={itemId} type="package" />
+          );
         } else if (itemType === "attractions") {
           // Pass fetched features and restrictions to the dynamic content component
-                  return <PackageInclusionsAndExclusions packageId={itemId} type="attraction"/>;
-
+          return (
+            <PackageInclusionsAndExclusions
+              packageId={itemId}
+              type="attraction"
+            />
+          );
         }
         return (
           <div className="p-4">Content not available for this item type.</div>

@@ -335,7 +335,7 @@ function Page() {
                 </div>
               </div>
             </div>
-            <div className="col-lg-4 col-12">
+            <div className="col-lg-4 col-12 order-lg-last order-first">
               <div className="col-11 ms-4">
                 <div className="position-relative">
                   <input

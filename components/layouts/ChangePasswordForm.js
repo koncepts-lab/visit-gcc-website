@@ -24,7 +24,7 @@ function ChangePasswordForm() {
     if (!password) {
       return "Old password is required.";
     }
-    return ""; 
+    return "";
   };
 
   const validateNewPassword = (password) => {
@@ -34,7 +34,7 @@ function ChangePasswordForm() {
     if (password.length < 8) {
       return "New password must be at least 8 characters long.";
     }
-    return ""; 
+    return "";
   };
 
   const validateConfirmNewPassword = (confirmPass, newPass) => {
@@ -44,7 +44,7 @@ function ChangePasswordForm() {
     if (confirmPass !== newPass) {
       return "New password and confirm password do not match.";
     }
-    return ""; 
+    return "";
   };
 
   const handleValidation = () => {
@@ -112,7 +112,9 @@ function ChangePasswordForm() {
     e.preventDefault();
 
     if (!handleValidation()) {
-      enqueueSnackbar("Please fix the errors in the form.", { variant: "error" });
+      enqueueSnackbar("Please fix the errors in the form.", {
+        variant: "error",
+      });
       return;
     }
 
@@ -155,9 +157,12 @@ function ChangePasswordForm() {
         setConfirmNewPassword("");
         setErrors({ oldPassword: "", newPassword: "", confirmNewPassword: "" });
       } else {
-        enqueueSnackbar(response.data?.message || `Failed to change password.`, {
-          variant: "error",
-        });
+        enqueueSnackbar(
+          response.data?.message || `Failed to change password.`,
+          {
+            variant: "error",
+          }
+        );
       }
     } catch (error) {
       enqueueSnackbar(
@@ -174,19 +179,27 @@ function ChangePasswordForm() {
     <div className="px-2">
       <form onSubmit={handleSubmit}>
         <div className="d-flex justify-content-between">
-          <h5 className="text-black text-decoration-none fw-bold py-1" style={{ fontSize: "1rem" }}>
+          <h5
+            className="text-black text-decoration-none fw-bold py-1"
+            style={{ fontSize: "1rem" }}
+          >
             Change Password
           </h5>
           <button
             type="submit"
             className="py-1 text-decoration-underline form-label border-0 bg-transparent"
             disabled={isSubmitting}
-            style={{ cursor: isSubmitting ? "not-allowed" : "pointer" }}
+            style={{
+              cursor: isSubmitting ? "not-allowed" : "pointer",
+              color: "black",
+            }}
           >
             {isSubmitting ? "Saving..." : "Save"}
           </button>
         </div>
-        <p className="form-label" style={{ fontSize: "0.85rem" }}>Please choose a password you haven't used before.</p>
+        <p className="form-label" style={{ fontSize: "0.85rem" }}>
+          Please choose a password you haven't used before.
+        </p>
 
         <div style={{ marginBottom: errors.oldPassword ? "0.5rem" : "0.3rem" }}>
           <div className="position-relative flex">
@@ -198,7 +211,11 @@ function ChangePasswordForm() {
               value={oldPassword}
               onChange={handleOldPasswordChange}
               required
-              style={{ border: "none", borderBottom: "1px solid #ced4da", borderRadius: "0" }}
+              style={{
+                border: "none",
+                borderBottom: "1px solid #ced4da",
+                borderRadius: "0",
+              }}
             />
             <button
               className="position-absolute btn end-0 top-50 translate-middle-y p-2 me-1"
@@ -209,7 +226,12 @@ function ChangePasswordForm() {
             </button>
           </div>
           {errors.oldPassword && (
-            <div className="text-danger" style={{ fontSize: "0.8rem", marginTop: "0.25rem" }}>{errors.oldPassword}</div>
+            <div
+              className="text-danger"
+              style={{ fontSize: "0.8rem", marginTop: "0.25rem" }}
+            >
+              {errors.oldPassword}
+            </div>
           )}
         </div>
         <div style={{ marginBottom: errors.newPassword ? "0.5rem" : "1rem" }}>
@@ -222,7 +244,11 @@ function ChangePasswordForm() {
               placeholder="New Password"
               onChange={handleNewPasswordChange}
               required
-              style={{ border: "none", borderBottom: "1px solid #ced4da", borderRadius: "0" }}
+              style={{
+                border: "none",
+                borderBottom: "1px solid #ced4da",
+                borderRadius: "0",
+              }}
             />
             <button
               className="position-absolute btn end-0 top-50 translate-middle-y p-2 me-1"
@@ -233,10 +259,19 @@ function ChangePasswordForm() {
             </button>
           </div>
           {errors.newPassword && (
-            <div className="text-danger" style={{ fontSize: "0.8rem", marginTop: "0.25rem" }}>{errors.newPassword}</div>
+            <div
+              className="text-danger"
+              style={{ fontSize: "0.8rem", marginTop: "0.25rem" }}
+            >
+              {errors.newPassword}
+            </div>
           )}
         </div>
-        <div style={{ marginBottom: errors.confirmNewPassword ? "0.5rem" : "1rem" }}>
+        <div
+          style={{
+            marginBottom: errors.confirmNewPassword ? "0.5rem" : "1rem",
+          }}
+        >
           <div className="position-relative flex">
             <input
               type={showConfirmNewPassword ? "text" : "password"}
@@ -246,24 +281,36 @@ function ChangePasswordForm() {
               value={confirmNewPassword}
               onChange={handleConfirmNewPasswordChange}
               required
-              style={{ border: "none", borderBottom: "1px solid #ced4da", borderRadius: "0" }}
+              style={{
+                border: "none",
+                borderBottom: "1px solid #ced4da",
+                borderRadius: "0",
+              }}
             />
             <button
               className="position-absolute btn end-0 top-50 translate-middle-y p-2 me-1"
               type="button"
               onClick={() => setShowConfirmNewPassword(!showConfirmNewPassword)}
             >
-              {showConfirmNewPassword ? <EyeOff size={26} /> : <Eye size={26} />}
+              {showConfirmNewPassword ? (
+                <EyeOff size={26} />
+              ) : (
+                <Eye size={26} />
+              )}
             </button>
           </div>
           {errors.confirmNewPassword && (
-            <div className="text-danger" style={{ fontSize: "0.8rem", marginTop: "0.25rem" }}>
+            <div
+              className="text-danger"
+              style={{ fontSize: "0.8rem", marginTop: "0.25rem" }}
+            >
               {errors.confirmNewPassword}
             </div>
           )}
         </div>
       </form>
-      <label className="" style={{fontSize: '0.8rem'}}>✔ Password must have at least 6 characters.
+      <label className="" style={{ fontSize: "0.8rem" }}>
+        ✔ Password must have at least 6 characters.
       </label>
     </div>
   );

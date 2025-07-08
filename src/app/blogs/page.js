@@ -15,6 +15,7 @@ import axios from "axios";
 import { useSnackbar } from "notistack";
 import Newsletter from "./newsletter";
 import CommentsModal from "./comments";
+import { IoIosArrowDown } from "react-icons/io";
 import {
   FacebookShareButton,
   LinkedinShareButton,
@@ -426,9 +427,18 @@ function Page() {
                   <p
                     className={`${style["title_category"]}`}
                     onClick={toggleCategoryPopup}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                      justifyContent: "space-between",
+                      cursor: "pointer",
+                    }}
                   >
                     Categories
+                    <IoIosArrowDown size={16} />
                   </p>
+
                   {isCategoryPopupOpen && (
                     <div
                       className={` position-absolute w-100 shadow`}
