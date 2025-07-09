@@ -66,24 +66,24 @@ function Page() {
   );
 
   // All your original handler functions and useEffects are preserved
-  const fetchCommentCount = async (blogId) => {
-    try {
-      const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}blogs/${blogId}/comments/count`
-      );
-      return response.data.comment_count;
-    } catch (error) {
-      console.error("Error fetching comment count:", error);
-      return 0;
-    }
-  };
+  // const fetchCommentCount = async (blogId) => {
+  //   try {
+  //     const response = await axios.get(
+  //       `${process.env.NEXT_PUBLIC_API_URL}blogs/${blogId}/comments/count`
+  //     );
+  //     return response.data.comment_count;
+  //   } catch (error) {
+  //     console.error("Error fetching comment count:", error);
+  //     return 0;
+  //   }
+  // };
 
-  const toggleComment = async (blogId) => {
-    setActiveCommentBlogData(blogs.find((blog) => blog.uuid_id === blogId));
-    setIsCommentModalOpen(true);
-    const count = await fetchCommentCount(blogId);
-    setCommentCounts((prevCounts) => ({ ...prevCounts, [blogId]: count }));
-  };
+  // const toggleComment = async (blogId) => {
+  //   setActiveCommentBlogData(blogs.find((blog) => blog.uuid_id === blogId));
+  //   setIsCommentModalOpen(true);
+  //   const count = await fetchCommentCount(blogId);
+  //   setCommentCounts((prevCounts) => ({ ...prevCounts, [blogId]: count }));
+  // };
 
   const handleCloseComments = () => {
     setActiveCommentBlogData(null);
@@ -92,18 +92,18 @@ function Page() {
 
   const getCommentCount = (blogId) => commentCounts[blogId] || 0;
 
-  useEffect(() => {
-    const loadCommentCounts = async () => {
-      const counts = {};
-      for (const blog of blogs) {
-        counts[blog.uuid_id] = await fetchCommentCount(blog.uuid_id);
-      }
-      setCommentCounts(counts);
-    };
-    if (blogs.length > 0) {
-      loadCommentCounts();
-    }
-  }, [blogs]);
+  // useEffect(() => {
+  //   const loadCommentCounts = async () => {
+  //     const counts = {};
+  //     for (const blog of blogs) {
+  //       counts[blog.uuid_id] = await fetchCommentCount(blog.uuid_id);
+  //     }
+  //     setCommentCounts(counts);
+  //   };
+  //   if (blogs.length > 0) {
+  //     loadCommentCounts();
+  //   }
+  // }, [blogs]);
 
   const handleLikeBlog = async (blogUuid) => {
     try {

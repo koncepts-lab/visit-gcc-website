@@ -1163,7 +1163,7 @@ function Header() {
                   aria-haspopup="true"
                   aria-expanded={profileDropdownOpen}
                 >
-                  <CgProfile size={24} />
+                  <CgProfile size={40} />
                   <span>{profileDisplayName}</span>
                 </button>
                 {profileDropdownOpen && (
