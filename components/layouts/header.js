@@ -431,6 +431,11 @@ function Header() {
       link: "https://www.instagram.com/visit.gcc/",
       imgSrc: "/images/icons/instagram.png",
     },
+    {
+      name: "X",
+      link: "https://www.x.com",
+      imgSrc: "/images/icons/x.png",
+    },
   ];
 
   const MobileMenuItem = ({
@@ -958,7 +963,7 @@ function Header() {
             >
               <Link
                 className="nav-link active d-flex flex-column align-items-center"
-                href="/"
+                href="/attractions"
               >
                 <img
                   src="../images/Book.svg"
@@ -1091,7 +1096,7 @@ function Header() {
                 </Link>
               </li>
               <li className={`nav-item ${style["navbar_sticky"]}`}>
-                <Link className="nav-link active" href="/">
+                <Link className="nav-link active" href="/attractions">
                   <img
                     src="../images/Book.svg"
                     className={style["img-top-logo"]}

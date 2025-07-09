@@ -435,7 +435,7 @@ const Country = () => {
                     />
                     <div>
                       <p className={style["price-range-text"]}>
-                        Price: ${filters.priceRange[0]} — $
+                        Price: AED {filters.priceRange[0]} — AED{" "}
                         {filters.priceRange[1]}
                       </p>
                     </div>

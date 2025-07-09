@@ -2,7 +2,9 @@
 
 import React from "react";
 import Link from "next/link";
-import { Facebook, Instagram, Twitter } from "lucide-react"; // Using lucide-react for clean icons
+import { Facebook, Instagram, Linkedin } from "lucide-react"; // Using lucide-react for clean icons
+import { FaXTwitter } from "react-icons/fa6";
+
 import style from "./style.module.css"; // We'll use a CSS module for cleaner styling
 
 const Footer = () => {
@@ -31,7 +33,8 @@ const Footer = () => {
   const socialLinks = [
     { href: "https://facebook.com", icon: <Facebook size={20} /> },
     { href: "https://instagram.com", icon: <Instagram size={20} /> },
-    { href: "https://twitter.com", icon: <Twitter size={20} /> },
+    { href: "https://x.com", icon: <FaXTwitter size={20} /> },
+    { href: "https://linkedin.com", icon: <Linkedin size={20} /> },
   ];
 
   return (
