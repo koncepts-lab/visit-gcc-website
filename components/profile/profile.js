@@ -1372,7 +1372,7 @@ const TravelAccountProfile = () => {
                     className="text-muted mb-0"
                     style={{ fontSize: "13px", fontWeight: "500" }}
                   >
-                    PERSONAL PROFILE
+                    PERSONAL INFORMATIONS
                   </p>
                 </div>
                 <div className="list-group list-group-flush">

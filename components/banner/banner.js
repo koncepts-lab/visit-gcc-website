@@ -50,8 +50,8 @@ const Banner = () => {
       image: "../images/Book.svg",
       hoverImage: "../images/Book Mouse Over.svg",
       onClick: null,
-      isLink: false,
-      link: "",
+      isLink: true,
+      link: "/attractions",
     },
   ];
 

@@ -339,7 +339,7 @@ const AttractionsPage = () => {
                   />
                   <div className="d-flex justify-content-between align-items-center mt-2">
                     <p className="mb-0" style={{ fontSize: "0.9em" }}>
-                      Price: ${priceRange[0]} — ${priceRange[1]}
+                      Price: AED {priceRange[0]} — AED {priceRange[1]}
                     </p>
                     <button
                       onClick={clearPriceFilter}
@@ -416,7 +416,7 @@ const AttractionsPage = () => {
                 </div>
                 <div className={style["filter-buttons"]}>
                   <button
-                    className={`${style["btn-one"]} my-3`}
+                    className={`${style["btn-one"]} my-3 btn btn-secondary`}
                     onClick={clearAllFilters}
                   >
                     Clear All Filters

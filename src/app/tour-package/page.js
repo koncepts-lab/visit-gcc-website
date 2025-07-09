@@ -425,7 +425,7 @@ const TourPackage = () => {
                 </div>
                 <div className={style["filter-buttons"]}>
                   <button
-                    className={`${style["btn-one"]} my-3`}
+                    className={`${style["btn-one"]} my-3 btn btn-secondary`}
                     onClick={clearAllFilters}
                   >
                     Clear Filters
