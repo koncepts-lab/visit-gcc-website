@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import DatePicker from 'react-datepicker';
+import React, { useState, useEffect } from "react";
+import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
 import style from "./style.module.css";
-import Link from 'next/link';
+import Link from "next/link";
 import { MdOutlineCancel } from "react-icons/md";
-import axios from 'axios';
-import { useRouter } from 'next/navigation';
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
   const [selectedDates, setSelectedDates] = useState([]);
@@ -28,9 +28,9 @@ const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
   const [selectionDays, setSelectionDays] = useState(0);
   const [initialCalendarMonth, setInitialCalendarMonth] = useState(new Date());
   const [isBooking, setIsBooking] = useState(false);
-  const [ticketType, setTicketType] = useState("VIP");
+  const [ticketType, setTicketType] = useState("Standard");
   const [isSelectionFixed, setIsSelectionFixed] = useState(false);
-  const router = useRouter(); 
+  const router = useRouter();
 
   // Calculate total number of travelers (excluding infants)
   const totalTravelers = rooms.reduce(
@@ -82,7 +82,7 @@ const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
 
         if (!singlePackageData.start_date || !singlePackageData.end_date) {
           setCustomDateRange(true);
-          setIsSelectionFixed(false); 
+          setIsSelectionFixed(false);
           setSelectionDays(numberOfDays);
           setInitialCalendarMonth(new Date());
         } else {
@@ -102,7 +102,7 @@ const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
             const dateRange = getDatesInRange(startDate, endDate);
             setSelectedDates(dateRange);
             setSelectionDays(totalDays);
-            setIsSelectionFixed(true); 
+            setIsSelectionFixed(true);
           } else {
             setSelectionDays(numberOfDays);
             const defaultRange = getContinuousDateRange(
@@ -110,7 +110,7 @@ const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
               numberOfDays
             );
             setSelectedDates(defaultRange);
-            setIsSelectionFixed(false); 
+            setIsSelectionFixed(false);
           }
         }
 
@@ -186,7 +186,7 @@ const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
     return timeSlots;
   };
 
-    const timeSlots = slugPackage ? generateTimeSlots() : {};
+  const timeSlots = slugPackage ? generateTimeSlots() : {};
 
   const isDateSelected = (date) => {
     return selectedDates.some(
@@ -269,20 +269,20 @@ const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
     const numberOfDays = slugPackage?.number_of_days || 5;
 
     if (customDateRange) {
-        if (isDateSelected(date)) {
-            setSelectedDates([]);
-        } else {
-            const newRange = getContinuousDateRange(date, numberOfDays);
-            setSelectedDates(newRange);
-        }
+      if (isDateSelected(date)) {
+        setSelectedDates([]);
+      } else {
+        const newRange = getContinuousDateRange(date, numberOfDays);
+        setSelectedDates(newRange);
+      }
     } else {
-        const maxStartDate = new Date(packageDateRange.end);
-        maxStartDate.setDate(maxStartDate.getDate() - (selectionDays - 1));
+      const maxStartDate = new Date(packageDateRange.end);
+      maxStartDate.setDate(maxStartDate.getDate() - (selectionDays - 1));
 
-        let startDate = date > maxStartDate ? maxStartDate : date;
-        const newRange = getContinuousDateRange(startDate, selectionDays);
-        const validRange = newRange.filter((d) => d <= packageDateRange.end);
-        setSelectedDates(validRange);
+      let startDate = date > maxStartDate ? maxStartDate : date;
+      const newRange = getContinuousDateRange(startDate, selectionDays);
+      const validRange = newRange.filter((d) => d <= packageDateRange.end);
+      setSelectedDates(validRange);
     }
   };
 
@@ -337,7 +337,7 @@ const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
       setError("Please add at least one adult or child to proceed.");
       return;
     }
-    
+
     setIsBooking(true); // Start loader
 
     const sortedDates = [...selectedDates].sort((a, b) => a - b);
@@ -352,7 +352,7 @@ const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
         infants: room.infant,
       })),
     };
-     //console.log("Submitting Booking Payload:", bookingData);
+    //console.log("Submitting Booking Payload:", bookingData);
 
     const authToken =
       localStorage.getItem("auth_token_login") ||
@@ -375,13 +375,11 @@ const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
       )
       .then((response) => {
         const bookingId = response.data.data.id;
-         //console.log("Booking API Response:", response.data.data.id);
+        //console.log("Booking API Response:", response.data.data.id);
         localStorage.setItem("booking_data", JSON.stringify(bookingData));
         localStorage.setItem("data", JSON.stringify(slugPackage));
         onClose();
-        router.push(
-          `/checkout?bookingId=${encodeURIComponent(bookingId)}`
-        );
+        router.push(`/checkout?bookingId=${encodeURIComponent(bookingId)}`);
       })
       .catch((error) => {
         console.error("Error booking package:", error);
@@ -606,9 +604,9 @@ const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
             </div>
           </div>
           <div className="my-md-4 my-1 pe-2">
-            <label className="text-black">Ticket Type*</label>
-            <br />
-            <select
+            {/* <label className="text-black">Ticket Type*</label>
+            <br /> */}
+            {/* <select
               className={`form-select col-xl-11 col-lg-12 col-12 fw-semibold my-1`}
               style={{
                 maxHeight: "200px",
@@ -621,31 +619,33 @@ const DatePickerWithHover = ({ onClose, packageId, type = "package" }) => {
               <option value="VIP">VIP</option>
               <option value="Standard">Standard</option>
               <option value="Premium">Premium</option>
-            </select>
+            </select> */}
           </div>
           {error && <div className="room-alert mt-2">{error}</div>}
           <div className="mt-4 flex">
-              <button
-                onClick={handleBookNow}
-                className="bg-blue-600 text-white rounded col-12 d-flex align-items-center justify-content-center"
-                style={{
-                  background: "#5bb3b5",
-                  border: "none",
-                  fontSize: "20px",
-                  padding: "14px",
-                  minHeight: "58px" // Prevents layout shift
-                }}
-                disabled={selectedDates.length === 0 || totalTravelers === 0 || isBooking}
-              >
-                {isBooking ? (
-                  <>
-                    <span className="loader"></span>
-                    Processing...
-                  </>
-                ) : (
-                  "Proceed"
-                )}
-              </button>
+            <button
+              onClick={handleBookNow}
+              className="bg-blue-600 text-white rounded col-12 d-flex align-items-center justify-content-center"
+              style={{
+                background: "#5bb3b5",
+                border: "none",
+                fontSize: "20px",
+                padding: "14px",
+                minHeight: "58px", // Prevents layout shift
+              }}
+              disabled={
+                selectedDates.length === 0 || totalTravelers === 0 || isBooking
+              }
+            >
+              {isBooking ? (
+                <>
+                  <span className="loader"></span>
+                  Processing...
+                </>
+              ) : (
+                "Proceed"
+              )}
+            </button>
           </div>
         </div>
       </div>

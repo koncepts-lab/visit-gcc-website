@@ -169,7 +169,7 @@ const LoginRegisterTabs = () => {
       );
 
       if (response.status === 200 || response.status === 201) {
-         //console.log("Login successful", response.data);
+        //console.log("Login successful", response.data);
         setloginEmail("");
         // enqueueSnackbar("Login Successfull!", { variant: "success" });
       } else {
@@ -178,8 +178,30 @@ const LoginRegisterTabs = () => {
       }
       router.push(`/verify-code?email=${encodeURIComponent(loginEmail)}`);
     } catch (error) {
-      console.error("Login error:", error);
-      enqueueSnackbar("Login Failed!", { variant: "error" });
+      console.error("Login error:", error.response); // Log the response for better debugging
+
+      // Check if the error has a response and if the status code is 422
+      if (error.response && error.response.status === 422) {
+        // Show your custom, user-friendly message for this specific error
+        enqueueSnackbar(
+          "This Email id is not registered. Please register to proceed",
+          {
+            variant: "error",
+          }
+        );
+      } else {
+        // For all other errors (e.g., 500, network errors, etc.),
+        // show a more generic message or the one from the API.
+        // This safely gets the message from the API or provides a default.
+        const errorMessage =
+          error.response?.data?.message ||
+          error.response?.data?.errors?.email?.[0] || // Safely access nested error
+          "An unexpected error occurred. Please try again.";
+
+        enqueueSnackbar(errorMessage, {
+          variant: "error",
+        });
+      }
     } finally {
       setIsLoading(false);
     }
@@ -200,7 +222,7 @@ const LoginRegisterTabs = () => {
       );
 
       if (response.status === 200 || response.status === 201) {
-         //console.log("Registration successful:", response.data);
+        //console.log("Registration successful:", response.data);
         enqueueSnackbar("Registration Successful!", { variant: "success" });
 
         localStorage.setItem("first_name", registerFormData.first_name);
@@ -229,7 +251,7 @@ const LoginRegisterTabs = () => {
 
       if (error.response && error.response.data) {
         setFormErrors(error.response.data.errors || {});
-         //console.log(error.response.data.message || "Registration failed.");
+        //console.log(error.response.data.message || "Registration failed.");
         enqueueSnackbar("Registration Failed!", { variant: "error" });
       }
     } finally {

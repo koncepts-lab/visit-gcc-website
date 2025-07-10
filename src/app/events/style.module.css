@@ -34,6 +34,12 @@
   float: left;
   width: 100%;
 }
+.highlight {
+  display: none;
+}
+.filter-full-width {
+  width: 100% !important;
+}
 .price-range-text {
   float: left;
   width: 100%;

@@ -8,6 +8,7 @@ import style from "./style.module.css";
 import Link from "next/link";
 import Banner from "../../../components/banner/banner";
 import Carousal from "../../../components/carousel/Carousal";
+import { LuMenu } from "react-icons/lu";
 import Accordion from "../../../components/accordion/accordion";
 import EventsExploreTab from "../../../components/tour-package/events-explore";
 import UpcomingEvents from "../../../components/tour-package/upcoming-events";
@@ -20,6 +21,7 @@ const Country = () => {
   const [filteredEvents, setFilteredEvents] = useState([]);
   const [lesserWonders, setLesserWonders] = useState([]);
   const [error, setError] = useState(null);
+  const [isToggled, setIsToggled] = useState(false);
 
   const today = new Date();
   const [filters, setFilters] = useState({
@@ -265,6 +267,7 @@ const Country = () => {
 
     fetchInitialData();
   }, [setIsLoading]); // Dependency array ensures this runs only once
+  const handleToggle = () => setIsToggled(!isToggled);
 
   useEffect(() => {
     if (allEvents.length > 0) {
@@ -395,9 +398,22 @@ const Country = () => {
 
         <div className={style["explore-event-container"]}>
           <div className="container-fluid">
+            <div className={style["tour-packagebtn-container"]}>
+              <button
+                className={style["btn-toggle"]}
+                onClick={handleToggle}
+                style={{ background: "none", border: "none" }}
+              >
+                <LuMenu /> FILTER
+              </button>
+            </div>
             <div className="row">
               <div className="col-md-3 mb-4">
-                <div className={`p-3 ${style["event-left-container"]}`}>
+                <div
+                  className={`p-3 ${style["event-left-container"]} ${
+                    isToggled ? style["highlight"] : ""
+                  }`}
+                >
                   <h4 className="pt-2">Price Range</h4>
                   <div className={style["price-range"]}>
                     <Range
@@ -474,7 +490,11 @@ const Country = () => {
                 </div>
               </div>
 
-              <div className="col-md-8">
+              <div
+                className={`col-md-8 ${
+                  isToggled ? style["filter-full-width"] : ""
+                }`}
+              >
                 <h3>Explore the Latest Events and Happenings</h3>
                 {noResultsFound ? (
                   <div className={style["no-results"]}>
