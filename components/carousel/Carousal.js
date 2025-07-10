@@ -72,7 +72,7 @@ function Carousal({
       type !== "home-blog" &&
       type !== "upcoming-events",
     infinite: data && data.length > 1,
-    speed: 500,
+    speed: 500, // Default speed
     slidesToShow: count,
     slidesToScroll: 1,
     autoplay: true,
@@ -98,17 +98,27 @@ function Carousal({
             type !== "home-experience" &&
             type !== "home-blog" &&
             type !== "tour-bestPicked",
+          speed: 400, // Speed for tablet
         },
       },
       {
         breakpoint: 768,
         settings: {
-          slidesToShow: 1, // Show one full item
-          centerMode: type === "home-experience", // Enable center mode for 'home-experience'
-          centerPadding: "50px", // Show half of the second item (adjust as needed)
+          slidesToShow: 1,
+          centerMode: type === "home-experience",
+          centerPadding: "50px",
           slidesToScroll: 1,
           infinite: data && data.length > 1,
-          dots: false, // You can keep dots off for mobile if needed
+          dots: false,
+
+          // --- THIS IS THE KEY CHANGE ---
+          // Set speed dynamically based on the carousel 'type' for mobile.
+          speed:
+            type === "home-experience" // If it's the 'experience' carousel...
+              ? 250 // ...make it fast (250ms).
+              : type === "home-package" // If it's the 'package' carousel...
+              ? 400 // ...make it a bit slower (400ms).
+              : 300, // Otherwise, use a default mobile speed (300ms).
         },
       },
     ],

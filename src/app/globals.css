@@ -642,3 +642,8 @@ html body .undefined {
   border-bottom: none !important;
   border: none !important;
 }
+@media (max-width: 991px) {
+  #zsiq_float {
+    display: none !important;
+  }
+}

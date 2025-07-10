@@ -9,7 +9,7 @@ const GoogleMap = ({ latitude, longitude, zoom = 14 }) => {
 
   return (
     <div className="container my-4">
-      <div className="ratio ratio-16x9 border rounded shadow">
+      <div className="ratio ratio-21x9 border rounded shadow">
         <iframe
           src={mapUrl}
           allowFullScreen

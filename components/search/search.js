@@ -1,5 +1,3 @@
-// In: components/search/Search.js
-
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
@@ -13,6 +11,7 @@ const SearchComponent = () => {
   const [error, setError] = useState(null);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const searchContainerRef = useRef(null);
+  const inputRef = useRef(null); // Add input ref
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -27,13 +26,45 @@ const SearchComponent = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  useEffect(() => {
+    if (!query.trim()) {
+      setResults([]);
+      setIsDropdownVisible(false); // Hide dropdown when no query
+      return;
+    }
+    const debounceTimer = setTimeout(() => {
+      handleSearch();
+    }, 500);
+    return () => {
+      clearTimeout(debounceTimer);
+    };
+  }, [query]);
+
+  // Maintain focus after state updates
+  useEffect(() => {
+    if (inputRef.current && document.activeElement !== inputRef.current) {
+      // Only refocus if the user was actively typing
+      const isTyping = query.length > 0;
+      if (isTyping) {
+        setTimeout(() => {
+          inputRef.current?.focus();
+        }, 0);
+      }
+    }
+  }, [results, isDropdownVisible]);
+
   const handleSearch = async () => {
     if (!query.trim()) {
       setResults([]);
+      setIsDropdownVisible(false);
       return;
     }
     setIsLoading(true);
     setError(null);
+
+    // Store current focus state
+    const wasInputFocused = document.activeElement === inputRef.current;
+
     try {
       const apiUrl = `${
         process.env.NEXT_PUBLIC_API_URL
@@ -42,16 +73,27 @@ const SearchComponent = () => {
       if (!response.ok) throw new Error(`Network error: ${response.status}`);
       const data = await response.json();
       setResults(data?.results || data || []);
+      setIsDropdownVisible(true);
     } catch (err) {
       setError(err.message);
       setResults([]);
+      setIsDropdownVisible(true);
     } finally {
       setIsLoading(false);
+      // Restore focus if it was previously focused
+      if (wasInputFocused && inputRef.current) {
+        setTimeout(() => {
+          inputRef.current.focus();
+        }, 0);
+      }
     }
   };
 
   const handleKeyPress = (event) => {
-    if (event.key === "Enter") handleSearch();
+    if (event.key === "Enter") {
+      event.preventDefault(); // Prevent form submission
+      handleSearch();
+    }
   };
 
   const handleResultClick = (result) => {
@@ -75,11 +117,46 @@ const SearchComponent = () => {
     setQuery("");
     setResults([]);
     setError(null);
+    setIsDropdownVisible(false);
+    // Refocus input after clearing
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const newValue = e.target.value;
+    setQuery(newValue);
+
+    // Keep dropdown visible when typing
+    if (newValue.trim()) {
+      setIsDropdownVisible(true);
+    } else {
+      setIsDropdownVisible(false);
+    }
+  };
+
+  const handleInputFocus = () => {
+    // Only show dropdown if there's a query and results
+    if (query.trim() && (results.length > 0 || error)) {
+      setIsDropdownVisible(true);
+    }
+  };
+
+  const handleInputBlur = (e) => {
+    // Don't hide dropdown if clicking on a result
+    const relatedTarget = e.relatedTarget;
+    if (relatedTarget && searchContainerRef.current?.contains(relatedTarget)) {
+      return;
+    }
+    // Small delay to allow clicks to register
+    setTimeout(() => {
+      setIsDropdownVisible(false);
+    }, 150);
   };
 
   return (
     <div ref={searchContainerRef} style={{ position: "relative" }}>
-      {/* THIS IS THE KEY CHANGE HERE */}
       <div
         className={`input-group mb-3 ${style["banner-search"]} ${
           isDropdownVisible ? style["search-focused"] : ""
@@ -87,9 +164,9 @@ const SearchComponent = () => {
       >
         <button
           className="btn btn-primary"
+          style={{ zIndex: 10 }}
           type="button"
           onClick={handleSearch}
-          disabled={isLoading}
         >
           {isLoading ? (
             <span className="spinner-border spinner-border-sm"></span>
@@ -98,19 +175,21 @@ const SearchComponent = () => {
           )}
         </button>
         <input
+          ref={inputRef} // Add ref to input
           type="text"
-          className="form-control fw-3" // No more dynamic class needed here
+          className="form-control fw-3"
           aria-label="Enter text to search"
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          onChange={handleInputChange} // Use new handler
           onKeyPress={handleKeyPress}
-          onFocus={() => setIsDropdownVisible(true)}
+          onFocus={handleInputFocus} // Use new handler
+          onBlur={handleInputBlur} // Add blur handler
           disabled={isLoading}
           autoComplete="off"
         />
         {query && (
           <button
-            className="btn btn-outline-secondary no-hover-effect" // <-- Add your custom class here
+            className="btn btn-outline-secondary no-hover-effect"
             type="button"
             onClick={handleClearFilter}
             title="Clear search"
@@ -123,13 +202,21 @@ const SearchComponent = () => {
       {isDropdownVisible && results.length > 0 && !isLoading && (
         <ul
           className="list-group position-absolute w-100"
-          style={{ zIndex: 1000, maxHeight: "400px", overflowY: "auto" }}
+          style={{
+            zIndex: 1000,
+            maxHeight: "400px",
+            overflowY: "auto",
+            top: "100%", // Ensure proper positioning
+            left: 0,
+          }}
         >
           {results.map((result, index) => (
             <li
               key={result.id || index}
               className="list-group-item list-group-item-action"
               onClick={() => handleResultClick(result)}
+              onMouseDown={(e) => e.preventDefault()} // Prevent input blur on click
+              tabIndex={-1} // Make it focusable but not in tab order
               style={{ cursor: "pointer" }}
             >
               <div className="d-flex justify-content-between align-items-start">
@@ -169,7 +256,11 @@ const SearchComponent = () => {
         query.trim() && (
           <div
             className="alert alert-light position-absolute w-100"
-            style={{ zIndex: 1000 }}
+            style={{
+              zIndex: 1000,
+              top: "100%",
+              left: 0,
+            }}
           >
             <div className="text-center">
               <Search size={24} className="text-muted mb-2" />
