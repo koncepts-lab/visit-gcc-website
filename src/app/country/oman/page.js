@@ -144,7 +144,7 @@ function Country() {
             </div>
           </div>
         </div>
-        <DocumentationTabs />
+        <DocumentationTabs countryName={"Oman"} />
       </div>
 
       {/* <div className={style['section-documentation']}>

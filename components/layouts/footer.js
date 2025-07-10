@@ -31,10 +31,19 @@ const Footer = () => {
   ];
 
   const socialLinks = [
-    { href: "https://facebook.com", icon: <Facebook size={20} /> },
-    { href: "https://instagram.com", icon: <Instagram size={20} /> },
+    {
+      href: "hhttps://www.facebook.com/people/VisitGCC/100093838223257/",
+      icon: <Facebook size={20} />,
+    },
+    {
+      href: "hhttps://www.instagram.com/visit.gcc/",
+      icon: <Instagram size={20} />,
+    },
     { href: "https://x.com", icon: <FaXTwitter size={20} /> },
-    { href: "https://linkedin.com", icon: <Linkedin size={20} /> },
+    {
+      href: "https://www.linkedin.com/company/visitgcc/",
+      icon: <Linkedin size={20} />,
+    },
   ];
 
   return (

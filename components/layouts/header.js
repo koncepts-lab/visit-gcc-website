@@ -9,6 +9,8 @@ import { CgProfile } from "react-icons/cg";
 import { useRouter } from "next/navigation";
 import ChangePasswordForm from "./ChangePasswordForm";
 import { enqueueSnackbar } from "notistack";
+import { Facebook, Instagram, Linkedin } from "lucide-react"; // Using lucide-react for clean icons
+import { FaXTwitter } from "react-icons/fa6";
 
 import {
   Settings,
@@ -18,9 +20,6 @@ import {
   Mail,
   Phone,
   ChevronRight,
-  Linkedin,
-  Facebook,
-  Instagram,
   // Twitter, // Your X icon if you have one
   Home,
 } from "lucide-react";
@@ -38,9 +37,11 @@ function Header() {
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [mobileActiveTab, setMobileActiveTab] = useState("account");
   const [selectedCurrency, setSelectedCurrency] = useState("AED");
-  const [selectedCountry, setSelectedCountry] = useState("UAE");
-  const [showChangePassword, setShowChangePassword] = useState(false);
 
+  // --- FIX 1: Set initial state to match the short-form array ---
+  const [selectedCountry, setSelectedCountry] = useState("UAE");
+
+  const [showChangePassword, setShowChangePassword] = useState(false);
   const [editingField, setEditingField] = useState(null);
   const [editFieldValue, setEditFieldValue] = useState("");
   const [editingFirstName, setEditingFirstName] = useState("");
@@ -49,6 +50,10 @@ function Header() {
   const router = useRouter();
   const profileDropdownRef = useRef(null);
   const mobileMenuRef = useRef(null);
+
+  // --- FIX 2: Add state for the separate mobile country dropdown ---
+  const [mobileCountryDropdownOpen, setMobileCountryDropdownOpen] =
+    useState(false);
 
   const genderOptions = [
     { value: "", label: "Select Gender...", disabled: true },
@@ -136,23 +141,70 @@ function Header() {
       setLoading(false);
     }
   };
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const countries = [
+    "ARE",
+    "USA",
+    "CAN",
+    "GBR",
+    "DEU",
+    "FRA",
+    "ITA",
+    "ESP",
+    "NLD",
+    "BEL",
+    "CHE",
+    "AUS",
+    "NZL",
+    "JPN",
+    "KOR",
+    "SGP",
+    "IND",
+    "CHN",
+    "BRA",
+    "MEX",
+    "ARG",
+    "ZAF",
+    "EGY",
+    "NGA",
+    "KEN",
+    "MAR",
+    "RUS",
+    "POL",
+    "CZE",
+    "HUN",
+    "ROU",
+    "NOR",
+    "SWE",
+    "DNK",
+    "FIN",
+    "IRL",
+  ];
+
+  const handleCountrySelect = (country) => {
+    setSelectedCountry(country);
+    setIsOpen(false);
+    setMobileCountryDropdownOpen(false); // Also close mobile dropdown if open
+  };
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
   const handleLogin = async (e) => {
     userData ? router.push("/profile") : router.push("/login");
     toggleMenu();
   };
-  // Function to handle successful password change
   const handlePasswordChangeSuccess = () => {
-    setShowChangePassword(false); // Hide the form
+    setShowChangePassword(false);
     enqueueSnackbar("Password changed successfully!", { variant: "success" });
-    // Optionally, you can redirect the user or close the entire mobile menu
-    toggleMenu(); // Closes the mobile menu after password change
+    toggleMenu();
   };
-
-  // Function to cancel password change (go back to settings)
   const handleCancelPasswordChange = () => {
     setShowChangePassword(false);
   };
-
   const handleStartEditing = (fieldKey, currentValue = "") => {
     setEditingField(fieldKey);
     if (fieldKey === "Display Name") {
@@ -175,7 +227,6 @@ function Header() {
     setEditingFirstName("");
     setEditingLastName("");
   };
-
   const handleEditingFirstNameChange = useCallback((e) => {
     setEditingFirstName(e.target.value);
   }, []);
@@ -185,7 +236,6 @@ function Header() {
   const handleGenericEditFieldValueChange = useCallback((e) => {
     setEditFieldValue(e.target.value);
   }, []);
-
   const handleSaveEdit = async () => {
     setIsSubmittingEdit(true);
     const authToken =
@@ -196,19 +246,13 @@ function Header() {
       setIsSubmittingEdit(false);
       return;
     }
-
     let currentFieldLabel = editingField;
-
-    // Prepare the complete payload with all profile fields
-    // Use current userData values for unchanged fields, and new values for the field being edited
     let updatedFirstName = userData?.first_name || "";
     let updatedLastName = userData?.last_name || "";
     let updatedGender = userData?.gender || "";
     let updatedBirthday = userData?.date_of_birth || "";
     let updatedCityOfResidence = userData?.city || "";
     let updatedMobileNumber = userData?.mobile_number || "";
-
-    // Update the specific field being edited
     if (editingField === "Display Name") {
       if (!editingFirstName.trim() && !editingLastName.trim()) {
         enqueueSnackbar("Name fields cannot both be empty.", {
@@ -225,7 +269,6 @@ function Header() {
         (item) => item.fieldKey === editingField
       );
       const inputType = currentItemConfig?.inputType || "text";
-
       if (
         typeof editFieldValue === "string" &&
         !editFieldValue.trim() &&
@@ -242,7 +285,6 @@ function Header() {
         setIsSubmittingEdit(false);
         return;
       }
-
       switch (editingField) {
         case "Gender":
           updatedGender = editFieldValue;
@@ -261,9 +303,6 @@ function Header() {
           return;
       }
     }
-
-    // Create the complete payload with all fields
-    // Send null for empty fields, actual values for filled fields
     const finalRequestBody = {
       first_name: updatedFirstName.trim() || null,
       last_name: updatedLastName.trim() || null,
@@ -272,7 +311,6 @@ function Header() {
       city_of_residence: updatedCityOfResidence || null,
       mobile_number: updatedMobileNumber || null,
     };
-
     try {
       const response = await axios.put(
         `${process.env.NEXT_PUBLIC_API_URL}profiles/user`,
@@ -307,7 +345,6 @@ function Header() {
       setIsSubmittingEdit(false);
     }
   };
-
   const toggleMenu = useCallback(() => {
     setMenuOpen((prevMenuOpen) => {
       const newState = !prevMenuOpen;
@@ -320,8 +357,7 @@ function Header() {
       }
       return newState;
     });
-  }, [isMobile, userData]); // Dependencies for toggleMenu
-
+  }, [isMobile, userData]);
   useEffect(() => {
     if (typeof window !== "undefined" && !window.bootstrap) {
       try {
@@ -393,7 +429,6 @@ function Header() {
         document.removeEventListener("mousedown", handleClickOutsideMobileMenu);
     };
   }, [menuOpen, isMobile, toggleMenu]);
-
   const toggleProfileDropdown = () =>
     setProfileDropdownOpen(!profileDropdownOpen);
   const handleLogout = () => {
@@ -405,8 +440,7 @@ function Header() {
     setProfileDropdownOpen(false);
     enqueueSnackbar("You have been logged out.", { variant: "info" });
   };
-
-  let profileDisplayName = "Login/Sign-up";
+  let profileDisplayName = "Login/Signup";
   if (loading) profileDisplayName = "Loading...";
   else if (userData)
     profileDisplayName =
@@ -414,30 +448,39 @@ function Header() {
       userData.first_name ||
       userData.email?.split("@")[0] ||
       "User";
-
+  // const socialMediaPlatforms = [
+  //   {
+  //     name: "linkedin",
+  //     link: "https://www.linkedin.com/company/visitgcc/",
+  //     imgSrc: "/images/icons/linkedin.png",
+  //   },
+  //   {
+  //     name: "facebook",
+  //     link: "https://www.facebook.com/people/VisitGCC/100093838223257/",
+  //     imgSrc: "/images/icons/facebook.png",
+  //   },
+  //   {
+  //     name: "instagram",
+  //     link: "https://www.instagram.com/visit.gcc/",
+  //     imgSrc: "/images/icons/instagram.png",
+  //   },
+  //   { name: "X", link: "https://www.x.com", imgSrc: "/images/icons/x.png" },
+  // ];
   const socialMediaPlatforms = [
     {
-      name: "linkedin",
-      link: "https://www.linkedin.com/company/visitgcc/",
-      imgSrc: "/images/icons/linkedin.png",
+      href: "https://www.facebook.com/people/VisitGCC/100093838223257/",
+      icon: <Facebook size={20} />,
     },
     {
-      name: "facebook",
-      link: "https://www.facebook.com/people/VisitGCC/100093838223257/",
-      imgSrc: "/images/icons/facebook.png",
+      href: "https://www.instagram.com/visit.gcc/",
+      icon: <Instagram size={20} />,
     },
+    { href: "https://x.com", icon: <FaXTwitter size={20} /> },
     {
-      name: "instagram",
-      link: "https://www.instagram.com/visit.gcc/",
-      imgSrc: "/images/icons/instagram.png",
-    },
-    {
-      name: "X",
-      link: "https://www.x.com",
-      imgSrc: "/images/icons/x.png",
+      href: "https://www.linkedin.com/company/visitgcc/",
+      icon: <Linkedin size={20} />,
     },
   ];
-
   const MobileMenuItem = ({
     label,
     fieldKey,
@@ -457,24 +500,18 @@ function Header() {
       e.stopPropagation();
       handleStartEditing(fieldKey, value || "");
     };
-
-    // Format date for display only, without changing the underlying `value`
     let displayValue = value;
     if (fieldKey === "Date of Birth" && value) {
       try {
         const date = new Date(value);
-        // Adjust for timezone to prevent showing the previous day
         const userTimezoneOffset = date.getTimezoneOffset() * 60000;
         const adjustedDate = new Date(date.getTime() + userTimezoneOffset);
-
         const dateOptions = { day: "2-digit", month: "long", year: "numeric" };
         displayValue = adjustedDate.toLocaleDateString("en-GB", dateOptions);
       } catch (e) {
-        // Fallback to original value if formatting fails
         displayValue = value;
       }
     }
-
     if (isCurrentlyEditingThisField) {
       if (fieldKey === "Display Name") {
         return (
@@ -484,14 +521,16 @@ function Header() {
                 className="text-muted small mb-2"
                 style={{ textTransform: "uppercase" }}
               >
-                {label}
+                {" "}
+                {label}{" "}
               </span>
               <div className="mb-2">
                 <label
                   htmlFor={`edit-first-name-${fieldKey}`}
                   className="form-label visually-hidden"
                 >
-                  First Name
+                  {" "}
+                  First Name{" "}
                 </label>
                 <input
                   type="text"
@@ -509,7 +548,8 @@ function Header() {
                   htmlFor={`edit-last-name-${fieldKey}`}
                   className="form-label visually-hidden"
                 >
-                  Last Name
+                  {" "}
+                  Last Name{" "}
                 </label>
                 <input
                   type="text"
@@ -532,7 +572,8 @@ function Header() {
                     fontSize: "0.8rem",
                   }}
                 >
-                  {isSubmittingEdit ? "..." : "Save"}
+                  {" "}
+                  {isSubmittingEdit ? "..." : "Save"}{" "}
                 </button>
                 <button
                   className="btn btn-sm btn-outline-secondary"
@@ -544,7 +585,8 @@ function Header() {
                     fontSize: "0.8rem",
                   }}
                 >
-                  Cancel
+                  {" "}
+                  Cancel{" "}
                 </button>
               </div>
             </div>
@@ -558,7 +600,8 @@ function Header() {
               className="text-muted small mb-1"
               style={{ textTransform: "uppercase" }}
             >
-              {label}
+              {" "}
+              {label}{" "}
             </span>
             <div className="d-flex align-items-center">
               {inputType === "select" ? (
@@ -570,11 +613,13 @@ function Header() {
                   style={{ fontSize: "0.9rem" }}
                 >
                   <option value="" disabled>
-                    {placeholder || "Select..."}
+                    {" "}
+                    {placeholder || "Select..."}{" "}
                   </option>
                   {options.map((opt) => (
                     <option key={opt.value} value={opt.value}>
-                      {opt.label}
+                      {" "}
+                      {opt.label}{" "}
                     </option>
                   ))}
                 </select>
@@ -599,7 +644,8 @@ function Header() {
                   fontSize: "0.8rem",
                 }}
               >
-                {isSubmittingEdit ? "..." : "Save"}
+                {" "}
+                {isSubmittingEdit ? "..." : "Save"}{" "}
               </button>
               <button
                 className="btn btn-sm btn-outline-secondary"
@@ -611,7 +657,8 @@ function Header() {
                   fontSize: "0.8rem",
                 }}
               >
-                Cancel
+                {" "}
+                Cancel{" "}
               </button>
             </div>
           </div>
@@ -649,7 +696,8 @@ function Header() {
                       label === "Email address" ? "none" : "capitalize",
                   }}
                 >
-                  {displayValue} {/* Use the formatted displayValue here */}
+                  {" "}
+                  {displayValue}{" "}
                 </span>{" "}
                 {!isNavigation && !onClick && fieldKey && (
                   <button
@@ -659,7 +707,8 @@ function Header() {
                     style={{ color: "#17a2b8", fontSize: "0.9em" }}
                     aria-label={`Edit ${label}`}
                   >
-                    <Edit3 size={16} />
+                    {" "}
+                    <Edit3 size={16} />{" "}
                   </button>
                 )}{" "}
               </>
@@ -677,7 +726,8 @@ function Header() {
                     fontWeight: "500",
                   }}
                 >
-                  + Add
+                  {" "}
+                  + Add{" "}
                 </button>
               )
             )}
@@ -687,7 +737,6 @@ function Header() {
       </li>
     );
   };
-
   const MobileMenuSocials = () => (
     <li className="mb-0 px-3 py-3 d-flex flex-column">
       {" "}
@@ -696,23 +745,74 @@ function Header() {
         {" "}
         {socialMediaPlatforms.map((social) => (
           <a
-            href={social.link}
+            href={social.href}
             target="_blank"
             rel="noopener noreferrer"
             key={social.name}
             aria-label={`VisitGCC on ${social.name}`}
             className="text-muted"
           >
-            {" "}
+            {/* {" "}
             <img
               src={social.imgSrc}
               alt={social.name}
               style={{ width: "28px", height: "28px" }}
               className="rounded-circle border p-1"
-            />{" "}
+            />{" "} */}
+            {social.icon}
           </a>
         ))}{" "}
       </div>{" "}
+    </li>
+  );
+
+  // --- FIX 3: Create a reusable component for the mobile dropdown ---
+  const MobileCountryDropdown = () => (
+    <li className="mb-0 px-3 py-3 border-bottom">
+      <div
+        className="d-flex justify-content-between align-items-center"
+        onClick={() => setMobileCountryDropdownOpen(!mobileCountryDropdownOpen)}
+        style={{ cursor: "pointer" }}
+      >
+        <span>Country</span>
+        <span className="text-muted d-flex align-items-center">
+          {selectedCountry}
+          <ChevronRight
+            size={18}
+            className="text-muted ms-1"
+            style={{
+              transform: mobileCountryDropdownOpen
+                ? "rotate(90deg)"
+                : "rotate(0deg)",
+              transition: "transform 0.2s",
+            }}
+          />
+        </span>
+      </div>
+      {mobileCountryDropdownOpen && (
+        <div
+          className="mt-2"
+          style={{
+            maxHeight: "150px",
+            overflowY: "auto",
+            border: "1px solid #eee",
+            borderRadius: "0.25rem",
+          }}
+        >
+          <ul className="list-group list-group-flush p-0">
+            {countries.map((country) => (
+              <li
+                key={country}
+                className="list-group-item list-group-item-action py-2"
+                style={{ fontSize: "0.9rem" }}
+                onClick={() => handleCountrySelect(country)}
+              >
+                {country}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </li>
   );
 
@@ -725,7 +825,7 @@ function Header() {
           }`}
           onClick={() => {
             setMobileActiveTab("account");
-            setShowChangePassword(false); // Hide ChangePasswordForm when switching tabs
+            setShowChangePassword(false);
           }}
           style={{
             flex: 1,
@@ -738,7 +838,8 @@ function Header() {
             fontSize: "0.9rem",
           }}
         >
-          Account
+          {" "}
+          Account{" "}
         </button>
         <button
           className={`btn btn-link text-decoration-none fw-bold py-2 ${
@@ -761,7 +862,8 @@ function Header() {
             fontSize: "0.9rem",
           }}
         >
-          Settings
+          {" "}
+          Settings{" "}
         </button>
       </div>
 
@@ -794,6 +896,12 @@ function Header() {
             placeholder="Enter city"
           />
           <MobileMenuItem
+            fieldKey={"My Bookings"}
+            label={"My Bookings"}
+            href="/profile#my-bookings"
+            isNavigation={true}
+          />
+          <MobileMenuItem
             label="Partner With Us"
             href="/partner-with-us"
             isNavigation={true}
@@ -804,9 +912,8 @@ function Header() {
       {mobileActiveTab === "settings" && (
         <>
           <MobileMenuItem label="Currency" value={selectedCurrency} />
-          <MobileMenuItem label="Country" value={selectedCountry} />
+          <MobileCountryDropdown />
           <MobileMenuItem label="Email address" value={userData?.email} />
-
           <MobileMenuItem
             label="Change Password"
             onClick={() => setShowChangePassword(true)}
@@ -865,11 +972,12 @@ function Header() {
             color: "#169496",
           }}
         >
-          Settings
+          {" "}
+          Settings{" "}
         </h6>
       </li>{" "}
       <MobileMenuItem label="Currency" value={selectedCurrency} />{" "}
-      <MobileMenuItem label="Country" value={selectedCountry} />{" "}
+      <MobileCountryDropdown />
       <MobileMenuItem
         label="Contact Support"
         href="/contact-support"
@@ -1006,7 +1114,7 @@ function Header() {
                   alignItems: "initial",
                   justifyContent: "start",
                   overflowY: "auto",
-                  WebkitOverflowScrolling: "touch", // Enable momentum scrolling on iOS
+                  WebkitOverflowScrolling: "touch",
                   height: "100vh",
                 }}
               >
@@ -1184,7 +1292,7 @@ function Header() {
                   >
                     <Link
                       href="/profile"
-                      className="p-3 border-bottom d-flex justify-content-between align-items-center text-dark text-decoration-none"
+                      className="p-3 border-bottom d-flex justify-content-between align-items-center text-dark text-decoration-none dropdown-item"
                       style={{
                         fontSize: "16px",
                         color: "#000",
@@ -1199,10 +1307,45 @@ function Header() {
                       <span>Currency</span>{" "}
                       <span className="text-muted">{selectedCurrency}</span>
                     </div>
-                    <div className="p-3 border-bottom d-flex justify-content-between align-items-center">
-                      <span>Country</span>{" "}
-                      <span className="text-muted">{selectedCountry}</span>
+
+                    <div className="position-relative">
+                      <button
+                        onClick={toggleDropdown}
+                        className="p-3 border-bottom d-flex justify-content-between align-items-center w-100 btn btn-link text-decoration-none text-dark"
+                        style={{ textAlign: "left", fontSize: "16px" }}
+                      >
+                        <span>Country</span>
+                        <span className="text-muted d-flex align-items-center">
+                          {selectedCountry}
+                          <ChevronRight size={18} className="text-muted ms-1" />
+                        </span>
+                      </button>
+
+                      {isOpen && (
+                        <div
+                          className="position-absolute bg-white border shadow-lg rounded w-100"
+                          style={{
+                            maxHeight: "200px",
+                            overflowY: "auto",
+                            zIndex: 1060,
+                            top: "100%",
+                            right: 0,
+                          }}
+                        >
+                          {countries.map((country) => (
+                            <div
+                              key={country}
+                              className="p-2 dropdown-item"
+                              style={{ cursor: "pointer", fontSize: "14px" }}
+                              onClick={() => handleCountrySelect(country)}
+                            >
+                              {country}
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
+
                     <Link
                       href="mailto:support@example.com"
                       style={{
