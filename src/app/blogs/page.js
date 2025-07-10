@@ -296,7 +296,7 @@ function Page() {
                 className="col-11 d-flex justify-content-center pt-3 pb-3 text-black d-lg-none d-block"
                 style={{ fontWeight: "700" }}
               >
-                Blogs
+                What's On GCC
               </h1>
               {currentBlogs.map((blog) => {
                 const shareUrl = `${

@@ -11,15 +11,11 @@ const formatDate = (dateString) => {
   if (!dateString) return "N/A";
   try {
     const date = new Date(dateString);
-
-    // Using 'en-GB' locale to get the "DD Month YYYY" format.
-    // 'day' is set to 'numeric' to get '10' instead of '10th'.
     const options = { day: "numeric", month: "long", year: "numeric" };
-
     return date.toLocaleDateString("en-GB", options);
   } catch (error) {
-    console.error("Error formatting date:", error); // Good practice to log the error
-    return dateString; // Fallback to the original string if something goes wrong
+    console.error("Error formatting date:", error);
+    return dateString;
   }
 };
 
@@ -60,6 +56,10 @@ const BookingDetailsModal = ({ bookingItem, onClose }) => {
                 </p>
                 <p className="mb-1">
                   <strong>Booking Date:</strong>{" "}
+                  {formatDate(bookingItem.booking.created_at)}
+                </p>
+                <p className="mb-1">
+                  <strong>Booked for the date:</strong>{" "}
                   {formatDate(bookingItem.booking.start_date)}
                 </p>
                 <p className="mb-1">
@@ -376,7 +376,23 @@ const TravelAccountProfile = () => {
 
   useEffect(() => {
     fetchUserData();
+    const hash = window.location.hash;
+    if (hash === "#my-bookings") {
+      setActiveSection("myBookings");
+    }
   }, []);
+
+  const handleSectionChange = (section) => {
+    setActiveSection(section);
+    if (section !== "loginDetails") {
+      setShowChangePasswordCard(false);
+    }
+    if (section === "myBookings") {
+      window.history.replaceState(null, "", "#my-bookings");
+    } else {
+      window.history.replaceState(null, "", window.location.pathname);
+    }
+  };
 
   const handleLogout = () => {
     localStorage.removeItem("auth_token_login");
@@ -433,23 +449,18 @@ const TravelAccountProfile = () => {
         enqueueSnackbar("Failed to upload image.", { variant: "error" });
       }
     } catch (err) {
-      // --- THIS IS THE KEY CHANGE FOR ERROR HANDLING ---
       let errorMessage = "An error occurred during upload.";
       if (err.response?.data) {
-        // Check for the specific validation error structure from your API
         if (
           err.response.data.errors &&
           err.response.data.errors.profile_photo
         ) {
-          // If the 'profile_photo' error exists, use its message
           errorMessage = err.response.data.errors.profile_photo[0];
         } else if (err.response.data.message) {
-          // Otherwise, use the general message if available
           errorMessage = err.response.data.message;
         }
       }
       enqueueSnackbar(errorMessage, { variant: "error" });
-      // --- END OF KEY CHANGE ---
     } finally {
       setIsUploading(false);
     }
@@ -460,13 +471,6 @@ const TravelAccountProfile = () => {
     setImagePreview(null);
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
-    }
-  };
-
-  const handleSectionChange = (section) => {
-    setActiveSection(section);
-    if (section !== "loginDetails") {
-      setShowChangePasswordCard(false);
     }
   };
 
@@ -494,18 +498,93 @@ const TravelAccountProfile = () => {
       city_of_residence: "",
     });
     const [isPopupLoading, setIsPopupLoading] = useState(false);
+
     const handleEditField = (fieldName, currentValue) => {
       const valueToSet =
         fieldName === "Gender"
-          ? currentValue.toLowerCase()
+          ? (currentValue || "").toLowerCase()
           : currentValue || "";
       setEditingField(fieldName);
       setEditValue(valueToSet);
     };
+
     const handleCancelEdit = () => {
       setEditingField(null);
       setEditValue("");
     };
+
+    const handleSaveInlineEdit = async () => {
+      setIsLoading(true);
+      const authToken =
+        localStorage.getItem("auth_token_login") ||
+        localStorage.getItem("auth_token_register");
+      if (!authToken) {
+        enqueueSnackbar("Authentication token not found", { variant: "error" });
+        setIsLoading(false);
+        return;
+      }
+
+      const baseProfile = {
+        first_name: userData.user.first_name,
+        last_name: userData.user.last_name,
+        birthday: userData.birthday,
+        gender: userData.gender,
+        city_of_residence: userData.city_of_residence,
+      };
+
+      switch (editingField) {
+        case "Name":
+          const nameParts = editValue.trim().split(" ");
+          baseProfile.first_name = nameParts[0] || "";
+          baseProfile.last_name = nameParts.slice(1).join(" ") || "";
+          break;
+        case "Birthday":
+          baseProfile.birthday = editValue;
+          break;
+        case "Gender":
+          // --- FIX: Ensure the value is lowercase ---
+          baseProfile.gender = editValue ? editValue.toLowerCase() : null;
+          break;
+        case "City of Residence":
+          baseProfile.city_of_residence = editValue;
+          break;
+        default:
+          setIsLoading(false);
+          return;
+      }
+
+      try {
+        const response = await axios.put(
+          `${process.env.NEXT_PUBLIC_API_URL}profiles/user`,
+          baseProfile,
+          { headers: { Authorization: `Bearer ${authToken}` } }
+        );
+
+        if (response.status === 200 || response.status === 201) {
+          enqueueSnackbar("Profile updated successfully!", {
+            variant: "success",
+          });
+          if (typeof onProfileUpdate === "function") {
+            onProfileUpdate();
+          }
+          handleCancelEdit();
+        } else {
+          enqueueSnackbar(
+            response.data?.message || "Failed to update profile.",
+            { variant: "error" }
+          );
+        }
+      } catch (err) {
+        let errorMessage = "Error updating profile.";
+        if (err.response?.data?.message) {
+          errorMessage = err.response.data.message;
+        }
+        enqueueSnackbar(errorMessage, { variant: "error" });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
     const handleOpenEditPopup = () => {
       setPopupFormData({
         first_name: userData.user?.first_name || "",
@@ -516,15 +595,18 @@ const TravelAccountProfile = () => {
       });
       setShowEditPopup(true);
     };
+
     const handleCloseEditPopup = () => {
       setShowEditPopup(false);
     };
+
     const handlePopupInputChange = (field, value) => {
       setPopupFormData((prev) => ({
         ...prev,
         [field]: value,
       }));
     };
+
     const handleSavePopup = async () => {
       setIsPopupLoading(true);
       try {
@@ -542,6 +624,7 @@ const TravelAccountProfile = () => {
           first_name: popupFormData.first_name.trim() || null,
           last_name: popupFormData.last_name.trim() || null,
           birthday: popupFormData.birthday || null,
+          // --- FIX: Ensure the value is lowercase ---
           gender: popupFormData.gender
             ? popupFormData.gender.toLowerCase()
             : null,
@@ -608,17 +691,65 @@ const TravelAccountProfile = () => {
     const renderField = (item) => {
       const isEditing = editingField === item.field;
       if (isEditing) {
-        // This section's logic remains unchanged
-        return <></>;
+        return (
+          <div className="w-100">
+            {item.field === "Gender" ? (
+              <select
+                className="form-select form-select-sm"
+                value={editValue}
+                onChange={(e) => setEditValue(e.target.value)}
+                disabled={isLoading}
+              >
+                <option value="">Select gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
+            ) : (
+              <input
+                type={item.field === "Birthday" ? "date" : "text"}
+                className="form-control form-control-sm"
+                value={editValue}
+                onChange={(e) => setEditValue(e.target.value)}
+                disabled={isLoading}
+                max={
+                  item.field === "Birthday"
+                    ? new Date().toISOString().split("T")[0]
+                    : undefined
+                }
+                autoFocus
+              />
+            )}
+            <div className="d-flex justify-content-end align-items-center mt-2">
+              <button
+                className="btn btn-sm btn-link text-secondary"
+                onClick={handleCancelEdit}
+                disabled={isLoading}
+                style={{ textDecoration: "none" }}
+              >
+                Cancel
+              </button>
+              <button
+                className="btn btn-sm"
+                onClick={handleSaveInlineEdit}
+                disabled={isLoading}
+                style={{ backgroundColor: "#17a2b8", color: "white" }}
+              >
+                {isLoading ? "Saving..." : "Save"}
+              </button>
+            </div>
+          </div>
+        );
       }
+
       let displayValue = item.value;
       if (item.field === "Birthday" && item.value) {
         displayValue = formatDate(item.value);
       }
-      const finalDisplayValue = displayValue || ` ${item.label} `;
+      const finalDisplayValue = displayValue || "Not Added";
       return (
         <>
-          <div>
+          <div className="flex-grow-1">
             <span
               className="fw-medium"
               style={{
@@ -630,18 +761,16 @@ const TravelAccountProfile = () => {
               {finalDisplayValue}
             </span>
           </div>
-          <button
-            type="button"
-            onClick={() =>
-              item.field === "Name"
-                ? handleOpenEditPopup()
-                : handleEditField(item.field, item.value)
-            }
-            className="btn btn-link text-decoration-none p-0"
-            style={{ color: "#17a2b8", fontSize: "14px", fontWeight: "500" }}
-          >
-            {item.value ? "" : "+ Add"}
-          </button>
+          {!item.value && (
+            <button
+              type="button"
+              onClick={() => handleEditField(item.field, item.value)}
+              className="btn btn-link text-decoration-none p-0"
+              style={{ color: "#17a2b8", fontSize: "14px", fontWeight: "500" }}
+            >
+              + Add
+            </button>
+          )}
         </>
       );
     };
@@ -691,19 +820,23 @@ const TravelAccountProfile = () => {
             </div>
             <div className="row g-0">
               {profileDisplayItems.map((item) => (
-                <div className="col-12" key={item.label}>
+                <div
+                  className={`col-12 py-3 ${
+                    !item.noBorder ? "border-bottom" : ""
+                  }`}
+                  key={item.label}
+                >
                   <label
-                    className="form-label fw-medium pt-0"
-                    style={{ fontSize: "12px" }}
+                    className="form-label text-uppercase"
+                    style={{
+                      fontSize: "12px",
+                      color: "#6c757d",
+                      marginBottom: "0.25rem",
+                    }}
                   >
-                    {!item.value ? " " : item.label}
+                    {item.label}
                   </label>
-                  <div
-                    style={{ paddingTop: "0px" }}
-                    className={`d-flex justify-content-between align-items-center ${
-                      !item.noBorder ? "border-bottom" : ""
-                    }`}
-                  >
+                  <div className="d-flex justify-content-between align-items-center">
                     {renderField(item)}
                   </div>
                 </div>
