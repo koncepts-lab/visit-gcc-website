@@ -309,13 +309,14 @@ border-radius:15px 15px 0 0;
 
 }
 .pakages-ul{
-    float: left;
+    
     width: 100%;
     list-style: none;
     margin-left: 0;
     padding-left: 0;
     display: flex;
     font-size: 12px;
+    gap: 8px;
     text-align: center;
 }
 .r-button {

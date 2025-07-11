@@ -189,7 +189,22 @@ border:none;
 .package-inclusions-tabs{
     display: flex !important;
     flex-wrap: nowrap !important;
+    overflow-x: auto; 
+    white-space: nowrap;
 }
+.package-inclusions-tabs::-webkit-scrollbar {
+  height: 2px;
+}
+.package-inclusions-tabs::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 10px;
+}
+.package-inclusions-tabs::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+
+
 .package-inclusions-tabs .tab-content{border: solid 1px #ccc !important; }
 .box-container{
     border: solid 1px #ccc !important;
