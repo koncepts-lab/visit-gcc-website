@@ -64,6 +64,22 @@ function Carousal({
     packageDetailsReview ||
     packageDetailsReviewImage ||
     countryExperiance;
+
+    const getAutoplaySpeed = () => {
+    switch (type) {
+      case "home-package":
+        return 1500;
+      case "home-event":
+        return 3500;
+      case "home-experience":
+        return 1000;
+      case "home-blog":
+        return 2000;
+      default:
+        return 3000; // Default speed
+    }
+  };
+
   const Responsive = {
     dots:
       type !== "home-package" &&
@@ -76,7 +92,7 @@ function Carousal({
     slidesToShow: count,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 3000,
+    autoplaySpeed: getAutoplaySpeed(), // Dynamically set autoplay speed
     arrows:
       type !== "media-page-full-carosul" &&
       type !== "event-page-scroll" &&

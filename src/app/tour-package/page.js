@@ -425,10 +425,10 @@ const TourPackage = () => {
                 </div>
                 <div className={style["filter-buttons"]}>
                   <button
-                    className={`${style["btn-one"]} my-3 btn btn-secondary`}
+                    className={`${style["btn-one"]} my-3 btn btn-secondary col-sm-3 col-12`}
                     onClick={clearAllFilters}
                   >
-                    Clear Filters
+                    Clear ALL Filters
                   </button>
                 </div>
                 <button
@@ -439,7 +439,7 @@ const TourPackage = () => {
                 </button>
               </div>
               <button
-                className={`${style["btn-one"]} ${style["btn-mobile"]}`}
+                className={`${style["btn-one"]} ${style["btn-mobile"]} col-sm-3 col-12`}
                 onClick={handleToggle}
               >
                 Apply

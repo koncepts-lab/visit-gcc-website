@@ -416,7 +416,7 @@ const AttractionsPage = () => {
                 </div>
                 <div className={style["filter-buttons"]}>
                   <button
-                    className={`${style["btn-one"]} my-3 btn btn-secondary`}
+                    className={`${style["btn-one"]} my-3 btn btn-secondary col-sm-3 col-12`}
                     onClick={clearAllFilters}
                   >
                     Clear All Filters
@@ -430,11 +430,11 @@ const AttractionsPage = () => {
                 </button>
               </div>
               <button
-                className={`${style["btn-one"]} ${style["btn-mobile"]}`}
+                className={`${style["btn-one"]} ${style["btn-mobile"]} col-sm-3 col-12`}
                 onClick={handleSearch}
                 disabled={isFiltering}
               >
-                {isFiltering ? "Searching..." : "Search Attractions"}
+                {isFiltering ? "Searching..." : "Apply"}
               </button>
             </div>
             <div
