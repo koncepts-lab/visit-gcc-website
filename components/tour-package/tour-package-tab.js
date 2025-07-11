@@ -225,14 +225,15 @@ const TourPackageTab = ({
                 {iconsData[pkg.id] && iconsData[pkg.id].length > 0 && (
                   <ul className={style["pakages-ul"]}>
                     {iconsData[pkg.id].map((icon) => (
-                      <li className="d-flex flex-column gap-1" key={icon.uuid_id}>
+                      <li className="d-flex flex-column gap-1 justify-content-center" key={icon.uuid_id}>
                         <img
                           src={icon.icon_image_url}
                           alt={icon.icon_title}
                           style={{
                             width: "20px",
                             height: "20px",
-                            marginRight: "5px",
+                            marginRight: "auto",
+                            marginLeft:"auto"
                           }}
                         />
                         {icon.icon_title}

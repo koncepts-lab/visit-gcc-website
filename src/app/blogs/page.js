@@ -518,9 +518,9 @@ function Page() {
                         key={features.uuid_id}
                         className={`${style["featured"]} mb-4`}
                       >
-                        <Link href={`/blogs/${features.uuid_id}`}>
+                        <Link href={`/blogs/${features.uuid_id}`} className="col-12">
                           <div className="d-flex gap-4">
-                            <img
+                            <div style={{  width: "160px" }}><img
                               src={
                                 features?.main_image_url ||
                                 "/images/placeholder.jpg"
@@ -529,13 +529,16 @@ function Page() {
                               onError={(e) => {
                                 e.currentTarget.src = "/images/placeholder.jpg";
                               }}
+                              className="w-100"
+                              
                             />
+                            </div>
                             <div>
                               <p
                                 style={{
                                   fontWeight: "550",
                                   fontSize: "15px",
-                                  height: "10px",
+                                  height: "20px",
                                 }}
                               >
                                 {formatDate(features.creation_date)}

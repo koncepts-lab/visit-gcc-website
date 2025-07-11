@@ -910,7 +910,7 @@ function Header() {
         </>
       )}
       {mobileActiveTab === "settings" && (
-        <div className="d-flex flex-column overflow-y-auto">
+        <div className="d-flex flex-column overflow-y-auto h-100">
           <MobileMenuItem label="Currency" value={selectedCurrency} />
           <MobileCountryDropdown />
           <MobileMenuItem label="Email address" value={userData?.email} />

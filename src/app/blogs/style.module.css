@@ -108,7 +108,8 @@
 
 .featured img {
   height: 110px;
-  width: 160px;
+  min-width: 160px;
+  object-fit: cover;
 }
 
 .category-popup {

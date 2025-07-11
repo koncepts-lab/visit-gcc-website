@@ -23,7 +23,7 @@ function PakageDetailsOtherPackages({ packages, type }) {
             <h4
               className="mb-3"
               style={{
-                height: "52px",
+                height: "67px",
                 fontSize: "14px",
                 display: "-webkit-box",
                 WebkitLineClamp: 3,
