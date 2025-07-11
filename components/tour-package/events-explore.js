@@ -27,10 +27,10 @@ const EventsExploreTab = ({ events }) => {
           `${process.env.NEXT_PUBLIC_API_URL}countries`
         );
         const fetchedCountries = response.data.data || response.data || [];
-
         setCountries(fetchedCountries);
       } catch (err) {
-        setErrorEvents("Failed to fetch countries. Please try again.");
+        // Set a specific error for country fetching if needed, or a general one
+        setErrorEvents("Failed to fetch country list. Please refresh.");
         console.error("Error fetching countries:", err);
       }
     };
@@ -41,72 +41,65 @@ const EventsExploreTab = ({ events }) => {
   const fetchEventsByCountry = async (countryId) => {
     try {
       setLoadingEvents(true);
-      setErrorEvents(null);
-      let response;
+      setErrorEvents(null); // Clear previous errors before a new fetch
 
-      if (countryId == "all") {
-        response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}events?country[]=${countryId}`
-        );
-      } else {
-        response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}events?country[]=${countryId}`
-        );
-      }
+      const response = await axios.get(
+        // --- CHANGE --- Simplified the API call, as the "all" case is handled by not calling this function
+        `${process.env.NEXT_PUBLIC_API_URL}events?country[]=${countryId}`
+      );
 
       const fetchedEvents = response.data.data || response.data || [];
       setCountryEvents((prev) => ({
         ...prev,
         [countryId]: fetchedEvents,
       }));
-      setLoadingEvents(false);
     } catch (err) {
-      setErrorEvents(`Failed to fetch events for country ${countryId}.`);
+      setErrorEvents(`Failed to fetch events for this country.`);
       console.error(`Error fetching events for country ${countryId}:`, err);
+      // Also cache an empty array on failure to prevent re-fetching constantly
+      setCountryEvents((prev) => ({
+        ...prev,
+        [countryId]: [],
+      }));
+    } finally {
+      // --- CHANGE --- Use finally to ensure loading is always set to false
       setLoadingEvents(false);
     }
   };
 
+  // --- THIS IS THE KEY CHANGE ---
+  // This function now resets the error state on every tab click,
+  // preventing stale errors from appearing on cached tabs.
   const handleTabClick = (tabId) => {
     setActiveTab(tabId);
-    if (tabId !== "all" && !countryEvents[tabId]) {
-      // Fetch events for the country if not already fetched, skip for "all"
+    setErrorEvents(null); // Reset error state immediately on any tab change
+
+    // Fetch events only if the tab is not "all" and its events haven't been fetched yet
+    if (tabId !== "all" && countryEvents[tabId] === undefined) {
       fetchEventsByCountry(tabId);
     }
   };
 
   const renderTabContent = (countryId) => {
+    // --- RENDER LOGIC FOR THE "ALL" TAB ---
     if (countryId === "all") {
-      // Use lowercase "all"
-      if (loadingEvents)
-        return (
-          <div className="text-center p-5">
-            <div className="spinner-border text-primary" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </div>
-          </div>
-        );
-      if (errorEvents)
-        return (
-          <div className="p-4 text-center text-muted">
-            <h4>
-              Events in {countries.find((c) => c.uuid_id === countryId)?.name}
-            </h4>
-            <p>No events found for this country.</p>
-          </div>
-        );
-      if (allEvents.length === 0)
+      // The "All" tab doesn't depend on the loading/error state of other tabs
+      if (!allEvents || allEvents.length === 0) {
         return (
           <div className="text-center p-5 text-muted">
             No events found at the moment.
           </div>
         );
+      }
       return <ExploreEventsContainer events={allEvents} />;
     }
 
-    // Render country-specific events
-    const countryEventsList = countryEvents[countryId] || [];
-    if (loadingEvents)
+    // --- RENDER LOGIC FOR COUNTRY TABS ---
+    const countryName = countries.find((c) => c.uuid_id === countryId)?.name;
+    const countryEventsList = countryEvents[countryId];
+
+    // Show spinner ONLY when loading this specific tab's content
+    if (loadingEvents && activeTab === countryId) {
       return (
         <div className="text-center p-5">
           <div className="spinner-border text-primary" role="status">
@@ -114,39 +107,40 @@ const EventsExploreTab = ({ events }) => {
           </div>
         </div>
       );
-    if (errorEvents)
+    }
+
+    // Show error if one occurred for this specific tab
+    if (errorEvents && activeTab === countryId) {
       return (
         <div className="p-4 text-center text-muted">
-          <h4>
-            Events in {countries.find((c) => c.uuid_id === countryId)?.name}
-          </h4>
+          <h4>Events in {countryName}</h4>
+          <p>{errorEvents}</p>
+        </div>
+      );
+    }
+
+    // Show a message if the data exists but is empty
+    if (countryEventsList && countryEventsList.length === 0) {
+      return (
+        <div className="p-4 text-center text-muted">
+          <h4>Events in {countryName}</h4>
           <p>No events found for this country.</p>
         </div>
       );
-    if (!countryEvents[countryId])
-      return (
-        <div className="p-4 text-center text-muted">
-          <h4>
-            Events in {countries.find((c) => c.uuid_id === countryId)?.name}
-          </h4>
-          <p>Loading events...</p>
-        </div>
-      );
-    if (countryEventsList.length === 0)
-      return (
-        <div className="p-4 text-center text-muted">
-          <h4>
-            Events in {countries.find((c) => c.uuid_id === countryId)?.name}
-          </h4>
-          <p>No events found for this country.</p>
-        </div>
-      );
-    return <ExploreEventsContainer events={countryEventsList} />;
+    }
+
+    // Render the events if they exist
+    if (countryEventsList) {
+      return <ExploreEventsContainer events={countryEventsList} />;
+    }
+
+    // This state should not normally be reached if logic is correct, but serves as a fallback.
+    return null;
   };
 
   // Combine static "All" tab with fetched countries
   const tabList = [
-    { uuid_id: "all", name: "All" }, // Static "All" tab
+    { uuid_id: "all", name: "All" },
     ...countries,
   ];
 

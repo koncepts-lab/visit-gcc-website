@@ -32,12 +32,12 @@ const ExploreEventsContainer = ({ events }) => {
       <Masonry>
         {events.map((event, i) => {
           const imageUrl =
-            event.event_photo_urls[0] || "/images/placeholder.jpg";
+            event?.event_photo_urls?.[0] || "/images/placeholder.jpg";
           return (
             <div key={i} className="masonry-item">
               <img
                 src={imageUrl}
-                style={{ width: "100%", display: "block", minHeight: "244px" }}
+                style={{ width: "100%", display: "block", minHeight: "264px" }}
                 alt={event.name || "Event Image"}
               />
               <div className="event-masonry-item-content">
@@ -149,8 +149,8 @@ const ExploreEventsContainer = ({ events }) => {
                   <span className="fw-bold">AED {event.adult_price}</span> /
                   person
                 </p>
-
-                <Link
+<div className="align-items-center d-flex justify-content-between">
+    <Link
                   href={`/events/${event.id}`}
                   className={`${style["event-detail-button"]} text-start`}
                 >
@@ -163,6 +163,8 @@ const ExploreEventsContainer = ({ events }) => {
                 >
                   <FiCalendar />
                 </button>
+</div>
+              
               </div>
             </div>
           );

@@ -174,7 +174,7 @@ const LoginRegisterTabs = () => {
         // enqueueSnackbar("Login Successfull!", { variant: "success" });
       } else {
         console.error("Login failed", response.data);
-        enqueueSnackbar("Login Failed!", { variant: "error" });
+        enqueueSnackbar("This email address is not registered. Please sign up to proceed.", { variant: "error" });
       }
       router.push(`/verify-code?email=${encodeURIComponent(loginEmail)}`);
     } catch (error) {

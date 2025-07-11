@@ -113,8 +113,8 @@ function Header() {
           }`.trim(),
           email: profileData.user?.email || profileData.email || "",
           profile_image_url:
-            profileData.profile_image_url ||
-            profileData.user?.profile_image_url ||
+            profileData.photo_url ||
+            profileData.user?.photo_url ||
             null,
           gender: profileData.gender || "",
           date_of_birth:
@@ -910,7 +910,7 @@ function Header() {
         </>
       )}
       {mobileActiveTab === "settings" && (
-        <>
+        <div className="d-flex flex-column overflow-y-auto">
           <MobileMenuItem label="Currency" value={selectedCurrency} />
           <MobileCountryDropdown />
           <MobileMenuItem label="Email address" value={userData?.email} />
@@ -956,7 +956,7 @@ function Header() {
             onClick={() => alert("Connect Delete Confirm Modal here")}
             isDanger={true}
           />
-        </>
+        </div>
       )}
     </>
   );
@@ -1041,7 +1041,7 @@ function Header() {
             >
               <Link
                 className="nav-link active d-flex flex-column align-items-center"
-                href="/"
+                href="/tour-package"
               >
                 <img
                   src="../images/Plan.svg"
@@ -1056,7 +1056,7 @@ function Header() {
             >
               <Link
                 className="nav-link active d-flex flex-column align-items-center"
-                href="/"
+                href="/events"
               >
                 <img
                   src="../images/Event.svg"
@@ -1184,7 +1184,7 @@ function Header() {
                 </Link>
               </li>
               <li className={`nav-item ${style["navbar_sticky"]}`}>
-                <Link className="nav-link active" href="/">
+                <Link className="nav-link active" href="/tour-package">
                   <img
                     src="../images/Plan.svg"
                     className={style["img-top-logo"]}
@@ -1194,7 +1194,7 @@ function Header() {
                 </Link>
               </li>
               <li className={`nav-item ${style["navbar_sticky"]}`}>
-                <Link className="nav-link active" href="/">
+                <Link className="nav-link active" href="/events">
                   <img
                     src="../images/Event.svg"
                     className={style["img-top-logo"]}
@@ -1276,8 +1276,24 @@ function Header() {
                   aria-haspopup="true"
                   aria-expanded={profileDropdownOpen}
                 >
-                  <CgProfile size={40} />
-                  <span>{profileDisplayName}</span>
+ {userData ? (
+                      <img
+                        src={
+                          userData.profile_image_url ||
+                          "/images/icons/placeholder.jpg"
+                        }
+                        alt="User"
+                        className="rounded-circle"
+                        style={{
+                          width: "40px",
+                          height: "40px",
+                          objectFit: "cover",
+                        }}
+                      />
+                    ) : (
+                      <CgProfile size={40} />
+                    )}           
+                           <span>{profileDisplayName}</span>
                 </button>
                 {profileDropdownOpen && (
                   <div

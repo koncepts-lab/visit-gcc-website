@@ -37,7 +37,6 @@
   /* --- FIX IS HERE --- */
   padding-right: 40px; /* Space for the clear button on the right */
   box-sizing: border-box; /* Ensures padding is included in the element's width */
-
   border: 1px solid rgba(255, 255, 255, 0.5);
   color: #fff !important;
   transition: all 0.3s ease-in-out;
@@ -45,10 +44,14 @@
 
 /* --- The "Frosted Glass" Effect on Focus --- */
 .banner-search input:focus {
-  opacity: 0.5;
+  opacity: 1;
   color: black !important;
+  font-weight: 500;
   border-radius: 100px !important;
+  background: rgba(255, 255, 255, 0.39);
 }
+
+
 
 @media (max-width: 991px) {
   .banner-search {

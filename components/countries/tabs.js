@@ -3,7 +3,10 @@ import React, { useEffect } from "react";
 import style from "./style.module.css";
 import Carousal from "../carousel/Carousal";
 
-const Tabs = () => {
+const 
+
+
+Tabs = () => {
   const countryData = [
     {
       id: 1,
@@ -136,7 +139,7 @@ const Tabs = () => {
                       role="presentation"
                     >
                       <button
-                        className={`nav-link active border-0 ${style["country-nav-link"]} ${style["active-tab"]}`}
+                        className={`nav-link active border-0 ${style["country-nav-link"]} `}
                         id="History-tab"
                         data-bs-toggle="tab"
                         data-bs-target="#History"

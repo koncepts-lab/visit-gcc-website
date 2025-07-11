@@ -12,10 +12,10 @@ import { LuMenu } from "react-icons/lu";
 import Accordion from "../../../components/accordion/accordion";
 import EventsExploreTab from "../../../components/tour-package/events-explore";
 import UpcomingEvents from "../../../components/tour-package/upcoming-events";
-import { useLoading } from "@components/LoadingProvider"; // 1. IMPORT THE LOADER HOOK
+import { useLoading } from "@components/LoadingProvider";
 
 const Country = () => {
-  const { setIsLoading } = useLoading(); // 2. USE THE LOADER HOOK
+  const { setIsLoading } = useLoading();
 
   const [allEvents, setAllEvents] = useState([]);
   const [filteredEvents, setFilteredEvents] = useState([]);
@@ -30,6 +30,8 @@ const Country = () => {
     selectedItems: {},
   });
 
+  // --- CHANGE ---
+  // Added `filterEndpoint` to accordion data for cleaner API calls.
   const [accordionData, setAccordionData] = useState([
     {
       title: "DATE",
@@ -45,24 +47,38 @@ const Country = () => {
       title: "EVENT TYPE",
       items: [],
       apiEndpoint: "event-types/get-event-types",
+      filterEndpoint: "events",
     },
     {
       title: "EVENT LOCATION",
       items: [],
       apiEndpoint: "event-locations/get-event-locations",
+      filterEndpoint: "events",
     },
     {
       title: "EVENT FORMAT",
       items: [],
       apiEndpoint: "event-formats/get-event-formats",
+      filterEndpoint: "events",
     },
-    { title: "LANGUAGE", items: [], apiEndpoint: "languages/get-languages" },
+    {
+      title: "LANGUAGE",
+      items: [],
+      apiEndpoint: "languages/get-languages",
+      filterEndpoint: "events",
+    },
     {
       title: "DURATION",
       items: [],
       apiEndpoint: "event-durations/get-event-durations",
+      filterEndpoint: "events",
     },
-    { title: "AGE GROUP", items: [], apiEndpoint: "age-groups/get-age-groups" },
+    {
+      title: "AGE GROUP",
+      items: [],
+      apiEndpoint: "age-groups/get-age-groups",
+      filterEndpoint: "events",
+    },
   ]);
 
   const isCalendarDateActive = () => {
@@ -139,32 +155,51 @@ const Country = () => {
     );
   };
 
+  // --- CHANGE ---
+  // Replaced the old API filtering function with the more robust version
+  // that uses `filterEndpoint` and a `switch` statement.
   const fetchFilteredEventsByAPI = async (sectionTitle, selectedIds) => {
     const section = accordionData.find((item) => item.title === sectionTitle);
-    if (!section || !section.apiEndpoint) return [];
+    if (!section || !section.filterEndpoint) return [];
     try {
-      let url = `${
-        process.env.NEXT_PUBLIC_API_URL
-      }${section.apiEndpoint.replace("/get-event-types", "")}`; // A bit of a hack, might need better API design
+      let url = `${process.env.NEXT_PUBLIC_API_URL}${section.filterEndpoint}`;
       let params = [];
-      // This needs to be more generic if filterEndpoint changes
-      if (section.apiEndpoint.includes("types"))
-        params = selectedIds.map((id) => `event_types[]=${id}`);
-      else if (section.apiEndpoint.includes("locations"))
-        params = selectedIds.map((id) => `event_locations[]=${id}`);
-      // ... and so on for other filters
-
-      if (params.length > 0) url += `?${params.join("&")}`;
+      switch (sectionTitle) {
+        case "EVENT TYPE":
+          params = selectedIds.map((id) => `event_types[]=${id}`);
+          break;
+        case "EVENT LOCATION":
+          params = selectedIds.map((id) => `event_locations[]=${id}`);
+          break;
+        case "EVENT FORMAT":
+          params = selectedIds.map((id) => `event_formats[]=${id}`);
+          break;
+        case "LANGUAGE":
+          params = selectedIds.map((id) => `languages[]=${id}`);
+          break;
+        case "DURATION":
+          params = selectedIds.map((id) => `event_durations[]=${id}`);
+          break;
+        case "AGE GROUP":
+          params = selectedIds.map((id) => `age_groups[]=${id}`);
+          break;
+        default:
+          return []; 
+      }
+      if (params.length > 0) {
+        url += `?${params.join("&")}`;
+      }
       const response = await axios.get(url);
       return response.data.data || response.data || [];
     } catch (err) {
       console.error(`Error filtering events by ${sectionTitle}:`, err);
-      return [];
+      return []; 
     }
   };
 
   const applyAllFilters = useCallback(async () => {
-    let eventsToFilter = [...allEvents];
+    // Start with a clean copy of all events
+    let baseEvents = [...allEvents];
     const { priceRange, selectedDate, selectedItems } = filters;
     const isPriceFilterActive = priceRange[0] !== 30 || priceRange[1] !== 3900;
     const isCalendarDateFilterActive = isCalendarDateActive();
@@ -172,6 +207,7 @@ const Country = () => {
       (arr) => arr.length > 0
     );
 
+    // If no filters are active at all, just show all events.
     if (
       !isPriceFilterActive &&
       !isCalendarDateFilterActive &&
@@ -181,45 +217,68 @@ const Country = () => {
       return;
     }
 
-    // Since filtering is complex and involves multiple steps, we don't use the global loader here.
-    // A local loading state inside the component would be better if feedback is needed.
+    // --- API FILTERING LOGIC ---
+    // Identify sections that need API filtering (i.e., not the "DATE" section)
     const apiFilterSections = Object.keys(selectedItems).filter(
       (section) => section !== "DATE" && selectedItems[section]?.length > 0
     );
+
+    // If there are any API-based filters active, fetch and intersect the results.
     if (apiFilterSections.length > 0) {
       const filteredEventsSets = await Promise.all(
         apiFilterSections.map((section) =>
           fetchFilteredEventsByAPI(section, selectedItems[section])
         )
       );
+
+      // If any filter returned results, calculate the intersection
       if (filteredEventsSets.length > 0) {
-        eventsToFilter = filteredEventsSets.reduce(
-          (intersection, currentSet) => {
+        // Start with the first set of results
+        const initialSet = filteredEventsSets[0];
+        const initialSetIds = new Set(initialSet.map((e) => e.id));
+
+        // Find the common events by ID across all fetched sets
+        const intersectedIds = filteredEventsSets
+          .slice(1)
+          .reduce((acc, currentSet) => {
             const currentSetIds = new Set(currentSet.map((e) => e.id));
-            return intersection.filter((event) => currentSetIds.has(event.id));
-          }
+            return new Set([...acc].filter((id) => currentSetIds.has(id)));
+          }, initialSetIds);
+
+        // The new base for filtering is the events that match all API filters
+        baseEvents = allEvents.filter((event) =>
+          intersectedIds.has(event.id)
         );
       }
     }
+
+    // --- CLIENT-SIDE FILTERING ---
+    // Apply remaining filters on the (potentially smaller) baseEvents list.
+    let finalFilteredEvents = baseEvents;
+
     if (selectedItems["DATE"] && selectedItems["DATE"].length > 0) {
-      eventsToFilter = filterByDateOption(
-        eventsToFilter,
+      finalFilteredEvents = filterByDateOption(
+        finalFilteredEvents,
         selectedItems["DATE"][0]
       );
     }
     if (isPriceFilterActive) {
-      eventsToFilter = filterByPrice(eventsToFilter, priceRange);
+      finalFilteredEvents = filterByPrice(finalFilteredEvents, priceRange);
     }
     if (isCalendarDateFilterActive) {
-      eventsToFilter = filterByCalendarDate(eventsToFilter, selectedDate);
+      finalFilteredEvents = filterByCalendarDate(
+        finalFilteredEvents,
+        selectedDate
+      );
     }
-    setFilteredEvents(eventsToFilter);
+
+    setFilteredEvents(finalFilteredEvents);
   }, [allEvents, filters]);
 
-  // 3. CONSOLIDATED USEEFFECT FOR INITIAL PAGE LOAD
+  // Consolidated useEffect for initial page load (from your correct version)
   useEffect(() => {
     const fetchInitialData = async () => {
-      setIsLoading(true); // SHOW LOADER
+      setIsLoading(true);
       setError(null);
 
       try {
@@ -247,7 +306,7 @@ const Country = () => {
         const newAccordionData = await Promise.all(
           accordionRes.map(async (response, index) => {
             const section = accordionData[index];
-            if (!section.apiEndpoint) return section; // Return static sections as is
+            if (!section.apiEndpoint) return section;
             const fetchedItems = response.data.data || response.data || [];
             const formattedItems = fetchedItems.map((item) => ({
               id: item.id,
@@ -261,12 +320,13 @@ const Country = () => {
         console.error("Error fetching initial page data:", err);
         setError("Failed to fetch page data. Please try again.");
       } finally {
-        setIsLoading(false); // HIDE LOADER
+        setIsLoading(false);
       }
     };
 
     fetchInitialData();
-  }, [setIsLoading]); // Dependency array ensures this runs only once
+  }, [setIsLoading]); // Note: an empty dependency array would be better here if accordionData isn't meant to be refetched.
+
   const handleToggle = () => setIsToggled(!isToggled);
 
   useEffect(() => {
@@ -309,9 +369,6 @@ const Country = () => {
     });
   };
 
-  const displayEvents = isAnyFilterActive() ? filteredEvents : allEvents;
-  const noResultsFound = isAnyFilterActive() && filteredEvents.length === 0;
-
   function isAnyFilterActive() {
     const { priceRange, selectedItems } = filters;
     return (
@@ -321,6 +378,9 @@ const Country = () => {
       Object.values(selectedItems).some((arr) => arr.length > 0)
     );
   }
+
+  const displayEvents = isAnyFilterActive() ? filteredEvents : allEvents;
+  const noResultsFound = isAnyFilterActive() && filteredEvents.length === 0;
 
   if (error) {
     return (
@@ -357,7 +417,7 @@ const Country = () => {
             </div>
             <div className={`col-md-6 ${style["d-flex"]}`}>
               <div className={style["events-top-text"]}>
-                <h3>{allEvents[0]?.name}</h3>
+                <h3 className="mt-md-0 mt-4">{allEvents[0]?.name}</h3>
                 <p
                   className="mb-2"
                   style={{
@@ -481,7 +541,7 @@ const Country = () => {
                   </div>
                   <div className="mt-3">
                     <button
-                      className="btn btn-secondary w-100"
+                      className="btn btn-secondary col-12"
                       onClick={clearAllFilters}
                     >
                       Clear All Filters

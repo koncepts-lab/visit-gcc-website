@@ -11,8 +11,13 @@ const SearchComponent = () => {
   const [error, setError] = useState(null);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const searchContainerRef = useRef(null);
-  const inputRef = useRef(null); // Add input ref
+  const inputRef = useRef(null);
 
+  // --- THIS IS THE KEY CHANGE (Part 1) ---
+  // State to hold the dynamic max-height for the dropdown
+  const [dropdownMaxHeight, setDropdownMaxHeight] = useState("400px");
+
+  // Effect to handle clicks outside the search component to close the dropdown
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -26,10 +31,11 @@ const SearchComponent = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Debounced search effect
   useEffect(() => {
     if (!query.trim()) {
       setResults([]);
-      setIsDropdownVisible(false); // Hide dropdown when no query
+      setIsDropdownVisible(false);
       return;
     }
     const debounceTimer = setTimeout(() => {
@@ -40,19 +46,24 @@ const SearchComponent = () => {
     };
   }, [query]);
 
-  // Maintain focus after state updates
+  // --- THIS IS THE KEY CHANGE (Part 2) ---
+  // Effect to set dropdown height based on window size
   useEffect(() => {
-    if (inputRef.current && document.activeElement !== inputRef.current) {
-      // Only refocus if the user was actively typing
-      const isTyping = query.length > 0;
-      if (isTyping) {
-        setTimeout(() => {
-          inputRef.current?.focus();
-        }, 0);
+    const handleResize = () => {
+      if (window.innerWidth < 520) {
+        setDropdownMaxHeight("200px");
+      } else {
+        setDropdownMaxHeight("400px");
       }
-    }
-  }, [results, isDropdownVisible]);
+    };
 
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []); 
+  
   const handleSearch = async () => {
     if (!query.trim()) {
       setResults([]);
@@ -61,9 +72,6 @@ const SearchComponent = () => {
     }
     setIsLoading(true);
     setError(null);
-
-    // Store current focus state
-    const wasInputFocused = document.activeElement === inputRef.current;
 
     try {
       const apiUrl = `${
@@ -80,18 +88,12 @@ const SearchComponent = () => {
       setIsDropdownVisible(true);
     } finally {
       setIsLoading(false);
-      // Restore focus if it was previously focused
-      if (wasInputFocused && inputRef.current) {
-        setTimeout(() => {
-          inputRef.current.focus();
-        }, 0);
-      }
     }
   };
 
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
-      event.preventDefault(); // Prevent form submission
+      event.preventDefault();
       handleSearch();
     }
   };
@@ -118,7 +120,6 @@ const SearchComponent = () => {
     setResults([]);
     setError(null);
     setIsDropdownVisible(false);
-    // Refocus input after clearing
     if (inputRef.current) {
       inputRef.current.focus();
     }
@@ -127,8 +128,6 @@ const SearchComponent = () => {
   const handleInputChange = (e) => {
     const newValue = e.target.value;
     setQuery(newValue);
-
-    // Keep dropdown visible when typing
     if (newValue.trim()) {
       setIsDropdownVisible(true);
     } else {
@@ -137,22 +136,9 @@ const SearchComponent = () => {
   };
 
   const handleInputFocus = () => {
-    // Only show dropdown if there's a query and results
     if (query.trim() && (results.length > 0 || error)) {
       setIsDropdownVisible(true);
     }
-  };
-
-  const handleInputBlur = (e) => {
-    // Don't hide dropdown if clicking on a result
-    const relatedTarget = e.relatedTarget;
-    if (relatedTarget && searchContainerRef.current?.contains(relatedTarget)) {
-      return;
-    }
-    // Small delay to allow clicks to register
-    setTimeout(() => {
-      setIsDropdownVisible(false);
-    }, 150);
   };
 
   return (
@@ -175,15 +161,14 @@ const SearchComponent = () => {
           )}
         </button>
         <input
-          ref={inputRef} // Add ref to input
+          ref={inputRef}
           type="text"
           className="form-control fw-3"
           aria-label="Enter text to search"
           value={query}
-          onChange={handleInputChange} // Use new handler
+          onChange={handleInputChange}
           onKeyPress={handleKeyPress}
-          onFocus={handleInputFocus} // Use new handler
-          onBlur={handleInputBlur} // Add blur handler
+          onFocus={handleInputFocus}
           disabled={isLoading}
           autoComplete="off"
         />
@@ -204,9 +189,11 @@ const SearchComponent = () => {
           className="list-group position-absolute w-100"
           style={{
             zIndex: 1000,
-            maxHeight: "400px",
+            // --- THIS IS THE KEY CHANGE (Part 3) ---
+            // Use the state variable for dynamic height
+            maxHeight: dropdownMaxHeight,
             overflowY: "auto",
-            top: "100%", // Ensure proper positioning
+            top: "100%",
             left: 0,
           }}
         >
@@ -215,8 +202,8 @@ const SearchComponent = () => {
               key={result.id || index}
               className="list-group-item list-group-item-action"
               onClick={() => handleResultClick(result)}
-              onMouseDown={(e) => e.preventDefault()} // Prevent input blur on click
-              tabIndex={-1} // Make it focusable but not in tab order
+              onMouseDown={(e) => e.preventDefault()}
+              tabIndex={-1}
               style={{ cursor: "pointer" }}
             >
               <div className="d-flex justify-content-between align-items-start">
