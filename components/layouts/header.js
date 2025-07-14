@@ -982,7 +982,7 @@ const toggleCurrencyDropdown = () => {
         </>
       )}
       {mobileActiveTab === "settings" && (
-        <div className="d-flex flex-column overflow-y-auto h-100">
+        <div className="d-flex flex-column overflow-y-auto" style={{height:"600px"}}>
           <MobileCurrencyDropdown />
           <MobileCountryDropdown />
           <MobileMenuItem label="Email address" value={userData?.email} />
@@ -1501,7 +1501,6 @@ const toggleCurrencyDropdown = () => {
         .${style.activeMobileTab} {
           color: #169496 !important;
           border-bottom: 3px solid #169496 !important;
-          padding-bottom: calc(0.5rem - 3px) !important;
         }
       `}</style>
     </div>
