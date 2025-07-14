@@ -37,7 +37,6 @@ function Header() {
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [mobileActiveTab, setMobileActiveTab] = useState("account");
 
-  // --- FIX 1: Set initial state to match the short-form array ---
   const [selectedCountry, setSelectedCountry] = useState("UAE");
   const [selectedCurrency, setSelectedCurrency] = useState("AED");
 
@@ -51,14 +50,10 @@ function Header() {
   const profileDropdownRef = useRef(null);
   const mobileMenuRef = useRef(null);
 
-  // --- FIX 2: Add state for the separate mobile country dropdown ---
   const [mobileCountryDropdownOpen, setMobileCountryDropdownOpen] =
     useState(false);
 
     const [mobileCurrencyDropdownOpen, setMobileCurrencyDropdownOpen] = useState(false);
-
-
-    
 
   const genderOptions = [
     { value: "", label: "Select Gender...", disabled: true },
@@ -191,7 +186,7 @@ function Header() {
   const handleCountrySelect = (country) => {
     setSelectedCountry(country);
     setIsOpen(false);
-    setMobileCountryDropdownOpen(false); 
+    setMobileCountryDropdownOpen(false);
   };
 
   const toggleDropdown = () => {
@@ -363,11 +358,20 @@ const toggleCurrencyDropdown = () => {
       setIsSubmittingEdit(false);
     }
   };
+
+  // FIX START: This is the main fix for the iOS scrolling issue.
   const toggleMenu = useCallback(() => {
     setMenuOpen((prevMenuOpen) => {
       const newState = !prevMenuOpen;
       if (typeof document !== "undefined") {
-        document.body.style.overflow = newState && isMobile ? "hidden" : "auto";
+        // Apply overflow styles to both <html> and <body> for a robust lock
+        if (newState && isMobile) {
+          document.documentElement.style.overflow = "hidden";
+          document.body.style.overflow = "hidden";
+        } else {
+          document.documentElement.style.overflow = "auto";
+          document.body.style.overflow = "auto";
+        }
       }
       if (newState && userData) {
         setMobileActiveTab("account");
@@ -376,6 +380,8 @@ const toggleCurrencyDropdown = () => {
       return newState;
     });
   }, [isMobile, userData]);
+  // FIX END
+
   useEffect(() => {
     if (typeof window !== "undefined" && !window.bootstrap) {
       try {
@@ -447,6 +453,18 @@ const toggleCurrencyDropdown = () => {
         document.removeEventListener("mousedown", handleClickOutsideMobileMenu);
     };
   }, [menuOpen, isMobile, toggleMenu]);
+
+  // FIX: Add a cleanup effect to ensure scrolling is re-enabled if the component unmounts while the menu is open.
+  useEffect(() => {
+    return () => {
+      if (typeof document !== 'undefined') {
+        document.documentElement.style.overflow = 'auto';
+        document.body.style.overflow = 'auto';
+      }
+    };
+  }, []);
+
+
   const toggleProfileDropdown = () =>
     setProfileDropdownOpen(!profileDropdownOpen);
   const handleLogout = () => {
@@ -466,37 +484,23 @@ const toggleCurrencyDropdown = () => {
       userData.first_name ||
       userData.email?.split("@")[0] ||
       "User";
-  // const socialMediaPlatforms = [
-  //   {
-  //     name: "linkedin",
-  //     link: "https://www.linkedin.com/company/visitgcc/",
-  //     imgSrc: "/images/icons/linkedin.png",
-  //   },
-  //   {
-  //     name: "facebook",
-  //     link: "https://www.facebook.com/people/VisitGCC/100093838223257/",
-  //     imgSrc: "/images/icons/facebook.png",
-  //   },
-  //   {
-  //     name: "instagram",
-  //     link: "https://www.instagram.com/visit.gcc/",
-  //     imgSrc: "/images/icons/instagram.png",
-  //   },
-  //   { name: "X", link: "https://www.x.com", imgSrc: "/images/icons/x.png" },
-  // ];
+
   const socialMediaPlatforms = [
     {
       href: "https://www.facebook.com/people/VisitGCC/100093838223257/",
       icon: <Facebook size={20} />,
+      name: "Facebook"
     },
     {
       href: "https://www.instagram.com/visit.gcc/",
       icon: <Instagram size={20} />,
+      name: "Instagram"
     },
-    { href: "https://x.com", icon: <FaXTwitter size={20} /> },
+    { href: "https://x.com", icon: <FaXTwitter size={20} />, name: "X" },
     {
       href: "https://www.linkedin.com/company/visitgcc/",
       icon: <Linkedin size={20} />,
+      name: "LinkedIn"
     },
   ];
   const MobileMenuItem = ({
@@ -771,13 +775,6 @@ const toggleCurrencyDropdown = () => {
             aria-label={`VisitGCC on ${social.name}`}
             className="text-muted"
           >
-            {/* {" "}
-            <img
-              src={social.imgSrc}
-              alt={social.name}
-              style={{ width: "28px", height: "28px" }}
-              className="rounded-circle border p-1"
-            />{" "} */}
             {social.icon}
           </a>
         ))}{" "}
@@ -785,7 +782,6 @@ const toggleCurrencyDropdown = () => {
     </li>
   );
 
-  // --- FIX 3: Create a reusable component for the mobile dropdown ---
   const MobileCountryDropdown = () => (
     <li className="mb-0 px-3 py-3 border-bottom">
       <div
@@ -889,7 +885,7 @@ const toggleCurrencyDropdown = () => {
 
 
   const LoggedInMobileMenu = () => (
-    <>
+    < div className=" overflow-y-auto" style={{maxHeight:"650px"}}>
       <div className="d-flex justify-content-around border-bottom mb-0">
         <button
           className={`btn btn-link text-decoration-none fw-bold py-2 ${
@@ -938,9 +934,8 @@ const toggleCurrencyDropdown = () => {
           Settings{" "}
         </button>
       </div>
-
       {mobileActiveTab === "account" && (
-        <>
+        <div className="d-flex flex-column overflow-y-auto" style={{height:"600px"}}>
           <MobileMenuItem
             fieldKey="Display Name"
             label="Display Name"
@@ -979,7 +974,7 @@ const toggleCurrencyDropdown = () => {
             isNavigation={true}
           />
           <MobileMenuSocials />
-        </>
+        </div>
       )}
       {mobileActiveTab === "settings" && (
         <div className="d-flex flex-column overflow-y-auto" style={{height:"600px"}}>
@@ -1030,7 +1025,7 @@ const toggleCurrencyDropdown = () => {
           />
         </div>
       )}
-    </>
+    </div>
   );
 
   const GuestMobileMenu = () => (
@@ -1048,7 +1043,7 @@ const toggleCurrencyDropdown = () => {
           Settings{" "}
         </h6>
       </li>{" "}
-      <MobileMenuItem label="Currency" value={selectedCurrency} />{" "}
+      <MobileCurrencyDropdown />
       <MobileCountryDropdown />
       <MobileMenuItem
         label="Contact Support"
@@ -1234,7 +1229,10 @@ const toggleCurrencyDropdown = () => {
                   </button>
                 </li>
                 {showChangePassword ? (
-                  <ChangePasswordForm />
+                  <ChangePasswordForm 
+                    onSuccess={handlePasswordChangeSuccess}
+                    onCancel={handleCancelPasswordChange}
+                  />
                 ) : userData ? (
                   <LoggedInMobileMenu />
                 ) : (
@@ -1387,6 +1385,7 @@ const toggleCurrencyDropdown = () => {
                         textTransform: "capitalize",
                         flexDirection: "row",
                       }}
+                      onClick={() => setProfileDropdownOpen(false)}
                     >
                       <span>Your Profile</span>{" "}
                       <ChevronRight size={18} className="text-muted" />
@@ -1501,6 +1500,7 @@ const toggleCurrencyDropdown = () => {
         .${style.activeMobileTab} {
           color: #169496 !important;
           border-bottom: 3px solid #169496 !important;
+          padding-bottom: calc(0.5rem - 3px) !important;
         }
       `}</style>
     </div>
