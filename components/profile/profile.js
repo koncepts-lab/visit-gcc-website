@@ -172,6 +172,7 @@ const MyBookingsSection = () => {
           (item) => item.booking.status === "confirmed"
         );
         setBookings(confirmed);
+        console.log("Bookings fetched successfully:", confirmed);
       } catch (err) {
         console.error("Error fetching bookings:", err.response?.data || err);
         enqueueSnackbar("Could not load your bookings.", { variant: "error" });
@@ -214,7 +215,9 @@ const MyBookingsSection = () => {
   return (
     <>
       <div className="d-flex flex-column gap-3">
-        {bookings.map((item) => {
+         {[...bookings]
+          .sort((a, b) => new Date(b.booking.created_at) - new Date(a.booking.created_at))
+          .map((item) => {
           const bookingDetails =
             item.booking.package ||
             item.booking.event ||
