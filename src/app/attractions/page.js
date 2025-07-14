@@ -67,12 +67,17 @@ const AttractionsPage = () => {
       apiEndpoint: "att-geographies",
       filterParam: "geographies",
     },
+    {
+      title: "COUNTRY",
+      apiEndpoint: "countries",
+      filterParam: "country",
+      items: [],
+    },
   ]);
 
   const firstBreakPoints = { 350: 1, 750: 2, 1200: 3, 1500: 4 };
   const secondBreakPoints = { 350: 1, 750: 2, 1200: 3, 1500: 3 };
 
-  // --- All your handler functions remain unchanged ---
   const handleToggle = () => setIsToggled(!isToggled);
   const handlePriceRangeChange = (values) => setPriceRange(values);
   const handleDurationRangeChange = (values) => setDurationRange(values);
@@ -133,20 +138,26 @@ const AttractionsPage = () => {
   // This function is for on-demand filtering, so it uses its own loading state
   const fetchFilteredAttractions = useCallback(async () => {
     setIsFiltering(true);
-    setError(null);
+    // Do not set the main error to null here, to preserve the initial load error if it occurred.
     try {
       const filterParams = buildQueryParams();
       const url = `${process.env.NEXT_PUBLIC_API_URL}attractions`;
       const response = await axios.get(url, { params: filterParams });
       const fetchedData = (response.data.data || response.data || []).map(
-        (item, index) => ({ ...item, id: item.id ?? `attraction-${index}` })
+        (item, index) => ({
+          ...item,
+          id: item.id ?? item.uuid_id ?? `attraction-${index}`,
+        })
       );
+
       setPackages(fetchedData);
       setNoResultsFound(fetchedData.length === 0);
     } catch (err) {
       console.error("Error fetching filtered attractions:", err);
-      setError("Failed to apply filters.");
+      // Instead of setting a page-level error,
+      // we now set packages to empty and trigger the 'no results' UI.
       setPackages([]);
+      setNoResultsFound(true);
     } finally {
       setIsFiltering(false);
     }
@@ -217,25 +228,35 @@ const AttractionsPage = () => {
         const newAccordionData = [...accordionData];
         accordionRes.forEach((res, index) => {
           const items = res.data.data || res.data || [];
+          const currentSection = newAccordionData[index];
+
           newAccordionData[index].items = Array.isArray(items)
-            ? items.map((item, itemIndex) => ({
-                title: item.name || item.title || "Unknown",
-                id:
-                  item.id ??
-                  `${newAccordionData[index].filterParam}-${itemIndex}`,
-              }))
+            ? items.map((item, itemIndex) => {
+                const itemId =
+                  currentSection.filterParam === "country"
+                    ? item.uuid_id
+                    : item.id;
+
+                return {
+                  title: item.name || item.title || "Unknown",
+                  id: itemId ?? `${currentSection.filterParam}-${itemIndex}`,
+                };
+              })
             : [];
         });
         setAccordionData(newAccordionData);
       } catch (err) {
         console.error("Failed to load initial page data:", err);
-        setError("Could not load attractions. Please try refreshing the page.");
+        setError(
+          "Could not load attractions. Please try refreshing the page."
+        );
       } finally {
         setIsLoading(false); // Hide global loader after all fetches are done
       }
     };
 
     fetchInitialData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setIsLoading]); // Run this consolidated fetch only once on component mount
 
   // This useEffect now only handles re-fetching when filters change
@@ -265,6 +286,7 @@ const AttractionsPage = () => {
     durationRange,
     selectedItems,
     allPackages,
+    packages.length, // Added to prevent re-fetch if packages are already aligned
     fetchFilteredAttractions,
   ]);
 

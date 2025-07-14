@@ -36,10 +36,10 @@ function Header() {
   );
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [mobileActiveTab, setMobileActiveTab] = useState("account");
-  const [selectedCurrency, setSelectedCurrency] = useState("AED");
 
   // --- FIX 1: Set initial state to match the short-form array ---
   const [selectedCountry, setSelectedCountry] = useState("UAE");
+  const [selectedCurrency, setSelectedCurrency] = useState("AED");
 
   const [showChangePassword, setShowChangePassword] = useState(false);
   const [editingField, setEditingField] = useState(null);
@@ -54,6 +54,11 @@ function Header() {
   // --- FIX 2: Add state for the separate mobile country dropdown ---
   const [mobileCountryDropdownOpen, setMobileCountryDropdownOpen] =
     useState(false);
+
+    const [mobileCurrencyDropdownOpen, setMobileCurrencyDropdownOpen] = useState(false);
+
+
+    
 
   const genderOptions = [
     { value: "", label: "Select Gender...", disabled: true },
@@ -186,12 +191,25 @@ function Header() {
   const handleCountrySelect = (country) => {
     setSelectedCountry(country);
     setIsOpen(false);
-    setMobileCountryDropdownOpen(false); // Also close mobile dropdown if open
+    setMobileCountryDropdownOpen(false); 
   };
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
+
+  const [isCurrencyDropdownOpen, setCurrencyDropdownOpen] = useState(false);
+
+const currencies = ["AED", "USD"];
+
+const handleCurrencySelect = (currency) => {
+  setSelectedCurrency(currency);
+  setCurrencyDropdownOpen(false);
+};
+
+const toggleCurrencyDropdown = () => {
+  setCurrencyDropdownOpen(!isCurrencyDropdownOpen);
+};
 
   const handleLogin = async (e) => {
     userData ? router.push("/profile") : router.push("/login");
@@ -689,9 +707,10 @@ function Header() {
               <>
                 {" "}
                 <span
-                  className="text-muted me-2"
+                  className="me-2"
                   style={{
-                    fontSize: "0.8em",
+                    fontSize: "1rem",
+                    color: '#B9B9B9',
                     textTransform:
                       label === "Email address" ? "none" : "capitalize",
                   }}
@@ -816,6 +835,59 @@ function Header() {
     </li>
   );
 
+
+  const MobileCurrencyDropdown = () => (
+  <li className="mb-0 px-3 py-3 border-bottom">
+    <div
+      className="d-flex justify-content-between align-items-center"
+      onClick={() => setMobileCurrencyDropdownOpen(!mobileCurrencyDropdownOpen)}
+      style={{ cursor: "pointer" }}
+    >
+      <span>Currency</span>
+      <span className="text-muted d-flex align-items-center">
+        {selectedCurrency}
+        <ChevronRight
+          size={18}
+          className="text-muted ms-1"
+          style={{
+            transform: mobileCurrencyDropdownOpen ? "rotate(90deg)" : "rotate(0deg)",
+            transition: "transform 0.2s",
+          }}
+        />
+      </span>
+    </div>
+
+    {mobileCurrencyDropdownOpen && (
+      <div
+        className="mt-2"
+        style={{
+          maxHeight: "150px",
+          overflowY: "auto",
+          border: "1px solid #eee",
+          borderRadius: "0.25rem",
+        }}
+      >
+        <ul className="list-group list-group-flush p-0">
+          {currencies.map((currency) => (
+            <li
+              key={currency}
+              className="list-group-item list-group-item-action py-2"
+              style={{ fontSize: "0.9rem" }}
+              onClick={() => {
+                handleCurrencySelect(currency);
+                setMobileCurrencyDropdownOpen(false); // explicitly close mobile dropdown
+              }}
+            >
+              {currency}
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
+  </li>
+);
+
+
   const LoggedInMobileMenu = () => (
     <>
       <div className="d-flex justify-content-around border-bottom mb-0">
@@ -911,7 +983,7 @@ function Header() {
       )}
       {mobileActiveTab === "settings" && (
         <div className="d-flex flex-column overflow-y-auto h-100">
-          <MobileMenuItem label="Currency" value={selectedCurrency} />
+          <MobileCurrencyDropdown />
           <MobileCountryDropdown />
           <MobileMenuItem label="Email address" value={userData?.email} />
           <MobileMenuItem
@@ -1319,10 +1391,43 @@ function Header() {
                       <span>Your Profile</span>{" "}
                       <ChevronRight size={18} className="text-muted" />
                     </Link>
-                    <div className="p-3 border-bottom d-flex justify-content-between align-items-center">
-                      <span>Currency</span>{" "}
-                      <span className="text-muted">{selectedCurrency}</span>
-                    </div>
+                   <div className="position-relative">
+                        <button
+                          onClick={toggleCurrencyDropdown}
+                          className="p-3 border-bottom d-flex justify-content-between align-items-center w-100 btn btn-link text-decoration-none text-dark"
+                          style={{ textAlign: "left", fontSize: "16px" }}
+                        >
+                          <span>Currency</span>
+                          <span className="text-muted d-flex align-items-center">
+                            {selectedCurrency}
+                            <ChevronRight size={18} className="text-muted ms-1" />
+                          </span>
+                        </button>
+
+                        {isCurrencyDropdownOpen && (
+                          <div
+                            className="position-absolute bg-white border shadow-lg rounded w-100"
+                            style={{
+                              maxHeight: "150px",
+                              overflowY: "auto",
+                              zIndex: 1060,
+                              top: "100%",
+                              right: 0,
+                            }}
+                          >
+                            {currencies.map((currency) => (
+                              <div
+                                key={currency}
+                                className="p-2 dropdown-item"
+                                style={{ cursor: "pointer", fontSize: "14px" }}
+                                onClick={() => handleCurrencySelect(currency)}
+                              >
+                                {currency}
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
 
                     <div className="position-relative">
                       <button
