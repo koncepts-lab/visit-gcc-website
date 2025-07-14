@@ -13,7 +13,45 @@ import axios from "axios";
 import { useSearchParams, useRouter } from "next/navigation";
 import { enqueueSnackbar } from "notistack";
 
-// Comprehensive list of country codes
+// --- Pop-up styles ---
+const popupOverlayStyle = {
+  position: "fixed",
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  backgroundColor: "rgba(0, 0, 0, 0.6)",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  zIndex: 1050, 
+};
+
+const popupStyle = {
+  backgroundColor: "white",
+  padding: "30px 40px",
+  borderRadius: "12px",
+  textAlign: "center",
+  boxShadow: "0 5px 15px rgba(0, 0, 0, 0.3)",
+  maxWidth: "90%",
+  width: "450px",
+  borderTop: "5px solid #5ab2b3",
+};
+
+const popupButtonStyle = {
+  backgroundColor: "#5ab2b3",
+  color: "white",
+  border: "none",
+  padding: "12px 30px",
+  borderRadius: "8px",
+  cursor: "pointer",
+  fontSize: "16px",
+  fontWeight: "bold",
+  marginTop: "20px",
+  transition: "background-color 0.2s",
+};
+
+
 const countryCodes = [
   { name: "India", code: "+91" },
   { name: "USA", code: "+1" },
@@ -174,6 +212,8 @@ const Checkout = () => {
 
   const [errors, setErrors] = useState({});
   const [isFormValid, setIsFormValid] = useState(false);
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
 
   const [formData, setFormData] = useState({
     pick_up_point: "",
@@ -219,6 +259,12 @@ const Checkout = () => {
     setTravellers(
       travellers.filter((traveller) => traveller.id !== idToRemove)
     );
+  };
+
+  const handleClosePopup = () => {
+    setShowSuccessPopup(false);
+    setSuccessMessage("");
+    router.replace("/");
   };
 
   useEffect(() => {
@@ -416,8 +462,10 @@ const Checkout = () => {
         );
 
         if (response.data.success) {
-          enqueueSnackbar(response.data.message, { variant: "success" });
-          router.replace("/");
+          setSuccessMessage(
+            `Booking successful! Your Booking ID is: ${bookingId}`
+          );
+          setShowSuccessPopup(true);
         } else {
           enqueueSnackbar(
             response.data.message || "Could not confirm booking.",
@@ -481,9 +529,10 @@ const Checkout = () => {
             );
 
             if (verifyResponse.data.success) {
-              enqueueSnackbar("Booking confirmed successfully!", {
-                variant: "success",
-              });
+              setSuccessMessage(
+                `${bookingId}`
+              );
+              setShowSuccessPopup(true);
             } else {
               enqueueSnackbar(
                 verifyResponse.data.message || "Payment verification failed.",
@@ -506,8 +555,6 @@ const Checkout = () => {
                 { variant: "error" }
               );
             }
-          } finally {
-            router.replace("/");
           }
         },
         prefill: {
@@ -550,439 +597,515 @@ const Checkout = () => {
     "Your Booking";
 
   return (
-    // Add the class here for the padding-bottom rule
-    <div className={style.checkoutPageContainer}>
-      <Banner />
-      <div>
-        <div className="">
-          <div className={`${style["checkout-package-details"]} container`}>
-            <div className="row pt-5">
-              <div className="col-md-8">
-                <h2 className="d-flex justify-content-between fw-bolder">
-                  Tour Package Booking Checkout
-                  <button
-                    className="rounded-2 fw-semibold fs-6 px-1 bg-white"
-                    style={{
-                      border: "4px solid #5ab2b3",
-                      color: "#5ab2b3",
-                      height: "39px",
-                    }}
-                  >
-                    Customizable
-                  </button>
-                </h2>
-                {/* <p style={{ fontSize: "14px", color: "black" }}>
-                  Guest Signup - Tour Package Booking
-                </p> */}
-                <div className="pt-3">
-                  <h1 className="ms-0 fw-bolder">Personal Information</h1>
-                  <form className="col-xxl-10 col-xl-12">
-                    {travellers.map((traveller, index) => (
-                      <div
-                        key={traveller.id}
-                        className="pt-1 mb-4 border-bottom pb-3"
-                      >
-                        <div className="d-flex justify-content-between align-items-center mb-2">
-                          <p
-                            className="align-items-center fw-semibold mb-0"
-                            style={{ color: "#5ab2b3" }}
-                          >
-                            <FaUser
-                              size={23}
-                              className="me-3"
-                              color="#e7e7e7"
-                              style={{ marginTop: "-5px" }}
+    <>
+      {showSuccessPopup && (
+    <div style={popupOverlayStyle}>
+  <div style={popupStyle}>
+    {/* ✅ Tick Icon */}
+    <div style={{ display: "flex", justifyContent: "center", marginBottom: "15px" }}>
+      <svg
+        width="60"
+        height="60"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="#5ab2b3"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <circle cx="12" cy="12" r="10" />
+        <path d="M9 12l2 2l4-4" />
+      </svg>
+    </div>
+
+    {/* ✅ Heading */}
+    <h2 style={{ color: "#333", textAlign: "center", marginBottom: "10px" }}>
+      Booking Successful!
+    </h2>
+
+    {/* ✅ Message */}
+    <p style={{ fontSize: "16px", textAlign: "center", marginBottom: "12px" }}>
+      Your booking has been confirmed.
+    </p>
+
+    {/* ✅ Booking ID Display */}
+    <p style={{ textAlign: "center", fontWeight: 500, marginBottom: "6px" }}>
+      Your Booking ID:
+    </p>
+    <div
+      style={{
+        backgroundColor: "#f1f1f1",
+        padding: "10px 15px",
+        borderRadius: "8px",
+        textAlign: "center",
+        fontWeight: "bold",
+        color: "#333",
+        fontSize: "15px",
+        userSelect: "all",
+        cursor: "pointer",
+        marginBottom: "20px",
+      }}
+      onClick={() => {
+        navigator.clipboard.writeText(successMessage);
+      }}
+      title="Click to copy"
+    >
+      {successMessage}
+    </div>
+
+    {/* ✅ OK Button */}
+    <button
+      onClick={handleClosePopup}
+      style={popupButtonStyle}
+      onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#4a9a9c")}
+      onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#5ab2b3")}
+    >
+      OK
+    </button>
+  </div>
+</div>
+
+      )}
+
+      {/* Add the class here for the padding-bottom rule */}
+      <div className={style.checkoutPageContainer}>
+        <Banner />
+        <div>
+          <div className="">
+            <div className={`${style["checkout-package-details"]} container`}>
+              <div className="row pt-5">
+                <div className="col-md-8">
+                  <h2 className="d-flex justify-content-between fw-bolder">
+                    Tour Package Booking Checkout
+                    <button
+                      className="rounded-2 fw-semibold fs-6 px-1 bg-white"
+                      style={{
+                        border: "4px solid #5ab2b3",
+                        color: "#5ab2b3",
+                        height: "39px",
+                      }}
+                    >
+                      Customizable
+                    </button>
+                  </h2>
+                  {/* <p style={{ fontSize: "14px", color: "black" }}>
+                    Guest Signup - Tour Package Booking
+                  </p> */}
+                  <div className="pt-3">
+                    <h1 className="ms-0 fw-bolder">Personal Information</h1>
+                    <form className="col-xxl-10 col-xl-12">
+                      {travellers.map((traveller, index) => (
+                        <div
+                          key={traveller.id}
+                          className="pt-1 mb-4 border-bottom pb-3"
+                        >
+                          <div className="d-flex justify-content-between align-items-center mb-2">
+                            <p
+                              className="align-items-center fw-semibold mb-0"
+                              style={{ color: "#5ab2b3" }}
+                            >
+                              <FaUser
+                                size={23}
+                                className="me-3"
+                                color="#e7e7e7"
+                                style={{ marginTop: "-5px" }}
+                              />
+                              Traveller {index + 1}
+                            </p>
+                            {index > 0 && (
+                              <button
+                                type="button"
+                                className="btn btn-sm btn-outline-danger d-flex align-items-center"
+                                onClick={() => removeTraveller(traveller.id)}
+                              >
+                                <FaTrashAlt size={12} className="me-1" /> Remove
+                              </button>
+                            )}
+                          </div>
+                          <div className="col-12">
+                            <input
+                              className={`${style["promo_input"]} col-xl-5 col-lg-6 col-12`}
+                              placeholder="LastName (in English)*"
+                              value={traveller.last_name}
+                              onChange={(e) =>
+                                handleTravellerInputChange(
+                                  traveller.id,
+                                  "last_name",
+                                  e.target.value
+                                )
+                              }
                             />
-                            Traveller {index + 1}
-                          </p>
-                          {index > 0 && (
+                            <br className="d-xl-none d-lg-block" />
+                            <input
+                              className={`${style["promo_input"]} ms-xxl-5 ms-xl-5 ms-md-0 col-xl-5 col-lg-6 col-12`}
+                              placeholder="First & middle name(in English)*"
+                              value={traveller.first_name}
+                              onChange={(e) =>
+                                handleTravellerInputChange(
+                                  traveller.id,
+                                  "first_name",
+                                  e.target.value
+                                )
+                              }
+                            />
+                          </div>
+                          <div className="col-12 pt-2">
+                            <input
+                              className={`${style["promo_input"]} col-xl-5 col-lg-6 col-12`}
+                              placeholder="ID Type*"
+                              value={traveller.id_type}
+                              onChange={(e) =>
+                                handleTravellerInputChange(
+                                  traveller.id,
+                                  "id_type",
+                                  e.target.value
+                                )
+                              }
+                            />
+                            <br className="d-xl-none d-lg-block" />
+                            <input
+                              className={`${style["promo_input"]} ms-xxl-5 ms-xl-5 ms-md-0 col-xl-4 col-lg-6 col-12`}
+                              placeholder="ID number*"
+                              value={traveller.id_number}
+                              onChange={(e) =>
+                                handleTravellerInputChange(
+                                  traveller.id,
+                                  "id_number",
+                                  e.target.value
+                                )
+                              }
+                            />
+                          </div>
+                          <div
+                            style={{ marginTop: "10px", marginBottom: "10px" }}
+                          >
                             <button
                               type="button"
-                              className="btn btn-sm btn-outline-danger d-flex align-items-center"
-                              onClick={() => removeTraveller(traveller.id)}
+                              onClick={() =>
+                                handleGenderChange(traveller.id, "male")
+                              }
+                              style={{
+                                backgroundColor:
+                                  traveller.gender === "male"
+                                    ? "#5ab2b3"
+                                    : "white",
+                                color:
+                                  traveller.gender === "male"
+                                    ? "white"
+                                    : "#686767",
+                                padding: "5px 45px",
+                                fontSize: "13px",
+                                border: "#e2e2e2 2px solid",
+                                borderRadius: "5px",
+                              }}
                             >
-                              <FaTrashAlt size={12} className="me-1" /> Remove
+                              Male
                             </button>
-                          )}
+                            <button
+                              type="button"
+                              className="ms-md-3 ms-2"
+                              onClick={() =>
+                                handleGenderChange(traveller.id, "female")
+                              }
+                              style={{
+                                backgroundColor:
+                                  traveller.gender === "female"
+                                    ? "#5ab2b3"
+                                    : "white",
+                                color:
+                                  traveller.gender === "female"
+                                    ? "white"
+                                    : "#686767",
+                                padding: "5px 42px",
+                                fontSize: "13px",
+                                border: "#e2e2e2 2px solid",
+                                borderRadius: "5px",
+                              }}
+                            >
+                              Female
+                            </button>
+                          </div>
                         </div>
-                        <div className="col-12">
-                          <input
-                            className={`${style["promo_input"]} col-xl-5 col-lg-6 col-12`}
-                            placeholder="LastName (in English)*"
-                            value={traveller.last_name}
-                            onChange={(e) =>
-                              handleTravellerInputChange(
-                                traveller.id,
-                                "last_name",
-                                e.target.value
-                              )
-                            }
-                          />
-                          <br className="d-xl-none d-lg-block" />
-                          <input
-                            className={`${style["promo_input"]} ms-xxl-5 ms-xl-5 ms-md-0 col-xl-5 col-lg-6 col-12`}
-                            placeholder="First & middle name(in English)*"
-                            value={traveller.first_name}
-                            onChange={(e) =>
-                              handleTravellerInputChange(
-                                traveller.id,
-                                "first_name",
-                                e.target.value
-                              )
-                            }
-                          />
-                        </div>
-                        <div className="col-12 pt-2">
-                          <input
-                            className={`${style["promo_input"]} col-xl-5 col-lg-6 col-12`}
-                            placeholder="ID Type*"
-                            value={traveller.id_type}
-                            onChange={(e) =>
-                              handleTravellerInputChange(
-                                traveller.id,
-                                "id_type",
-                                e.target.value
-                              )
-                            }
-                          />
-                          <br className="d-xl-none d-lg-block" />
-                          <input
-                            className={`${style["promo_input"]} ms-xxl-5 ms-xl-5 ms-md-0 col-xl-4 col-lg-6 col-12`}
-                            placeholder="ID number*"
-                            value={traveller.id_number}
-                            onChange={(e) =>
-                              handleTravellerInputChange(
-                                traveller.id,
-                                "id_number",
-                                e.target.value
-                              )
-                            }
-                          />
-                        </div>
-                        <div
-                          style={{ marginTop: "10px", marginBottom: "10px" }}
-                        >
+                      ))}
+
+                      {bookingData?.type === "package" && (
+                        <div className="text-center my-3">
                           <button
                             type="button"
-                            onClick={() =>
-                              handleGenderChange(traveller.id, "male")
-                            }
-                            style={{
-                              backgroundColor:
-                                traveller.gender === "male"
-                                  ? "#5ab2b3"
-                                  : "white",
-                              color:
-                                traveller.gender === "male"
-                                  ? "white"
-                                  : "#686767",
-                              padding: "5px 45px",
-                              fontSize: "13px",
-                              border: "#e2e2e2 2px solid",
-                              borderRadius: "5px",
-                            }}
+                            className="btn btn-outline-primary"
+                            onClick={addTraveller}
                           >
-                            Male
-                          </button>
-                          <button
-                            type="button"
-                            className="ms-md-3 ms-2"
-                            onClick={() =>
-                              handleGenderChange(traveller.id, "female")
-                            }
-                            style={{
-                              backgroundColor:
-                                traveller.gender === "female"
-                                  ? "#5ab2b3"
-                                  : "white",
-                              color:
-                                traveller.gender === "female"
-                                  ? "white"
-                                  : "#686767",
-                              padding: "5px 42px",
-                              fontSize: "13px",
-                              border: "#e2e2e2 2px solid",
-                              borderRadius: "5px",
-                            }}
-                          >
-                            Female
+                            + Add another traveller
                           </button>
                         </div>
-                      </div>
-                    ))}
+                      )}
 
-                    {bookingData?.type === "package" && (
-                      <div className="text-center my-3">
-                        <button
-                          type="button"
-                          className="btn btn-outline-primary"
-                          onClick={addTraveller}
-                        >
-                          + Add another traveller
-                        </button>
-                      </div>
-                    )}
-
-                    <div>
-                      <h1 className="m-2 pt-2 pb-2 ms-0 fw-bolder">
-                        Travel Details
-                      </h1>
-                      <label>Pick-up point</label>
-                      <br />
-                      <input
-                        className={`${style["promo_input"]} my-2 col-12`}
-                        placeholder="Please enter pick-up point"
-                        name="pick_up_point"
-                        value={formData.pick_up_point}
-                        onChange={handleFormChange}
-                      />
-                      <label className="pe-0 me-0 pt-3">Special Requests</label>
-                      <br />
-                      <input
-                        className={`${style["promo_input"]} my-2 col-12`}
-                        placeholder="Please enter Special Requests"
-                        name="special_request"
-                        value={formData.special_request}
-                        onChange={handleFormChange}
-                      />
-                      <label className="pt-2">Package Addons</label>
-                      <br />
-                      <input
-                        className={`${style["promo_input"]} my-2 col-12`}
-                        placeholder="Add travel medical insurance details if required"
-                        name="add_ons"
-                        value={formData.add_ons}
-                        onChange={handleFormChange}
-                      />
-                      <h1 className="m-3 ms-0 pt-1 fw-bolder">Contact Info</h1>
-                      <div className="d-flex flex-xl-row flex-md-column flex-column justify-content-between col-12 gap-xl-5 gap-lg-3">
-                        <div className="col-xl-6 col-12">
-                          <label className="">Contact Name*</label>
-                          <br />
-                          <input
-                            className={`${style["promo_input"]} my-2 col-12`}
-                            placeholder="Please enter contact name"
-                            name="contact_name"
-                            value={formData.contact_name}
-                            onChange={handleFormChange}
-                          />
-                        </div>
-                        <div className="col-xl-6 col-lg-8 col-md-12 col-12">
-                          <label className="">Contact Number*</label>
-                          <br />
-                          <select
-                            name="country_code"
-                            value={formData.country_code}
-                            onChange={handleFormChange}
-                            className={`${style["promo_select"]} my-2`}
-                          >
-                            {countryCodes.map((country) => (
-                              <option
-                                key={`${country.name}-${country.code}`}
-                                value={country.code}
-                              >
-                                {country.code}
-                              </option>
-                            ))}
-                          </select>
-                          <input
-                            className={`${style["promo_input"]} my-2 ms-xl-1 ms-lg-1 ms-2`}
-                            style={{ width: "240px" }}
-                            placeholder="Mobile Number"
-                            name="contact_number"
-                            value={formData.contact_number}
-                            onChange={handleFormChange}
-                          />
-                        </div>
-                      </div>
-                      <div className="my-2">
-                        <label className="pe-0 me-0">Email Address*</label>
+                      <div>
+                        <h1 className="m-2 pt-2 pb-2 ms-0 fw-bolder">
+                          Travel Details
+                        </h1>
+                        <label>Pick-up point</label>
                         <br />
                         <input
                           className={`${style["promo_input"]} my-2 col-12`}
-                          placeholder="All important updates will be send to this email ID"
-                          name="email"
-                          type="email"
-                          value={formData.email}
+                          placeholder="Please enter pick-up point"
+                          name="pick_up_point"
+                          value={formData.pick_up_point}
                           onChange={handleFormChange}
                         />
+                        <label className="pe-0 me-0 pt-3">
+                          Special Requests
+                        </label>
+                        <br />
+                        <input
+                          className={`${style["promo_input"]} my-2 col-12`}
+                          placeholder="Please enter Special Requests"
+                          name="special_request"
+                          value={formData.special_request}
+                          onChange={handleFormChange}
+                        />
+                        <label className="pt-2">Package Addons</label>
+                        <br />
+                        <input
+                          className={`${style["promo_input"]} my-2 col-12`}
+                          placeholder="Add travel medical insurance details if required"
+                          name="add_ons"
+                          value={formData.add_ons}
+                          onChange={handleFormChange}
+                        />
+                        <h1 className="m-3 ms-0 pt-1 fw-bolder">
+                          Contact Info
+                        </h1>
+                        <div className="d-flex flex-xl-row flex-md-column flex-column justify-content-between col-12 gap-xl-5 gap-lg-3">
+                          <div className="col-xl-6 col-12">
+                            <label className="">Contact Name*</label>
+                            <br />
+                            <input
+                              className={`${style["promo_input"]} my-2 col-12`}
+                              placeholder="Please enter contact name"
+                              name="contact_name"
+                              value={formData.contact_name}
+                              onChange={handleFormChange}
+                            />
+                          </div>
+                          <div className="col-xl-6 col-lg-8 col-md-12 col-12">
+                            <label className="">Contact Number*</label>
+                            <br />
+                            <select
+                              name="country_code"
+                              value={formData.country_code}
+                              onChange={handleFormChange}
+                              className={`${style["promo_select"]} my-2`}
+                            >
+                              {countryCodes.map((country) => (
+                                <option
+                                  key={`${country.name}-${country.code}`}
+                                  value={country.code}
+                                >
+                                  {country.code}
+                                </option>
+                              ))}
+                            </select>
+                            <input
+                              className={`${style["promo_input"]} my-2 ms-xl-1 ms-lg-1 ms-2`}
+                              style={{ width: "240px" }}
+                              placeholder="Mobile Number"
+                              name="contact_number"
+                              value={formData.contact_number}
+                              onChange={handleFormChange}
+                            />
+                          </div>
+                        </div>
+                        <div className="my-2">
+                          <label className="pe-0 me-0">Email Address*</label>
+                          <br />
+                          <input
+                            className={`${style["promo_input"]} my-2 col-12`}
+                            placeholder="All important updates will be send to this email ID"
+                            name="email"
+                            type="email"
+                            value={formData.email}
+                            onChange={handleFormChange}
+                          />
+                        </div>
                       </div>
-                    </div>
-                  </form>
+                    </form>
+                  </div>
                 </div>
-              </div>
-              <div className="col-md-4 my-md-0 my-5">
-                <label className="text-black fw-semibold fs-4">
-                  Package Price
-                </label>
-                <br />
-                <div
-                  className="col-11 text-black-50 my-2"
-                  style={{ height: "2px", borderTop: "3px dashed #e2e2e2" }}
-                />
-                <div
-                  className="col-11 text-black pt-3"
-                  style={{ borderBottom: "2px solid #e2e2e2" }}
-                >
-                  <h5 className="pt-2 d-flex pb-2 justify-content-between col-11">
-                    <span>
-                      <b>Price</b>
-                    </span>
-                  </h5>
-                  {totalAdults > 0 && (
-                    <p className="d-flex justify-content-between text-black">
-                      <span>
-                        {totalAdults} Adult{totalAdults > 1 ? "s" : ""}
-                      </span>
-                    </p>
-                  )}
-                  {totalChildren > 0 && (
-                    <p className="d-flex justify-content-between text-black">
-                      <span>
-                        {totalChildren} Child{totalChildren > 1 ? "ren" : ""}
-                      </span>
-                    </p>
-                  )}
-                  {totalInfants > 0 && (
-                    <p className="d-flex justify-content-between text-black">
-                      <span>
-                        {totalInfants} Infant{totalInfants > 1 ? "s" : ""}
-                      </span>
-                    </p>
-                  )}
-                  <h5 className="pt-2 d-flex pb-1 justify-content-between col-11">
-                    <span>
-                      <b>Total</b>
-                    </span>
-                    <span>
-                      <b>AED {totalPrice}</b>
-                    </span>
-                  </h5>
-                </div>
-                <span className="col-10 ps-1 pt-2 d-flex justify-content-end">
-                  <button
-                    onClick={handlePayNow}
-                    className={style["btn-one"]}
-                    disabled={!isFormValid}
-                  >
-                    Pay Now
-                  </button>
-                </span>
-                <p className="col-lg-12 col-xl-12 col-12 pt-4 my-2">
-                  By proceeding, I acknowledge that I have
-                  <br className="d-lg-block d-none" /> read and agree to the
-                  Company Terms & <br className="d-lg-block d-none" />{" "}
-                  Conditions and Privacy Statement.
-                </p>
-                <button
-                  className="bg-white col-11 d-flex justify-content-between"
-                  style={{ border: "none", color: "#5ab2b3" }}
-                  onClick={toggleAccordion}
-                >
-                  <span className="fw-semibold">
-                    Cancellation &{" "}
-                    <br className="d-lg-none d-md-block d-none" /> Date Change{" "}
-                  </span>
-                  <IoIosArrowDown
-                    color="grey"
-                    size={22}
-                    style={{
-                      transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
-                      transition: "transform 0.3s ease",
-                    }}
-                  />
-                </button>
-                <div className="my-2">
+                <div className="col-md-4 my-md-0 my-5">
                   <label className="text-black fw-semibold fs-4">
-                    Promotions
+                    Package Price
                   </label>
                   <br />
-                  <label className="pt-1">Promo code</label>
-                  <br />
-                  <div>
-                    <input
-                      className={`${style["promo_input"]} col-xl-8 col-lg-7 col-md-10`}
-                      style={{ height: "35px" }}
-                    />
-                    <button
-                      className={`${style["btn-one"]} my-lg-0 my-md-1 my-2`}
-                      style={{ padding: "6px 10px" }}
-                    >
-                      Apply
-                    </button>
-                  </div>
-                  <div className="pt-4 d-flex flex-xl-row flex-lg-column flex-column">
-                    <div>
-                      <label
-                        className="text-black fw-semibold"
-                        style={{ fontSize: "1.42rem" }}
-                      >
-                        Complete Booking In
-                      </label>
-                      <br />
-                      <p>
-                        {" "}
-                        The package price will refresh
-                        <br className="d-lg-block d-none" /> After
-                      </p>
-                    </div>
-                    <div
-                      className="rounded-pill align-content-center ms-3"
-                      style={{
-                        height: "85px",
-                        width: "85px",
-                        border: "4px solid #5ab2b3",
-                      }}
-                    >
-                      <h1 className="align-items-center align-self-center d-flex flex-column ms-2 my-1 text-black-50">
-                        <span style={{ fontSize: "23px" }}>
-                          {minutes < 10 ? `0${minutes}` : minutes}:
-                          {seconds < 10 ? `0${seconds}` : seconds}
+                  <div
+                    className="col-11 text-black-50 my-2"
+                    style={{ height: "2px", borderTop: "3px dashed #e2e2e2" }}
+                  />
+                  <div
+                    className="col-11 text-black pt-3"
+                    style={{ borderBottom: "2px solid #e2e2e2" }}
+                  >
+                    <h5 className="pt-2 d-flex pb-2 justify-content-between col-11">
+                      <span>
+                        <b>Price</b>
+                      </span>
+                    </h5>
+                    {totalAdults > 0 && (
+                      <p className="d-flex justify-content-between text-black">
+                        <span>
+                          {totalAdults} Adult{totalAdults > 1 ? "s" : ""}
                         </span>
-                        <span style={{ fontSize: "12px" }}>mins</span>
-                      </h1>
-                    </div>
-                  </div>
-                  <div className="pt-3 d-flex flex-xl-row flex-md-column flex-column ">
-                    <div className="col-lg-8 col-12 ">
-                      <label className="text-black fw-semibold fs-4">
-                        Loyalty Rewards
-                      </label>
-                      <br />
-                      <p>
-                        Enroll in our loyalty program{" "}
-                        <br className="d-lg-block d-none" /> to earn travel
-                        rewards on future bookings
                       </p>
-                    </div>
-                    <div className="align-content-center">
+                    )}
+                    {totalChildren > 0 && (
+                      <p className="d-flex justify-content-between text-black">
+                        <span>
+                          {totalChildren} Child{totalChildren > 1 ? "ren" : ""}
+                        </span>
+                      </p>
+                    )}
+                    {totalInfants > 0 && (
+                      <p className="d-flex justify-content-between text-black">
+                        <span>
+                          {totalInfants} Infant{totalInfants > 1 ? "s" : ""}
+                        </span>
+                      </p>
+                    )}
+                    <h5 className="pt-2 d-flex pb-1 justify-content-between col-11">
+                      <span>
+                        <b>Total</b>
+                      </span>
+                      <span>
+                        <b>AED {totalPrice}</b>
+                      </span>
+                    </h5>
+                  </div>
+                  <span className="col-10 ps-1 pt-2 d-flex justify-content-end">
+                    <button
+                      onClick={handlePayNow}
+                      className={style["btn-one"]}
+                      disabled={!isFormValid}
+                    >
+                      Pay Now
+                    </button>
+                  </span>
+                  <p className="col-lg-12 col-xl-12 col-12 pt-4 my-2">
+                    By proceeding, I acknowledge that I have
+                    <br className="d-lg-block d-none" /> read and agree to the
+                    Company Terms & <br className="d-lg-block d-none" />{" "}
+                    Conditions and Privacy Statement.
+                  </p>
+                  <button
+                    className="bg-white col-11 d-flex justify-content-between"
+                    style={{ border: "none", color: "#5ab2b3" }}
+                    onClick={toggleAccordion}
+                  >
+                    <span className="fw-semibold">
+                      Cancellation &{" "}
+                      <br className="d-lg-none d-md-block d-none" /> Date
+                      Change{" "}
+                    </span>
+                    <IoIosArrowDown
+                      color="grey"
+                      size={22}
+                      style={{
+                        transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
+                        transition: "transform 0.3s ease",
+                      }}
+                    />
+                  </button>
+                  <div className="my-2">
+                    <label className="text-black fw-semibold fs-4">
+                      Promotions
+                    </label>
+                    <br />
+                    <label className="pt-1">Promo code</label>
+                    <br />
+                    <div>
+                      <input
+                        className={`${style["promo_input"]} col-xl-8 col-lg-7 col-md-10`}
+                        style={{ height: "35px" }}
+                      />
                       <button
                         className={`${style["btn-one"]} my-lg-0 my-md-1 my-2`}
                         style={{ padding: "6px 10px" }}
                       >
-                        Learn More
+                        Apply
                       </button>
                     </div>
-                  </div>
-                  <div className="pt-2">
-                    <div>
-                      <label className="text-black fw-semibold fs-4">
-                        Social Sharing Incentive
-                      </label>
-                      <br />
-                      <p className=" fw-normal pt-1">
-                        {" "}
-                        Travel & Save! Share your tour booking and
-                        <br className="d-lg-block d-none" />
-                        unlock exclusive travel perks!
-                      </p>
-                      <div className="d-flex gap-3 pt-1">
-                        <button className={`${style["ordinary_button"]}`}>
-                          <GoShare size={21} /> Share
+                    <div className="pt-4 d-flex flex-xl-row flex-lg-column flex-column">
+                      <div>
+                        <label
+                          className="text-black fw-semibold"
+                          style={{ fontSize: "1.42rem" }}
+                        >
+                          Complete Booking In
+                        </label>
+                        <br />
+                        <p>
+                          {" "}
+                          The package price will refresh
+                          <br className="d-lg-block d-none" /> After
+                        </p>
+                      </div>
+                      <div
+                        className="rounded-pill align-content-center ms-3"
+                        style={{
+                          height: "85px",
+                          width: "85px",
+                          border: "4px solid #5ab2b3",
+                        }}
+                      >
+                        <h1 className="align-items-center align-self-center d-flex flex-column ms-2 my-1 text-black-50">
+                          <span style={{ fontSize: "23px" }}>
+                            {minutes < 10 ? `0${minutes}` : minutes}:
+                            {seconds < 10 ? `0${seconds}` : seconds}
+                          </span>
+                          <span style={{ fontSize: "12px" }}>mins</span>
+                        </h1>
+                      </div>
+                    </div>
+                    <div className="pt-3 d-flex flex-xl-row flex-md-column flex-column ">
+                      <div className="col-lg-8 col-12 ">
+                        <label className="text-black fw-semibold fs-4">
+                          Loyalty Rewards
+                        </label>
+                        <br />
+                        <p>
+                          Enroll in our loyalty program{" "}
+                          <br className="d-lg-block d-none" /> to earn travel
+                          rewards on future bookings
+                        </p>
+                      </div>
+                      <div className="align-content-center">
+                        <button
+                          className={`${style["btn-one"]} my-lg-0 my-md-1 my-2`}
+                          style={{ padding: "6px 10px" }}
+                        >
+                          Learn More
                         </button>
-                        <button className={`${style["ordinary_button"]}`}>
-                          <FaRegHeart size={20} /> Save
-                        </button>
+                      </div>
+                    </div>
+                    <div className="pt-2">
+                      <div>
+                        <label className="text-black fw-semibold fs-4">
+                          Social Sharing Incentive
+                        </label>
+                        <br />
+                        <p className=" fw-normal pt-1">
+                          {" "}
+                          Travel & Save! Share your tour booking and
+                          <br className="d-lg-block d-none" />
+                          unlock exclusive travel perks!
+                        </p>
+                        <div className="d-flex gap-3 pt-1">
+                          <button className={`${style["ordinary_button"]}`}>
+                            <GoShare size={21} /> Share
+                          </button>
+                          <button className={`${style["ordinary_button"]}`}>
+                            <FaRegHeart size={20} /> Save
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -990,63 +1113,70 @@ const Checkout = () => {
               </div>
             </div>
           </div>
-        </div>
-        <div className="container">
-          <img
-            src={slugPackage?.[0]?.event_photo_urls?.[0] || "/images/blank.png"}
-            className="w-100"
-            style={{ height: "400px", borderRadius: "15px" }}
-            alt="Banner"
-          />
-          <div
-            className="d-flex justify-content-between px-4"
-            style={{ marginTop: "-33px" }}
-          >
-            <p className="text-black-50 ">
-              Date:{" "}
-              <span className="text-white">{slugPackage?.[0]?.start_date}</span>
-            </p>
-            <p className="text-black-50 ">
-              Tag:{" "}
-              <span className="text-white"> {slugPackage?.[0]?.category}</span>
-            </p>
+          <div className="container">
+            <img
+              src={
+                slugPackage?.[0]?.event_photo_urls?.[0] || "/images/blank.png"
+              }
+              className="w-100"
+              style={{ height: "400px", borderRadius: "15px" }}
+              alt="Banner"
+            />
+            <div
+              className="d-flex justify-content-between px-4"
+              style={{ marginTop: "-33px" }}
+            >
+              <p className="text-black-50 ">
+                Date:{" "}
+                <span className="text-white">
+                  {slugPackage?.[0]?.start_date}
+                </span>
+              </p>
+              <p className="text-black-50 ">
+                Tag:{" "}
+                <span className="text-white">
+                  {" "}
+                  {slugPackage?.[0]?.category}
+                </span>
+              </p>
+            </div>
           </div>
-        </div>
-        <div className="container">
-          <div className="row">
-            <div className="col-md-12 pt-5 d-flex justify-content-center">
-              <h3>Other Packages</h3>
+          <div className="container">
+            <div className="row">
+              <div className="col-md-12 pt-5 d-flex justify-content-center">
+                <h3>Other Packages</h3>
+              </div>
+            </div>
+          </div>
+          <div className="container-fluid">
+            <div className="row pt-2 pb-5">
+              <div className="col-md-12">
+                <Carousal
+                  pakageDetailsOtherPackages={slugPackage}
+                  count={5}
+                  type="pakage-details-other-packages"
+                />
+              </div>
             </div>
           </div>
         </div>
-        <div className="container-fluid">
-          <div className="row pt-2 pb-5">
-            <div className="col-md-12">
-              <Carousal
-                pakageDetailsOtherPackages={slugPackage}
-                count={5}
-                type="pakage-details-other-packages"
-              />
-            </div>
-          </div>
+        <div>
+          <Ask_ur_questions />
         </div>
-      </div>
-      <div>
-        <Ask_ur_questions />
-      </div>
 
-      {/* --- STICKY FOOTER FOR MOBILE --- */}
-      <div className={style.stickyPayContainer}>
-        <div className={style.priceText}>AED {totalPrice}</div>
-        <button
-          onClick={handlePayNow}
-          style={{ backgroundColor: "#149699" }}
-          disabled={!isFormValid}
-        >
-          Pay Now
-        </button>
+        {/* --- STICKY FOOTER FOR MOBILE --- */}
+        <div className={style.stickyPayContainer}>
+          <div className={style.priceText}>AED {totalPrice}</div>
+          <button
+            onClick={handlePayNow}
+            style={{ backgroundColor: "#149699" }}
+            disabled={!isFormValid}
+          >
+            Pay Now
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 export default Checkout;
