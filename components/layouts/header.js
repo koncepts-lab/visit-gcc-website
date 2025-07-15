@@ -883,7 +883,6 @@ const toggleCurrencyDropdown = () => {
   </li>
 );
 
-
   const LoggedInMobileMenu = () => (
     < div className=" overflow-y-auto" style={{maxHeight:"650px", paddingBottom:"200px"}}>
       <div className="d-flex justify-content-around border-bottom mb-0 ">
@@ -1176,14 +1175,19 @@ const toggleCurrencyDropdown = () => {
             {isMobile && menuOpen && (
               <ul
                 className={`navbar-nav ${style["navbar-nav-c"]} position-fixed top-0 start-0 bg-white vh-100 w-100 p-0 d-flex flex-column`}
-                style={{
-                  zIndex: 1040,
-                  alignItems: "initial",
-                  justifyContent: "start",
-                  overflowY: "auto",
-                  WebkitOverflowScrolling: "touch",
-                  height: "100vh",
-                }}
+              style={{
+    zIndex: 1040,
+    alignItems: "initial",
+    justifyContent: "start",
+    overflowX: "hidden",
+    overflowY: "auto",
+    WebkitOverflowScrolling: "touch", // iOS momentum
+    touchAction: "pan-y",             // allow vertical scroll
+    height: "100vh",                  // explicit viewport height
+    maxHeight: "100vh",               // ensures no overflow block
+    overscrollBehavior: "contain",    // avoid scroll chaining issues
+    WebkitTapHighlightColor: "transparent", // minor iOS fix
+  }}
               >
                 <li
                   className="py-3 px-3 d-flex align-items-center justify-content-between text-white w-100"

@@ -1005,8 +1005,8 @@ const Checkout = () => {
                       onClick={handlePayNow}
                       className={style["btn-one"]}
                       disabled={!isFormValid}
-                    >
-                      Pay Now
+                    >Pay Now
+                      
                     </button>
                   </span>
                   <p className="col-lg-12 col-xl-12 col-12 pt-4 my-2">
