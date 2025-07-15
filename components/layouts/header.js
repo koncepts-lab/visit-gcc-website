@@ -885,7 +885,7 @@ const toggleCurrencyDropdown = () => {
 
 
   const LoggedInMobileMenu = () => (
-    < div className=" overflow-y-auto" style={{maxHeight:"650px"}}>
+    < div className="overflow-y-auto" style={{Height:"350px"}}>
       <div className="d-flex justify-content-around border-bottom mb-0">
         <button
           className={`btn btn-link text-decoration-none fw-bold py-2 ${
