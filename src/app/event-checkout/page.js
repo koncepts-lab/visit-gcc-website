@@ -53,6 +53,10 @@ const Checkout = () => {
   const [formErrors, setFormErrors] = useState({});
   const [isFormValid, setIsFormValid] = useState(false);
 
+  // --- State for Success Popup ---
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+
   const searchParams = useSearchParams();
   const bookingId = searchParams.get("bookingId") || "";
 
@@ -60,22 +64,21 @@ const Checkout = () => {
     const validateForm = () => {
       if (!bookingDetails) return false;
 
-      // Condition 1: Form data (this is unchanged and correct)
+      // Condition 1: Form data
       const isFormDataValid =
         formData.contact_name.trim() !== "" &&
         formData.contact_number.trim() !== "" &&
         /\S+@\S+\.\S+/.test(formData.email);
 
-      // --- REVISED VALIDATION FOR TRAVELLER COUNT ---
       const totalAdults = bookingDetails.total_adults || 0;
       const totalChildren = bookingDetails.total_children || 0;
       const requiredTravellersCount = totalAdults + totalChildren;
 
-      // Condition 2: Correct number of travellers (adults + children)
+      // Condition 2: Correct number of travellers
       const areAllTravellersAdded =
         travellers.length === requiredTravellersCount;
 
-      // Condition 3: All traveller fields are filled (this is unchanged and correct)
+      // Condition 3: All traveller fields are filled
       const areTravellersValid = travellers.every(
         (t) =>
           t.first_name.trim() !== "" &&
@@ -134,10 +137,8 @@ const Checkout = () => {
 
   const toggleAccordion = () => setIsOpen(!isOpen);
 
-  // MODIFIED: Razorpay logic updated to set a cookie before navigating.
   const handlePayNow = async () => {
-    // --- Step 1: Frontend Validation ---
-    setFormErrors({}); // Clear previous errors
+    setFormErrors({});
     const authToken = localStorage.getItem("auth_token_login");
     if (!authToken) {
       enqueueSnackbar("You must be logged in to make a payment.", {
@@ -148,7 +149,6 @@ const Checkout = () => {
 
     let validationErrors = {};
 
-    // Validate main form data
     if (!formData.contact_name.trim())
       validationErrors.contact_name = ["Contact name is required."];
     if (!formData.contact_number.trim())
@@ -159,7 +159,6 @@ const Checkout = () => {
       validationErrors.email = ["Please enter a valid email address."];
     }
 
-    // Validate each traveler's details
     travellers.forEach((t, index) => {
       if (!t.first_name.trim())
         validationErrors[`travelers.${index}.first_name`] = [
@@ -181,7 +180,6 @@ const Checkout = () => {
         validationErrors[`travelers.${index}.gender`] = ["Gender is required."];
     });
 
-    // Specific validation for events: ensure all travelers are added
     if (bookingDetails && travellers.length < bookingDetails.total_adults) {
       enqueueSnackbar(
         `Please add details for all ${bookingDetails.total_adults} adults.`,
@@ -198,31 +196,27 @@ const Checkout = () => {
       return;
     }
 
-    // --- Step 2: Prepare the Data Payload ---
     const finalCheckoutData = {
       ...formData,
       travelers: travellers,
     };
 
-    // Safely get the booking amount
     const bookingAmount = bookingDetails
       ? parseFloat(bookingDetails.booking.total_amount)
       : 0;
 
-    // --- Step 3: Check if the booking is free and route to the correct API ---
     if (bookingAmount === 0) {
-      // --- A) HANDLE FREE BOOKING ---
       try {
         enqueueSnackbar("Confirming your free booking...", { variant: "info" });
         const response = await axios.post(
           `${process.env.NEXT_PUBLIC_API_URL}payment/confirm-free/${bookingId}`,
-          finalCheckoutData, // Send all form data to be saved
+          finalCheckoutData,
           { headers: { Authorization: `Bearer ${authToken}` } }
         );
 
         if (response.data.success) {
-          enqueueSnackbar(response.data.message, { variant: "success" });
-          router.replace("/");
+          setSuccessMessage(bookingId);
+          setShowSuccessPopup(true);
         } else {
           enqueueSnackbar(
             response.data.message || "Could not confirm booking.",
@@ -241,7 +235,6 @@ const Checkout = () => {
         );
       }
     } else {
-      // --- B) HANDLE PAID BOOKING (RAZORPAY) ---
       let orderDetails;
       try {
         const orderResponse = await axios.post(
@@ -287,9 +280,8 @@ const Checkout = () => {
             );
 
             if (verifyResponse.data.success) {
-              enqueueSnackbar("Booking confirmed successfully!", {
-                variant: "success",
-              });
+              setSuccessMessage(bookingId);
+              setShowSuccessPopup(true);
             } else {
               enqueueSnackbar(
                 verifyResponse.data.message || "Payment verification failed.",
@@ -312,8 +304,6 @@ const Checkout = () => {
                 { variant: "error" }
               );
             }
-          } finally {
-            router.replace("/");
           }
         },
         prefill: {
@@ -341,9 +331,7 @@ const Checkout = () => {
     }
   };
 
-  // --- useEffect Hooks ---
   useEffect(() => {
-    // REMOVED: All sessionStorage and gatekeeper logic is now handled by middleware.
     const script = document.createElement("script");
     script.src = "https://checkout.razorpay.com/v1/checkout.js";
     script.async = true;
@@ -392,7 +380,6 @@ const Checkout = () => {
         );
         const apiData = response.data || {};
 
-        // --- THIS IS THE NEW CHECK ---
         if (apiData.is_payable === false) {
           enqueueSnackbar("This booking has already been completed.", {
             variant: "info",
@@ -400,7 +387,6 @@ const Checkout = () => {
           router.replace("/");
           return;
         }
-        // --- END OF NEW CHECK ---
 
         if (!apiData.booking) throw new Error("Invalid booking data from API.");
 
@@ -415,16 +401,19 @@ const Checkout = () => {
       } catch (err) {
         console.error("Error fetching booking data:", err);
         setError("Failed to fetch booking details.");
-        // Optionally redirect on error too
         router.replace("/");
       } finally {
         setIsLoading(false);
       }
     };
     fetchBookingData();
-  }, [bookingId, router]); // Add 'router' to the dependency array
+  }, [bookingId, router]);
 
-  // --- Helper Functions ---
+  const handleClosePopup = () => {
+    setShowSuccessPopup(false);
+    router.replace("/");
+  };
+
   const formatDate = (dateString) => {
     if (!dateString) return "Not available";
     const options = {
@@ -448,7 +437,6 @@ const Checkout = () => {
       .padStart(2, "0")} ${ampm}`;
   };
 
-  // --- Render Logic ---
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
 
@@ -481,6 +469,43 @@ const Checkout = () => {
   const itemEndTime = formatTime(itemDetails.end_time);
   const totalAmount = parseFloat(bookingInfo.total_amount || 0).toFixed(2);
   const totalAdults = bookingDetails.total_adults || 0;
+
+  // --- Popup Styles ---
+  const popupOverlayStyle = {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    backgroundColor: "rgba(0, 0, 0, 0.6)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 1050,
+  };
+
+  const popupStyle = {
+    background: "#fff",
+    padding: "30px",
+    borderRadius: "12px",
+    boxShadow: "0 5px 15px rgba(0,0,0,0.3)",
+    width: "90%",
+    maxWidth: "400px",
+    fontFamily: "sans-serif",
+  };
+
+  const popupButtonStyle = {
+    width: "100%",
+    padding: "12px",
+    backgroundColor: "#5ab2b3",
+    color: "#fff",
+    border: "none",
+    borderRadius: "8px",
+    fontSize: "16px",
+    fontWeight: "bold",
+    cursor: "pointer",
+    transition: "background-color 0.2s",
+  };
 
   return (
     <div>
@@ -662,7 +687,7 @@ const Checkout = () => {
                         </div>
                       </div>
                     ))}
-                    {/* {totalAdults > travellers.length && (
+                    {totalAdults > travellers.length && (
                       <button
                         type="button"
                         onClick={handleAddTraveller}
@@ -670,7 +695,7 @@ const Checkout = () => {
                       >
                         + Add Traveller
                       </button>
-                    )} */}
+                    )}
 
                     <div>
                       <h1 className="m-3 ms-0 pt-1 fw-bolder">Contact Info</h1>
@@ -959,6 +984,96 @@ const Checkout = () => {
       <div>
         <Ask_ur_questions />
       </div>
+
+      {/* --- SUCCESS POPUP --- */}
+      {showSuccessPopup && (
+        <div style={popupOverlayStyle}>
+          <div style={popupStyle}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                marginBottom: "15px",
+              }}
+            >
+              <svg
+                width="60"
+                height="60"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#5ab2b3"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <path d="M9 12l2 2l4-4" />
+              </svg>
+            </div>
+            <h2
+              style={{
+                color: "#333",
+                textAlign: "center",
+                marginBottom: "10px",
+              }}
+            >
+              Booking Successful!
+            </h2>
+            <p
+              style={{
+                fontSize: "16px",
+                textAlign: "center",
+                marginBottom: "12px",
+              }}
+            >
+              Your booking has been confirmed.
+            </p>
+            <p
+              style={{
+                textAlign: "center",
+                fontWeight: 500,
+                marginBottom: "6px",
+              }}
+            >
+              Your Booking ID:
+            </p>
+            <div
+              style={{
+                backgroundColor: "#f1f1f1",
+                padding: "10px 15px",
+                borderRadius: "8px",
+                textAlign: "center",
+                fontWeight: "bold",
+                color: "#333",
+                fontSize: "15px",
+                userSelect: "all",
+                cursor: "pointer",
+                marginBottom: "20px",
+              }}
+              onClick={() => {
+                navigator.clipboard.writeText(successMessage);
+                enqueueSnackbar("Booking ID copied to clipboard!", { variant: "info" });
+              }}
+              title="Click to copy"
+            >
+              {successMessage}
+            </div>
+            <button
+              onClick={handleClosePopup}
+              style={popupButtonStyle}
+              onMouseOver={(e) =>
+                (e.currentTarget.style.backgroundColor = "#4a9a9c")
+              }
+              onMouseOut={(e) =>
+                (e.currentTarget.style.backgroundColor = "#5ab2b3")
+              }
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* --- STICKY FOOTER FOR MOBILE --- */}
       <div className={style.stickyPayContainer}>
         <div className={style.priceText}>AED {totalAmount}</div>
