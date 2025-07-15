@@ -885,8 +885,8 @@ const toggleCurrencyDropdown = () => {
 
 
   const LoggedInMobileMenu = () => (
-    < div className="overflow-y-auto" style={{Height:"350px"}}>
-      <div className="d-flex justify-content-around border-bottom mb-0">
+    < div className=" overflow-y-auto" style={{maxHeight:"650px", paddingBottom:"200px"}}>
+      <div className="d-flex justify-content-around border-bottom mb-0 ">
         <button
           className={`btn btn-link text-decoration-none fw-bold py-2 ${
             mobileActiveTab === "account" ? style.activeMobileTab : "text-muted"
@@ -1500,7 +1500,6 @@ const toggleCurrencyDropdown = () => {
         .${style.activeMobileTab} {
           color: #169496 !important;
           border-bottom: 3px solid #169496 !important;
-          padding-bottom: calc(0.5rem - 3px) !important;
         }
       `}</style>
     </div>

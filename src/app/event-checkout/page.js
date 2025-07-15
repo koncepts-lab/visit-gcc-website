@@ -469,7 +469,9 @@ const Checkout = () => {
   const itemEndTime = formatTime(itemDetails.end_time);
   const totalAmount = parseFloat(bookingInfo.total_amount || 0).toFixed(2);
   const totalAdults = bookingDetails.total_adults || 0;
+  const totalChildren = bookingDetails.total_children || 0;
 
+  
   // --- Popup Styles ---
   const popupOverlayStyle = {
     position: "fixed",
@@ -529,7 +531,7 @@ const Checkout = () => {
                           style={{ color: "#5ab2b3", height: "25px" }}
                         >
                           <FaUser size={23} className="me-3" color="#e7e7e7" />
-                          Adult {index + 1}
+                          Traveller {index + 1}
                         </p>
                         <div>
                           <div className="col-12">
@@ -687,7 +689,7 @@ const Checkout = () => {
                         </div>
                       </div>
                     ))}
-                    {totalAdults > travellers.length && (
+                    {totalAdults + totalChildren > travellers.length && (
                       <button
                         type="button"
                         onClick={handleAddTraveller}

@@ -263,7 +263,7 @@ const LoginRegisterTabs = () => {
     <div className={`${styles.container} mx-auto`}>
       <div className="text-center mb-4">
         <h2 className="fw-bold">Welcome!</h2>
-        <p className="text-muted">Sign in or create a new account</p>
+        <p className="text-muted">Log in or create a new account</p>
       </div>
 
       <div className={`${styles["tab-buttons"]} d-flex mb-4`}>
