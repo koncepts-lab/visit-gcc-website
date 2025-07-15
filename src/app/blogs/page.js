@@ -23,7 +23,7 @@ import {
   TwitterShareButton,
   ThreadsIcon,
 } from "react-share";
-import { useLoading } from "@components/LoadingProvider"; // 1. IMPORT THE LOADER HOOK
+import { useLoading } from "@components/LoadingProvider";
 
 const ITEMS_PER_PAGE = 3;
 
@@ -42,9 +42,8 @@ const formatDate = (dateString) => {
 
 function Page() {
   const { enqueueSnackbar } = useSnackbar();
-  const { setIsLoading } = useLoading(); // 2. USE THE LOADER HOOK
+  const { setIsLoading } = useLoading();
 
-  // All your original state declarations are preserved
   const [currentPage, setCurrentPage] = useState(1);
   const [blogs, setBlogs] = useState([]);
   const [error, setError] = useState(null);
@@ -65,45 +64,12 @@ function Page() {
     currentPage * ITEMS_PER_PAGE
   );
 
-  // All your original handler functions and useEffects are preserved
-  // const fetchCommentCount = async (blogId) => {
-  //   try {
-  //     const response = await axios.get(
-  //       `${process.env.NEXT_PUBLIC_API_URL}blogs/${blogId}/comments/count`
-  //     );
-  //     return response.data.comment_count;
-  //   } catch (error) {
-  //     console.error("Error fetching comment count:", error);
-  //     return 0;
-  //   }
-  // };
-
-  // const toggleComment = async (blogId) => {
-  //   setActiveCommentBlogData(blogs.find((blog) => blog.uuid_id === blogId));
-  //   setIsCommentModalOpen(true);
-  //   const count = await fetchCommentCount(blogId);
-  //   setCommentCounts((prevCounts) => ({ ...prevCounts, [blogId]: count }));
-  // };
-
   const handleCloseComments = () => {
     setActiveCommentBlogData(null);
     setIsCommentModalOpen(false);
   };
 
   const getCommentCount = (blogId) => commentCounts[blogId] || 0;
-
-  // useEffect(() => {
-  //   const loadCommentCounts = async () => {
-  //     const counts = {};
-  //     for (const blog of blogs) {
-  //       counts[blog.uuid_id] = await fetchCommentCount(blog.uuid_id);
-  //     }
-  //     setCommentCounts(counts);
-  //   };
-  //   if (blogs.length > 0) {
-  //     loadCommentCounts();
-  //   }
-  // }, [blogs]);
 
   const handleLikeBlog = async (blogUuid) => {
     try {
@@ -134,22 +100,18 @@ function Page() {
     }
   };
 
-  // 3. CONSOLIDATED INITIAL FETCH WITH LOADER
   useEffect(() => {
     const fetchInitialData = async () => {
-      setIsLoading(true); // SHOW LOADER
+      setIsLoading(true);
       setError(null);
 
       try {
-        // Promise.all waits for all API calls to finish
         await Promise.all([
-          // Fetch Blogs
           axios
             .get(`${process.env.NEXT_PUBLIC_API_URL}blog`)
             .then((response) => {
               setBlogs(response.data.data || response.data || []);
             }),
-          // Fetch Categories and their counts
           axios
             .get(`${process.env.NEXT_PUBLIC_API_URL}category`)
             .then(async (response) => {
@@ -171,7 +133,6 @@ function Page() {
               );
               setCategories(categoriesWithCounts);
             }),
-          // Fetch Featured Blogs
           axios
             .get(`${process.env.NEXT_PUBLIC_API_URL}blog/get-featured-blogs`, {
               params: { limit: 3 },
@@ -181,7 +142,6 @@ function Page() {
                 (response.data.data || response.data || []).slice(0, 3)
               );
             }),
-          // Fetch Tags
           axios
             .get(`${process.env.NEXT_PUBLIC_API_URL}tag`)
             .then((response) => {
@@ -192,18 +152,19 @@ function Page() {
         console.error("Error fetching initial page data:", err);
         setError("Failed to load page content. Please try again.");
       } finally {
-        setIsLoading(false); // HIDE LOADER
+        setIsLoading(false);
       }
     };
 
     fetchInitialData();
-  }, [setIsLoading]); // Run only once
+  }, [setIsLoading]);
 
   const handleSearch = async () => {
     if (!searchQuery.trim()) {
       enqueueSnackbar("Please enter a search term", { variant: "info" });
       return;
     }
+    setIsLoading(true);
     try {
       const response = await axios.get(
         `${process.env.NEXT_PUBLIC_API_URL}blog/search?q=${searchQuery}`
@@ -214,11 +175,14 @@ function Page() {
     } catch (err) {
       console.error("Error searching blogs:", err);
       enqueueSnackbar("Failed to perform search", { variant: "error" });
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const fetchBlogsByCategory = async (categoryId) => {
     setSearchQuery("");
+    setIsLoading(true);
     try {
       const response = await axios.get(
         `${process.env.NEXT_PUBLIC_API_URL}blog/${categoryId}/get-blogs-by-category`
@@ -235,14 +199,17 @@ function Page() {
       enqueueSnackbar("Failed to fetch blogs by category", {
         variant: "error",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const fetchBlogsByTag = async (tagId) => {
     setSearchQuery("");
+    setIsLoading(true);
     try {
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}blog/${tagId}/get-blogs-by-tag`
+        `${process.env.NEXT_PUBLIC_API_URL}tag/tag/get-by-tag?tag_ids[]=${tagId}`
       );
       setFilteredBlogs(response.data.data || response.data || []);
       setCurrentPage(1);
@@ -252,7 +219,18 @@ function Page() {
       }
     } catch (err) {
       console.error("Error fetching blogs by tag:", err);
-      enqueueSnackbar("Failed to fetch blogs by tag", { variant: "error" });
+      // Specific 404 error handling as requested
+      if (err.response && err.response.status === 404) {
+        enqueueSnackbar("No blogs found for this tag", { variant: "warning" });
+        setFilteredBlogs([]); // Clear previous results
+        setCurrentPage(1);
+        setActiveFilter({ type: "tag", id: tagId });
+      } else {
+        // Generic error for other issues
+        enqueueSnackbar("Failed to fetch blogs by tag", { variant: "error" });
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 

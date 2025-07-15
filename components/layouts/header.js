@@ -883,7 +883,6 @@ const toggleCurrencyDropdown = () => {
   </li>
 );
 
-
   const LoggedInMobileMenu = () => (
     < div className=" overflow-y-auto" style={{maxHeight:"650px", paddingBottom:"200px"}}>
       <div className="d-flex justify-content-around border-bottom mb-0 ">
