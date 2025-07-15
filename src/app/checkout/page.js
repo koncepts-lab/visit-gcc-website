@@ -24,7 +24,7 @@ const popupOverlayStyle = {
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  zIndex: 1050, 
+  zIndex: 1050,
 };
 
 const popupStyle = {
@@ -240,7 +240,24 @@ const Checkout = () => {
   const searchParams = useSearchParams();
   const bookingId = searchParams.get("bookingId") || "";
 
+
+  const totalTravellersAllowed =
+    (bookingData?.total_adults || 0) +
+    (bookingData?.total_children || 0) +
+    (bookingData?.total_infants || 0);
+
   const addTraveller = () => {
+    if (
+      totalTravellersAllowed > 0 &&
+      travellers.length >= totalTravellersAllowed
+    ) {
+      enqueueSnackbar(
+        `The booking is for ${totalTravellersAllowed} traveller(s). You cannot add more.`,
+        { variant: "warning" }
+      );
+      return;
+    }
+
     setTravellers([
       ...travellers,
       {
@@ -676,7 +693,7 @@ const Checkout = () => {
               <div className="row pt-5">
                 <div className="col-md-8">
                   <h2 className="d-flex justify-content-between fw-bolder">
-                    Tour Package Booking Checkout
+                    {bookingItemName}
                     <button
                       className="rounded-2 fw-semibold fs-6 px-1 bg-white"
                       style={{
@@ -828,17 +845,20 @@ const Checkout = () => {
                         </div>
                       ))}
 
-                      {bookingData?.type === "package" && (
-                        <div className="text-center my-3">
-                          <button
-                            type="button"
-                            className="btn btn-outline-primary"
-                            onClick={addTraveller}
-                          >
-                            + Add another traveller
-                          </button>
-                        </div>
-                      )}
+                      {/* --- MODIFIED: Conditionally render "Add" button based on limit --- */}
+                      {bookingData?.type === "package" &&
+                        travellers.length < totalTravellersAllowed && (
+                          <div className="text-center my-3">
+                            <button
+                              type="button"
+                              className="btn text-white"
+                              style={{ backgroundColor: "#149699" }}
+                              onClick={addTraveller}
+                            >
+                              + Add another traveller
+                            </button>
+                          </div>
+                        )}
 
                       <div>
                         <h1 className="m-2 pt-2 pb-2 ms-0 fw-bolder">
