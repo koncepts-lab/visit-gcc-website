@@ -251,29 +251,34 @@ const TourPackageTab = ({
                         <div key={pkg.id} className="masonry-item">
                           <img
                             src={
-                                pkg?.photo_urls?.[0] || "/images/placeholder.jpg"
-
+                              pkg?.photo_urls?.[0] || "/images/placeholder.jpg"
                             }
-                            style={{ width: "100%", display: "block", minHeight: '268px' }}
+                            style={{
+                              width: "100%",
+                              display: "block",
+                              minHeight: "268px",
+                            }}
                             alt={pkg.name}
                           />
-                          <div className="tour-pakage-masonry-item-content"
-                              style={{
-                                     height: "100%",
-                                      position: "absolute",
-                                      bottom: "0px",
-                                      width: "100%",
-                                      display: "flex",
-                                      flexDirection: "column",
-                                      justifyContent: "end",
-                                      gap: "8px",
-                                           }}>
+                          <div
+                            className="tour-pakage-masonry-item-content"
+                            style={{
+                              height: "100%",
+                              position: "absolute",
+                              bottom: "0px",
+                              width: "100%",
+                              display: "flex",
+                              flexDirection: "column",
+                              justifyContent: "end",
+                              gap: "8px",
+                            }}
+                          >
                             <h5>{pkg.name}</h5>
                             <div className={style["provider-date"]}>
                               {/* <p>{vendorData[pkg.id] || "Loading vendor..."}</p>{" "}
                               &nbsp; | &nbsp; */}
                               <p>
-                                {new Date(pkg.created_at).toLocaleDateString()}
+                                {/* {new Date(pkg.created_at).toLocaleDateString()} */}
                               </p>
                             </div>
                             {/* <div className={style["star-section"]}>
