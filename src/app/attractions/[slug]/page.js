@@ -107,14 +107,14 @@ function Page() {
           </div>
         </div>
 
-        <div className="container">
+        {/* <div className="container">
           <div className="row pt-5">
             <div key={slugpackage.id} className="col-md-12">
               <h3>Note</h3>
               <p>{slugpackage.note}</p>
             </div>
           </div>
-        </div>
+        </div> */}
 
         <div className="container">
           <div className={`row ${style["ptb-30"]}`}>
@@ -156,9 +156,9 @@ function Page() {
                 type="attraction-details-other-packages"
               />
             </div>
-            <div className="col-md-12">
-              <button className={style["btn-three"]}>FULL PROJECTS</button>
-            </div>
+          <Link href="/attractions">
+              <button className={style["btn-three"]}>View All</button>
+              </Link>
           </div>
         </div>
 

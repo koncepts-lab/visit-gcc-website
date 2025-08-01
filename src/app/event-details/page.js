@@ -176,7 +176,7 @@ function Page() {
                 </span>
                 <span>
                   <PiSealCheckFill className={style["PiSealCheckFill"]} />{" "}
-                  Recommended by 99% of travellers{" "}
+                  Top Pick by Travellers{" "}
                   <IoMdInformationCircleOutline
                     className={style["IoMdInformationCircleOutline"]}
                   />

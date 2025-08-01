@@ -413,9 +413,7 @@ const DatePickerWithHover = ({ onClose, packageId, type = "attraction" }) => {
               value={ticketType}
               onChange={(e) => setTicketType(e.target.value)}
             >
-              <option value="VIP">VIP</option>
-              <option value="Standard">Standard</option>
-              <option value="Premium">Premium</option>
+              <option value="Standard" selected>Standard</option>
             </select>
           </div>
           {error && <div className="room-alert mt-2">{error}</div>}

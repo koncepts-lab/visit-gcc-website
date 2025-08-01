@@ -228,8 +228,8 @@ const VerifyOtp = () => {
         // Create profile after successful login
         await createProfile(loginToken);
 
-        // Redirect to home page
-        window.location.href = "/";
+        // Redirect to 2 pages before we came to login
+        window.history.go(-2); 
       } else {
         enqueueSnackbar(response.data.message, { variant: "error" });
         if (

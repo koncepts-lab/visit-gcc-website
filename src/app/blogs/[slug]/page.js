@@ -144,10 +144,10 @@ function Page() {
               );
               return {
                 ...category,
-                blogCount: (countResponse.data.data || []).length,
+                blogCount: countResponse.data?.length || 0,
               };
             } catch {
-              return { ...category, blogCount: 0 };
+              return { ...category, blogCount };
             }
           })
         );
@@ -186,7 +186,7 @@ function Page() {
             className="col-12 d-flex justify-content-center text-black pb-3"
             style={{ fontWeight: "600" }}
           >
-            Blog Page
+            
           </h1>
           <div className="d-flex flex-column-reverse flex-lg-row gap-xl-4 gap-lg-3 gap-md-4">
             <div className="col-lg-8 col-12 ">
@@ -207,7 +207,7 @@ function Page() {
                   className="d-flex justify-content-between px-4"
                   style={{ marginTop: "-36px", fontWeight: 500 }}
                 >
-                  <p className="text-grey">
+                  <p className="text-muted">
                     Date:{" "}
                     <span className="text-white">
                       {formatDate(slugblog.creation_date)}
@@ -217,7 +217,7 @@ function Page() {
                 <p className={`${style["all-title"]} pt-3 my-2 pb-1`}>
                   {slugblog.heading}
                 </p>
-                <p className="" style={{ fontSize: "15px" }}>
+                <p className="text-black" style={{ fontSize: "15px" }}>
                   {slugblog.description1}
                 </p>
                 <div className={`${style["quotes_div"]} pt-4`}>
@@ -243,7 +243,7 @@ function Page() {
                     </div>
                   </div>
                 </div>
-                <p className="pb-3 py-5">{slugblog.description2}</p>
+                <p className="pb-3 py-5 text-black">{slugblog.description2}</p>
                 <div className="container">
                   {faqData.map((item, index) => (
                     <AccordionItem
@@ -305,7 +305,7 @@ function Page() {
                           : ""
                       }
                     >
-                      <FaLinkedin color="#0077B5 " size={20} />
+                    <FaLinkedin color="#0077B5 " size={20}  className="ms-1"/>
                     </LinkedinShareButton>
                   </p>
                 </div>
@@ -328,7 +328,7 @@ function Page() {
                     >
                       {slugblog.author_name}
                     </p>
-                    <p className="col-md-11 col-12">
+                    <p className="col-md-11 col-12" style={{color: '#989b9e'}}>
                       {slugblog.author_description}
                     </p>
                   </div>
@@ -389,7 +389,7 @@ function Page() {
                         className={`col-12 d-flex justify-content-between`}
                       >
                         {cat.category}
-                        <span className="">{cat.blogCount}</span>
+                        <span className="">{cat.blogCount  || 0}</span>
                       </button>
                     </Link>
                   ))}

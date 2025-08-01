@@ -57,11 +57,9 @@ function Country() {
         <div className="container">
           <div className="row">
             <div className="col-md-12">
-              <h3>A Blend of Ancient Traditions and Modern Wonders</h3>
+              <h3>Where Tradition Meets Tomorrow </h3>
               <p>
-                Funding freemium technology focus equity bootstrapping user
-                niche market. Seed round agile growth hacking return investment
-                alpha investor advisor marketing pitch.
+                 Explore the UAE’s fascinating blend of Bedouin heritage and futuristic visions. Savor world-class cuisine, discover cultural traditions, visit bustling souks (markets), and experience breathtaking architectural marvels in modern cities and across captivating desert landscapes. Taste the sweetness of dates and the aroma of Arabic coffee.
               </p>
             </div>
           </div>
@@ -165,11 +163,10 @@ function Country() {
           <div className="container">
             <div className="row">
               <div className="col-md-12 pb-3">
-                <h3>Experience</h3>
+                <h3>Latest Stories & Updates</h3>
                 <p>
-                  Funding freemium technology focus equity bootstrapping usernce
-                  niche market. Seed round agile growth hacking retur investment
-                  alpha investor advisor marketing pitch.
+                  Stay updated with the latest travel stories, news, and insights from across the GCC.
+
                 </p>
               </div>
             </div>

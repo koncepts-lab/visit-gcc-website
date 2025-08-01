@@ -56,12 +56,11 @@ function Country() {
       <div className={style["section-normal"]}>
         <div className="container">
           <div className="row">
-            <div className="col-md-12">
-              <h3>A Blend of Ancient Traditions and Modern Wonders</h3>
-              <p>
-                Funding freemium technology focus equity bootstrapping user
-                niche market. Seed round agile growth hacking return investment
-                alpha investor advisor marketing pitch.
+            <div className="col-md-12 mt-3">
+              <h3>A Tapestry of Culture & Vision</h3>   
+                         <p>
+              Experience Qatar's deep-rooted heritage, blossoming arts scene, and diverse culinary scene that blends tradition with modern sophistication. Explore museums showcasing Islamic art, indulge in Machboos (a spiced rice dish), and discover a country that is rapidly evolving on the world stage
+
               </p>
             </div>
           </div>
@@ -165,11 +164,10 @@ function Country() {
           <div className="container">
             <div className="row">
               <div className="col-md-12 pb-3">
-                <h3>Experience</h3>
+                <h3>Latest Stories & Updates</h3>
                 <p>
-                  Funding freemium technology focus equity bootstrapping usernce
-                  niche market. Seed round agile growth hacking retur investment
-                  alpha investor advisor marketing pitch.
+                  Stay updated with the latest travel stories, news, and insights from across the GCC.
+
                 </p>
               </div>
             </div>

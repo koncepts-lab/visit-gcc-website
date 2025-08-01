@@ -158,7 +158,7 @@ function Page() {
                 <div className="d-flex align-items-start gap-2 mb-3">
                   <span>
                     <PiSealCheckFill className={style["PiSealCheckFill"]} />{" "}
-                    Recommended by {event.recommendationPercentage || 99}% of
+                    Recommended by 
                     travellers{" "}
                   </span>
                   <span>

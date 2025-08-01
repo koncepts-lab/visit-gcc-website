@@ -134,7 +134,9 @@ function Page() {
               />
             </div>
             <div className="col-md-12">
-              <button className={style["btn-three"]}>FULL PROJECTS</button>
+              <Link href="/tour-package">
+              <button className={style["btn-three"]}>View All</button>
+              </Link>
             </div>
           </div>
         </div>

@@ -57,11 +57,9 @@ function Country() {
         <div className="container">
           <div className="row">
             <div className="col-md-12">
-              <h3>A Blend of Ancient Traditions and Modern Wonders</h3>
+              <h3>The Kingdom of Heritage & Innovation </h3>
               <p>
-                Funding freemium technology focus equity bootstrapping user
-                niche market. Seed round agile growth hacking return investment
-                alpha investor advisor marketing pitch.
+             Discover ancient history, pilgrimage sites, and rich cultural traditions in the heart of the Arabian Peninsula. Experience authentic flavors like Kabsa and Jareesh, explore bustling markets, and witness the Kingdom's ambitious transformation that bridges its past and future. Delve into the story of Saudi Arabia.
               </p>
             </div>
           </div>
@@ -165,11 +163,10 @@ function Country() {
           <div className="container">
             <div className="row">
               <div className="col-md-12 pb-3">
-                <h3>Experience</h3>
+                 <h3>Latest Stories & Updates</h3>
                 <p>
-                  Funding freemium technology focus equity bootstrapping usernce
-                  niche market. Seed round agile growth hacking retur investment
-                  alpha investor advisor marketing pitch.
+                  Stay updated with the latest travel stories, news, and insights from across the GCC.
+
                 </p>
               </div>
             </div>

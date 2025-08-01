@@ -302,6 +302,7 @@ const AttractionsPage = () => {
 
   return (
     <>
+    
       <Banner
         title="Explore Attractions"
         subTitle="Discover amazing places and experiences"

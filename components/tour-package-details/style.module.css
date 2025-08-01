@@ -61,8 +61,7 @@
 
 .tabButtons {
     display: flex;
-    gap: 10px;
-   
+    gap: 10px; 
 }
 
 .tabButton {
@@ -154,8 +153,16 @@ border:none;
 
 .accordionContent {
     padding: 10px 30px;
+    color: #000;
 }
 
+.promoinput{
+    border: 1px solid #ccc !important;
+    border-radius: 6px !important;
+    padding-top: 5px;
+    padding-left: 5px;
+
+}
 
 .package-inclusions-tabs li{
     background-color:rgba(255, 0, 0, 0);

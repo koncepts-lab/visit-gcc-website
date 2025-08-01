@@ -37,22 +37,22 @@ const LoginRegisterTabs = () => {
   const { enqueueSnackbar } = useSnackbar();
 
   // const SocialLoginButtons = () => (
-  //   <div className="mt-4">
-  //     <div className={`${styles['social-buttons']} mt-3`}>
-  //       <button className="btn-facebook">
-  //         <FaFacebook size={18} className="me-2" />
-  //         Facebook
-  //       </button>
-  //       <button className="btn-twitter">
-  //         <FaTwitter size={18} className="me-2" />
-  //         Twitter
-  //       </button>
-  //       <button className="btn-google text-black" style={{ border: '1px black solid' }}>
-  //         <FcGoogle size={18} className="me-2" />
-  //         Google
-  //       </button>
-  //     </div>
-  //   </div>
+  //    <div className="mt-4">
+  //      <div className={`${styles['social-buttons']} mt-3`}>
+  //        <button className="btn-facebook">
+  //          <FaFacebook size={18} className="me-2" />
+  //          Facebook
+  //        </button>
+  //        <button className="btn-twitter">
+  //          <FaTwitter size={18} className="me-2" />
+  //          Twitter
+  //        </button>
+  //        <button className="btn-google text-black" style={{ border: '1px black solid' }}>
+  //          <FcGoogle size={18} className="me-2" />
+  //          Google
+  //        </button>
+  //      </div>
+  //    </div>
   // );
 
   const validatePanNumber = (pan) => {
@@ -61,14 +61,14 @@ const LoginRegisterTabs = () => {
   };
 
   // Fix for the confirm password eye icon - replace this line:
-  {
-    showPassword ? <BsEyeSlashFill /> : <BsEyeFill />;
-  }
+  // {
+  //   showPassword ? <BsEyeSlashFill /> : <BsEyeFill />;
+  // }
 
   // With this line:
-  {
-    showConfirmPassword ? <BsEyeSlashFill /> : <BsEyeFill />;
-  }
+  // {
+  //   showConfirmPassword ? <BsEyeSlashFill /> : <BsEyeFill />;
+  // }
 
   // Also, to make the error disappear in real-time as the user types,
   // modify the validatePasswords function to be called on every input change:
@@ -247,12 +247,27 @@ const LoginRegisterTabs = () => {
       }
     } catch (error) {
       console.error("Error during registration:", error);
-      enqueueSnackbar("Registration Failed!", { variant: "error" });
 
       if (error.response && error.response.data) {
-        setFormErrors(error.response.data.errors || {});
-        //console.log(error.response.data.message || "Registration failed.");
-        enqueueSnackbar("Registration Failed!", { variant: "error" });
+        // Check if the error is specifically "The email has already been taken."
+        if (
+          error.response.data.errors &&
+          error.response.data.errors.email &&
+          error.response.data.errors.email.includes(
+            "The email has already been taken."
+          )
+        ) {
+          // Only update formErrors for email, do not show snackbar
+          setFormErrors({ ...formErrors, email: "This email is already in use." });
+        } else {
+          setFormErrors(error.response.data.errors || {});
+          enqueueSnackbar("Registration Failed!", { variant: "error" });
+        }
+      } else {
+        // For network errors or other unexpected issues without a response
+        enqueueSnackbar("An unexpected error occurred during registration.", {
+          variant: "error",
+        });
       }
     } finally {
       setIsLoading(false);
@@ -437,7 +452,7 @@ const LoginRegisterTabs = () => {
                   color: "black",
                 }}
               >
-                {showPassword ? <BsEyeSlashFill /> : <BsEyeFill />}
+                {showConfirmPassword ? <BsEyeSlashFill /> : <BsEyeFill />}
               </button>
             </div>
             {formErrors.password_confirmation && (

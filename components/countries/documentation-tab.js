@@ -697,7 +697,7 @@ const DocumentationTabs = ({ countryName }) => {
                       aria-controls="important-apps"
                       aria-selected="true"
                     >
-                      Important Apps
+                      Usefull Apps
                     </button>
                   </li>
                   <li

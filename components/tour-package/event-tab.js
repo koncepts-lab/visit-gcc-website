@@ -231,15 +231,12 @@ const TourPackageTab = ({
 
                 {masonryLoading ? (
                   <div className="text-center py-5">
-                    <BeatLoader
-                      color={"#0000FF"}
-                      loading={masonryLoading}
-                      size={15}
-                    />
+                    <video src="/images/loader.webm" autoPlay loop muted  style={{height: '250px', width: '250px'}}></video>
+
                   </div>
                 ) : filteredPackages.length === 0 ? (
                   <div className="text-center py-5">
-                    <p>
+                    <p className="text-black">
                       No packages match the selected filters. Try changing your
                       selection.
                     </p>

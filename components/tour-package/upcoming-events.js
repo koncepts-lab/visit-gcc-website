@@ -257,12 +257,12 @@ function UpcomingEvents() {
                                     </span>
                                   </span>
                                 </div>
-                                <div className="border-top col-12 pt-3 pb-1">
+                                <div className=" col-12 pt-0 ">
                                   <ul
                                     className={style["plus-ul-upcoming"]}
                                     style={{
-                                      paddingBottom: "90px",
-                                      right: "20px",
+                                      paddingBottom: "70px",
+                                      right: "19px",
                                     }}
                                   >
                                     {/* --- FIX START --- */}
@@ -305,10 +305,10 @@ function UpcomingEvents() {
                                     {/* --- FIX END --- */}
                                   </ul>
                                   <button
-                                    className={style["btn-plus"]}
+                                    className={style["btn-plus2"]}
                                     style={{
-                                      marginTop: "-35px",
-                                      right: "20px",
+                                      // marginTop: "-35px",
+                                      // right: "50px",
                                     }}
                                     // Corrected onClick to pass the item's index
                                     onClick={() => toggleExpand(index)}
@@ -317,13 +317,14 @@ function UpcomingEvents() {
                                   </button>
                                   <div
                                     className={` ${
-                                      style["provider-date"]
-                                    } ps-xl-3 ps-lg-4 ps-4 d-flex flex-xl-row flex-lg-${
+                                      style["date-provider"]
+                                    } ps-xl-3 ps-lg-4 ps-4 d-flex  text-black align-items-center flex-xl-row flex-lg-${
                                       isExpanded ? "row" : "column"
                                     }`}
+                                    // style={{padding: '5px 0',marginTop: '50px', borderTop: '1px solid black'}}
                                   >
                                     <p
-                                      className={`pe-lg-${
+                                      className={`align-items-center text-black pt-3 pe-lg-${
                                         isExpanded ? "3" : "1"
                                       } pe-3`}
                                     >
@@ -334,7 +335,7 @@ function UpcomingEvents() {
                                       >
                                         <FaUserCircle size={27} color="grey" />
                                       </span>
-                                      <span className="fw-semibold text-black-50 col-12">
+                                      <span className="fw-semibold align-self-center text-black-50 col-12">
                                         BY:{" "}
                                       </span>
                                       {event.provider}
@@ -347,11 +348,11 @@ function UpcomingEvents() {
                                       |
                                     </span>
                                     <p
-                                      className={` d-block d-lg-${
+                                      className={`pt-3 d-block text-black d-lg-${
                                         isExpanded ? "block" : "none"
                                       }`}
                                     >
-                                      {event.date}
+                                      {event.start_date}
                                     </p>
                                   </div>
                                 </div>
