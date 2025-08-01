@@ -7,7 +7,7 @@ import dynamic from "next/dynamic";
 import { IoIosStar, IoIosStarOutline } from "react-icons/io";
 import axios from "axios";
 import { useSnackbar } from "notistack";
-import { useRouter } from "next/navigation"; // MODIFIED: Import useRouter
+import { useRouter } from "next/navigation";
 
 const SlickCarousel = dynamic(() => import("react-slick"), {
   ssr: false,
@@ -38,7 +38,7 @@ function RatingCarousel({ packageId, type }) {
   const [overallRating, setOverallRating] = useState(0);
   const [totalReviews, setTotalReviews] = useState(0);
   const { enqueueSnackbar } = useSnackbar();
-  const router = useRouter(); // MODIFIED: Initialize the router
+  const router = useRouter();
 
   // Determine the API endpoint based on type
   const getApiEndpoint = () => {
@@ -100,6 +100,7 @@ function RatingCarousel({ packageId, type }) {
   };
 
   const ratingLabels = {
+    0: "No Reviews Yet",
     1: "Poor",
     2: "Fair",
     3: "Average",
@@ -112,7 +113,6 @@ function RatingCarousel({ packageId, type }) {
     setRatingText(ratingLabels[selectedRating] || "");
   };
 
-  // MODIFIED: This function now checks for authentication before showing the review form
   const handleAddReviewClick = () => {
     const loginToken = localStorage.getItem("auth_token_login");
     const authToken = loginToken;
@@ -276,7 +276,11 @@ function RatingCarousel({ packageId, type }) {
           <div className="d-flex justify-content-between align-items-center">
             <p className="mb-0">
               <IoIosStar color="#FDCC0D" /> {overallRating.toFixed(1)}
-               · {getRatingText(overallRating)} · ({totalReviews} reviews)
+               · 
+              {totalReviews > 0
+                ? getRatingText(overallRating)
+                : "No reviews yet"}
+               · ({totalReviews} reviews)
             </p>
             <button
               className={`${style["tabButton"]}`}
@@ -315,13 +319,13 @@ function RatingCarousel({ packageId, type }) {
           </div>
           <div className="d-flex flex-sm-row flex-column gap-2">
             <textarea
-              className={`${style["promo_input"]} col-md-11 `}
+              className={`${style["promoinput"]} col-md-11`}
               placeholder="Your review..."
               value={reviewText}
               onChange={(e) => setReviewText(e.target.value)}
             />
             <button
-              className={`${style["tabButton"]} `}
+              className={`${style["tabButton"]}`} style={{maxHeight: '50px'}}
               onClick={handleSendReview}
               disabled={isLoading}
             >

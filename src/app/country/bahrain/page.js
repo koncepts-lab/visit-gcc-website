@@ -57,11 +57,9 @@ function Country() {
         <div className="container">
           <div className="row">
             <div className="col-md-12">
-              <h3>A Blend of Ancient Traditions and Modern Wonders</h3>
+              <h3> The Island Jewel: A Crossroads of Cultures</h3>
               <p>
-                Funding freemium technology focus equity bootstrapping user
-                niche market. Seed round agile growth hacking return investment
-                alpha investor advisor marketing pitch.
+                 Explore Bahrain's ancient history, rich traditions, and delightful seafood and Arabian cuisine. From the ancient Dilmun civilization to the vibrant souks, Bahrain offers a unique blend of cultural influences and modern experiences. Taste the flavors of Muhammar rice and indulge in the sweet treat of Halwa Bahraini.
               </p>
             </div>
           </div>
@@ -165,11 +163,10 @@ function Country() {
           <div className="container">
             <div className="row">
               <div className="col-md-12 pb-3">
-                <h3>Experience</h3>
+                 <h3>Latest Stories & Updates</h3>
                 <p>
-                  Funding freemium technology focus equity bootstrapping usernce
-                  niche market. Seed round agile growth hacking retur investment
-                  alpha investor advisor marketing pitch.
+                  Stay updated with the latest travel stories, news, and insights from across the GCC.
+
                 </p>
               </div>
             </div>

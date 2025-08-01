@@ -19,12 +19,12 @@ const HighlightContent = ({ highlightPoints, itemType }) => {
     <>
       <h3 className="fw-medium mb-3">Highlight</h3>
       {highlightPoints.map((point, index) => (
-        <div key={index} className="d-flex align-items-start mb-2">
+        <div key={index} className="d-flex align-items-start mb-2 text-black" >
           <HiOutlineArrowLongRight
             className="me-2 mt-1 text-primary"
             size={20}
           />
-          <p className="mb-0 fw-light">
+          <p className="mb-0 fw-normal">
             {/* Assuming point can be a string or an object with a 'description' property */}
             {typeof point === "object" && point.description
               ? point.description
@@ -103,11 +103,24 @@ const NoteContent = ({ notes, itemType }) => {
       </p>
     );
   }
+
+    const formatNotesWithLineBreaks = (text) => {
+    if (typeof text !== 'string' || !text) {
+      return ''; // Return empty string if not a string or empty
+    }
+    // Replace each period followed by a space (or end of string) with a period and a <br/> tag
+    // This regex handles cases where a period might not be immediately followed by a space,
+    // like at the end of a sentence.
+    return text.replace(/; ?/g, ';<br/>');
+  };
+
+  const formattedNotes = formatNotesWithLineBreaks(notes);
+
   return (
     <>
-      <h3 className="fw-medium mb-3">Important Note</h3>
+      <h3 className="fw-medium mb-3 text-black">Important Note</h3>
       {/* If notes is expected to be an array of objects, map it here */}
-      <div className="fw-light" dangerouslySetInnerHTML={{ __html: notes }} />
+      <div className="fw-normal text-black" dangerouslySetInnerHTML={{ __html: formattedNotes }} />
     </>
   );
 };
@@ -244,9 +257,7 @@ export default function HighlightTab({ itemId, itemType = "packages" }) {
     ) {
       return (
         <div className="text-center p-4">
-          <div className="spinner-border spinner-border-sm" role="status">
-            <span className="visually-hidden">Loading...</span>
-          </div>
+         <video src="/images/loader.webm" autoPlay loop muted style={{height: '250px', width: '250px'}}/>
         </div>
       );
     }

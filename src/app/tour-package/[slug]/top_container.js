@@ -149,7 +149,7 @@ export default function Top_container({ packageId }) {
         <div className="row" style={{ marginLeft: "16px" }}>
           <div className="col-md-7" style={{ padding: "0px" }}>
             <h3>
-              {packageDetails.number_of_days} DAYS IN {packageDetails.name}
+               {packageDetails.name}
             </h3>
             <p>
               <Link href="#0">{vendorName || ""}</Link>
@@ -165,7 +165,7 @@ export default function Top_container({ packageId }) {
               </span>
               <span className="mb-2 mb-lg-0 fs-8 fs-lg-7 d-flex align-items-start gap-2">
                 <PiSealCheckFill className={style["PiSealCheckFill"]} />{" "}
-                Recommended by 99% of travellers{" "}
+                Top pick by Travellers{" "}
                 <span>
                   <button
                     onClick={handleShareClick}
@@ -235,7 +235,7 @@ export default function Top_container({ packageId }) {
 
           <div className="col-md-5 align-items">
             <div className={style["mobile-mrb"]}>
-              <h3>{packageDetails.name}</h3>
+              <h3>Trip Overview</h3>
               <p>{packageDetails.description}</p>
             </div>
           </div>

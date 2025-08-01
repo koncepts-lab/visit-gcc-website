@@ -122,9 +122,10 @@ function Page() {
                     const countResponse = await axios.get(
                       `${process.env.NEXT_PUBLIC_API_URL}blog/${category.uuid_id}/get-blogs-by-category`
                     );
+                    console.log(countResponse.data.length)
                     return {
                       ...category,
-                      blogCount: (countResponse.data.data || []).length,
+                      blogCount: countResponse.data?.length || 0,
                     };
                   } catch {
                     return { ...category, blogCount: 0 };
@@ -188,6 +189,7 @@ function Page() {
         `${process.env.NEXT_PUBLIC_API_URL}blog/${categoryId}/get-blogs-by-category`
       );
       const categoryBlogs = response.data.data || response.data || [];
+      console.log(categoryBlogs.length);
       setFilteredBlogs(categoryBlogs);
       setCurrentPage(1);
       setActiveFilter({ type: "category", id: categoryId });
@@ -266,7 +268,7 @@ function Page() {
             className="col-12 d-flex justify-content-center pb-3 text-black"
             style={{ fontWeight: "600" }}
           >
-            Blog Page
+            Updates
           </h1>
           <div className=" d-flex flex-lg-row flex-column-reverse gap-xl-4 gap-lg-3 gap-md-4 ">
             <div className="col-lg-8 col-12 ">
@@ -298,11 +300,11 @@ function Page() {
                       <p className={`${style["all-title"]} pt-3 my-2 pb-1`}>
                         {blog.heading}
                       </p>
-                      <p className="">
-                        Date: <span>{formatDate(blog.creation_date)}</span>
+                      <p >
+                        Date: <span className="text-black-50">{formatDate(blog.creation_date)}</span>
                       </p>
                     </Link>
-                    <p style={{ fontSize: "15px" }}>{blog.description1}</p>
+                    <p style={{ fontSize: "15px" }} className="text-black-50">{blog.description1}</p>
                     <div
                       className={`${style["blog-left-button"]} d-flex flex-row justify-content-between col-12 pt-2`}
                     >
@@ -329,7 +331,7 @@ function Page() {
                           <ThreadsIcon size={18} borderRadius={15} />
                         </ThreadsShareButton>
                         <LinkedinShareButton url={shareUrl}>
-                          <FaLinkedin color="#0077B5 " size={20} />
+                          <FaLinkedin color="#0077B5 " size={20}  className="ms-1"/>
                         </LinkedinShareButton>
                       </p>
                     </div>

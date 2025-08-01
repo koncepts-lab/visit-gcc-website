@@ -42,19 +42,21 @@ const PackageInclusionsAndExclusions = ({ packageId, type = "package" }) => {
           axios.get(exclusionsUrl),
         ]);
 
-        const fetchedInclusions =
+        let fetchedInclusions =
           inclusionsResponse.data.data || inclusionsResponse.data || [];
+        // Sort inclusions to show the newest first (assuming higher ID is newer)
+        fetchedInclusions.sort((a, b) => b.id - a.id);
         setInclusions(fetchedInclusions);
         if (fetchedInclusions.length > 0) {
-          // Assuming the data structure is the same (has a 'title' property)
-          setKeyInclusions(fetchedInclusions[0].title); 
+          setKeyInclusions(fetchedInclusions[0].title);
         }
 
-        const fetchedExclusions =
+        let fetchedExclusions =
           exclusionsResponse.data.data || exclusionsResponse.data || [];
+        // Sort exclusions to show the newest first (assuming higher ID is newer)
+        fetchedExclusions.sort((a, b) => b.id - a.id);
         setExclusions(fetchedExclusions);
         if (fetchedExclusions.length > 0) {
-           // Assuming the data structure is the same (has a 'title' property)
           setKeyExclusions(fetchedExclusions[0].title);
         }
       } catch (err) {
@@ -70,7 +72,7 @@ const PackageInclusionsAndExclusions = ({ packageId, type = "package" }) => {
 
   const noDataAvailable =
     !isLoading && !error && inclusions.length === 0 && exclusions.length === 0;
-  
+
   // Dynamic labels for UI elements
   const typeLabel = type === 'attraction' ? 'Attraction' : 'Package';
   const inclusionTitle = type === 'attraction' ? ' Inclusions' : 'Package Inclusions';
@@ -81,9 +83,8 @@ const PackageInclusionsAndExclusions = ({ packageId, type = "package" }) => {
     <Container>
       {isLoading ? (
         <div className="text-center p-4">
-            <div className="spinner-border spinner-border-sm" role="status">
-                <span className="visually-hidden">Loading...</span>
-            </div>
+                     <video src="/images/loader.webm" autoPlay loop muted style={{height: '250px', width: '250px'}}/>
+            
         </div>
       ) : error ? (
         <div className="alert alert-warning text-center p-4">{error}</div>
@@ -112,7 +113,7 @@ const PackageInclusionsAndExclusions = ({ packageId, type = "package" }) => {
                   >
                     <Row>
                       <Col>
-                        <p className="text-justify">{inclusion.description}</p>
+                        <p className="text-justify text-black">{inclusion.description}</p>
                       </Col>
                     </Row>
                   </Tab>
@@ -140,7 +141,7 @@ const PackageInclusionsAndExclusions = ({ packageId, type = "package" }) => {
                   >
                     <Row>
                       <Col>
-                        <p className="text-justify">{exclusion.description}</p>
+                        <p className="text-justify text-black">{exclusion.description}</p>
                       </Col>
                     </Row>
                   </Tab>

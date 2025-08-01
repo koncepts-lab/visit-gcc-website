@@ -103,10 +103,10 @@ const HolidaysTab = (props) => {
               />
               <div className={`col-6 p-0 ${style["vertical-center"]}`}>
                 <div className={style["tour-holidays-text"]}>
-                  <h5>Destination</h5>
-                  <h6>{getItem(0).name || "Destination Name"}</h6>
+                  <h5 className="text-black">Destination</h5>
+                  <h6 className="text-black">{getItem(0).name || "Destination Name"}</h6>
                   <span className={style["line"]}></span>
-                  <p>{description}</p>
+                  <p className="text-black-50">{description}</p>
                   {/* <ul>
                     <li><Link href="#0" className={style["fb"]}><FaFacebookF /></Link></li>
                     <li><Link href="#0" className={style["tw"]}><FaTwitter /></Link></li>

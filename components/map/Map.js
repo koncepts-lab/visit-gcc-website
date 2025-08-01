@@ -8,8 +8,8 @@ const GoogleMap = ({ latitude, longitude, zoom = 14 }) => {
   const mapUrl = `https://www.google.com/maps?q=${latitude},${longitude}&z=${zoom}&output=embed`;
 
   return (
-    <div className="container my-4">
-      <div className="ratio ratio-21x9 border rounded shadow">
+    <div className="col-md-10 col-12 mx-auto my-4">
+      <div className="ratio ratio-21x9 ratio border rounded shadow">
         <iframe
           src={mapUrl}
           allowFullScreen

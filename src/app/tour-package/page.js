@@ -88,6 +88,8 @@ const TourPackage = () => {
 
   const firstBreakPoints = { 350: 1, 750: 2, 1200: 3, 1500: 4 };
   const secondBreakPoints = { 350: 1, 750: 2, 1200: 3, 1500: 3 };
+  const clearPriceFilter = () => setPriceRange([30, 10000]);
+  const clearDurationFilter = () => setDurationRange([1, 30]);
 
   const handleToggle = () => setIsToggled(!isToggled);
   const handlePriceRangeChange = (values) => setPriceRange(values);
@@ -364,9 +366,19 @@ const TourPackage = () => {
                       />
                     )}
                   />
-                  <p>
+                    <div className="d-flex justify-content-between align-items-center mt-2">
+                                      <p className="mb-0" style={{ fontSize: "0.9em" }}>
                     Price Range: AED {priceRange[0]} — AED {priceRange[1]}
-                  </p>
+                                      </p>
+                                      <button
+                                        onClick={clearPriceFilter}
+                                        className="btn btn-link text-primary p-0"
+                                        style={{ fontSize: "0.9em" }}
+                                      >
+                                        Clear
+                                      </button>
+                                    </div>
+                  
                 </div>
                 <div className={style["filter-header"]}>
                   <h4>Duration</h4>
@@ -405,9 +417,18 @@ const TourPackage = () => {
                       />
                     )}
                   />
-                  <p>
+                  <div className="d-flex justify-content-between align-items-center mt-2">
+                                      <p className="mb-0" style={{ fontSize: "0.9em" }}>
                     Days: {durationRange[0]} — {durationRange[1]} Days
-                  </p>
+                                      </p>
+                                      <button
+                                        onClick={clearDurationFilter}
+                                        className="btn btn-link text-primary p-0"
+                                        style={{ fontSize: "0.9em" }}
+                                      >
+                                        Clear
+                                      </button>
+                                    </div>
                 </div>
                 <div className={style["accordion-range"]}>
                   {accordionData.map((accordion, index) => (
@@ -415,7 +436,7 @@ const TourPackage = () => {
                       key={accordion.title}
                       title={accordion.title}
                       items={accordion.items || []}
-                      isOpenInitially={true}
+                      isOpenInitially={index < 2}
                       onItemClick={(itemId) =>
                         handleAccordionItemClick(index, itemId)
                       }
@@ -455,8 +476,8 @@ const TourPackage = () => {
               <h3>Tour Packages</h3>
               {noResultsFound ? (
                 <div className={style["no-results"]}>
-                  <h4>No packages found matching your criteria</h4>
-                  <p>
+                  <h4 className="text-black">No packages found matching your criteria</h4>
+                  <p className="text-black">
                     Please try adjusting your selections or clear the filters.
                   </p>
                   <button

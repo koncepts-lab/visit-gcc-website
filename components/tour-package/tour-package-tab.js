@@ -163,7 +163,7 @@ const TourPackageTab = ({
     if (isLoading) {
       return (
         <div className="text-center py-5">
-          <BeatLoader color={"#0000FF"} loading={isLoading} size={15} />
+                    <video src="/images/loader.webm" autoPlay loop muted  style={{height: '250px', width: '250px'}}></video>
         </div>
       );
     }
@@ -175,7 +175,7 @@ const TourPackageTab = ({
     if (!filteredPackages || filteredPackages.length === 0) {
       return (
         <div className="text-center py-5">
-          <p>No packages found. Try selecting a different category.</p>
+          <p className="text-black">No packages found. Try selecting a different category.</p>
         </div>
       );
     }

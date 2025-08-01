@@ -6,14 +6,8 @@ import style from "./style.module.css";
 const GlobalLoader = () => {
   return (
     <div className={style.loaderOverlay}>
-      <div className={style.loaderContainer}>
-        <img
-          src="/images/logo.svg"
-          alt="Visit GCC Logo"
-          className={style.loaderLogo}
-        />
-        <div className={style.loaderSpinner}></div>
-        <p className={style.loaderText}>Loading, please wait...</p>
+      <div className={style.loaderContainer}>    
+         <video src="/images/loader.webm" autoPlay loop muted style={{height: '250px', width: '250px'}}/>   
       </div>
     </div>
   );

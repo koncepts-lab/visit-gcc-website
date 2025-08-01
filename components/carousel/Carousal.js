@@ -88,7 +88,7 @@ function Carousal({
       type !== "home-blog" &&
       type !== "upcoming-events",
     infinite: data && data.length > 1,
-    speed: 500, // Default speed
+    speed: 700, // Default speed
     slidesToShow: count,
     slidesToScroll: 1,
     autoplay: true,
@@ -125,7 +125,7 @@ function Carousal({
           centerPadding: "50px",
           slidesToScroll: 1,
           infinite: data && data.length > 1,
-          dots: false,
+          dots: true,
 
           // --- THIS IS THE KEY CHANGE ---
           // Set speed dynamically based on the carousel 'type' for mobile.

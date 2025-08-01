@@ -221,8 +221,7 @@ export default function AttractionTopContainer({ packageId }) {
               {attractionDetails.recommendation_percentage && (
                 <span className="d-flex align-items-center me-3 mb-2 text-muted small">
                   <PiSealCheckFill className="text-success me-1" size={18} />
-                  Recommended by {attractionDetails.recommendation_percentage}%
-                  of travellers
+                  Top Pick by Travellers
                 </span>
               )}
               <span>
@@ -274,7 +273,7 @@ export default function AttractionTopContainer({ packageId }) {
           <div className="col-lg-5 col-md-12 align-items-start">
             <div className={`${style["mobile-mrb"]} mt-3 mt-lg-0 ps-lg-3`}>
               <h3 className="fw-bold" style={{ fontSize: "1.5rem" }}>
-                {itemName}
+                Trip Overview
               </h3>
               <p
                 className="text-muted"

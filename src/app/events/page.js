@@ -444,7 +444,7 @@ const Country = () => {
           </Link>
         </div>
 
-        <div className="container-fluid py-lg-5">
+        <div className="container-fluid py-lg-5 mb-md-5 mb-2">
           <div className="row">
             <div className="col-md-12">
               <Carousal
@@ -529,7 +529,7 @@ const Country = () => {
                         key={index}
                         title={accordion.title}
                         items={accordion.items}
-                        isOpenInitially={true}
+                      isOpenInitially={index < 2}
                         onItemClick={(clickedId) =>
                           handleAccordionItemClick(index, clickedId)
                         }
@@ -555,7 +555,7 @@ const Country = () => {
                   isToggled ? style["filter-full-width"] : ""
                 }`}
               >
-                <h3>Explore the Latest Events and Happenings</h3>
+                <h3 className="ms-2">Explore the Latest Events and Happenings</h3>
                 {noResultsFound ? (
                   <div className={style["no-results"]}>
                     <h4>No events found with the selected filters.</h4>
