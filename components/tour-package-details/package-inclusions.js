@@ -83,8 +83,7 @@ const PackageInclusionsAndExclusions = ({ packageId, type = "package" }) => {
     <Container>
       {isLoading ? (
         <div className="text-center p-4">
-                     <video src="/images/loader.webm" autoPlay loop muted style={{height: '250px', width: '250px'}}/>
-            
+           <img src="/images/loader.svg"style={{height: '50px', width: '50px'}}/>   
         </div>
       ) : error ? (
         <div className="alert alert-warning text-center p-4">{error}</div>

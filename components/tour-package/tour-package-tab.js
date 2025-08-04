@@ -163,7 +163,7 @@ const TourPackageTab = ({
     if (isLoading) {
       return (
         <div className="text-center py-5">
-                    <video src="/images/loader.webm" autoPlay loop muted  style={{height: '250px', width: '250px'}}></video>
+                    <img src="/images/loader.svg" style={{height: '50px', width: '50px'}} />
         </div>
       );
     }

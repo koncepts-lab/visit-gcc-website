@@ -7,7 +7,7 @@ const GlobalLoader = () => {
   return (
     <div className={style.loaderOverlay}>
       <div className={style.loaderContainer}>    
-         <video src="/images/loader.webm" autoPlay loop muted style={{height: '250px', width: '250px'}}/>   
+         <img src="/images/loader.svg" style={{height: '50px', width: '50px'}}/>   
       </div>
     </div>
   );
