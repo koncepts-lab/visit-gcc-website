@@ -66,7 +66,7 @@ function Home() {
 
   // The global loader will cover the screen, so no need for a local loading return
   return (
-    <>
+    <section className={style["home-main"]}>
       <Banner />
       <Countries />
 
@@ -134,7 +134,7 @@ function Home() {
       {/* home-experience */}
       <div className={style["home-experience"]}>
         <div className="container">
-          <div className="row">
+          <div className="row pt-md-1 pt-5">
             <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-8 col-sm-9 col-9 pdb-3">
               <h3 className="mb-4">Attractions</h3>
             </div>
@@ -195,7 +195,7 @@ function Home() {
         </div>
       </div>
       {/* home-blog end */}
-    </>
+    </section>
   );
 }
 

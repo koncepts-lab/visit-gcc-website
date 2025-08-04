@@ -6,7 +6,7 @@ import Link from "next/link";
 import { MdOutlineCancel } from "react-icons/md";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { FaSpinner } from "react-icons/fa"; // Imported for the loader icon
+import { FaSpinner } from "react-icons/fa";
 
 const DatePickerWithHover = ({ onClose, eventId, type = "event" }) => {
   const [selectedDate, setSelectedDate] = useState(null);
@@ -25,6 +25,7 @@ const DatePickerWithHover = ({ onClose, eventId, type = "event" }) => {
   const [ticketType, setTicketType] = useState("VIP");
   const router = useRouter();
   const [isBooking, setIsBooking] = useState(false);
+  const [selectedTimeSlot, setSelectedTimeSlot] = useState(null);
 
   useEffect(() => {
     const fetchEventData = async () => {
@@ -35,10 +36,8 @@ const DatePickerWithHover = ({ onClose, eventId, type = "event" }) => {
 
         if (loginToken) {
           authToken = loginToken;
-          //console.log("Using login token for fetching events.");
         } else if (registerToken) {
           authToken = registerToken;
-          //console.log("Using register token for fetching events.");
         }
 
         const response = await axios.get(
@@ -46,7 +45,6 @@ const DatePickerWithHover = ({ onClose, eventId, type = "event" }) => {
         );
 
         const singleEventData = response.data.data || response.data || [];
-        //console.log("events Data:", singleEventData);
         setSlugEvent(singleEventData);
 
         if (!singleEventData.start_date || !singleEventData.end_date) {
@@ -106,8 +104,12 @@ const DatePickerWithHover = ({ onClose, eventId, type = "event" }) => {
 
   const handleDateChange = (date) => {
     if (!isDateInValidRange(date)) return;
-    setSelectedDate(date);
-    setError(null); // Clear error on date selection
+
+    if (selectedDate?.toDateString() !== date.toDateString()) {
+      setSelectedDate(date);
+      setSelectedTimeSlot(null);
+    }
+    setError(null);
   };
 
   const filterAvailableDates = (date) => {
@@ -117,11 +119,6 @@ const DatePickerWithHover = ({ onClose, eventId, type = "event" }) => {
       return date >= today;
     }
     return isDateInValidRange(date);
-  };
-
-  const displaySelectedDateAndTime = () => {
-    if (!selectedDate) return "No date selected";
-    return formatDate(selectedDate);
   };
 
   const formatDate = (date) => {
@@ -135,6 +132,27 @@ const DatePickerWithHover = ({ onClose, eventId, type = "event" }) => {
     return date.toLocaleDateString(undefined, options);
   };
 
+  const formatTime = (timeString) => {
+    if (!timeString) return "";
+    const [hours, minutes] = timeString.split(":");
+    const date = new Date();
+    date.setHours(hours, minutes, 0);
+    return date.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
+  };
+
+  const displaySelectedDateAndTime = () => {
+    if (!selectedDate) return "No date selected";
+    let display = formatDate(selectedDate);
+    if (selectedTimeSlot) {
+      display += ` at ${formatTime(selectedTimeSlot.start_time)}`;
+    }
+    return display;
+  };
+
   const toYyyyMmDd = (date) => {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -143,27 +161,29 @@ const DatePickerWithHover = ({ onClose, eventId, type = "event" }) => {
   };
 
   const handleBookNow = () => {
-    // --- MODIFIED SECTION: Added validation checks ---
     if (!selectedDate) {
       setError("Please select a date to proceed.");
+      return;
+    }
+    if (!selectedTimeSlot) {
+      setError("Please select a time slot to proceed.");
       return;
     }
     if (room.adults === 0 && room.children === 0) {
       setError("Please add at least one adult or child to proceed.");
       return;
     }
-    // --- END OF MODIFICATION ---
 
     const bookingData = {
       start_date: toYyyyMmDd(selectedDate),
       end_date: toYyyyMmDd(selectedDate),
       customer_country: customerCountry,
       ticket_type: ticketType,
+      timeslot_id: selectedTimeSlot.id,
       rooms: [
         { adults: room.adults, children: room.children, infants: room.infant },
       ],
     };
-    //console.log("Submitting Booking Payload:", bookingData);
 
     const authToken =
       localStorage.getItem("auth_token_login") ||
@@ -186,7 +206,7 @@ const DatePickerWithHover = ({ onClose, eventId, type = "event" }) => {
       )
       .then((response) => {
         const bookingId = response.data.data.id;
-        //console.log("Booking API Response:", response);
+        console.log("booking",response.data.data);
         setIsBooking(false);
         onClose();
         router.push(
@@ -205,35 +225,146 @@ const DatePickerWithHover = ({ onClose, eventId, type = "event" }) => {
 
   const customStyles = `
       .react-datepicker__day--highlighted,
-      .react-datepicker__day--selected { background-color: #dbf0e9 !important; color: black !important; border: none !important; font-weight: 600; border-radius: 5px !important; }
+      .react-datepicker__day--selected { 
+        background-color: #dbf0e9 !important; 
+        color: black !important; 
+        border: none !important; 
+        font-weight: 600; 
+        border-radius: 5px !important;
+        overflow: visible; /* Allow timeslots to show */
+      }
       .react-datepicker__day--disabled { opacity: 0.5; cursor: not-allowed; }
       .react-datepicker__day-name { width: 92px !important; padding: 7px 0; font-size: 20px; }
-      .react-datepicker__day { width: 92px !important; cursor: pointer; }
+      .react-datepicker__day { width: 92px !important; cursor: pointer; position: relative; }
       .react-datepicker__day-names { margin-bottom: -20px; }
       .react-datepicker__day { font-weight: 550 }
       .room-alert { background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 4px; margin-top: 10px; font-size: 14px; text-align: center; }
       .custom-date-range-badge { position: absolute; top: 10px; right: 10px; background-color: #5bb3b5; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; }
       @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
       .animate-spin { animation: spin 1s linear infinite; }
+      
+      .date-cell { position: relative; }
+      .time-slots {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background: #5BB3B5;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        z-index: 2;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        padding:10px 10px;
+        font-size: 12px;
+        
+      }
+      .time-slots> * + * {
+          margin-top: 8px;
+        }
+
+      .time-slot {
+          padding: 4px 8px;  
+          border: 1.5px solid white;
+          cursor: pointer;
+          background-color: #5BB3B5;
+          color: white;
+          text-align: center;
+          border-radius: 100px;
+          transition: background-color 0.2s, color 0.2s;
+      }
+      .time-slot.selected {
+        background-color: white;
+        color: #5BB3B5;
+        border: 1.5px solid white;
+        font-weight: 700;
+      }
+
+      .react-datepicker__day:nth-child(7n+1) .time-slots,
+      .react-datepicker__day:nth-child(7n+2) .time-slots,
+      .react-datepicker__day:nth-child(7n+3) .time-slots,
+      .react-datepicker__day:nth-child(7n+4) .time-slots {
+        margin-left: 0px;
+      }
+      
+      .react-datepicker__day:nth-child(7n+5) .time-slots,
+      .react-datepicker__day:nth-child(7n+6) .time-slots,
+      .react-datepicker__day:nth-child(7n) .time-slots {
+        margin-left: -100px;
+      }
+
       @media (max-width: 1200px) {
         .react-datepicker__day { width: 76px !important; padding: 7px 0; font-size: 15px; color: #797979 !important; }
         .react-datepicker__day-names { margin-bottom: -10px; }
         .react-datepicker__day-name { width: 76px !important; padding: 7px 0; font-size: 18px; }
       }
-      @media (max-width: 600px) { .react-datepicker__day, .react-datepicker__day-name { width: 65px !important; } }
+      @media (max-width: 600px) { 
+        .react-datepicker__day, .react-datepicker__day-name { width: 65px !important; } 
+      }
       @media (max-width: 520px) {
         .react-datepicker__day { width: 42px !important; padding: 4px 0; font-size: 15px; color: #797979 !important; }
         .react-datepicker__day-name { width: 42px !important; padding: 4px 0; font-size: 18px; }
         .react-datepicker__day-names { margin-bottom: -10px; }
         .react-datepicker__current-month { padding-bottom: 15px !important; margin-top: -10px !important; }
+        
+        .time-slot {
+            padding: 4px 8px;
+            width: 100%;
+            border-radius: 100px;
+        }
+        .react-datepicker__day:nth-child(7n+1) .time-slots,
+        .react-datepicker__day:nth-child(7n+2) .time-slots,
+        .react-datepicker__day:nth-child(7n+3) .time-slots,
+        .react-datepicker__day:nth-child(7n+4) .time-slots {
+            margin-left: 0px;
+            width: 190px;
+        }
+        .react-datepicker__day:nth-child(7n+5) .time-slots,
+        .react-datepicker__day:nth-child(7n+6) .time-slots {
+            margin-left: -100px;
+            width: 190px;
+        }
+
+        .react-datepicker__day:nth-child(7n) .time-slots {
+         margin-left: -150px;
+            width: 190px;
+}
+
       }
     `;
 
-  const renderDayContents = (day) => <div className="date-cell">{day}</div>;
+  const renderDayContents = (day, date) => {
+    const isSelected = selectedDate?.toDateString() === date.toDateString();
+    const slots = slugEvent?.timeslots;
 
-  // --- MODIFIED SECTION: Logic to disable the proceed button ---
+    return (
+      <div className="date-cell">
+        {day}
+        {isSelected && slots && slots.length > 0 && (
+          <div className="time-slots" onClick={(e) => e.stopPropagation()}>
+            {slots.map((slot) => {
+              const isTimeSelected = selectedTimeSlot?.id === slot.id;
+              return (
+                <div
+                  key={slot.id}
+                  className={`time-slot ${isTimeSelected ? "selected" : ""}`}
+                  onClick={() => setSelectedTimeSlot(slot)}
+                >
+                  {`${formatTime(slot.start_time)} - ${formatTime(
+                    slot.end_time
+                  )}`}
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    );
+  };
+
   const isProceedDisabled =
-    !selectedDate || (room.adults === 0 && room.children === 0) || isBooking;
+    !selectedDate ||
+    !selectedTimeSlot ||
+    (room.adults === 0 && room.children === 0) ||
+    isBooking;
 
   if (isLoading) return <p>Loading...</p>;
   if (error && !slugEvent) return <p>Error: {error}</p>;
@@ -373,6 +504,7 @@ const DatePickerWithHover = ({ onClose, eventId, type = "event" }) => {
               )}
             </div>
           </div>
+
           <div className="my-md-4 my-1 pe-2">
             <label className="text-black">Ticket Type*</label>
             <br />
@@ -386,14 +518,22 @@ const DatePickerWithHover = ({ onClose, eventId, type = "event" }) => {
               value={ticketType}
               onChange={(e) => setTicketType(e.target.value)}
             >
-              <option value="VIP">VIP</option>
-              <option value="Standard">Standard</option>
-              <option value="Premium">Premium</option>
+              <option value="Standard" selected>
+                Standard
+              </option>
             </select>
           </div>
           {error && <div className="room-alert mt-2">{error}</div>}
+          
+          {selectedTimeSlot && (
+            <div className="pt-2 mt-2 pb-0 h-auto d-flex justify-content-center rounded-2" style={{background: '#DBF0E9'}}>
+              <h4 className="align-self-center" style={{color: '#46c1c1ff'}}>
+                Chosen Time: {formatTime(selectedTimeSlot.start_time)} - {formatTime(selectedTimeSlot.end_time)}
+              </h4>
+            </div>
+          )}
+
           <div className="mt-4 flex">
-            {/* --- MODIFIED SECTION: Button with loader and updated disabled logic --- */}
             <button
               onClick={handleBookNow}
               className="bg-blue-600 text-white rounded col-12 d-flex align-items-center justify-content-center"
@@ -416,7 +556,6 @@ const DatePickerWithHover = ({ onClose, eventId, type = "event" }) => {
                 "Proceed"
               )}
             </button>
-            {/* --- END OF MODIFICATION --- */}
           </div>
         </div>
       </div>

@@ -55,6 +55,12 @@
     .home-add-banner img{
         width: 100%;
         float: left;
+        margin-top: 20px;
+        margin-bottom: 20px;
+      }
+
+      .home-main{
+overflow-x: hidden;
       }
 
   }

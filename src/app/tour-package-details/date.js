@@ -285,7 +285,6 @@ const DatePickerWithHover = ({ onClose }) => {
                         return (
                             <div key={index} className="time-slot">
                                 <div className="d-flex justify-content-between">
-                                    <span className="text-green-600">{slot.price}</span>
                                     <input style={{marginTop: "-10px"}}
                                         type="checkbox"
                                         checked={isPriceSelected}evenly

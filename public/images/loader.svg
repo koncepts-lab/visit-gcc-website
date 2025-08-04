@@ -1,0 +1,48 @@
+<svg width="150" height="30" viewBox="0 0 150 30" xmlns="http://www.w3.org/2000/svg" style="background: transparent;">
+  <!--
+    SVG container adjusted for a 10px gap:
+    - Total width: 4 dots (4 * 30px) + 3 gaps (3 * 10px) = 150px.
+    - Height: 30px.
+  -->
+
+  <!-- Dot 1 -->
+  <circle cx="15" cy="15" r="15" fill="#94ceba" opacity="0">
+    <animate 
+      attributeName="opacity"
+      dur="0.85s"
+      repeatCount="indefinite"
+      values="0; 1; 1; 0"
+      keyTimes="0; 0.01; 0.99; 1" />
+  </circle>
+  
+  <!-- Dot 2 (Position updated) -->
+  <circle cx="55" cy="15" r="15" fill="#06919d" opacity="0">
+    <animate 
+      attributeName="opacity"
+      dur="0.85s"
+      repeatCount="indefinite"
+      values="0; 0; 1; 1; 0"
+      keyTimes="0; 0.20; 0.21; 0.99; 1" />
+  </circle>
+  
+  <!-- Dot 3 (Position updated) -->
+  <circle cx="95" cy="15" r="15" fill="#015f78" opacity="0">
+    <animate 
+      attributeName="opacity"
+      dur="0.85s"
+      repeatCount="indefinite"
+      values="0; 0; 1; 1; 0"
+      keyTimes="0; 0.40; 0.41; 0.99; 1" />
+  </circle>
+  
+  <!-- Dot 4 (Position updated) -->
+  <circle cx="135" cy="15" r="15" fill="#cb6501" opacity="0">
+    <animate 
+      attributeName="opacity"
+      dur="0.85s"
+      repeatCount="indefinite"
+      values="0; 0; 1; 1; 0"
+      keyTimes="0; 0.60; 0.61; 0.99; 1" />
+  </circle>
+
+</svg>
