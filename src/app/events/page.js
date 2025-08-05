@@ -444,7 +444,7 @@ const Country = () => {
           </Link>
         </div>
 
-        <div className="container-fluid py-lg-5 mb-md-5 mb-2">
+        <div className="container-fluid py-lg-5 mb-5">
           <div className="row">
             <div className="col-md-12">
               <Carousal

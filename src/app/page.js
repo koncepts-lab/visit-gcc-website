@@ -96,12 +96,12 @@ function Home() {
         <div className="row">
           <div className="col-md-12 pdb-3">
             <img
-              src="/images/banner-02.jpg"
-              className="lap-view"
+              src="/images/banner-2.png"
+              className="lap-view w-100"
               alt="Banner"
             />
             <img
-              src="/images/banner-03.jpg"
+              src="/images/banner-3.png"
               className="mobile-view"
               alt="Banner"
             />
@@ -161,12 +161,12 @@ function Home() {
         <div className="row">
           <div className="col-md-12 pdb-3">
             <img
-              src="/images/banner-02.jpg"
-              className="lap-view"
+              src="/images/banner-4.jpg"
+              className="lap-view w-100"
               alt="Banner"
             />
             <img
-              src="/images/banner-03.jpg"
+              src="/images/banner-5.png"
               className="mobile-view"
               alt="Banner"
             />
