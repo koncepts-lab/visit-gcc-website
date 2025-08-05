@@ -89,7 +89,7 @@ const TourPackageTab = ({
     }
   }, [activeTab, packages, isParentFiltered]);
 
-  // useEffect(() => {
+  useEffect(() => {
   //   const fetchIcons = async (packageId) => {
   //     try {
   //       if (!authToken) {
@@ -113,19 +113,19 @@ const TourPackageTab = ({
   //     }
   //   };
 
-  //   const fetchRatings = async (packageId) => {
-  //     try {
-  //       const response = await axios.get(
-  //         `${process.env.NEXT_PUBLIC_API_URL}attraction-review/${packageId}/ratings`
-  //       );
-  //       setRatingsData((prevRatingsData) => ({
-  //         ...prevRatingsData,
-  //         [packageId]: response.data.data || {},
-  //       }));
-  //     } catch (err) {
-  //       console.error(`Error fetching ratings for package ${packageId}:`, err);
-  //     }
-  //   };
+    const fetchRatings = async (packageId) => {
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}attraction-review/${packageId}/ratings`
+        );
+        setRatingsData((prevRatingsData) => ({
+          ...prevRatingsData,
+          [packageId]: response.data.data || {},
+        }));
+      } catch (err) {
+        console.error(`Error fetching ratings for package ${packageId}:`, err);
+      }
+    };
 
   //   // const fetchVendorInfo = async (packageId, vendorId) => {
   //   //   if (!vendorId) {
@@ -177,18 +177,18 @@ const TourPackageTab = ({
   //   //   }
   //   // };
 
-  //   filteredPackages.forEach((pkg) => {
-  //     if (!iconsData[pkg.id]) {
-  //       fetchIcons(pkg.id);
-  //     }
-  //     if (!ratingsData[pkg.id]) {
-  //       fetchRatings(pkg.id);
-  //     }
-  //     if (!vendorData[pkg.id] && pkg.vendor_id) {
-  //       fetchVendorInfo(pkg.id, pkg.vendor_id);
-  //     }
-  //   });
-  // }, [filteredPackages, authToken]);
+    filteredPackages.forEach((pkg) => {
+      // if (!iconsData[pkg.id]) {
+      //   fetchIcons(pkg.id);
+      // }
+      if (!ratingsData[pkg.id]) {
+        fetchRatings(pkg.id);
+      }
+      // if (!vendorData[pkg.id] && pkg.vendor_id) {
+      //   fetchVendorInfo(pkg.id, pkg.vendor_id);
+      // }
+    });
+  }, [filteredPackages]);
   if (isLoading) {
     return <div className="text-center py-4">Loading packages...</div>;
   }
@@ -278,26 +278,15 @@ const TourPackageTab = ({
                                 {/* {new Date(pkg.created_at).toLocaleDateString()} */}
                               </p>
                             </div>
-                            {/* <div className={style["star-section"]}>
-                              <div className={style["star"]}>
-                                <Rating
-                                  count={5}
-                                  value={
-                                    ratingsData[pkg.id]?.average_rating || 0
-                                  }
-                                  size={24}
-                                  activeColor="#ffd700"
-                                  edit={false}
-                                />
-                              </div>
-                              <div>
-                                <IoChatbubbleOutline />
-                              </div>
-                              <div>
-                                <FaRegLightbulb />
-                              </div>
-                            </div> */}
-
+                            {ratingsData[pkg.id] && (
+                                            <Rating
+                                              count={5}
+                                              value={ratingsData[pkg.id]?.average_rating || 0}
+                                              size={24}
+                                              activeColor="#ffd700"
+                                              edit={false}
+                                            />
+                                          )}
                             {/* <ul className={style["pakages-ul"]}>
                               {iconsData[pkg.id]?.map((icon) => (
                                 <li className="d-flex pe-2" key={icon.id}>

@@ -20,12 +20,13 @@ function EventScroll({ key, id, image, heading, description }) {
                               overflow: 'hidden',
                               height: '64px'
                             }}>{heading}</h4>
-              <p  style={{
+                            
+              <p  style={{height: '96px'}}><span style={{
                               display: '-webkit-box',
                               WebkitLineClamp: 4,  
                               WebkitBoxOrient: 'vertical',
                               overflow: 'hidden'
-                            }}>{description}</p>
+                            }}>{description}</span></p>
             </span>
             <span>
               <Link href={`/events/${id}`}>

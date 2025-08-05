@@ -33,11 +33,12 @@ height: '64px',
                   overflow: 'hidden'
                 }}>{props.heading}</h4>
               <p
-                style={{
-                  width: "110px",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
+               style={{
+height: '70px',
+                  display: '-webkit-box',
+                  WebkitLineClamp: 3, 
+                  WebkitBoxOrient: 'vertical',
+                  overflow: 'hidden'
                 }}
               >
                 {props.description}

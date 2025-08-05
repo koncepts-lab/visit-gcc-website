@@ -318,9 +318,9 @@ function UpcomingEvents() {
                                   <div
                                     className={` ${
                                       style["date-provider"]
-                                    } ps-xl-3 ps-lg-4 ps-4 d-flex  text-black align-items-center flex-xl-row flex-lg-${
+                                    } ps-xl-3 ps-lg-4 ps-1 d-flex  text-black align-items-center flex-xl-row flex-lg-${
                                       isExpanded ? "row" : "column"
-                                    }`}
+                                    } flex-column`}
                                     // style={{padding: '5px 0',marginTop: '50px', borderTop: '1px solid black'}}
                                   >
                                     <p
@@ -331,7 +331,7 @@ function UpcomingEvents() {
                                       <span
                                         className={`pe-${
                                           isExpanded ? "3" : "1"
-                                        } pe-3`}
+                                        } pe-md-3 pe-2`}
                                       >
                                         <FaUserCircle size={27} color="grey" />
                                       </span>
@@ -343,12 +343,12 @@ function UpcomingEvents() {
                                     <span
                                       className={`pe-3 d-xl-${
                                         isExpanded ? "block" : "none"
-                                      } d-lg-${isExpanded ? "block" : "none"}`}
+                                      } d-lg-${isExpanded ? "block" : "none"} d-none`}
                                     >
                                       |
                                     </span>
                                     <p
-                                      className={`pt-3 d-block text-black d-lg-${
+                                      className={`pt-md-3 d-block text-black d-lg-${
                                         isExpanded ? "block" : "none"
                                       }`}
                                     >

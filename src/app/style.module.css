@@ -34,9 +34,11 @@
     width: 100%;
     padding: 50px 0;
 }
-.home-blog img{ border-radius: 15px;} 
+.home-blog img{ border-radius: 15px;
+} 
 .home-add-banner img{
     border-radius: 15px;
+    margin-left: auto;margin-right: auto;
   }
 
 
