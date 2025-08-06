@@ -53,7 +53,10 @@ export default function Top_container({ packageId }) {
         // --- FIX START ---
         // The API returns an object with a 'data' property which is the array.
         // We need to access response.data.data to get the array.
-        setPackageInclusions(inclusionsResponse.data.data || []);
+const sortedInclusions = [...(inclusionsResponse?.data?.data || [])].sort(
+  (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+);
+        setPackageInclusions(sortedInclusions);
         // --- FIX END ---
 
         setLoading(false);
