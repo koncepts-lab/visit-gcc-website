@@ -45,8 +45,10 @@ const PackageInclusionsAndExclusions = ({ packageId, type = "package" }) => {
         let fetchedInclusions =
           inclusionsResponse.data.data || inclusionsResponse.data || [];
         // Sort inclusions to show the newest first (assuming higher ID is newer)
-        fetchedInclusions.sort((a, b) => b.id - a.id);
-        setInclusions(fetchedInclusions);
+        fetchedInclusions.sort(
+          (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        );   
+             setInclusions(fetchedInclusions);
         if (fetchedInclusions.length > 0) {
           setKeyInclusions(fetchedInclusions[0].title);
         }
@@ -54,8 +56,10 @@ const PackageInclusionsAndExclusions = ({ packageId, type = "package" }) => {
         let fetchedExclusions =
           exclusionsResponse.data.data || exclusionsResponse.data || [];
         // Sort exclusions to show the newest first (assuming higher ID is newer)
-        fetchedExclusions.sort((a, b) => b.id - a.id);
-        setExclusions(fetchedExclusions);
+        fetchedExclusions.sort(
+          (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        );
+                setExclusions(fetchedExclusions);
         if (fetchedExclusions.length > 0) {
           setKeyExclusions(fetchedExclusions[0].title);
         }

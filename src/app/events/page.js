@@ -21,7 +21,7 @@ const Country = () => {
   const [filteredEvents, setFilteredEvents] = useState([]);
   const [lesserWonders, setLesserWonders] = useState([]);
   const [error, setError] = useState(null);
-  const [isToggled, setIsToggled] = useState(false);
+  const [isToggled, setIsToggled] = useState(() => window.innerWidth < 768);
 
   const today = new Date();
   const [filters, setFilters] = useState({
@@ -552,7 +552,7 @@ const Country = () => {
 
               <div
                 className={`col-md-8 ${
-                  isToggled ? style["filter-full-width"] : ""
+                  isToggled ? style["filter-full-width"] : style["filter-half-width"]
                 }`}
               >
                 <h3 className="ms-2">Explore the Latest Events and Happenings</h3>

@@ -138,6 +138,7 @@
 .right{ 
     flex: 1 1 75%;
     margin: 0;
+    margin-top: -28px;
     padding: 50px 20px;
     box-sizing: border-box;
     overflow: hidden;
@@ -179,6 +180,7 @@
 .right {
     padding: 50px 0px;
     padding-bottom: 15px;
+    margin-top: 0px;
 }
 .btn-toggle {
     left: 0px;
