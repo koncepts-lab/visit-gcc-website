@@ -5,7 +5,7 @@ import Carousal from '../carousel/Carousal';
 
 
 const TabsSaudiArabia = () => {
-    const countryData = [
+   const countryData = [
         {
             id: 1,
             heading: 'Explore Diriyah\'s Historical Significance',

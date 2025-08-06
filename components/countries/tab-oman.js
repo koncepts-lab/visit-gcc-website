@@ -5,7 +5,7 @@ import Carousal from '../carousel/Carousal';
 
 
 const TabsOman = () => {
-    const countryData = [
+  const countryData = [
         {
             id: 1,
             heading: 'Journey Through Oman\'s Ancient Forts and Historical Sites',
