@@ -13,6 +13,7 @@ import Accordion from "../../../components/accordion/accordion";
 import EventsExploreTab from "../../../components/tour-package/events-explore";
 import UpcomingEvents from "../../../components/tour-package/upcoming-events";
 import { useLoading } from "@components/LoadingProvider";
+import { IoIosCloseCircleOutline } from "react-icons/io";
 
 const Country = () => {
   const { setIsLoading } = useLoading();
@@ -460,7 +461,7 @@ const Country = () => {
           <div className="container-fluid">
             <div className={style["tour-packagebtn-container"]}>
               <button
-                className={style["btn-toggle"]}
+                className={style[""]}
                 onClick={handleToggle}
                 style={{ background: "none", border: "none" }}
               >
@@ -474,7 +475,7 @@ const Country = () => {
                     isToggled ? style["highlight"] : ""
                   }`}
                 >
-                  <h4 className="pt-2">Price Range</h4>
+                  <h4 className="pt-md-2 pt-5 pb-2 text-uppercase">Price Range</h4>
                   <div className={style["price-range"]}>
                     <Range
                       step={10}
@@ -517,7 +518,7 @@ const Country = () => {
                     </div>
                   </div>
                   <div className={style["media-calendar"]}>
-                    <h4 className="pt-2">Calendar</h4>
+                    <h4 className="pt-3">Calendar</h4>
                     <Calendar
                       onChange={handleDateChange}
                       value={filters.selectedDate}
@@ -541,13 +542,26 @@ const Country = () => {
                   </div>
                   <div className="mt-3">
                     <button
-                      className="btn btn-secondary col-12"
+                      className="btn btn-secondary col-12 text-uppercase"
                       onClick={clearAllFilters}
                     >
                       Clear All Filters
                     </button>
                   </div>
+                      <button
+                                    className={`${style["btn-toggle"]} ${style["btn-close"]}`}
+                                    onClick={handleToggle}
+                                  >
+                                    <IoIosCloseCircleOutline />
+                                  </button>
+                                     <button
+                                className={`${style["btn-one"]} ${style["btn-mobile"]} col-md-12 col-sm-3 col-12`}
+                                onClick={handleToggle}
+                              >
+                                Apply
+                              </button>
                 </div>
+               
               </div>
 
               <div

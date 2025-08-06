@@ -5,7 +5,7 @@ import Carousal from '../carousel/Carousal';
 
 
 const TabsKuwait = () => {
-    const countryData = [
+const countryData = [
         {
             id: 1,
             heading: ' Uncover Kuwait\'s History through its Historic Landmarks and Museums',

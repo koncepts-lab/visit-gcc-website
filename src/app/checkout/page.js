@@ -211,7 +211,6 @@ const Checkout = () => {
   const router = useRouter();
 
   const [errors, setErrors] = useState({});
-  const [isFormValid, setIsFormValid] = useState(false);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
 
@@ -284,28 +283,10 @@ const Checkout = () => {
     router.replace("/");
   };
 
-  useEffect(() => {
-    const validateForm = () => {
-      const isFormDataValid =
-        formData.contact_name.trim() !== "" &&
-        formData.contact_number.trim() !== "" &&
-        /\S+@\S+\.\S+/.test(formData.email);
-      const areTravellersValid = travellers.every(
-        (t) =>
-          t.first_name.trim() !== "" &&
-          t.last_name.trim() !== "" &&
-          t.id_type.trim() !== "" &&
-          t.id_number.trim() !== "" &&
-          t.gender !== ""
-      );
-      setIsFormValid(isFormDataValid && areTravellersValid);
-    };
-    validateForm();
-  }, [formData, travellers]);
-
   const handleFormChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    // Clear the specific error when the user starts typing
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: null }));
     }
@@ -322,6 +303,7 @@ const Checkout = () => {
     const errorKey = `travelers.${travellers.findIndex(
       (t) => t.id === travellerId
     )}.${field}`;
+    // Clear the specific error when the user starts typing
     if (errors[errorKey]) {
       setErrors((prev) => ({ ...prev, [errorKey]: null }));
     }
@@ -333,6 +315,13 @@ const Checkout = () => {
         traveller.id === travellerId ? { ...traveller, gender } : traveller
       )
     );
+    const errorKey = `travelers.${travellers.findIndex(
+        (t) => t.id === travellerId
+      )}.gender`;
+    // Clear the specific error when the user clicks a gender
+    if (errors[errorKey]) {
+        setErrors((prev) => ({ ...prev, [errorKey]: null }));
+    }
   };
 
   const toggleAccordion = () => setIsOpen(!isOpen);
@@ -408,7 +397,9 @@ const Checkout = () => {
   }, [bookingId, router]);
 
   const handlePayNow = async () => {
+    // Start with a clean slate for errors.
     setErrors({});
+
     const authToken = localStorage.getItem("auth_token_login");
     if (!authToken) {
       enqueueSnackbar("You must be logged in to make a payment.", {
@@ -417,46 +408,49 @@ const Checkout = () => {
       return;
     }
 
-    let validationErrors = {};
+    // --- Validation Logic ---
+    const newErrors = {};
 
     if (!formData.contact_name.trim())
-      validationErrors.contact_name = ["Contact name is required."];
+      newErrors.contact_name = ["Contact name is required."];
     if (!formData.contact_number.trim())
-      validationErrors.contact_number = ["Contact number is required."];
+      newErrors.contact_number = ["Contact number is required."];
     if (!formData.email.trim()) {
-      validationErrors.email = ["Email is required."];
+      newErrors.email = ["Email is required."];
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      validationErrors.email = ["Please enter a valid email address."];
+      newErrors.email = ["Please enter a valid email address."];
     }
 
     travellers.forEach((t, index) => {
       if (!t.first_name.trim())
-        validationErrors[`travelers.${index}.first_name`] = [
+        newErrors[`travelers.${index}.first_name`] = [
           "First name is required.",
         ];
       if (!t.last_name.trim())
-        validationErrors[`travelers.${index}.last_name`] = [
+        newErrors[`travelers.${index}.last_name`] = [
           "Last name is required.",
         ];
       if (!t.id_type.trim())
-        validationErrors[`travelers.${index}.id_type`] = [
+        newErrors[`travelers.${index}.id_type`] = [
           "ID Type is required.",
         ];
       if (!t.id_number.trim())
-        validationErrors[`travelers.${index}.id_number`] = [
+        newErrors[`travelers.${index}.id_number`] = [
           "ID Number is required.",
         ];
       if (!t.gender)
-        validationErrors[`travelers.${index}.gender`] = ["Gender is required."];
+        newErrors[`travelers.${index}.gender`] = ["Gender is required."];
     });
 
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
       enqueueSnackbar("Please fill in all required fields correctly.", {
         variant: "error",
       });
       return;
     }
+    // --- End Validation Logic ---
+
 
     const finalCheckoutData = {
       ...formData,
@@ -739,9 +733,10 @@ const Checkout = () => {
                               </button>
                             )}
                           </div>
-                          <div className="col-12">
+                          <div className="col-12 d-flex flex-xl-row flex-column">
+                            <div className="col-xl-5 col-lg-6 col-12">
                             <input
-                              className={`${style["promo_input"]} col-xl-5 col-lg-6 col-12`}
+                              className={`${style["promo_input"]} col-12`}
                               placeholder="LastName (in English)*"
                               value={traveller.last_name}
                               onChange={(e) =>
@@ -752,9 +747,15 @@ const Checkout = () => {
                                 )
                               }
                             />
-                            <br className="d-xl-none d-lg-block" />
+                            {errors[`travelers.${index}.last_name`] && (
+                              <div style={{ color: "red", fontSize: "12px", marginTop: "2px" }}>
+                                {errors[`travelers.${index}.last_name`][0]}
+                              </div>
+                            )}
+                            </div>
+                            <div className=" ms-xxl-5 ms-xl-5 ms-md-0 col-xl-5 col-lg-6 col-12">
                             <input
-                              className={`${style["promo_input"]} ms-xxl-5 ms-xl-5 ms-md-0 col-xl-5 col-lg-6 col-12`}
+                              className={`${style["promo_input"]} col-12`}
                               placeholder="First & middle name(in English)*"
                               value={traveller.first_name}
                               onChange={(e) =>
@@ -765,10 +766,17 @@ const Checkout = () => {
                                 )
                               }
                             />
+                            {errors[`travelers.${index}.first_name`] && (
+                              <div style={{ color: "red", fontSize: "12px", marginTop: "2px" }}>
+                                {errors[`travelers.${index}.first_name`][0]}
+                              </div>
+                            )}
+                            </div>
                           </div>
-                          <div className="col-12 pt-2">
+                          <div className="col-12 pt-2 d-flex flex-xl-row flex-column">
+                            <div className="col-xl-5 col-lg-6 col-12">
                             <input
-                              className={`${style["promo_input"]} col-xl-5 col-lg-6 col-12`}
+                              className={`${style["promo_input"]} col-12`}
                               placeholder="ID Type*"
                               value={traveller.id_type}
                               onChange={(e) =>
@@ -779,9 +787,17 @@ const Checkout = () => {
                                 )
                               }
                             />
-                            <br className="d-xl-none d-lg-block" />
+                            {errors[`travelers.${index}.id_type`] && (
+                              <div style={{ color: "red", fontSize: "12px", marginTop: "2px" }}>
+                                {errors[`travelers.${index}.id_type`][0]}
+                              </div>
+                            )}
+                            </div>
+                            {/* <br className="d-xl-none d-lg-block" /> */}
+                            <div className="ms-xxl-5 ms-xl-5 ms-md-0 col-xl-4 col-lg-6 col-12">
+
                             <input
-                              className={`${style["promo_input"]} ms-xxl-5 ms-xl-5 ms-md-0 col-xl-4 col-lg-6 col-12`}
+                              className={`${style["promo_input"]} col-12`}
                               placeholder="ID number*"
                               value={traveller.id_number}
                               onChange={(e) =>
@@ -792,6 +808,12 @@ const Checkout = () => {
                                 )
                               }
                             />
+                            {errors[`travelers.${index}.id_number`] && (
+                              <div style={{ color: "red", fontSize: "12px", marginTop: "2px" }}>
+                                {errors[`travelers.${index}.id_number`][0]}
+                              </div>
+                            )}
+                            </div>
                           </div>
                           <div
                             style={{ marginTop: "10px", marginBottom: "10px" }}
@@ -842,6 +864,11 @@ const Checkout = () => {
                               Female
                             </button>
                           </div>
+                          {errors[`travelers.${index}.gender`] && (
+                            <div style={{ color: "red", fontSize: "12px", marginTop: "2px" }}>
+                              {errors[`travelers.${index}.gender`][0]}
+                            </div>
+                          )}
                         </div>
                       ))}
 
@@ -907,6 +934,11 @@ const Checkout = () => {
                               value={formData.contact_name}
                               onChange={handleFormChange}
                             />
+                            {errors.contact_name && (
+                              <div style={{ color: "red", fontSize: "12px", marginTop: "2px" }}>
+                                {errors.contact_name[0]}
+                              </div>
+                            )}
                           </div>
                           <div className="col-xl-6 col-lg-8 col-md-12 col-12">
                             <label className="">Contact Number*</label>
@@ -934,6 +966,11 @@ const Checkout = () => {
                               value={formData.contact_number}
                               onChange={handleFormChange}
                             />
+                            {errors.contact_number && (
+                              <div style={{ color: "red", fontSize: "12px", marginTop: "2px" }}>
+                                {errors.contact_number[0]}
+                              </div>
+                            )}
                           </div>
                         </div>
                         <div className="my-2">
@@ -947,6 +984,11 @@ const Checkout = () => {
                             value={formData.email}
                             onChange={handleFormChange}
                           />
+                          {errors.email && (
+                            <div style={{ color: "red", fontSize: "12px", marginTop: "2px" }}>
+                              {errors.email[0]}
+                            </div>
+                          )}
                         </div>
                       </div>
                     </form>
@@ -1004,7 +1046,6 @@ const Checkout = () => {
                     <button
                       onClick={handlePayNow}
                       className={style["btn-one"]}
-                      disabled={!isFormValid}
                     >Pay Now
                       
                     </button>
@@ -1190,7 +1231,6 @@ const Checkout = () => {
           <button
             onClick={handlePayNow}
             style={{ backgroundColor: "#149699" }}
-            disabled={!isFormValid}
           >
             Pay Now
           </button>

@@ -4,7 +4,7 @@ import style from './style.module.css';
 import Carousal from '../carousel/Carousal';
 
 const TabsBahrain = () => {
-    const countryData = [
+   const countryData = [
         {
             id: 1,
             heading: 'Discover the Ancient Dilmun Civilization',

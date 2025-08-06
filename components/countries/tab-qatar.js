@@ -5,7 +5,7 @@ import Carousal from '../carousel/Carousal';
 
 
 const TabsQatar = () => {
-    const countryData = [
+   const countryData = [
         {
             id: 1,
             heading: 'Unveil the Legacy of the Ancient Qatari Civilization',

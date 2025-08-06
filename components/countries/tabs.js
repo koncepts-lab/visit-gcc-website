@@ -8,112 +8,100 @@ const
 
 Tabs = () => {
   const countryData = [
-    {
-      id: 1,
-      heading: "Unveil the Legacy of the Ancient Qatari Civilization",
-      subHeading: "Journey Through Time",
-      description:
-        "Dive into the fascinating history of Qatar as you explore the Al Zubarah Fort, a UNESCO World Heritage Site. This well-preserved 18th-century fort o ers a glimpse into Qatar's ancient trading hub, revealing the strategic importance and vibrant culture of early Qatari civilization. Extend your journey by visiting nearby archaeological sites where you can uncover ancient settlements and artifacts that illuminate Qatar’s historical significance.",
-      image: "/images/country/01.jpg",
-    },
-    {
-      id: 2,
-      heading: "Explore Majestic Forts and Museums",
-      subHeading: "Journey Through Time",
-      description:
-        "Step back in time by exploring Qatar's majestic forts and world-class museums. The imposing Al Khor Fort and the elegant Umm Salal Mohammed Fort stand as testaments to the country’s strategic past. Meanwhile, the Museum of Islamic Art and Qatar National Museum house extraordinary collections that bring Qatar's rich heritage and artistic achievements into sharp focus, offering visitors a comprehensive understanding of its historical evolution.",
-      image: "/images/country/02.jpg",
-    },
-    {
-      id: 3,
-      heading: "Wander Through Cultural Heritage Sites",
-      subHeading: "Journey Through Time",
-      description:
-        "Experience the charm of Qatar's cultural heritage by wandering through iconic sites like Souq Waqif and the Pearl-Qatar. Souq Waqif is a lively marketplace where traditional architecture and vibrant commerce converge, offering a taste of authentic Qatari life. The Pearl-Qatar, a modern waterfront development, contrasts this with its luxurious surroundings while reflecting the country's blend of historical and contemporary influence.",
-      image: "/images/country/02.jpg",
-    },
-  ];
+        {
+            id: 1,
+            heading: 'Explore the UAE\'s Rich Bedouin Legacy',
+            subHeading: 'Journey Through Time',
+            description: ' Discover the UAE\'s Bedouin heritage by visiting cultural centers and museums that highlight traditional desert life. Experience the nomadic customs, crafts, and social structures that have shaped the nation\'s history. Sites like the Al Ain Palace Museum o er a glimpse into the royal family\'s past and the traditional lifestyle of early Emirati communities.',
+            image: "/images/country/01.jpg"
+        },
+        { 
+            id: 2,
+            heading: 'Uncover Historic Landmarks Across the Emirates',
+            subHeading: 'Journey Through Time',
+            description: ' Visit iconic historical sites that tell the story of the UAE\'s transformation. Explore the Al Fahidi Fort in Dubai, a symbol of the city\'s early trade roots, and the Fujairah Fort, which dates back to the 16th century. Each emirate, from Sharjah\'s Islamic Museum to Ajman\'s cultural landmarks, o ers unique insights into the region\'s past.',
+            image: "/images/country/02.jpg"
+        },
+        {
+            id: 3,
+            heading: 'Experience the Evolution of Modern Dubai',
+            subHeading: 'Journey Through Time',
+            description: ' Witness the remarkable evolution of Dubai from a modest trading port to a global metropolis. Tour landmarks such as the Burj Khalifa, showcasing Dubai\'s architectural ambition, and the Dubai Creek, reflecting the city\'s historical trade significance. Dubai\'s blend of old and new highlights its status as a modern hub on the world stage.',
+            image: "/images/country/02.jpg"
+        }
+    ];
 
-  const countryDataTwo = [
-    {
-      id: 1,
-      heading: "Experience the Glitz of the Qatar International Food Festival",
-      subHeading: "Journey Through Time",
-      description:
-        "Indulge in a culinary extravaganza at the Qatar International Food Festival, a dazzling event that brings together a global array of flavors and Qatari cuisine. This festival features gourmet food, live cooking emonstrations, and captivating entertainment, offering a vibrant celebration of Qatar's diverse food culture and its role as a culinary crossroads.",
-      image: "/images/country/01.jpg",
-    },
-    {
-      id: 2,
-      heading: "Delight in Traditional Qatari Arts and Crafts",
-      subHeading: "Journey Through Time",
-      description:
-        " Immerse yourself in the exquisite world of Qatari arts and crafts, from intricate weaving and pottery to traditional silverwork. Visit local artisans and markets to witness the craftsmanship that has been passed down through generations, and discover unique, handcrafted items that reflect the rich artistic heritage of Qatar",
-      image: "/images/country/02.jpg",
-    },
-    {
-      id: 3,
-      heading: "Celebrate at Spectacular Cultural Festivals",
-      subHeading: "Journey Through Time",
-      description:
-        "Join in the festivities at Qatar's spectacular cultural festivals, such as the Doha Cultural Festival and Qatar National Day celebrations. These events o er a lively showcase of traditional music, dance, and art, allowing you to experience the vibrant cultural spirit and deep-rooted heritage that define Qatari identity.",
-      image: "/images/country/02.jpg",
-    },
-  ];
+    const countryDataTwo = [
+        {
+            id: 1,
+            heading: 'Celebrate at UAE\'s Major Festivals',
+            subHeading: 'Journey Through Time',
+            description: 'Join in the excitement of the UAE\'s vibrant festivals. Attend the Abu Dhabi Film Festival for a showcase of international and regionalcinema or the Dubai Shopping Festival for a blend of retail therapy and entertainment. These events reflect the UAE\'s dynamic cultural scene and o er aglimpse into its diverse traditions.',
+            image: "/images/country/01.jpg"
+        },
+        {
+            id: 2,
+            heading: 'Experience Traditional Dance and Music',
+            subHeading: 'Journey Through Time',
+            description: ' Immerse yourself in the UAE\'s rich musical heritage by watching traditional performances like Al Ayala, characterized by rhythmic drumming and poetry. Explore the traditional music and dance at cultural venues and festivals, which celebrate the UAE\'s artistic expressions and heritage.',
+            image: "/images/country/02.jpg"
+        },
+        {
+            id: 3,
+            heading: 'Explore Art and Cultural Institutions',
+            subHeading: 'Journey Through Time',
+            description: 'Visit cultural institutions like the Louvre Abu Dhabi and the Sharjah Art Museum to experience the UAE\'s artistic and cultural achievements. These venues feature extensive collections of contemporary and classical art, highlighting the country\'s commitment to preserving and celebrating its cultural legacy.',
+            image: "/images/country/02.jpg"
+        }
+    ];
 
-  const countryDataThree = [
-    {
-      id: 1,
-      heading: "Savor the Rich Flavors of Majboos",
-      subHeading: "Journey Through Time",
-      description:
-        "Experience the bold and aromatic flavors of Majboos, Qatar's signature spiced rice dish. Often served with tender meat or seafood, this dish combines a blend of spices that reflect Qatar's rich culinary traditions and regional influences, offering a delicious taste of the country's gastronomic heritage.",
-      image: "/images/country/01.jpg",
-    },
-    {
-      id: 2,
-      heading: "Indulge in Sweet Delights like Luqaimat",
-      subHeading: "Journey Through Time",
-      description:
-        "Treat yourself to Luqaimat, delightful sweet dumplings drenched in date syrup. These golden, syrupy bites are a beloved part of Qatari dessert traditions, offering a perfect balance of sweetness and texture that captures the essence of local culinary delights.",
-      image: "/images/country/02.jpg",
-    },
-    {
-      id: 3,
-      heading: "Experience Innovative Dining at Trendy Restaurants",
-      subHeading: "Journey Through Time",
-      description:
-        "Explore Qatar's evolving dining scene at trendy restaurants that blend traditional flavors with modern culinary techniques. These innovative eateries o er a fresh take on classic Qatari dishes and international cuisine, providing a diverse and exciting dining experience that reflects the country's cosmopolitan flair.",
-      image: "/images/country/02.jpg",
-    },
-  ];
+    const countryDataThree = [
+        {
+            id: 1,
+            heading: 'Savor Traditional Emirati Dishes',
+            subHeading: 'Journey Through Time',
+            description: 'Taste the essence of Emirati cuisine with traditional dishes such as Al Harees, a slow-cooked blend of wheat and meat, and Al Madrooba, a spiced fish dish. Enjoy these local specialties at traditional restaurants and eateries across the UAE, which o er a rich culinary experience steeped in history.',
+            image: "/images/country/01.jpg"
+        },
+        {
+            id: 2,
+            heading: 'Indulge in Street Food and Global Flavors',
+            subHeading: 'Journey Through Time',
+            description: 'Explore the diverse food scene with popular street foods like Shawarma and Falafel. The UAE\'s cosmopolitan cities o er a range of international cuisines, reflecting its multicultural population and providing a dynamic dining experience from casual to gourmet.',
+            image: "/images/country/02.jpg"
+        },
+        {
+            id: 3,
+            heading: '.Experience Fine Dining and Culinary Innovation',
+            subHeading: 'Journey Through Time',
+            description: 'Discover the UAE\'s high-end dining options at world-class restaurants like Pierchic in Dubai or the Emirates Palace\'s fine dining venues in Abu Dhabi. These establishments o er innovative dishes and luxurious settings, showcasing the UAE\'s culinary creativity and commitment to excellence.',
+            image: "/images/country/02.jpg"
+        }
+    ];
 
-  const countryDataFour = [
-    {
-      id: 1,
-      heading: " Shop in Opulence at Doha's Luxury Malls",
-      subHeading: "Journey Through Time",
-      description:
-        " Indulge in a premium shopping experience at Doha's luxury malls, such as The Gate Mall and Villaggio Mall. These high-end shopping destinations feature designer boutiques, upscale brands, and exclusive items, making them the perfect place for a lavish retail experience in the heart of Qatar.",
-      image: "/images/country/01.jpg",
-    },
-    {
-      id: 2,
-      heading: "Explore the Vibrant Souqs",
-      subHeading: "Journey Through Time",
-      description:
-        "Discover the vibrant atmosphere of Souq Waqif, where traditional Qatari crafts, spices, and textiles are on display. This bustling market offers a rich sensory experience and a chance to find unique, handcrafted souvenirs that capture the essence of Qatar's rich trading history.",
-      image: "/images/country/02.jpg",
-    },
-    {
-      id: 3,
-      heading: "Discover Unique Finds in Boutique Stores",
-      subHeading: "Journey Through Time",
-      description:
-        "Uncover distinctive local artistry and craftsmanship in boutique stores across Qatar. From contemporary jewelry and traditional textiles to innovative art pieces, these shops o er a glimpse into Qatar's creative scene and provide one-of-a-kind items that reflect the country's cultural richness.",
-      image: "/images/country/02.jpg",
-    },
-  ];
+    const countryDataFour = [
+        {
+            id: 1,
+            heading: 'Shop at Iconic Malls in Dubai and Abu Dhabi',
+            subHeading: 'Journey Through Time',
+            description: ' Indulge in luxury shopping at Dubai Mall, the world\'s largest retail and entertainment destination, featuring a wide range of high-end brands and attractions. In Abu Dhabi, The Galleria provides a sophisticated shopping experience with luxury boutiques and fine dining, reflecting the city\'s elegant style.',
+            image: "/images/country/01.jpg"
+        },
+        {
+            id: 2,
+            heading: 'Discover Traditional Markets and Souqs',
+            subHeading: 'Journey Through Time',
+            description: 'Explore traditional markets such as the Gold Souq and Spice Souq in Dubai, where you can find unique treasures and traditional goods. The vibrant souqs o er a sensory experience that connects you to the UAE\'s historical trading heritage and cultural diversity.',
+            image: "/images/country/02.jpg"
+        },
+        {
+            id: 3,
+            heading: ' Uncover Unique Finds in Boutique Stores',
+            subHeading: 'Journey Through Time',
+            description: 'Visit boutique stores across the UAE to discover distinctive local art and craftsmanship. From contemporary jewelry to traditional textiles, these boutiques o er a glimpse into the UAE\'s artistic scene and provide unique items that reflect the country\'s cultural richnes',
+            image: "/images/country/02.jpg"
+        }
+    ];
 
   useEffect(() => {
     if (typeof window !== "undefined") {

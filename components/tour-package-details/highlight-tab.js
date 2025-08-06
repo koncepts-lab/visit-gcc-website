@@ -53,7 +53,7 @@ const ItineraryContent = ({ itineraryItems, itemType }) => {
   }
   return (
     <>
-      <h3 className="fw-medium mb-3">Itinerary</h3>
+      <h3 className="fw-medium mb-3 text-black">Itinerary</h3>
       <div>
         {itineraryItems.map((item, index) => (
           <div
@@ -64,9 +64,12 @@ const ItineraryContent = ({ itineraryItems, itemType }) => {
               className={`${style.accordionTab} `}
               onClick={() => toggleAccordion(index)}
             >
-              <h4 className="mb-0 d-flex align-items-center">
+              <h4 className="mb-0 d-flex align-items-center "
+              style={{
+    color: activeAccordion === index ? '#009597' : 'black',
+  }}>
                 <HiOutlineArrowLongRight
-                  className="me-2 text-primary d-none d-md-inline"
+                  className="me-2 text-primary d-none d-md-inline "
                   size={20}
                 />
                 {item.day
