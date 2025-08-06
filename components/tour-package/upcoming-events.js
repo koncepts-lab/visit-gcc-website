@@ -165,7 +165,7 @@ function UpcomingEvents() {
         <div className="row">
           <div className="col-md-12">
             <h3
-              className="pb-3"
+              className="pb-3 pt-md-5 pt-4"
               style={{
                 marginInline: "auto",
                 fontWeight: 600,
