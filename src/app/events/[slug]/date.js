@@ -185,6 +185,8 @@ const DatePickerWithHover = ({ onClose, eventId, type = "event" }) => {
       ],
     };
 
+    // console.log("Booking Data:", bookingData);
+
     const authToken =
       localStorage.getItem("auth_token_login") ||
       localStorage.getItem("auth_token_register");
@@ -518,7 +520,10 @@ const DatePickerWithHover = ({ onClose, eventId, type = "event" }) => {
               value={ticketType}
               onChange={(e) => setTicketType(e.target.value)}
             >
-              <option value="Standard" selected>
+               <option value="Standard" >
+              Select Ticket Type
+              </option>
+              <option value="Standard" >
                 Standard
               </option>
             </select>

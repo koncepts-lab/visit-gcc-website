@@ -5,6 +5,7 @@ import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Eye, EyeOff, Trash2, User, Lock, Power, Ticket } from "lucide-react";
 import { enqueueSnackbar } from "notistack";
+import { useRouter } from "next/router";
 
 // Helper function to format dates
 const formatDate = (dateString) => {
@@ -18,6 +19,8 @@ const formatDate = (dateString) => {
     return dateString;
   }
 };
+
+
 
 // --- MODAL COMPONENT FOR BOOKING DETAILS ---
 const BookingDetailsModal = ({ bookingItem, onClose }) => {
@@ -1332,7 +1335,53 @@ const TravelAccountProfile = () => {
   };
 
   // --- DeleteConfirmationModal COMPONENT ---
-  const DeleteConfirmationModal = () => (
+const DeleteConfirmationModal = () => {
+  const [deletePassword, setDeletePassword] = useState("");
+
+  const proceedWithAccountDeletion = async () => {
+
+    const authToken =
+      localStorage.getItem("auth_token_login") ||
+      localStorage.getItem("auth_token_register");
+
+    if (!authToken) {
+      enqueueSnackbar("Authentication token not found", { variant: "error" });
+      return;
+    }
+
+    try {
+      await axios.delete(
+        `${process.env.NEXT_PUBLIC_API_URL}user/delete-account`,
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+          data: {
+            password: deletePassword,
+          },
+        }
+      );
+
+      enqueueSnackbar("Account deleted successfully!", {
+        variant: "success",
+      });
+
+      // Clear token if needed
+      localStorage.removeItem("auth_token_login");
+      localStorage.removeItem("auth_token_register");
+
+      setShowDeleteConfirmModal(false);
+
+      // Redirect to home
+      window.location.href = "/"
+    } catch (error) {
+      const message =
+        error?.response?.data?.message || "Failed to delete account.";
+      enqueueSnackbar(message, { variant: "error" });
+    }
+  };
+
+  return (
     <>
       {showDeleteConfirmModal && (
         <>
@@ -1365,6 +1414,18 @@ const TravelAccountProfile = () => {
                     This action is permanent and cannot be undone. All your data
                     associated with this account will be lost.
                   </p>
+                  <div className="mb-3">
+                    <label className="form-label fw-medium">Enter Password</label>
+                    <input
+                      type="password"
+                      className="form-control"
+                      value={deletePassword}
+                      onChange={(e) => setDeletePassword(e.target.value)}
+                      placeholder="Enter your password to confirm"
+                      required
+                      style={{ fontSize: "16px" }}
+                    />
+                  </div>
                 </div>
                 <div className="modal-footer">
                   <button
@@ -1389,6 +1450,7 @@ const TravelAccountProfile = () => {
       )}
     </>
   );
+};
 
   return (
     <div

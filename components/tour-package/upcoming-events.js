@@ -1,3 +1,5 @@
+
+
 import React, { useState, useRef, useEffect } from "react";
 import style from "./style.module.css";
 import Link from "next/link";
@@ -6,7 +8,6 @@ import { FiPlus } from "react-icons/fi";
 import axios from "axios";
 
 function UpcomingEvents() {
-  // Corrected state to hold the index of the expanded item, or null if none are expanded
   const [expandedDateItem, setExpandedDateItem] = useState(null);
   const containerRef = useRef(null);
   const [expandedItemId, setExpandedItemId] = useState(null);
@@ -14,15 +15,27 @@ function UpcomingEvents() {
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
-  const [slidesToShow, setSlidesToShow] = useState(2); // Default value
+  const [slidesToShow, setSlidesToShow] = useState(2);
   const [windowWidth, setWindowWidth] = useState(
     typeof window !== "undefined" ? window.innerWidth : 0
   );
+  const intervalRef = useRef(null);
 
-  // Corrected function to toggle expansion for a specific item by its index
   const toggleExpand = (index) => {
     setExpandedDateItem(expandedDateItem === index ? null : index);
   };
+
+  const [isMobile, setIsMobile] = useState(false);
+
+useEffect(() => {
+  const handleResize = () => {
+    setIsMobile(window.innerWidth < 992);
+  };
+
+  handleResize(); // Call on mount
+  window.addEventListener("resize", handleResize);
+  return () => window.removeEventListener("resize", handleResize);
+}, []);
 
   const truncateDescription = (description, maxLength) => {
     if (!description) return "";
@@ -39,10 +52,11 @@ function UpcomingEvents() {
     }
     return heading.substring(0, maxLength) + "...";
   };
+
   const [events, setEvents] = useState([]);
-  const [allEvents, setAllEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+
   useEffect(() => {
     const fetchEvents = async () => {
       try {
@@ -51,7 +65,6 @@ function UpcomingEvents() {
         );
         const fetchedEvents = response.data.data;
         setEvents(fetchedEvents);
-        setAllEvents(fetchedEvents);
         setIsLoading(false);
       } catch (err) {
         console.error("Error fetching events:", err);
@@ -67,16 +80,12 @@ function UpcomingEvents() {
   };
 
   useEffect(() => {
-    // Check if window is defined for server-side rendering
     if (typeof window !== "undefined") {
       const handleResize = () => {
         setWindowWidth(window.innerWidth);
       };
-
       window.addEventListener("resize", handleResize);
-      // Set initial width
       handleResize();
-
       return () => {
         window.removeEventListener("resize", handleResize);
       };
@@ -92,19 +101,28 @@ function UpcomingEvents() {
   }, [windowWidth]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (events.length > slidesToShow) {
-        setCurrentSlide(
-          (prevSlide) => (prevSlide + 1) % (events.length - slidesToShow + 1)
-        );
+    if (isDragging) {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
       }
-    }, 6000);
-
-    return () => clearInterval(interval);
-  }, [events.length, slidesToShow]);
+    } else {
+      intervalRef.current = setInterval(() => {
+        if (events.length > slidesToShow) {
+          setCurrentSlide(
+            (prevSlide) => (prevSlide + 1) % (events.length - slidesToShow + 1)
+          );
+        }
+      }, 6000);
+    }
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [isDragging, events.length, slidesToShow]);
 
   useEffect(() => {
-    if (containerRef.current) {
+    if (containerRef.current && !isDragging) {
       const slideWidth = containerRef.current.offsetWidth / slidesToShow;
       const scrollAmount =
         windowWidth >= 992
@@ -115,27 +133,63 @@ function UpcomingEvents() {
         behavior: "smooth",
       });
     }
-  }, [currentSlide, slidesToShow, windowWidth]);
+  }, [currentSlide, slidesToShow, windowWidth, isDragging]);
+
+  // --- FIX START ---
+  // Abstracted the logic to snap to the correct slide into its own function.
+  const snapToNearestSlide = () => {
+    if (!containerRef.current) return;
+
+    // This calculation determines how far the user has scrolled per slide.
+    const slideWidth = containerRef.current.offsetWidth / slidesToShow;
+    const scrollPerSlide = windowWidth >= 992 ? slideWidth * 0.8 : slideWidth;
+
+    if (scrollPerSlide > 0) {
+      // Find the nearest slide index based on the final scroll position.
+      const newSlideIndex = Math.round(
+        containerRef.current.scrollLeft / scrollPerSlide
+      );
+      
+      // Ensure the calculated index is within the valid bounds.
+      const maxSlideIndex = events.length - slidesToShow;
+      const clampedIndex = Math.max(0, Math.min(newSlideIndex, maxSlideIndex));
+
+      // Set the new current slide. This will trigger the expansion effect.
+      setCurrentSlide(clampedIndex);
+    }
+  };
 
   const handleMouseDown = (e) => {
     setIsDragging(true);
     setStartX(e.pageX - containerRef.current.offsetLeft);
     setScrollLeft(containerRef.current.scrollLeft);
+    containerRef.current.style.cursor = "grabbing";
   };
 
   const handleMouseLeave = () => {
-    setIsDragging(false);
+    // Only trigger the snap if a drag was in progress.
+    if (isDragging) {
+      setIsDragging(false);
+      containerRef.current.style.cursor = "grab";
+      snapToNearestSlide(); // Snap to the slide when the mouse leaves the container.
+    }
   };
 
   const handleMouseUp = () => {
-    setIsDragging(false);
+    // Only trigger the snap if a drag was in progress.
+    if (isDragging) {
+      setIsDragging(false);
+      containerRef.current.style.cursor = "grab";
+      snapToNearestSlide(); // Snap to the slide when the mouse button is released.
+    }
   };
+  // --- FIX END ---
 
   const handleMouseMove = (e) => {
     if (!isDragging || !containerRef.current) return;
-    e.preventDefault(); // Prevent text selection during drag
+    e.preventDefault();
     const x = e.pageX - containerRef.current.offsetLeft;
-    const walk = (x - startX) * 1; // Reduced scroll speed
+    const walk = (x - startX) * 1;
     containerRef.current.scrollLeft = scrollLeft - walk;
   };
 
@@ -143,20 +197,10 @@ function UpcomingEvents() {
     setCurrentSlide(index);
   };
 
-  // Function to calculate dynamic width based on expanded state
   const calculateDynamicWidth = (index) => {
-    const isExpanded = windowWidth >= 992 && index === currentSlide; // Only expand on larger screens and if it's the current slide
-    const baseWidth = 100 / slidesToShow; // Width when not expanded
-
-    let expandedWidth;
-
-    if (slidesToShow === 1) {
-      expandedWidth = isExpanded ? baseWidth : baseWidth; // Adjusted for single slide view
-    } else {
-      expandedWidth = isExpanded ? 60 : 40; // Adjusted for two slide view
-    }
-
-    return expandedWidth;
+    const isExpanded = windowWidth >= 992 && index === currentSlide;
+    const baseWidth = 100 / slidesToShow;
+    return slidesToShow === 1 ? baseWidth : isExpanded ? 60 : 40;
   };
 
   return (
@@ -187,9 +231,9 @@ function UpcomingEvents() {
                     onMouseUp={handleMouseUp}
                     onMouseMove={handleMouseMove}
                     style={{
-                      cursor: isDragging ? "grabbing" : "grab",
+                      cursor: "grab",
                       userSelect: "none",
-                      overflowX: "hidden", // Hide scrollbar
+                      overflowX: "hidden",
                     }}
                   >
                     {events.map((event, index) => {
@@ -197,7 +241,7 @@ function UpcomingEvents() {
                       const isExpanded =
                         windowWidth >= 992 && index === currentSlide;
                       const imageUrl =
-                        event.event_photo_urls[0] || "/images/placeholder.jpg"; // Use placeholder if 'image' is falsy
+                        event.event_photo_urls[0] || "/images/placeholder.jpg";
 
                       return (
                         <div
@@ -206,10 +250,10 @@ function UpcomingEvents() {
                             isExpanded ? 7 : 5
                           } col-md-12 col-12 d-flex flex-row`}
                           style={{
-                            flex: `0 0 ${dynamicWidth}%`, // control width of item
+                            flex: `0 0 ${dynamicWidth}%`,
                             maxWidth: `${dynamicWidth}%`,
                             transition:
-                              "flex 0.3s ease-in-out, max-width 0.3s ease-in-out", // Smooth transition
+                              "flex 0.3s ease-in-out, max-width 0.3s ease-in-out",
                           }}
                         >
                           <div className={`${style["upcoming-item-padding"]}`}>
@@ -220,6 +264,7 @@ function UpcomingEvents() {
                                   className=""
                                   alt=""
                                   onClick={() => handleImageClick(event.id)}
+                                  onDragStart={(e) => e.preventDefault()}
                                 />
                               </Link>
                               <div className={style["event-scroll"]}>
@@ -261,33 +306,42 @@ function UpcomingEvents() {
                                   <ul
                                     className={style["plus-ul-upcoming"]}
                                     style={{
-                                      paddingBottom: "70px",
+                                      paddingBottom: isMobile ? "115px" : "70px",
                                       right: "19px",
                                     }}
                                   >
-                                    {/* --- FIX START --- */}
-                                    {/* Corrected logic to show date only for the clicked item */}
                                     {expandedDateItem === index &&
                                       event.start_date &&
                                       event.end_date &&
                                       (() => {
-                                        const [startYear, startMonth, startDay] =
-                                          event.start_date.split("-");
+                                        const [
+                                          startYear,
+                                          startMonth,
+                                          startDay,
+                                        ] = event.start_date.split("-");
                                         const monthIndex = [
-                                          "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-                                          "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+                                          "Jan","Feb","Mar","Apr","May","Jun",
+                                          "Jul","Aug","Sep","Oct","Nov","Dec",
                                         ];
                                         const monthStartName =
-                                          monthIndex[parseInt(startMonth, 10) - 1];
+                                          monthIndex[
+                                            parseInt(startMonth, 10) - 1
+                                          ];
 
                                         const [endYear, endMonth, endDay] =
                                           event.end_date.split("-");
                                         const monthEndName =
-                                          monthIndex[parseInt(endMonth, 10) - 1];
+                                          monthIndex[
+                                            parseInt(endMonth, 10) - 1
+                                          ];
 
                                         return (
                                           <>
-                                            <li style={{ paddingInline: "5px" }}>
+                                            <li
+                                              style={{
+                                                paddingInline: "5px",
+                                              }}
+                                            >
                                               <b>{monthStartName}</b>
                                               <br />
                                               <b>{startDay}</b>
@@ -302,15 +356,9 @@ function UpcomingEvents() {
                                           </>
                                         );
                                       })()}
-                                    {/* --- FIX END --- */}
                                   </ul>
                                   <button
                                     className={style["btn-plus2"]}
-                                    style={{
-                                      // marginTop: "-35px",
-                                      // right: "50px",
-                                    }}
-                                    // Corrected onClick to pass the item's index
                                     onClick={() => toggleExpand(index)}
                                   >
                                     <FiPlus />
@@ -321,7 +369,6 @@ function UpcomingEvents() {
                                     } ps-xl-3 ps-lg-4 ps-1 d-flex  text-black align-items-center flex-xl-row flex-lg-${
                                       isExpanded ? "row" : "column"
                                     } flex-column`}
-                                    // style={{padding: '5px 0',marginTop: '50px', borderTop: '1px solid black'}}
                                   >
                                     <p
                                       className={`align-items-center text-black pt-3 pe-lg-${
@@ -343,7 +390,9 @@ function UpcomingEvents() {
                                     <span
                                       className={`pe-3 d-xl-${
                                         isExpanded ? "block" : "none"
-                                      } d-lg-${isExpanded ? "block" : "none"} d-none`}
+                                      } d-lg-${
+                                        isExpanded ? "block" : "none"
+                                      } d-none`}
                                     >
                                       |
                                     </span>
