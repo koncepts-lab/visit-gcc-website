@@ -96,6 +96,155 @@ const Checkout = () => {
     validateForm();
   }, [formData, travellers, bookingDetails]);
 
+const countryCodes = [
+  { name: "India", code: "+91" },
+  { name: "USA", code: "+1" },
+  { name: "UK", code: "+44" },
+  { name: "UAE", code: "+971" },
+  { name: "Saudi Arabia", code: "+966" },
+  { name: "Qatar", code: "+974" },
+  { name: "Oman", code: "+968" },
+  { name: "Kuwait", code: "+965" },
+  { name: "Bahrain", code: "+973" },
+  { name: "Afghanistan", code: "+93" },
+  { name: "Albania", code: "+355" },
+  { name: "Algeria", code: "+213" },
+  { name: "American Samoa", code: "+1-684" },
+  { name: "Andorra", code: "+376" },
+  { name: "Angola", code: "+244" },
+  { name: "Argentina", code: "+54" },
+  { name: "Armenia", code: "+374" },
+  { name: "Australia", code: "+61" },
+  { name: "Austria", code: "+43" },
+  { name: "Azerbaijan", code: "+994" },
+  { name: "Bahamas", code: "+1-242" },
+  { name: "Bangladesh", code: "+880" },
+  { name: "Barbados", code: "+1-246" },
+  { name: "Belarus", code: "+375" },
+  { name: "Belgium", code: "+32" },
+  { name: "Belize", code: "+501" },
+  { name: "Benin", code: "+229" },
+  { name: "Bermuda", code: "+1-441" },
+  { name: "Bhutan", code: "+975" },
+  { name: "Bolivia", code: "+591" },
+  { name: "Bosnia & Herzegovina", code: "+387" },
+  { name: "Botswana", code: "+267" },
+  { name: "Brazil", code: "+55" },
+  { name: "Brunei", code: "+673" },
+  { name: "Bulgaria", code: "+359" },
+  { name: "Burkina Faso", code: "+226" },
+  { name: "Cambodia", code: "+855" },
+  { name: "Cameroon", code: "+237" },
+  { name: "Canada", code: "+1" },
+  { name: "Cape Verde", code: "+238" },
+  { name: "Chad", code: "+235" },
+  { name: "Chile", code: "+56" },
+  { name: "China", code: "+86" },
+  { name: "Colombia", code: "+57" },
+  { name: "Congo", code: "+242" },
+  { name: "Costa Rica", code: "+506" },
+  { name: "Croatia", code: "+385" },
+  { name: "Cuba", code: "+53" },
+  { name: "Cyprus", code: "+357" },
+  { name: "Czech Republic", code: "+420" },
+  { name: "Denmark", code: "+45" },
+  { name: "Djibouti", code: "+253" },
+  { name: "Dominica", code: "+1-767" },
+  { name: "Ecuador", code: "+593" },
+  { name: "Egypt", code: "+20" },
+  { name: "El Salvador", code: "+503" },
+  { name: "Estonia", code: "+372" },
+  { name: "Ethiopia", code: "+251" },
+  { name: "Fiji", code: "+679" },
+  { name: "Finland", code: "+358" },
+  { name: "France", code: "+33" },
+  { name: "Georgia", code: "+995" },
+  { name: "Germany", code: "+49" },
+  { name: "Ghana", code: "+233" },
+  { name: "Greece", code: "+30" },
+  { name: "Guatemala", code: "+502" },
+  { name: "Honduras", code: "+504" },
+  { name: "Hong Kong", code: "+852" },
+  { name: "Hungary", code: "+36" },
+  { name: "Iceland", code: "+354" },
+  { name: "Indonesia", code: "+62" },
+  { name: "Iran", code: "+98" },
+  { name: "Iraq", code: "+964" },
+  { name: "Ireland", code: "+353" },
+  { name: "Israel", code: "+972" },
+  { name: "Italy", code: "+39" },
+  { name: "Jamaica", code: "+1-876" },
+  { name: "Japan", code: "+81" },
+  { name: "Jordan", code: "+962" },
+  { name: "Kazakhstan", code: "+7" },
+  { name: "Kenya", code: "+254" },
+  { name: "Latvia", code: "+371" },
+  { name: "Lebanon", code: "+961" },
+  { name: "Liberia", code: "+231" },
+  { name: "Libya", code: "+218" },
+  { name: "Lithuania", code: "+370" },
+  { name: "Luxembourg", code: "+352" },
+  { name: "Macau", code: "+853" },
+  { name: "Madagascar", code: "+261" },
+  { name: "Malaysia", code: "+60" },
+  { name: "Maldives", code: "+960" },
+  { name: "Mali", code: "+223" },
+  { name: "Malta", code: "+356" },
+  { name: "Mexico", code: "+52" },
+  { name: "Monaco", code: "+377" },
+  { name: "Mongolia", code: "+976" },
+  { name: "Morocco", code: "+212" },
+  { name: "Myanmar", code: "+95" },
+  { name: "Nepal", code: "+977" },
+  { name: "Netherlands", code: "+31" },
+  { name: "New Zealand", code: "+64" },
+  { name: "Nicaragua", code: "+505" },
+  { name: "Niger", code: "+227" },
+  { name: "Nigeria", code: "+234" },
+  { name: "North Korea", code: "+850" },
+  { name: "Norway", code: "+47" },
+  { name: "Pakistan", code: "+92" },
+  { name: "Panama", code: "+507" },
+  { name: "Paraguay", code: "+595" },
+  { name: "Peru", code: "+51" },
+  { name: "Philippines", code: "+63" },
+  { name: "Poland", code: "+48" },
+  { name: "Portugal", code: "+351" },
+  { name: "Puerto Rico", code: "+1-787" },
+  { name: "Romania", code: "+40" },
+  { name: "Russia", code: "+7" },
+  { name: "Rwanda", code: "+250" },
+  { name: "Senegal", code: "+221" },
+  { name: "Serbia", code: "+381" },
+  { name: "Singapore", code: "+65" },
+  { name: "Slovakia", code: "+421" },
+  { name: "Slovenia", code: "+386" },
+  { name: "Somalia", code: "+252" },
+  { name: "South Africa", code: "+27" },
+  { name: "South Korea", code: "+82" },
+  { name: "Spain", code: "+34" },
+  { name: "Sri Lanka", code: "+94" },
+  { name: "Sudan", code: "+249" },
+  { name: "Sweden", code: "+46" },
+  { name: "Switzerland", code: "+41" },
+  { name: "Syria", code: "+963" },
+  { name: "Taiwan", code: "+886" },
+  { name: "Tanzania", code: "+255" },
+  { name: "Thailand", code: "+66" },
+  { name: "Togo", code: "+228" },
+  { name: "Tunisia", code: "+216" },
+  { name: "Turkey", code: "+90" },
+  { name: "Uganda", code: "+256" },
+  { name: "Ukraine", code: "+380" },
+  { name: "Uruguay", code: "+598" },
+  { name: "Uzbekistan", code: "+998" },
+  { name: "Venezuela", code: "+58" },
+  { name: "Vietnam", code: "+84" },
+  { name: "Yemen", code: "+967" },
+  { name: "Zambia", code: "+260" },
+  { name: "Zimbabwe", code: "+263" },
+];
+
   // --- Handlers for Form Inputs ---
   const handleFormChange = (e) => {
     const { name, value } = e.target;
@@ -534,15 +683,12 @@ const Checkout = () => {
                           Traveller {index + 1}
                         </p>
                         <div>
-                          <div className="col-12">
+                          <div className="col-12 d-flex flex-xl-row  flex-column">
+                            <div className="col-xl-5 col-lg-6 col-12">
                             <input
                               className={`${
                                 style["promo_input"]
-                              } col-xl-5 col-lg-6 col-12 ${
-                                formErrors[`travelers.${index}.last_name`]
-                                  ? style.error
-                                  : ""
-                              }`}
+                              }  col-12 `}
                               placeholder="Last name (in English)*"
                               value={traveller.last_name}
                               onChange={(e) =>
@@ -553,15 +699,19 @@ const Checkout = () => {
                                 )
                               }
                             />
-                            <br className="d-xl-none d-lg-block" />
-                            <input
-                              className={`${
+                                                       
+                            {formErrors[`travelers.${index}.last_name`] && (
+                              <p className="text-danger small">
+                                {formErrors[`travelers.${index}.last_name`][0]}
+                              </p>
+                            )}
+                            </div>
+                            {/* <br className="d-xl-none d-lg-block" /> */}
+                            <div className="ms-xxl-5 ms-xl-5 ms-md-0 col-xl-5 col-lg-6 col-12 ">
+                               <input
+                              className={` col-12 ${
                                 style["promo_input"]
-                              } ms-xxl-5 ms-xl-5 ms-md-0 col-xl-5 col-lg-6 col-12 ${
-                                formErrors[`travelers.${index}.first_name`]
-                                  ? style.error
-                                  : ""
-                              }`}
+                              } `}
                               placeholder="First & middle name (in English)*"
                               value={traveller.first_name}
                               onChange={(e) =>
@@ -572,26 +722,22 @@ const Checkout = () => {
                                 )
                               }
                             />
-                            {formErrors[`travelers.${index}.last_name`] && (
-                              <p className="text-danger small">
-                                {formErrors[`travelers.${index}.last_name`][0]}
-                              </p>
-                            )}
-                            {formErrors[`travelers.${index}.first_name`] && (
+                               {formErrors[`travelers.${index}.first_name`] && (
                               <p className="text-danger small">
                                 {formErrors[`travelers.${index}.first_name`][0]}
                               </p>
                             )}
+                            </div>
+
+                           
                           </div>
-                          <div className="col-12 pt-2">
-                            <input
+                          <div className="col-12 d-flex flex-xl-row  flex-column pt-2">
+                            
+                             <div className="col-xl-5 col-lg-6 col-12">
+                             <input
                               className={`${
                                 style["promo_input"]
-                              } col-xl-5 col-lg-6 col-12 ${
-                                formErrors[`travelers.${index}.id_type`]
-                                  ? style.error
-                                  : ""
-                              }`}
+                              } col-12 `}
                               placeholder="ID Type*"
                               value={traveller.id_type}
                               onChange={(e) =>
@@ -602,15 +748,17 @@ const Checkout = () => {
                                 )
                               }
                             />
-                            <br className="d-xl-none d-lg-block" />
+                             {formErrors[`travelers.${index}.id_type`] && (
+                              <p className="text-danger small">
+                                {formErrors[`travelers.${index}.id_type`][0]}
+                              </p>
+                            )}
+                            </div>
+                            <div className="ms-xxl-5 ms-xl-5 ms-md-0 col-xl-4 col-lg-6 col-12">
                             <input
                               className={`${
                                 style["promo_input"]
-                              } ms-xxl-5 ms-xl-5 ms-md-0 col-xl-4 col-lg-6 col-12 ${
-                                formErrors[`travelers.${index}.id_number`]
-                                  ? style.error
-                                  : ""
-                              }`}
+                              }  col-12`}
                               placeholder="ID number*"
                               value={traveller.id_number}
                               onChange={(e) =>
@@ -621,16 +769,13 @@ const Checkout = () => {
                                 )
                               }
                             />
-                            {formErrors[`travelers.${index}.id_type`] && (
-                              <p className="text-danger small">
-                                {formErrors[`travelers.${index}.id_type`][0]}
-                              </p>
-                            )}
+                           
                             {formErrors[`travelers.${index}.id_number`] && (
                               <p className="text-danger small">
                                 {formErrors[`travelers.${index}.id_number`][0]}
                               </p>
                             )}
+                            </div>
                           </div>
                           <div
                             style={{ marginTop: "10px", marginBottom: "10px" }}
@@ -706,9 +851,7 @@ const Checkout = () => {
                           <label className="">Contact Name*</label>
                           <br />
                           <input
-                            className={`${style["promo_input"]} my-2 col-12 ${
-                              formErrors.contact_name ? style.error : ""
-                            }`}
+                            className={`${style["promo_input"]} my-2 col-12 `}
                             placeholder="Please enter contact name"
                             name="contact_name"
                             value={formData.contact_name}
@@ -730,16 +873,19 @@ const Checkout = () => {
                             className={`${style["promo_select"]} my-2`}
                             style={{ width: "80px", paddingLeft: "5px" }}
                           >
-                            <option value="+91">+91</option>
-                            <option value="+971">+971</option>
-                            <option value="+966">+966</option>
+                            {countryCodes.map((country) => (
+                                <option
+                                  key={`${country.name}-${country.code}`}
+                                  value={country.code}
+                                >
+                                  {country.code}
+                                </option>
+                              ))}
                           </select>
                           <input
                             className={`${
                               style["promo_input"]
-                            } my-2 ms-xl-1 ms-lg-1 ms-2 ${
-                              formErrors.contact_number ? style.error : ""
-                            }`}
+                            } my-2 ms-xl-1 ms-lg-1 ms-2 `}
                             style={{ width: "240px" }}
                             placeholder="Mobile Number"
                             name="contact_number"
@@ -757,9 +903,7 @@ const Checkout = () => {
                         <label className="pe-0 me-0">Email Address*</label>
                         <br />
                         <input
-                          className={`${style["promo_input"]} my-2 col-12 ${
-                            formErrors.email ? style.error : ""
-                          }`}
+                          className={`${style["promo_input"]} my-2 col-12 `}
                           placeholder="All important updates will be send to this email ID"
                           name="email"
                           type="email"
@@ -791,7 +935,6 @@ const Checkout = () => {
                       <button
                         onClick={handlePayNow}
                         className={style["btn-one"]}
-                        disabled={!isFormValid}
                       >
                         Pay Now
                       </button>
@@ -1082,7 +1225,6 @@ const Checkout = () => {
         <button
           onClick={handlePayNow}
           style={{ backgroundColor: "#149699" }}
-          disabled={!isFormValid}
         >
           Pay Now
         </button>

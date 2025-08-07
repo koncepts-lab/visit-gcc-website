@@ -86,8 +86,8 @@ const TourPackage = () => {
     accordionDataConfig.map((d) => ({ ...d, items: [] }))
   );
 
-  const firstBreakPoints = { 350: 1, 750: 2, 1200: 3, 1500: 4 };
-  const secondBreakPoints = { 350: 1, 750: 2, 1200: 3, 1500: 3 };
+  const firstBreakPoints = { 350: 1, 750: 2, 1200: 3, 1500: 3 };
+  const secondBreakPoints = { 350: 1, 750: 2, 1200: 2, 1400: 3 };
   const clearPriceFilter = () => setPriceRange([30, 10000]);
   const clearDurationFilter = () => setDurationRange([1, 30]);
 

@@ -22,7 +22,7 @@ const Country = () => {
   const [filteredEvents, setFilteredEvents] = useState([]);
   const [lesserWonders, setLesserWonders] = useState([]);
   const [error, setError] = useState(null);
-  const [isToggled, setIsToggled] = useState(() => window.innerWidth < 768);
+  const [isToggled, setIsToggled] = useState(false);
 
   const today = new Date();
   const [filters, setFilters] = useState({
